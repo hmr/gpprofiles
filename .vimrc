@@ -98,3 +98,20 @@ endif
 " Don't wake up system with blinking cursor:
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
+
+" Enable/Disable line number by Ctrl-M
+" https://qiita.com/smison/items/f392037f1164eba5cc74
+function Setnumber()
+  if &number
+    setlocal nonumber
+  else
+    setlocal number
+  endif
+endfunction
+" nnoremap <silent> <C-m> :call Setnumber()<CR>
+nmap <C-m> :call Setnumber()<CR>
+
+" Clear hlsearch by Ctrl-L
+" http://d.hatena.ne.jp/h1mesuke/20080327/p1
+noremap<Esc><Esc>:nohlsearch<Cr>
+
