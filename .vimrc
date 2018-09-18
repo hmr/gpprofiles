@@ -113,5 +113,4 @@ nmap <C-m> :call Setnumber()<CR>
 
 " Clear hlsearch by Ctrl-L
 " http://d.hatena.ne.jp/h1mesuke/20080327/p1
-noremap<Esc><Esc>:nohlsearch<Cr>
-
+noremap <C-l> :nohlsearch<CR>
