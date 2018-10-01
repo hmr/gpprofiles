@@ -13,6 +13,7 @@ source .bashrc_history && \
 source .bashrc_alias . && \
 echo source .bashrc_history >> .bashrc && \
 echo source .bashrc_alias >> .bashrc && \
+echo ----- Below is tail of bashrc. ----- && \
 tail .bashrc && \
 echo "------------------------------" && \
 echo "DONE"
