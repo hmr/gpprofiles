@@ -1,5 +1,8 @@
+scriptencoding utf-8
 set encoding=utf-8
 set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
+"set fileencodings=utf-8
+set fileformats=unix,dos,mac
 
 set nocompatible	" Use Vim defaults (much better!)
 set bs=indent,eol,start		" allow backspacing over everything in insert mode
@@ -8,14 +11,17 @@ set ai			" always set autoindenting on
 set viminfo='20,\"50	" read/write a .viminfo file, don't store more
 			" than 50 lines of registers
 set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
+"set ruler		" show the cursor position all the time
 
 " Additional settings by hmr
 " see more settings at: http://www.geek.sc/archives/977
 set cursorline
 set number
 set laststatus=2
-set statusline=%F%r%h%=
+" set statusline=%F%r%h%=
+" set statusline=%F%m%r%h%w\%=[TYPE=%Y]\[FORMAT=%{&ff}]\[ENC=%{&fileencoding}]\[LOW=%l/%L]
+"set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}][%B]
+set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
 set incsearch
 set ignorecase
 set showmatch
@@ -31,14 +37,14 @@ set wildmenu
 set noerrorbells
 set novisualbell
 set visualbell t_vb=
+set showbreak=↪
 set list
-set listchars=tab:^\ ,trail:~
-
-syntax on
+set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
 set hlsearch
 " colorscheme default
 colorscheme molokai
 
+syntax on
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
@@ -101,16 +107,35 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 " Enable/Disable line number by Ctrl-M
 " https://qiita.com/smison/items/f392037f1164eba5cc74
-function Setnumber()
+function ToggleNumber()
   if &number
     setlocal nonumber
   else
     setlocal number
   endif
 endfunction
+
+function ToggleHighlight()
+  if &hlsearch
+    setlocal nohlsearch
+  else
+    setlocal hlsearch
+  endif
+endfunction
+
+function ToggleList()
+  if &list
+    setlocal nolist
+  else
+    setlocal list
+  endif
+endfunction
+
 " nnoremap <silent> <C-m> :call Setnumber()<CR>
-nmap <C-m> :call Setnumber()<CR>
+nmap <C-n> :call ToggleNumber()<CR>
 
 " Clear hlsearch by Ctrl-L
 " http://d.hatena.ne.jp/h1mesuke/20080327/p1
-noremap <C-l> :nohlsearch<CR>
+nmap <C-h> :call ToggleHighlight()<CR>
+
+nmap <C-l> :call ToggleList()<CR>
