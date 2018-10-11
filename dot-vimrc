@@ -1,3 +1,23 @@
+"-----------------------------------------------------------------------------
+" Settings for vim Pltg
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'altercation/vim-colors-solarized'
+Plug 'airblade/vim-gitgutter'
+call plug#end()
+
+"----------------------------------------------------------------------------
+" Misc settings
+" see more settings at: http://www.geek.sc/archives/977
+syntax on
 scriptencoding utf-8
 set encoding=utf-8
 set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
@@ -6,15 +26,15 @@ set fileformats=unix,dos,mac
 
 set nocompatible	" Use Vim defaults (much better!)
 set bs=indent,eol,start		" allow backspacing over everything in insert mode
-set ai			" always set autoindenting on
+"set ai			" always set autoindenting on
 "set backup		" keep a backup file
 set viminfo='20,\"50	" read/write a .viminfo file, don't store more
 			" than 50 lines of registers
 set history=50		" keep 50 lines of command line history
 "set ruler		" show the cursor position all the time
+set tabstop=4
+set expandtab
 
-" Additional settings by hmr
-" see more settings at: http://www.geek.sc/archives/977
 set cursorline
 set number
 set laststatus=2
@@ -41,11 +61,28 @@ set showbreak=↪
 set list
 set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
 set hlsearch
-" colorscheme default
+set hidden
+set noswapfile
+"vimにコピペしたとき、コメントアウトや余計な改行をさせない
+set paste
+
+"-----------------------------------------------------------------------------
+" Color
+"colorscheme default
 colorscheme molokai
 
-syntax on
+" Try to use Solarized
+"try
+"	set background=dark
+"	colorscheme solarized
+"catch
+"endtry
 
+if (exists('+colorcolumn'))
+  set colorcolumn=100
+  highlight ColorColumn ctermbg=9
+endif
+"-----------------------------------------------------------------------------
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
   augroup redhat
@@ -65,18 +102,18 @@ if has("autocmd")
 endif
 
 if has("cscope") && filereadable("/usr/bin/cscope")
-   set csprg=/usr/bin/cscope
-   set csto=0
-   set cst
-   set nocsverb
-   " add any database in current directory
-   if filereadable("cscope.out")
-      cs add cscope.out
-   " else add database pointed to by environment
-   elseif $CSCOPE_DB != ""
-      cs add $CSCOPE_DB
-   endif
-   set csverb
+  set csprg=/usr/bin/cscope
+  set csto=0
+  set cst
+  set nocsverb
+  " add any database in current directory
+  if filereadable("cscope.out")
+    cs add cscope.out
+    " else add database pointed to by environment
+  elseif $CSCOPE_DB != ""
+    cs add $CSCOPE_DB
+  endif
+  set csverb
 endif
 
 " Switch syntax highlighting on, when the terminal has colors
@@ -89,15 +126,15 @@ endif
 filetype plugin on
 
 if &term=="xterm"
-     set t_Co=8
-     set t_Sb=[4%dm
-     set t_Sf=[3%dm
+  set t_Co=8
+  set t_Sb=[4%dm
+  set t_Sf=[3%dm
 endif
 
 if &term=="xterm-256color"
-     set t_Co=256
-     set t_Sb=^[[4%dm
-     set t_Sf=^[[3%dm
+  set t_Co=256
+  set t_Sb=^[[4%dm
+  set t_Sf=^[[3%dm
 endif
 
 
