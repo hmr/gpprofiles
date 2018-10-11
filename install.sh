@@ -35,7 +35,7 @@ echo Adding to bashrc
 grep .bashrc_history .bashrc >& /dev/null
 if [ $? -ne 0 ]; then
     echo "    Installing bashrc_history"
-    echo "source .bashrc_history" >> .bashrc
+    echo "source ~/.bashrc_history" >> .bashrc
 else
     echo "    bashrc_history is already installed."
 fi
@@ -43,7 +43,7 @@ fi
 grep .bashrc_alias .bashrc >& /dev/null
 if [ $? -ne 0 ]; then
     echo "    Installing bashrc_alias"
-    echo "source .bashrc_alias" >> .bashrc
+    echo "source ~/.bashrc_alias" >> .bashrc
 else
     echo "    bashrc_alias is already installed."
 fi
@@ -51,7 +51,7 @@ fi
 grep '#byobu-prompt#' .bashrc >& /dev/null
 if [ $? -ne 0 ]; then
     echo "    Installing byobu-prompt"
-    echo "[ -r /home/maruyama/.byobu/prompt ] && . /home/maruyama/.byobu/prompt   #byobu-prompt#" >> .bashrc
+    echo "[ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#" >> .bashrc
 else
     echo "    byobu-prompt is already installed."
 fi
