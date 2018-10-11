@@ -1,11 +1,12 @@
 "-----------------------------------------------------------------------------
-" Settings for vim Pltg
+"vim Plugの設定
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
+"以下にインストールするプラグインを記述する
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -15,8 +16,9 @@ Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 "----------------------------------------------------------------------------
-" Misc settings
-" see more settings at: http://www.geek.sc/archives/977
+"Misc settings
+"see more settings at: http://www.geek.sc/archives/977
+filetype plugin on
 syntax on
 scriptencoding utf-8
 set encoding=utf-8
@@ -32,19 +34,19 @@ set viminfo='20,\"50	" read/write a .viminfo file, don't store more
 			" than 50 lines of registers
 set history=50		" keep 50 lines of command line history
 "set ruler		" show the cursor position all the time
-set tabstop=4
-set expandtab
+set tabstop=4		"タブ幅
+"set expandtab		"タブを空白に展開する
 
-set cursorline
-set number
-set laststatus=2
+set cursorline		"カーソル行表示
+set number			"行番号表示
+set laststatus=2	"ステータスラインの位置(下から2行目)
 " set statusline=%F%r%h%=
 " set statusline=%F%m%r%h%w\%=[TYPE=%Y]\[FORMAT=%{&ff}]\[ENC=%{&fileencoding}]\[LOW=%l/%L]
 "set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}][%B]
 set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
-set incsearch
-set ignorecase
-set showmatch
+set incsearch		"インクリメンタルサーチ使用
+set ignorecase		"大文字小文字の違いを無視
+set showmatch		"マッチした部分を強調
 set showmode
 set title
 set nowritebackup
@@ -57,17 +59,17 @@ set wildmenu
 set noerrorbells
 set novisualbell
 set visualbell t_vb=
-set showbreak=↪
-set list
+set showbreak=↪		"折り返し記号
+set list			"空白文字等を表示
 set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
-set hlsearch
+set hlsearch		"ハイライト
 set hidden
-set noswapfile
-"vimにコピペしたとき、コメントアウトや余計な改行をさせない
-set paste
+set noswapfile		"スワップファイルを作成しない
+set paste			"vimにコピペしたとき、コメントアウトや余計な改行をさせない
+
 
 "-----------------------------------------------------------------------------
-" Color
+"色の設定
 "colorscheme default
 colorscheme molokai
 
@@ -83,96 +85,98 @@ if (exists('+colorcolumn'))
   highlight ColorColumn ctermbg=9
 endif
 "-----------------------------------------------------------------------------
-" Only do this part when compiled with support for autocommands
+"Only do this part when compiled with support for autocommands
 if has("autocmd")
-  augroup redhat
-  autocmd!
-  " In text files, always limit the width of text to 78 characters
-  autocmd BufRead *.txt set tw=78
-  " When editing a file, always jump to the last cursor position
-  autocmd BufReadPost *
-  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-  \   exe "normal! g'\"" |
-  \ endif
-  " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
-  autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
-  " start with spec file template
-  autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
-  augroup END
+	augroup redhat
+		autocmd!
+		" In text files, always limit the width of text to 78 characters
+		autocmd BufRead *.txt set tw=78
+
+		" When editing a file, always jump to the last cursor position
+		autocmd BufReadPost *
+			\ if line("'\"") > 0 && line ("'\"") <= line("$") |
+			\     exe "normal! g'\"" |
+			\ endif
+
+		" don't write swapfile on most commonly used directories for NFS mounts or USB sticks
+		autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+
+		" start with spec file template
+		autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
+		augroup END
 endif
 
 if has("cscope") && filereadable("/usr/bin/cscope")
-  set csprg=/usr/bin/cscope
-  set csto=0
-  set cst
-  set nocsverb
-  " add any database in current directory
-  if filereadable("cscope.out")
-    cs add cscope.out
-    " else add database pointed to by environment
-  elseif $CSCOPE_DB != ""
-    cs add $CSCOPE_DB
-  endif
-  set csverb
+	set csprg=/usr/bin/cscope
+	set csto=0
+	set cst
+	set nocsverb
+	" add any database in current directory
+	if filereadable("cscope.out")
+		cs add cscope.out
+	" else add database pointed to by environment
+	elseif $CSCOPE_DB != ""
+		cs add $CSCOPE_DB
+	endif
+	set csverb
 endif
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
+"-----------------------------------------------------------------------------
+"Switch syntax highlighting on, when the terminal has colors
+"Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+	syntax on
+	set hlsearch
 endif
-
-filetype plugin on
 
 if &term=="xterm"
-  set t_Co=8
-  set t_Sb=[4%dm
-  set t_Sf=[3%dm
+	set t_Co=8
+	set t_Sb=[4%dm
+	set t_Sf=[3%dm
 endif
 
 if &term=="xterm-256color"
-  set t_Co=256
-  set t_Sb=^[[4%dm
-  set t_Sf=^[[3%dm
+	set t_Co=256
+	set t_Sb=^[[4%dm
+	set t_Sf=^[[3%dm
 endif
 
 
-" Don't wake up system with blinking cursor:
-" http://www.linuxpowertop.org/known.php
+"Don't wake up system with blinking cursor:
+"http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
 
-" Enable/Disable line number by Ctrl-M
-" https://qiita.com/smison/items/f392037f1164eba5cc74
+"https://qiita.com/smison/items/f392037f1164eba5cc74
 function ToggleNumber()
-  if &number
-    setlocal nonumber
-  else
-    setlocal number
-  endif
-endfunction
+	if &number
+		setlocal nonumber
+	else
+		setlocal number
+	endif
+endfunctio
 
 function ToggleHighlight()
-  if &hlsearch
-    setlocal nohlsearch
-  else
-    setlocal hlsearch
-  endif
+	if &hlsearch
+		setlocal nohlsearch
+	else
+		setlocal hlsearch
+	endif
 endfunction
 
 function ToggleList()
-  if &list
-    setlocal nolist
-  else
-    setlocal list
-  endif
+	if &list
+		setlocal nolist
+	else
+		setlocal list
+	endif
 endfunction
 
-" nnoremap <silent> <C-m> :call Setnumber()<CR>
+"行番号表示On/Off(Ctrl-N)
 nmap <C-n> :call ToggleNumber()<CR>
-
-" Clear hlsearch by Ctrl-L
-" http://d.hatena.ne.jp/h1mesuke/20080327/p1
+"検索ハイライトOn/Off(Ctrl-H)
+"http://d.hatena.ne.jp/h1mesuke/20080327/p1
 nmap <C-h> :call ToggleHighlight()<CR>
-
+"空白文字表示On/Off(Ctrl-L)
 nmap <C-l> :call ToggleList()<CR>
+nmap <C-g> :call gitgutter#toggle()<CR>
+
