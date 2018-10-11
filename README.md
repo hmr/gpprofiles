@@ -7,4 +7,13 @@ My version of unix profiles.
 # cd unix_profiles_hmr
 # ./install.sh
 ```
+
+## After installation
+### Install vim plugins
+Start vim and type as below:
+```
+:PlugInstall
+```
+vimPlug will install plugins auto-magically.
+
 https://github.com/hmr/unix_profiles_hmr/issues
