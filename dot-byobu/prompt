@@ -1,5 +1,10 @@
-if [ -e profile.bashrc.local ]; then
+if [ -e ~/.byobu/profile.bashrc.local ]; then
 . profile.bashrc.local
 else
+if [ -r /usr/share/byobu/profiles/bashrc ]; then
 . /usr/share/byobu/profiles/bashrc
+else if [ -r /usr/local/share/byobu/profiles/bashrc ]; then
+. /usr/local/share/byobu/profiles/bashrc
 fi
+fi
+
