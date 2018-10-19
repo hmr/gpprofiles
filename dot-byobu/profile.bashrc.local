@@ -51,10 +51,10 @@ if [ -n "$TMUX" ] || [ "${TERMCAP#*screen}" != "${TERMCAP}" ]; then
 					dircolors "${BYOBU_PREFIX}/share/byobu/profiles/dircolors" > "$BYOBU_RUN_DIR/dircolors"
 					. "$BYOBU_RUN_DIR/dircolors"
 				fi
-			;;
+				;;
 			*)
 				# Use Googley colors (blue / red / yellow / blue / green / red )
-                                PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\$(byobu_prompt_symbol)\e[00m\] "
+				PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\$(byobu_prompt_symbol)\[\e[00m\] "
 			;;
 		esac
 	fi
