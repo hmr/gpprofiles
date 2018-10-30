@@ -1,12 +1,14 @@
+" vim:ft=vim:ts=4:noexpandtab:fenc=utf-8:ff=unix
+scriptencoding utf-8
 "-----------------------------------------------------------------------------
-"vim Plugの設定
+" vim Plugの設定
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
 		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
-"以下にインストールするプラグインを記述する
+" 以下にインストールするプラグインを記述する
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -16,58 +18,65 @@ Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 "----------------------------------------------------------------------------
-"Misc settings
-"see more settings at: http://www.geek.sc/archives/977
-filetype plugin on
-syntax on
-scriptencoding utf-8
-set encoding=utf-8
-set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
-"set fileencodings=utf-8
+" Misc settings
+" see more settings at: http://www.geek.sc/archives/977
+" filetype plugin on
+filetype plugin indent on	" ファイルタイプ検出プラグインと自動インデントを使う
+syntax on					" シンタックスハイライトを使う
+set encoding=utf-8			" Set utf-8 as default encoding.
+set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,ucs-bom
 set fileformats=unix,dos,mac
 
-set nocompatible	" Use Vim defaults (much better!)
-set bs=indent,eol,start		" allow backspacing over everything in insert mode
-"set ai			" always set autoindenting on
-"set backup		" keep a backup file
-set viminfo='20,\"50	" read/write a .viminfo file, don't store more
-			" than 50 lines of registers
-set history=50		" keep 50 lines of command line history
-"set ruler		" show the cursor position all the time
-set tabstop=4		"タブ幅
-"set expandtab		"タブを空白に展開する
+" Vimの拡張を使う(あたりまえ!!)
+set nocompatible
 
-set cursorline		"カーソル行表示
-set number			"行番号表示
-set laststatus=2	"ステータスラインの位置(下から2行目)
+set bs=indent,eol,start		" allow backspacing over everything in insert mode
+set ai						" always set autoindenting on
+set viminfo='20,\"50		" read/write a .viminfo file, don't store more than 50 lines of registers
+set noswapfile				" not to make swap file.
+set nowritebackup			" not to make backup file.
+set nobackup				" not to backup
+"set backup					" keep a backup file
+
+set history=50				" keep 50 lines of command line history
+set tabstop=4				" タブ幅
+"set expandtab				" タブを空白に展開する
+
+set cursorline				" カーソル行表示
+set number					" 行番号表示
+"set ruler					" show the cursor position all the time
+set laststatus=2			" ステータスラインの位置(下から2行目)
 " set statusline=%F%r%h%=
 " set statusline=%F%m%r%h%w\%=[TYPE=%Y]\[FORMAT=%{&ff}]\[ENC=%{&fileencoding}]\[LOW=%l/%L]
 "set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}][%B]
 set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
-set incsearch		"インクリメンタルサーチ使用
-set ignorecase		"大文字小文字の違いを無視
-set showmatch		"マッチした部分を強調
-set showmode
-set title
-set nowritebackup
-set nobackup
-set virtualedit=block
-set whichwrap=b,s,[,],<,>
-set backspace=indent,eol,start
-set ambiwidth=double
-set wildmenu
-set noerrorbells
-set novisualbell
-set visualbell t_vb=
-set showbreak=↪		"折り返し記号
-set list			"空白文字等を表示
-set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
-set hlsearch		"ハイライト
+
+set nohlsearch				" 検索にマッチした部分をハイライト表示しない
+set incsearch				" インクリメンタルサーチ使用
+set ignorecase				" 大文字小文字の違いを無視
+set showmatch				" マッチした部分を強調
+set showmode				" 現在のモードを表示
+
+set title					" allow vim change terminal's title
+set virtualedit=block		" 矩形バーチャルモードで文字の有無を無視する
+set whichwrap=b,s,[,],<,>	" 行末を越えて次行に移動可能にする
+set ambiwidth=double		" 全角文字を上手く扱うためのおまじない
+set wildmenu				" ファイル名補完メニューを使う
+set wildmode=longest,full	" ファイル名補完機能
+set noerrorbells			" エラー時にベルを鳴らさない
+set novisualbell			" ビジュアルベルを使わない
+set visualbell t_vb=		" ビジュアルベルは空白(何もしない)
+
+set list					" 空白文字等を表示
+"set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
+set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
+set showbreak=↪				" 折り返し記号
+
 set hidden
-set noswapfile		"スワップファイルを作成しない
-set paste			"vimにコピペしたとき、コメントアウトや余計な改行をさせない
+set paste					" vimにコピペしたとき、コメントアウトや余計な改行をさせない
 
-
+" 正規表現メタ文字のエスケープシーケンスを不要にする(very magic)
+nnoremap /  /\v
 "-----------------------------------------------------------------------------
 "色の設定
 "colorscheme default
