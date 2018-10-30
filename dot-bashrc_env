@@ -1,0 +1,3 @@
+#set less tab width 4
+export LESS="-x4"
+
