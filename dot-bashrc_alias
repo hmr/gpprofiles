@@ -37,3 +37,5 @@ alias l='ls -CF'                              #
 alias lh='ls -lrth'
 alias ssh='ssh -A'
 alias sudo='sudo -E'
+alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
+alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
