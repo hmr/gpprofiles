@@ -1,5 +1,19 @@
 #!/bin/bash
 
+abs_dirname() {
+  local cwd="$(pwd)"
+  local path="$1"
+
+  while [ -n "$path" ]; do
+    cd "${path%/*}"
+    local name="${path##*/}"
+    path="$(readlink "$name" || true)"
+  done
+
+  pwd -P
+  cd "$cwd"
+}
+
 function add_into_bashrc () {
 	if [ -z "$1" ]; then
 		echo "add_into_bashrc(): Not enough args"
@@ -14,13 +28,14 @@ function add_into_bashrc () {
 	fi
 }
 
-SRCDIR=`pwd`
+SRCDIR=`abs_dirname "$0"`
 
-SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bashrc_ssh-agent .bashrc_env"
+SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bashrc_ssh-agent .bashrc_env .gitconfig"
 DATE=`date +'%Y%M%d_%H%M%S'`
 
-
+echo "SRCDIR: ${SRCDIR}"
 cd ~
+
 for TARGET in ${SRCS}
 do
     TARGETSRC=`echo ${TARGET} | sed -e 's/^\./dot-/'`
