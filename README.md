@@ -2,10 +2,17 @@
 My version of unix profiles.
 
 ## How to use
+Copy and paste below.
 ```
-# git clone https://github.com/hmr/unix_profiles_hmr.git
-# cd unix_profiles_hmr
-# ./install.sh
+cat << __EOF__ > inst_gpprofiles.sh && bash ./inst_gpprofiles.sh; rm -f inst_gpprofiles.sh
+#! /bin/bash
+cd ~ &&\
+rm -rf unix_profiles_hmr &&\
+mkdir -p src &&\
+git clone git@bitbucket.org:wassha/gpprofiles.git src/gpprofiles &&\
+src/gpprofiles/install.sh &&\
+rm -rf unix_profiles_hmr
+__EOF__
 ```
 
 ## After installation
