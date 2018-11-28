@@ -34,8 +34,12 @@ SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bashrc_ssh-agen
 DATE=`date +'%Y%M%d_%H%M%S'`
 
 echo "SRCDIR: ${SRCDIR}"
-cd ~
 
+# generate dot-gitconfig file
+cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/name = .*/name = `whoami`@`hostname -s`/" -e "s/email = .*/email =  `whoami`@`hostname`/" > dot-gitconfig
+
+# Make symbolic link with backup
+cd ~
 for TARGET in ${SRCS}
 do
     TARGETSRC=`echo ${TARGET} | sed -e 's/^\./dot-/'`
