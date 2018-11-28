@@ -36,7 +36,7 @@ DATE=`date +'%Y%M%d_%H%M%S'`
 echo "SRCDIR: ${SRCDIR}"
 
 # generate dot-gitconfig file
-cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/name = .*/name = `whoami`@`hostname -s`/" -e "s/email = .*/email =  `whoami`@`hostname`/" > dot-gitconfig
+cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/#name = .*/name = `whoami`@`hostname -s`/" -e "s/#email = .*/email = `whoami`@`hostname`/" > dot-gitconfig
 
 # Make symbolic link with backup
 cd ~
