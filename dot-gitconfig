@@ -1,6 +1,6 @@
 [user]
-	name = root@deliblatska
-	email =  root@deliblatska.i.wassha.net
+	name = hmr@NL-S0003
+	email = hmr@NL-S0003
 [alias]
 	mylog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
