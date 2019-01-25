@@ -1,0 +1,56 @@
+# dot-bashrc_ssh-agents
+echo Processing dot-bash_profile_ssh-agent
+
+echo -n "Trying to find ssh-agent settings..."
+SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
+SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
+
+if [ -f $SSH_AGENT_FILE ]; then
+	echo " Found."
+	source $SSH_AGENT_FILE
+else
+	echo "  Not found."
+fi
+echo -n "Trying ssh-agent to list secret keys..."
+ssh-add -l > /dev/null 2>&1
+RESULT=$?
+#echo "ssh-add result: ${RESULT}"
+
+if [ ${RESULT} -eq 0 ]; then
+	echo "Success"
+	echo "SSH agent is already running."
+else
+	if [ ${RESULT} -eq 2 ]; then
+		echo "Fail(No ssh-agent is running)"
+		echo "Starting SSH agent"
+		ssh-agent -E md5 > $SSH_AGENT_FILE
+		source $SSH_AGENT_FILE
+	else
+		echo "Fail(${RESULT})"
+	fi
+
+	echo "Adding SSH private keys... "
+	if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
+		for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
+		do
+			ssh-add $HOME/.ssh/$PRIV_KEY_FILE
+			#if [ $? -eq 0 ]; then
+			#	echo "${PRIV_KEY_FILE} "
+			#fi
+		done
+	fi
+fi
+echo
+ssh-add -l
+echo
+
+# Increment number of users who uses
+#if [ "$BASH_LOGINSHELL" = "1" ]; then
+	TEMP_AGENTS=0
+	if [ -e $SSH_AGENT_NUM_FILE ]; then
+		TEMP_AGENTS=`cat $SSH_AGENT_NUM_FILE`
+	fi
+	echo -n `expr $TEMP_AGENTS + 1` > $SSH_AGENT_NUM_FILE
+	echo You are `cat $SSH_AGENT_NUM_FILE` th ssh-agent user.
+#fi
+
