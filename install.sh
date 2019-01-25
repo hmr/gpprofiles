@@ -30,7 +30,7 @@ function add_into_bashrc () {
 
 SRCDIR=`abs_dirname "$0"`
 
-SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bashrc_ssh-agent .bashrc_env .gitconfig"
+SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bashrc_ssh-agent .bashrc_env .gitconfig .bash_logout"
 DATE=`date +'%Y%M%d_%H%M%S'`
 
 echo "SRCDIR: ${SRCDIR}"
