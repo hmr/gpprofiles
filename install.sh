@@ -14,6 +14,20 @@ abs_dirname() {
   cd "$cwd"
 }
 
+function del_from_bashrc () {
+	if [ -z "$1" ]; then
+		echo "del_from_bashrc(): Not enough args"
+		return
+	fi
+	grep "$1" ~/.bashrc >& /dev/null
+	if [ $? -eq 0 ]; then
+		echo "    Uninstalling $1"
+		sed -i -e '/$1/d' ~/.bashrc
+	else
+		echo "    $1 is already installed."
+	fi
+}
+
 function add_into_bashrc () {
 	if [ -z "$1" ]; then
 		echo "add_into_bashrc(): Not enough args"
@@ -94,6 +108,9 @@ echo Adding to bashrc
 add_into_bashrc bashrc_history
 add_into_bashrc bashrc_alias
 add_into_bashrc bashrc_env
+
+echo Deleting from bashrc
+del_from_bashrc bashrc_ssh-agent
 
 echo; echo Adding to bash_profile
 add_into_bash_profile bash_profile_ssh-agent
