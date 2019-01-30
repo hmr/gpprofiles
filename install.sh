@@ -22,7 +22,7 @@ function del_from_bashrc () {
 	grep "$1" ~/.bashrc >& /dev/null
 	if [ $? -eq 0 ]; then
 		echo "    Uninstalling $1"
-		sed -i -e '/$1/d' ~/.bashrc
+		sed -i -e "/$1/d" ~/.bashrc
 	else
 		echo "    $1 is already installed."
 	fi
