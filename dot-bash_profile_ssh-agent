@@ -27,7 +27,15 @@ else
 		#echo "Killing existing ssh-agent processes:"
 		#pkill -fe -u `id -u` "^ssh-agent"
 		echo "Starting new SSH agent"
-		ssh-agent -E md5 > $SSH_AGENT_FILE
+		case `ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
+			"OpenSSH_6" )
+				echo "OpenSSH V6 found:"
+				ssh-agent -s > $SSH_AGENT_FILE
+				;;
+			"*" )
+				ssh-agent -E md5 > $SSH_AGENT_FILE
+				;;
+		esac
 		source $SSH_AGENT_FILE
 	else
 		echo "Fail(${RESULT})"
