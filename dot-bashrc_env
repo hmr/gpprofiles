@@ -1,3 +1,4 @@
+echo Processing dot-bashrc_env...
 #set less tab width 4
 export LESS="-x4 -q -R"
 export VISUAL="vim"
