@@ -1,35 +1,47 @@
 # dot-bashrc_ssh-agents
 echo Processing dot-bash_profile_ssh-agent
 
-echo -n "Trying to find ssh-agent settings..."
+echo -n "Searching ssh-agent settings... "
 SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
 if [ -f $SSH_AGENT_FILE ]; then
-	echo " Found."
+	echo "Found. Loading variables."
 	source $SSH_AGENT_FILE
 else
-	echo "  Not found."
+	echo "Not found."
 fi
-echo -n "Trying ssh-agent to list secret keys..."
-ssh-add -l > /dev/null 2>&1
-RESULT=$?
-#echo "ssh-add result: ${RESULT}"
 
+echo -n "Executing ssh-agent to list secret keys... "
+ssh-add -l > /dev/null 2>&1
+RESULT=$? #;echo "ssh-add result: ${RESULT}"
 if [ ${RESULT} -eq 0 ]; then
-	echo "Success"
-	echo "SSH agent is already running."
+	echo "Success."
+	echo "SSH agent looks working fine."
 else
 	if [ ${RESULT} -eq 2 ]; then
-		echo "Fail(No ssh-agent is running)"
-		echo "Starting SSH agent"
-		ssh-agent -E md5 > $SSH_AGENT_FILE
+		echo "Fail(looks ssh-agent isn't working fine)."
+		echo "Below are ssh-agent processes running on this host."
+		ps aux | grep "ssh-agent " | grep -v grep
+		#pgrep -lfa "^ssh-agent"
+		#echo "Killing existing ssh-agent processes:"
+		#pkill -fe -u `id -u` "^ssh-agent"
+		echo "Starting new SSH agent"
+		case `ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
+			"OpenSSH_6" )
+				echo "OpenSSH V6 found:"
+				ssh-agent -s > $SSH_AGENT_FILE
+				;;
+			"*" )
+				ssh-agent -E md5 > $SSH_AGENT_FILE
+				;;
+		esac
 		source $SSH_AGENT_FILE
 	else
 		echo "Fail(${RESULT})"
 	fi
 
-	echo "Adding SSH private keys... "
+	echo "Adding SSH private keys to agent... "
 	if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
 		for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
 		do
