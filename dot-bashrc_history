@@ -12,6 +12,8 @@ export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoreboth
 export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:history*'
 # export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls' # Ignore the ls command as well
 #
-# Whenever displaying the prompt, write the previous line to disk
-export PROMPT_COMMAND="history -a"
+# Share command histories everytime displaying prompt
+#export PROMPT_COMMAND="history -a"
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+shopt -u histappend
 
