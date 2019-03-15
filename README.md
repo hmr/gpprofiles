@@ -1,19 +1,8 @@
-# unix_profiles_hmr
+# gpprofile(General Purpose Profiles for BASH)
 My version of unix profiles.
 
 ## How to use
-Copy and paste below.
-```
-cat << __EOF__ > inst_gpprofiles.sh && bash ./inst_gpprofiles.sh; rm -f inst_gpprofiles.sh
-#! /bin/bash
-cd ~ &&\
-rm -rf unix_profiles_hmr &&\
-mkdir -p src &&\
-git clone git@bitbucket.org:wassha/gpprofiles.git src/gpprofiles &&\
-src/gpprofiles/install.sh &&\
-rm -rf unix_profiles_hmr
-__EOF__
-```
+Clone this repository and run 'install.sh'
 
 ## After installation
 
