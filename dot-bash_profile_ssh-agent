@@ -30,11 +30,11 @@ else
 		echo "    Starting new SSH agent..."
 		case `/usr/bin/ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
 			"OpenSSH_6" )
-				echo -n "      OpenSSH V6 found: "
+				echo -n "      OpenSSH V6 installed: "
 				ssh-agent -s > $SSH_AGENT_FILE
 				;;
 			* )
-				echo -n "      OpenSSH V7 or later found: "
+				echo -n "      OpenSSH V7 or later installed: "
 				ssh-agent -E md5 > $SSH_AGENT_FILE
 				;;
 		esac
