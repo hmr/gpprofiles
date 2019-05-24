@@ -60,7 +60,7 @@ SRCDIR=`abs_dirname "$0"`
 
 DATE=`date +'%Y%M%d_%H%M%S'`
 
-SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .gitconfig"
+SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig"
 DEL_SRCS=".bashrc_ssh-agent"
 
 echo "SRCDIR: ${SRCDIR}"
@@ -108,6 +108,7 @@ echo Adding to bashrc
 add_into_bashrc bashrc_history
 add_into_bashrc bashrc_alias
 add_into_bashrc bashrc_env
+add_into_bashrc bashrc_etc
 
 echo Deleting from bashrc
 del_from_bashrc bashrc_ssh-agent

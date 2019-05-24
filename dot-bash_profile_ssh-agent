@@ -1,62 +1,65 @@
 # dot-bashrc_ssh-agents
 echo Processing dot-bash_profile_ssh-agent
 
-echo "Searching a ssh-agent config file..."
+echo "  Searching a ssh-agent config file..."
 SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
 if [ -f $SSH_AGENT_FILE ]; then
-	echo "  Found. Loading variables."
+	echo "    Found. Loading variables."
 	source $SSH_AGENT_FILE
 else
-	echo "  Not found."
+	echo "    Not found."
 fi
 
-echo "Executing ssh-add to probe agent..."
+echo "  Executing ssh-add to probe agent..."
 ssh-add -l > /dev/null 2>&1
 RESULT=$? #;echo "ssh-add result: ${RESULT}"
 if [ ${RESULT} -eq 0 ]; then
-	echo "  Success. SSH agent looks working fine."
-else
-	if [ ${RESULT} -eq 2 ]; then
-		echo "  Fail because ssh-agent isn't working fine."
-		echo "    Below are ssh-agent processes running on this host."
-		echo "      - - - - cut - - - -"
-		ps aux | grep "ssh-agent " | grep -v grep
+	echo "    Success. SSH agent looks working fine."
+elif [ ${RESULT} -eq 2 ]; then
+	echo "    Fail because ssh-agent isn't working fine."
+	PS_AGENT=`ps aux | grep "ssh-agent " | grep -v grep`
+	if [ -n ${PS_AGENT} ]; then
+		echo "      Below are ssh-agent processes running on this host."
+		echo "        - - - - - - - -"
+		echo ${PS_AGENT}
 		#pgrep -lfa "^ssh-agent"
 		#echo "Killing existing ssh-agent processes:"
 		#pkill -fe -u `id -u` "^ssh-agent"
-		echo "      - - - - cut - - - -"
-		echo "    Starting new SSH agent..."
-		case `/usr/bin/ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
-			"OpenSSH_6" )
-				echo -n "      OpenSSH V6 installed: "
-				ssh-agent -s > $SSH_AGENT_FILE
-				;;
-			* )
-				echo -n "      OpenSSH V7 or later installed: "
-				ssh-agent -E md5 > $SSH_AGENT_FILE
-				;;
-		esac
-		source $SSH_AGENT_FILE
-	else
-		echo     "  Fail(${RESULT})"
+		echo "        - - - - - - - -"
 	fi
-
-	echo "Adding SSH private keys to agent... "
-	if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
-		for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
-		do
-			ssh-add $HOME/.ssh/$PRIV_KEY_FILE
-			#if [ $? -eq 0 ]; then
-			#	echo "${PRIV_KEY_FILE} "
-			#fi
-		done
-	fi
+	echo "      Starting a SSH agent..."
+	case `/usr/bin/ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
+		"OpenSSH_6" )
+			echo -n "      OpenSSH V6 installed: "
+			ssh-agent -s > $SSH_AGENT_FILE
+			;;
+		* )
+			echo -n "      OpenSSH V7 or later installed: "
+			ssh-agent -E md5 > $SSH_AGENT_FILE
+			;;
+	esac
+	source $SSH_AGENT_FILE
+	echo -n 1 > $SSH_AGENT_NUM_FILE
+else
+	echo "    Fail(${RESULT})"
 fi
-echo
-ssh-add -l
-echo
+
+echo "  Adding SSH private keys to agent... "
+if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
+	for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
+	do
+		ssh-add $HOME/.ssh/$PRIV_KEY_FILE
+		#if [ $? -eq 0 ]; then
+		#	echo "${PRIV_KEY_FILE} "
+		#fi
+	done
+fi
+
+#echo
+#ssh-add -l
+#echo
 
 # Increment number of users who uses
 #if [ "$BASH_LOGINSHELL" = "1" ]; then
@@ -65,6 +68,6 @@ echo
 		TEMP_AGENTS=`cat $SSH_AGENT_NUM_FILE`
 	fi
 	echo -n `expr $TEMP_AGENTS + 1` > $SSH_AGENT_NUM_FILE
-	echo You are `cat $SSH_AGENT_NUM_FILE` th ssh-agent user.
+	echo ssh-agent user: `cat $SSH_AGENT_NUM_FILE`
 #fi
 
