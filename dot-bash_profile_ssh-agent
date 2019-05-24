@@ -10,13 +10,17 @@ if [ -f $SSH_AGENT_FILE ]; then
 	source $SSH_AGENT_FILE
 else
 	echo "    Not found."
+	SSH_AGENT_FILE_NOT_FOUND=1
 fi
 
-echo "  Testing ssh-agent..."
+echo "  Testing does ssh-agent properly works..."
 ssh-add -l > /dev/null 2>&1
 RESULT=$? #;echo "ssh-add result: ${RESULT}"
 if [ ${RESULT} -eq 0 ]; then
-	echo "    Success. ssh-agent looks working fine."
+	echo "    Success. ssh-agent is running."
+	if [ -n "${SSH_AGENT_FILE_NOT_FOUND}" ]; then
+		echo "    Maybe inherited from upstream ssh."
+	fi
 elif [ ${RESULT} -eq 2 ]; then
 	echo "    Fail because ssh-agent isn't running."
 	PS_AGENT=`ps aux | grep "ssh-agent " | grep -v grep`
@@ -41,10 +45,10 @@ elif [ ${RESULT} -eq 2 ]; then
 			;;
 	esac
 	source $SSH_AGENT_FILE
-	echo -n 1 > $SSH_AGENT_NUM_FILE
+	rm -f $SSH_AGENT_NUM_FILE
 
-	echo "  Adding SSH private keys to agent... "
 	if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
+		echo "  Adding SSH private keys to agent... "
 		for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
 		do
 			ssh-add $HOME/.ssh/$PRIV_KEY_FILE
@@ -52,6 +56,8 @@ elif [ ${RESULT} -eq 2 ]; then
 			#	echo "${PRIV_KEY_FILE} "
 			#fi
 		done
+	else
+		echo "  Didn't add keys because SSH_AGENT_PRIV_KEYS isn't set"
 	fi
 else
 	echo "    Fail(${RESULT})"
@@ -59,17 +65,17 @@ fi
 
 
 echo
-echo ssh-agent keys:
-ssh-add -l
-echo
+if [ -n "${SSH_AGENT_PID}" ]; then
+	echo Keys held by ssh-agent:
+	ssh-add -l
+	echo
 
-# Increment number of users who uses
-#if [ "$BASH_LOGINSHELL" = "1" ]; then
+	# Increment number of users who uses
 	TEMP_AGENTS=0
 	if [ -e $SSH_AGENT_NUM_FILE ]; then
 		TEMP_AGENTS=`cat $SSH_AGENT_NUM_FILE`
 	fi
 	echo -n `expr $TEMP_AGENTS + 1` > $SSH_AGENT_NUM_FILE
-	echo ssh-agent pid ${SSH_AGENT_PID} is shared by `cat $SSH_AGENT_NUM_FILE` users.
-#fi
+	echo "ssh-agent pid #${SSH_AGENT_PID:-INHERITED} is shared by `cat $SSH_AGENT_NUM_FILE` users."
+fi
 

@@ -6,6 +6,7 @@ echo Processing dot-bashrc_etc
 ssh-add -l >& /dev/null
 RESULT=$?
 if [ ${RESULT} -eq 0 ]; then
+	echo; echo "Keys held by ssh-agent:"
 	ssh-add -l
 fi
 echo
