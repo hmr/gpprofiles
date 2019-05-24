@@ -6,7 +6,7 @@ echo Processing dot-bashrc_etc
 ssh-add -l >& /dev/null
 RESULT=$?
 if [ ${RESULT} -eq 0 ]; then
-	cat ${SSH_ADD_OUT}
+	ssh-add -l
 fi
 echo
 
