@@ -1,8 +1,12 @@
 # dot-bashrc_etc
 # ORIGIN: 2019/05/24 by hmr
 
-echo Processing dot-bashrc_etc...
+echo Processing dot-bashrc_etc
 
-ssh-add -l
+ssh-add -l >& /dev/null
+RESULT=$?
+if [ ${RESULT} -eq 0 ]; then
+	cat ${SSH_ADD_OUT}
+fi
 echo
 

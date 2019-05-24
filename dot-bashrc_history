@@ -1,4 +1,6 @@
-# History Options
+# dot-bashrc_history
+# ORIGIN by hmr
+
 echo Processing dot-bashrc_history
 #
 export HISTSIZE=10000

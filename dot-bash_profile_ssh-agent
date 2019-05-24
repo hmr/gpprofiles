@@ -1,24 +1,24 @@
 # dot-bashrc_ssh-agents
 echo Processing dot-bash_profile_ssh-agent
 
-echo "  Searching a ssh-agent config file..."
+echo "  Searching ssh-agent config file..."
 SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
 if [ -f $SSH_AGENT_FILE ]; then
-	echo "    Found. Loading variables."
+	echo -n "    Found. Loading ssh-agent configuration: "
 	source $SSH_AGENT_FILE
 else
 	echo "    Not found."
 fi
 
-echo "  Executing ssh-add to probe agent..."
+echo "  Testing ssh-agent..."
 ssh-add -l > /dev/null 2>&1
 RESULT=$? #;echo "ssh-add result: ${RESULT}"
 if [ ${RESULT} -eq 0 ]; then
-	echo "    Success. SSH agent looks working fine."
+	echo "    Success. ssh-agent looks working fine."
 elif [ ${RESULT} -eq 2 ]; then
-	echo "    Fail because ssh-agent isn't working fine."
+	echo "    Fail because ssh-agent isn't running."
 	PS_AGENT=`ps aux | grep "ssh-agent " | grep -v grep`
 	if [ -n ${PS_AGENT} ]; then
 		echo "      Below are ssh-agent processes running on this host."
@@ -29,7 +29,7 @@ elif [ ${RESULT} -eq 2 ]; then
 		#pkill -fe -u `id -u` "^ssh-agent"
 		echo "        - - - - - - - -"
 	fi
-	echo "      Starting a SSH agent..."
+	echo "      Starting another ssh-agent..."
 	case `/usr/bin/ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
 		"OpenSSH_6" )
 			echo -n "      OpenSSH V6 installed: "
@@ -42,24 +42,26 @@ elif [ ${RESULT} -eq 2 ]; then
 	esac
 	source $SSH_AGENT_FILE
 	echo -n 1 > $SSH_AGENT_NUM_FILE
+
+	echo "  Adding SSH private keys to agent... "
+	if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
+		for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
+		do
+			ssh-add $HOME/.ssh/$PRIV_KEY_FILE
+			#if [ $? -eq 0 ]; then
+			#	echo "${PRIV_KEY_FILE} "
+			#fi
+		done
+	fi
 else
 	echo "    Fail(${RESULT})"
 fi
 
-echo "  Adding SSH private keys to agent... "
-if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
-	for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
-	do
-		ssh-add $HOME/.ssh/$PRIV_KEY_FILE
-		#if [ $? -eq 0 ]; then
-		#	echo "${PRIV_KEY_FILE} "
-		#fi
-	done
-fi
 
-#echo
-#ssh-add -l
-#echo
+echo
+echo ssh-agent keys:
+ssh-add -l
+echo
 
 # Increment number of users who uses
 #if [ "$BASH_LOGINSHELL" = "1" ]; then
@@ -68,6 +70,6 @@ fi
 		TEMP_AGENTS=`cat $SSH_AGENT_NUM_FILE`
 	fi
 	echo -n `expr $TEMP_AGENTS + 1` > $SSH_AGENT_NUM_FILE
-	echo ssh-agent user: `cat $SSH_AGENT_NUM_FILE`
+	echo ssh-agent pid ${SSH_AGENT_PID} is shared by `cat $SSH_AGENT_NUM_FILE` users.
 #fi
 

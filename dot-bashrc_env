@@ -1,4 +1,7 @@
-echo Processing dot-bashrc_env...
+# dot-bashrc_env
+# ORIGIN by hmr
+
+echo Processing dot-bashrc_env
 
 # Terminal Colors
 export BLACK=$(tput setaf 0)
