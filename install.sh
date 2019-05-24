@@ -60,7 +60,7 @@ SRCDIR=`abs_dirname "$0"`
 
 DATE=`date +'%Y%M%d_%H%M%S'`
 
-SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig"
+SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig .bash_logout"
 DEL_SRCS=".bashrc_ssh-agent"
 
 echo "SRCDIR: ${SRCDIR}"

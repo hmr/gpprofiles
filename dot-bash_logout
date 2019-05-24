@@ -1,3 +1,6 @@
+# dot-bash_logout
+# ORIGIN by hmr
+
 SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
@@ -18,4 +21,7 @@ if [ $TEMP_AGENTS -lt 1 ]; then
 else
 	echo -n $TEMP_AGENTS > $SSH_AGENT_NUM_FILE
 fi
+
+echo; echo bye bye. waiting for disconnect...
+sleep 1.5
 
