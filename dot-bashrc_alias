@@ -42,3 +42,19 @@ alias ssh='ssh -A'
 alias sudo='sudo -E'
 alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
+
+# Functions
+echo "  function spiceurl"
+function spiceurl {
+    if [ x$1 = "x" ]; then exit; fi
+    echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
+}
+
+echo "  function spicelist"
+function spicelist {
+    for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
+    do
+        echo `spiceurl $VMNAME` [$VMNAME]
+    done
+}
+
