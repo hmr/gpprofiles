@@ -1,8 +1,8 @@
-# gpprofile(General Purpose Profiles for BASH)
+# gpprofile(General Purpose Profiles for GNU Bash)
 My version of unix profiles.
 
 ## How to use
-Clone this repository and run 'install.sh'
+Clone or update(pull) this repository and run 'install.sh'
 
 ## After installation advices
 
