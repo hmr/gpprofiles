@@ -36,9 +36,19 @@ function add_into_bashrc () {
 	grep "$1" ~/.bashrc >& /dev/null
 	if [ $? -ne 0 ]; then
 		echo "    Installing $1"
-		echo "source ~/.$1   #$1" >> ~/.bashrc
+		echo "source ~/.$1   #$1[gpprofile]" >> ~/.bashrc
 	else
 		echo "    $1 is already installed."
+	fi
+}
+
+function add_call_bashrc_into_bash_profile () {
+	grep ".bashrc" ~/.bash_profile >& /dev/null
+	if [ $? -ne 0 ]; then
+		echo "    Adding bashrc call routine into bash_profile."
+		echo "[ -r ~/.bashrc ] && . ~/.bashrc #call bashrc[gpprofile]" >> ~/.bash_profile
+	else
+		echo "    bashrc call routine is already installed."
 	fi
 }
 
@@ -50,19 +60,19 @@ function add_into_bash_profile () {
 	grep "$1" ~/.bash_profile >& /dev/null
 	if [ $? -ne 0 ]; then
 		echo "    Installing $1"
-		echo "source ~/.$1   #$1" >> ~/.bash_profile
+		echo "source ~/.$1   #$1[gpprofile]" >> ~/.bash_profile
 	else
 		echo "    $1 is already installed."
 	fi
 }
 
 SRCDIR=`abs_dirname "$0"`
-
 DATE=`date +'%Y%M%d_%H%M%S'`
-
 SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig .bash_logout"
 DEL_SRCS=".bashrc_ssh-agent"
 
+echo
+echo "===== Start ====="
 echo "SRCDIR: ${SRCDIR}"
 
 # generate dot-gitconfig file
@@ -70,7 +80,7 @@ cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/#name = .*/name = `whoami`@`hostnam
 
 cd ~
 
-# Delete config file which isn't used now.
+##### Delete config file which isn't used now.
 for TARGET in ${DEL_SRCS}
 do
     TARGETSRC=`echo ${TARGET} | sed -e 's/^\./dot-/'`
@@ -80,7 +90,7 @@ do
 done
 echo
 
-# Make symbolic links with backing up
+###### Make symbolic links with backing up
 for TARGET in ${SRCS}
 do
     TARGETSRC=`echo ${TARGET} | sed -e 's/^\./dot-/'`
@@ -103,24 +113,39 @@ do
 	echo
 done
 
-
+#####
 echo Adding to bashrc
 add_into_bashrc bashrc_history
 add_into_bashrc bashrc_alias
 add_into_bashrc bashrc_env
 add_into_bashrc bashrc_etc
 
-echo Deleting from bashrc
-del_from_bashrc bashrc_ssh-agent
-
-echo; echo Adding to bash_profile
-add_into_bash_profile bash_profile_ssh-agent
-
 grep '#byobu-prompt#' .bashrc >& /dev/null
 if [ $? -ne 0 ]; then
 	echo "    Installing byobu-prompt"
-	echo "[ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#" >> .bashrc
+	echo "[ -r ~/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt[gpprofile]#" >> .bashrc
 else
 	echo "    byobu-prompt is already installed."
 fi
+echo
 
+#####
+echo Deleting from bashrc
+del_from_bashrc bashrc_ssh-agent
+echo
+
+#####
+echo Adding to bash_profile
+# bashrc callup routine.
+grep ".bashrc" ~/.bash_profile >& /dev/null
+if [ $? -ne 0 ]; then
+	echo "    Installing bashrc call routine."
+	echo "[ -r ~/.bashrc ] && . ~/.bashrc #call bashrc[gpprofile]" >> ~/.bash_profile
+else
+	echo "    bashrc call routine is already installed."
+fi
+add_call_bashrc_into_bash_profile
+add_into_bash_profile bash_profile_ssh-agent
+echo
+
+echo "===== Finished ====="
