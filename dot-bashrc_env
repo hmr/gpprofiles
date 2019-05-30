@@ -24,4 +24,22 @@ export UNDERLINE=$(tput smul)
 export LESS="-x4 -q -R -M -N"
 export VISUAL="vim"
 export EDITOR="vim"
+export MANPAGER="less -n"
 
+#colorize less output
+export GREP_COLORS="ms=01;38;5;202:mc=01;31:sl=:cx=:fn=01;38;5;132:ln=32:bn=32:se=00;38;5;242"
+export LESS_TERMCAP_mb=$(printf '\e[01;31m')       # enter blinking mode – red
+export LESS_TERMCAP_md=$(printf '\e[01;38;5;180m') # enter double-bright mode – bold light orange
+export LESS_TERMCAP_me=$(printf '\e[0m')           # turn off all appearance modes (mb, md, so, us)
+export LESS_TERMCAP_se=$(printf '\e[0m')           # leave standout mode
+export LESS_TERMCAP_so=$(printf '\e[03;38;5;202m') # enter standout mode – orange background highlight (or italics)
+export LESS_TERMCAP_ue=$(printf '\e[0m')           # leave underline mode
+export LESS_TERMCAP_us=$(printf '\e[04;38;5;139m') # enter underline mode – underline aubergine
+
+#set prompt
+if [ `id -g` = "0" ]; then
+	TMP_PROMPT_SYM="#"
+else
+	TMP_PROMPT_SYM="$"
+fi
+PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\${TMP_PROMPT_SYM}\[\e[00m\] "
