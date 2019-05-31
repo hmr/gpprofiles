@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# GPProfile install script
+# #ORIGIN: 2018/10/11 by hmr
+
+function get_git_hash() {
+  local gitHash=$(git rev-parse --short HEAD)
+  if [ $? -ne 0 ]; then
+    echo error
+    return 1
+  else
+    echo ${gitHash}
+  fi
+}
+
 abs_dirname() {
   local cwd="$(pwd)"
   local path="$1"
@@ -70,12 +83,15 @@ SRCDIR=`abs_dirname "$0"`
 DATE=`date +'%Y%M%d_%H%M%S'`
 SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig .bash_logout"
 DEL_SRCS=".bashrc_ssh-agent"
+GIT_HASH=`get_git_hash`
 
 echo
 echo "===== Start ====="
 echo "SRCDIR: ${SRCDIR}"
+echo "VERSION: ${GIT_HASH}"
+echo
 
-# generate dot-gitconfig file
+# generate dot-gitconfig file into SRCDIR
 cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/#name = .*/name = `whoami`@`hostname -s`/" -e "s/#email = .*/email = `whoami`@`hostname`/" > dot-gitconfig
 
 cd ~
@@ -84,9 +100,14 @@ cd ~
 for TARGET in ${DEL_SRCS}
 do
     TARGETSRC=`echo ${TARGET} | sed -e 's/^\./dot-/'`
-	echo Deleting ${TARGET} from ${TARGETSRC}
+	echo Deleting ${TARGET}
 	cd ~
-	rm -f ${SRCDIR}/${TARGET}
+	if [ -L ${TARGET} ]; then
+		echo "    Deleting symbolic link ${TARGET}"
+		rm ${TARGET}
+	else
+		echo "    ${TARGET} doesn't exist."
+	fi
 done
 echo
 
@@ -148,4 +169,7 @@ add_call_bashrc_into_bash_profile
 add_into_bash_profile bash_profile_ssh-agent
 echo
 
+echo "VERSION: ${GIT_HASH}" > ~/.gpprofile
+
 echo "===== Finished ====="
+
