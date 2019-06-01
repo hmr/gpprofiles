@@ -37,7 +37,7 @@ function del_from_bashrc () {
 		echo "    Uninstalling $1"
 		sed -i -e "/$1/d" ~/.bashrc
 	else
-		echo "    $1 is already installed."
+		echo "    $1 is already uninstalled."
 	fi
 }
 
