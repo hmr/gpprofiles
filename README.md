@@ -1,3 +1,16 @@
+# **IMPORTANT NOTICE**
+This repository has moved to GitHub(https://github.com/hmr/gpprofiles).
+Choose A or B below to change your local repository's 'origin':
+---
+```
+#A: read only access
+git remote set-url origin https://github.com/hmr/gpprofiles.git
+
+#B: read/write access(by ssh)
+git remote set-url origin git@github.com:hmr/vim-cheat-sheet.git
+```
+---
+
 # gpprofile(General Purpose Profiles for GNU Bash)
 My version of unix profiles.
 
