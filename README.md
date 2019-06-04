@@ -8,7 +8,7 @@ Clone or update(pull) this repository and run 'install.sh'
 ## After installation advices
 
 ### Use newer Vim
-With using vim with this profile. Use vim8.0(+) or you should modify dot-vimrc file.
+Using vim with this profile. Use vim8.0(+) or you should modify dot-vimrc file.
 
 #### Install Vim8.1
 
