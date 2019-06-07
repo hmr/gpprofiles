@@ -1,26 +1,43 @@
-" vim:ft=vim:ts=4:noexpandtab:fenc=utf-8:ff=unix
+"vim:ft=vim:ts=4:noexpandtab:fenc=utf-8:ff=unix
 scriptencoding utf-8
 "-----------------------------------------------------------------------------
-" vim Plugの設定
+"vim Plugの設定
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
 		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
-" 以下にインストールするプラグインを記述する
+"以下にインストールしたいプラグインを記述する()
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
+Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'
+Plug 'gisphm/vim-gitignore'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'scrooloose/nerdtree'
+Plug 't9md/vim-quickhl'
+Plug 'thinca/vim-prettyprint'
+Plug 'kien/ctrlp.vim'
+Plug 'Shougo/unite.vim'
+Plug 'lambdalisue/vim-gista'
+Plug 'lambdalisue/vim-gista-unite'
+Plug 'lambdalisue/vim-gista-ctrlp'
+Plug 'WolfgangMehner/bash-support'
 call plug#end()
 
 "----------------------------------------------------------------------------
-" Misc settings
-" see more settings at: http://www.geek.sc/archives/977
-" filetype plugin on
+"Misc settings
+"see more settings at: http://www.geek.sc/archives/977
+"filetype plugin on
 filetype plugin indent on	" ファイルタイプ検出プラグインと自動インデントを使う
 syntax on					" シンタックスハイライトを使う
 set encoding=utf-8			" Set utf-8 as default encoding.
@@ -73,10 +90,76 @@ set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
 set showbreak=↪				" 折り返し記号
 
 set hidden
-set paste					" vimにコピペしたとき、コメントアウトや余計な改行をさせない
+"set paste					" vimにコピペしたとき、コメントアウトや余計な改行をさせない
 
-" 正規表現メタ文字のエスケープシーケンスを不要にする(very magic)
-nnoremap /  /\v
+"正規表現メタ文字のエスケープシーケンスを不要にする(very magic)
+"nnoremap /  /\v
+"-----------------------------------------------------------------------------
+"From Vimの生産性を高める12の方法
+"https://postd.cc/how-to-boost-your-vim-productivity/
+
+"リーダーをスペースキーにする
+let mapleader = "\<Space>"
+
+"<Space>oを押して新しいファイルを開く
+nnoremap <Leader>o :CtrlP<CR>
+
+"wを押してファイルを保存する
+nnoremap <Leader>w :w<CR> " <Space>
+
+"<Space><Space>でビジュアルラインモードに切り替える
+nmap <Leader><Leader> V
+
+"<Space>pと<Space>yでシステムのクリップボードにコピー＆ペーストする
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
+"貼り付けたテキストの末尾へ自動的に移動する(ppp...と押すだけで、複数行の貼り付けを繰り返す)
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+
+"12<Enter>を押して、12行目に移動する & ただEnterを押して、ファイルの末尾に移動する
+nnoremap <CR> G
+
+"Backspaceを押して、ファイルの先頭に移動する
+nnoremap <BS> gg
+
+" 貼り付けたテキストを素早く選択する
+noremap gV `[v`]
+
+"よくあるミスタイプでのポップアップを抑制する
+map q: :q
+
+"貼り付け時にペーストバッファが上書きされないようにする
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
+function! s:Repl()
+  let s:restore_reg = @"
+  return "p@=RestoreRegister()\<cr>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
+
+"NERDTreeプラグインの設定
+map <Leader>t :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+
+"quick-hlプラグインの設定(Minimum)
+"https://github.com/t9md/vim-quickhl
+nmap <Leader>m <Plug>(quickhl-manual-this)
+xmap <Leader>m <Plug>(quickhl-manual-this)
+nmap <Leader>r <Plug>(quickhl-manual-reset)
+xmap <Leader>r <Plug>(quickhl-manual-reset)
+
 "-----------------------------------------------------------------------------
 "色の設定
 "colorscheme default
@@ -93,6 +176,7 @@ if (exists('+colorcolumn'))
   set colorcolumn=100
   highlight ColorColumn ctermbg=9
 endif
+
 "-----------------------------------------------------------------------------
 "Only do this part when compiled with support for autocommands
 if has("autocmd")
@@ -135,7 +219,7 @@ endif
 "Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
 	syntax on
-	set hlsearch
+	"set hlsearch
 endif
 
 if &term=="xterm"
@@ -156,6 +240,7 @@ endif
 let &guicursor = &guicursor . ",a:blinkon0"
 
 "https://qiita.com/smison/items/f392037f1164eba5cc74
+"行番号表示切り替え
 function ToggleNumber()
 	if &number
 		setlocal nonumber
@@ -164,6 +249,7 @@ function ToggleNumber()
 	endif
 endfunctio
 
+"検索ハイライト切替
 function ToggleHighlight()
 	if &hlsearch
 		setlocal nohlsearch
@@ -172,6 +258,7 @@ function ToggleHighlight()
 	endif
 endfunction
 
+"制御記号表示切り替え
 function ToggleList()
 	if &list
 		setlocal nolist
@@ -182,10 +269,18 @@ endfunction
 
 "行番号表示On/Off(Ctrl-N)
 nmap <C-n> :call ToggleNumber()<CR>
+
 "検索ハイライトOn/Off(Ctrl-H)
 "http://d.hatena.ne.jp/h1mesuke/20080327/p1
 nmap <C-h> :call ToggleHighlight()<CR>
-"空白文字表示On/Off(Ctrl-L)
+
+"制御/空白文字表示On/Off(Ctrl-L)
 nmap <C-l> :call ToggleList()<CR>
+
+"GitGutter表示On/Off(Ctrl-g)
 nmap <C-g> :call gitgutter#toggle()<CR>
+
+"他の設定ファイルを読み込む
+"set runtimepath+=~/.vim/
+runtime! conf.d/*.vim
 
