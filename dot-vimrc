@@ -12,7 +12,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
-Plug 'bronson/vim-trailing-whitespace'
 Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
@@ -32,6 +31,8 @@ Plug 'lambdalisue/vim-gista'
 Plug 'lambdalisue/vim-gista-unite'
 Plug 'lambdalisue/vim-gista-ctrlp'
 Plug 'WolfgangMehner/bash-support'
+"Plug 'bronson/vim-trailing-whitespace' " Replaced by 'ntpeters/vim-better-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 call plug#end()
 
 "----------------------------------------------------------------------------
