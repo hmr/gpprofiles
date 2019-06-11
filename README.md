@@ -23,9 +23,10 @@ sudp apt install vim-enhanced
 ### Install vim plugins
 Start vim and type as below:
 ```
-:PlugInstall
+:PlugClean!
+:PlugInstall!
 ```
-Then the vimPlug will automagically install plugins!
+Then vim-plug will automagically install/update/delete plugins!
 
 ## Problems?
-https://bitbucket.org/wassha/gpprofiles/issues
+https://github.com/hmr/gpprofiles/issues
