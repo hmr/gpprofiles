@@ -148,7 +148,7 @@ done
 
 #####
 echo Adding to bashrc
-add_into_bashrc_before_specified_line 'source ~\/.bashrc_history' '[ -f ~/.gpprofile ] && echo -n "GPProfile found. " && cat ~/.gpprofile'
+add_into_bashrc_before_specified_line 'source ~\/.bashrc_history' '[ -f ~/.gpprofile ] && echo -n "GPProfile found. " && cat ~/.gpprofile #show signboard[gpprofile]'
 add_into_bashrc bashrc_history
 add_into_bashrc bashrc_alias
 add_into_bashrc bashrc_env
