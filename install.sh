@@ -79,6 +79,18 @@ function add_into_bash_profile () {
 	fi
 }
 
+function add_into_bashrc_before_specified_line () {
+	if [ -z "$2" ]; then
+		echo "add_into_bashrc_before_specified_line(): Not enough arg(s)"
+		return
+	fi
+	grep "$2" ~/.bashrc >& /dev/null && echo "    GPProfile signboard is alreasy installed." && return
+
+	echo "    Adding GPProfiles signboard."
+	sed -i /root/.bashrc -e "/$1/i $2"
+}
+
+
 SRCDIR=`abs_dirname "$0"`
 DATE=`date +'%Y%M%d_%H%M%S'`
 SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig .bash_logout"
@@ -136,6 +148,7 @@ done
 
 #####
 echo Adding to bashrc
+add_into_bashrc_before_specified_line 'source ~\/.bashrc_history' '[ -f ~/.gpprofile ] && echo -n "GPProfile found. " && cat ~/.gpprofile'
 add_into_bashrc bashrc_history
 add_into_bashrc bashrc_alias
 add_into_bashrc bashrc_env
