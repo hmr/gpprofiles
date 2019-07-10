@@ -46,7 +46,7 @@ alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-
 # Functions
 echo "  function spiceurl"
 function spiceurl {
-    if [ x$1 = "x" ]; then exit; fi
+    if [ x$1 = "x" ]; then return; fi
     echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
 }
 
