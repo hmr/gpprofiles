@@ -87,7 +87,7 @@ function add_into_bashrc_before_specified_line () {
 	grep "$2" ~/.bashrc >& /dev/null && echo "    GPProfile signboard is alreasy installed." && return
 
 	echo "    Adding GPProfiles signboard."
-	sed -i /root/.bashrc -e "/$1/i $2"
+	sed -i ~/.bashrc -e "/$1/i $2"
 }
 
 
