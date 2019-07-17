@@ -1,4 +1,19 @@
+/dot-bashrc_alias_local
+/dot-bashrc_env_local
+/dot-bashrc_etc_local
+/dot-bashrc_history_local
 /dot-gitconfig
+
+/dot-byobu/.metadata_available
+/dot-byobu/.ssh-agent
+/dot-byobu/disable-autolaunch
+/dot-byobu/datetime.tmux
+/dot-byobu/status
+/dot-byobu/
+
+/dot-vim/plugged/
+/dot-vim/.netrwhist
+/dot-vim/autoload/plug.vim.old
 /dot-vim/conf.d/personal.vim
 /dot-vim/templates/
 
