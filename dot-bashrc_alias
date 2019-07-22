@@ -40,8 +40,13 @@ alias l='ls -CF'                              #
 alias lh='ls -lrth'
 alias ssh='ssh -A'
 alias sudo='sudo -E'
-alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
-alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
+#alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
+#alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
+
+alias utcisodate_short=" date --utc +'%Y%m%dT%H%M%SZ'"
+alias utcisodate_long="date --utc +'%Y-%m-%dT%H:%M:%SZ'"
+alias idodate_short="date +'%Y%m%dT%H%M%S%Z'"
+alias isodate_long="date +'%Y-%m-%dT%H:%M:%S%Z'"
 
 # Functions
 echo "  function spiceurl"
