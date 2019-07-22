@@ -45,8 +45,10 @@ alias sudo='sudo -E'
 
 alias utcisodate_short=" date --utc +'%Y%m%dT%H%M%SZ'"
 alias utcisodate_long="date --utc +'%Y-%m-%dT%H:%M:%SZ'"
-alias idodate_short="date +'%Y%m%dT%H%M%S%Z'"
-alias isodate_long="date +'%Y-%m-%dT%H:%M:%S%Z'"
+alias utcisodate_longp="date --utc +'%Y-%m-%dT%H%M%SZ'"
+alias idodate_short="date +'%Y%m%dT%H%M%S%z'"
+alias isodate_long="date +'%Y-%m-%dT%H:%M:%S%z'"
+alias isodate_longp="date +'%Y-%m-%dT%H%M%S%z'"
 
 # Functions
 echo "  function spiceurl"
