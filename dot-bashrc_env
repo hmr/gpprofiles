@@ -3,6 +3,10 @@
 
 echo Processing dot-bashrc_env
 
+# PATH
+echo ${PATH} | grep "/usr/local/sbin" >& /dev/null || export PATH="/usr/local/sbin:${PATH}"
+echo ${PATH} | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/bin:${PATH}"
+
 # Terminal Colors
 export BLACK=$(tput setaf 0)
 export RED=$(tput setaf 1)

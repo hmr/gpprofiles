@@ -1,0 +1,4 @@
+gpg-suite-no-mail
+java
+spotify
+spotify-now-playing

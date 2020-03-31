@@ -1,0 +1,38 @@
+/* -----------------------------------------------------------------------------
+ * Below are configurations for Tree Tab Extension
+ * From https://github.com/piroor/treestyletab/wiki/Code-snippets-for-custom-style-rules#for-userchromecss
+ * -----------------------------------------------------------------------------*/
+/* Hide horizontal tabs at the top of the window */
+#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar > .toolbar-items {
+  opacity: 0;
+  pointer-events: none;
+}
+#main-window:not([tabsintitlebar="true"]) #TabsToolbar {
+    visibility: collapse !important;
+}
+
+/* Hide sidebar title of Tree Style Tab */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+  display: none;
+}
+
+/* Hide all sidebar title */
+/*
+#sidebar-header {
+  display: none;
+}
+*/
+
+/* Reduce minimum width of the sidebar */
+#sidebar {
+  min-width: 100px !important;
+}
+
+/* Don't display tab title pop-up tooltips when hovering over tab */
+#aHTMLTooltip {
+  display: none !important
+}
+/* -----------------------------------------------------------------------------
+ * End of configurations for Tree Tab Extension
+ * -----------------------------------------------------------------------------*/
+

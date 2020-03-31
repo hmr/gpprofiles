@@ -33,6 +33,7 @@ Plug 'lambdalisue/vim-gista-ctrlp'
 Plug 'WolfgangMehner/bash-support'
 "Plug 'bronson/vim-trailing-whitespace' " Replaced by 'ntpeters/vim-better-whitespace'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'darfink/vim-plist'
 call plug#end()
 
 "----------------------------------------------------------------------------

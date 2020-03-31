@@ -1,0 +1,27 @@
+# dot-bashrc_macos
+# ORIGIN: 2019-11-12 by hmr
+
+echo "Processing dot-bashrc_macos"
+echo ${OSTYPE} | grep "darwin" >& /dev/null
+if [ $? -eq 0 ]; then
+  # Bash
+  echo ${SHELL} | grep "bash" >& /dev/null
+  if [ $? -eq 0 ]; then
+    echo "  Setting variable to suppress deprecation warning for bash."
+    export BASH_SILENCE_DEPRECATION_WARNING=1
+  fi
+  # use lesspipe
+  which lesspipe.sh >& /dev/null
+  if [ $? -eq 0 ]; then
+    echo "  Setting to use lesspipe."
+    export LESSOPEN="|$(which lesspipe.sh) %s"
+  fi
+  # iTerm2 Shell Integration
+  #if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
+  #  echo "  Setting iTerm2 shell integration."
+  #  source ${HOME}/.iterm2_shell_integration.bash
+  #fi
+else
+  echo "  This environment isn't macOS."
+fi
+
