@@ -33,13 +33,28 @@ echo Processing dot-bashrc_alias
 # alias ls='ls -hF --color=tty'                 # classify files in colour
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
-alias ls='gls --color=auto'                    # color ls
-alias ll='gls -l'                              # long list
-alias la='gls -A'                              # all but . and ..
-alias l='gls -CF'                              #
-alias lh='gls -lrth'
+
+# HomeBrew on macOS will install gnu ls as gls.
+which gls >& /dev/null
+if [ $? != 0 ]; then
+    alias ls='ls --color=auto'                    # color ls
+    alias ll='ls -l'                              # long list
+    alias la='ls -A'                              # all but . and ..
+    alias l='ls -CF'                              #
+    alias lh='ls -lrth'
+else
+    alias ls='gls --color=auto'                    # color ls
+    alias ll='gls -l'                              # long list
+    alias la='gls -A'                              # all but . and ..
+    alias l='gls -CF'                              #
+    alias lh='gls -lrth'
+fi
+
 alias ssh='ssh -A'
 alias sudo='sudo -E'
+
+alias apt='sudo apt'
+
 #alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 #alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 
