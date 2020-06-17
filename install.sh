@@ -2,6 +2,7 @@
 
 # GPProfile install script
 # #ORIGIN: 2018/10/11 by hmr
+# vim: ft=bash
 
 function get_git_hash() {
   local gitHash=$(git rev-parse --short HEAD)

@@ -1,4 +1,6 @@
 # dot-bashrc_ssh-agents
+# vim: ft=bash
+
 echo Processing dot-bash_profile_ssh-agent
 
 echo "  Searching ssh-agent config file..."

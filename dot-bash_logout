@@ -1,5 +1,6 @@
 # dot-bash_logout
 # ORIGIN by hmr
+# vim: filetype=bash
 
 SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
