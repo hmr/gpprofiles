@@ -15,55 +15,61 @@ else
 	SSH_AGENT_FILE_NOT_FOUND=1
 fi
 
-echo "  Testing does ssh-agent properly works..."
+echo "  Does ssh-agent properly works...?"
 ssh-add -l > /dev/null 2>&1
 RESULT=$? #;echo "ssh-add result: ${RESULT}"
-if [ ${RESULT} -eq 0 ]; then
-	echo "    Success. ssh-agent is running."
+case "${RESULT}" in
+	0 )
+	echo "    ssh-agent is running."
 	if [ -n "${SSH_AGENT_FILE_NOT_FOUND}" ]; then
 		echo "    Maybe inherited from upstream ssh."
 	fi
-elif [ ${RESULT} -eq 2 ]; then
-	echo "    Fail because ssh-agent isn't running."
-	PS_AGENT=`ps aux | grep "ssh-agent " | grep -v grep`
-	if [ -n ${PS_AGENT} ]; then
-		echo "      Below are ssh-agent processes running on this host."
-		echo "        - - - - - - - -"
-		echo ${PS_AGENT}
-		#pgrep -lfa "^ssh-agent"
-		#echo "Killing existing ssh-agent processes:"
-		#pkill -fe -u `id -u` "^ssh-agent"
-		echo "        - - - - - - - -"
-	fi
-	echo "      Starting another ssh-agent..."
-	case `/usr/bin/ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
-		"OpenSSH_6" )
-			echo -n "      OpenSSH V6 installed: "
-			ssh-agent -s > $SSH_AGENT_FILE
-			;;
-		* )
-			echo -n "      OpenSSH V7 or later installed: "
-			ssh-agent -E md5 > $SSH_AGENT_FILE
-			;;
-	esac
-	source $SSH_AGENT_FILE
-	rm -f $SSH_AGENT_NUM_FILE
+	;;
 
-	if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
-		echo "  Adding SSH private keys to agent... "
-		for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
-		do
-			ssh-add $HOME/.ssh/$PRIV_KEY_FILE
-			#if [ $? -eq 0 ]; then
-			#	echo "${PRIV_KEY_FILE} "
-			#fi
-		done
-	else
-		echo "  Didn't add keys because SSH_AGENT_PRIV_KEYS isn't set"
-	fi
-else
-	echo "    Fail(${RESULT})"
-fi
+	1 | 2 )
+		echo "    It seemes that ssh-agent doesn't work properly."
+		PS_AGENT=`ps aux | grep "ssh-agent " | grep -v grep`
+		if [ -n "${PS_AGENT}" ]; then
+			echo "      ssh-agent processe(s) running on this host."
+			echo "        - - - - - - - -"
+			echo "        ${PS_AGENT}"
+			#pgrep -lfa "^ssh-agent"
+			#echo "Killing existing ssh-agent processes:"
+			#pkill -fe -u `id -u` "^ssh-agent"
+			echo "        - - - - - - - -"
+		fi
+		echo "      Starting another ssh-agent..."
+		case `ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
+			"OpenSSH_6" )
+				echo -n "      OpenSSH V6 found: "
+				ssh-agent -s > $SSH_AGENT_FILE
+				;;
+			* )
+				echo -n "      OpenSSH V7 or later found: "
+				ssh-agent -E md5 > $SSH_AGENT_FILE
+				;;
+		esac
+		source $SSH_AGENT_FILE
+		rm -f $SSH_AGENT_NUM_FILE
+
+		if [ -n "${SSH_AGENT_PRIV_KEYS}" ]; then
+			echo "  Adding SSH private keys to agent... "
+			for PRIV_KEY_FILE in ${SSH_AGENT_PRIV_KEYS}
+			do
+				ssh-add $HOME/.ssh/$PRIV_KEY_FILE
+				#if [ $? -eq 0 ]; then
+				#	echo "${PRIV_KEY_FILE} "
+				#fi
+			done
+		else
+			echo "  Not add SSH keys(SSH_AGENT_PRIV_KEYS isn't set)."
+		fi
+		;;
+
+	* )
+		echo "    Fail(${RESULT})"
+		;;
+esac
 
 
 echo
