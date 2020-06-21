@@ -1,12 +1,37 @@
 # vim: ft=gitconfig
 [user]
-	#name = Your Name
-	#email = your@mail.address
+    #name = Your Name
+    #email = your@mail.address
 [alias]
-	mylog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    mylog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    st = status
+    df = diff
+    cm = commit
+    br = branch
+    ps = push
+    pl = pull
+    co = checkout
+    dfw = diff --word-diff
 
 [push]
-	default = simple
+    default = current
+
+[pull]
+    ff = only
+
+[color]
+    ui = true
+
+[core]
+    editor = vim
+    quotepath = false
+
+[credential]
+    helper = cache --timeout=86400
+    #macos-credential-helper helper = osxkeychain
+    #windows-credential-helper helper = manager #need to install Microsoft/Git-Credential-Manager-for-Windows
+    #gnome-credential-helper helper = gnomekeyring #need to install shugo/git-credential-gnomekeyring
+    #TODO: kde-credential-helper
 
