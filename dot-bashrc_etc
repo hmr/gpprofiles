@@ -4,6 +4,11 @@
 
 echo Processing dot-bashrc_etc
 
+TEMP_BASH_OPT="cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend "
+echo "  Setting bash shopts..."
+echo "    ${TEMP_BASH_OPT}"
+shopt -s ${TEMP_BASH_OPT}
+
 ssh-add -l >& /dev/null
 RESULT=$?
 if [ ${RESULT} -eq 0 ]; then
