@@ -1,4 +1,4 @@
-" vim: ft=vim:ts=4:noexpandtab:fenc=utf-8:ff=unix
+" vim: ft=vim:ts=4:sw=0:et:fenc=utf-8:ff=unix
 scriptencoding utf-8
 "-----------------------------------------------------------------------------
 "vim Plugの設定
@@ -34,6 +34,7 @@ Plug 'WolfgangMehner/bash-support'
 "Plug 'bronson/vim-trailing-whitespace' " Replaced by 'ntpeters/vim-better-whitespace'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'darfink/vim-plist'
+Plug 'vim-jp/vimdoc-ja'                 " Vim日本語ヘルプ
 call plug#end()
 
 "----------------------------------------------------------------------------
@@ -59,6 +60,7 @@ set nobackup				" not to backup
 
 set history=50				" keep 50 lines of command line history
 set tabstop=4				" タブ幅
+set shiftwidth=0			" インデント幅(0でtabstopの値)
 set expandtab				" タブを空白に展開する
 
 set cursorline				" カーソル行表示
