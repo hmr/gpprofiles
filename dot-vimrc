@@ -164,6 +164,126 @@ xmap <Leader>m <Plug>(quickhl-manual-this)
 nmap <Leader>r <Plug>(quickhl-manual-reset)
 xmap <Leader>r <Plug>(quickhl-manual-reset)
 
+" From 若干Emacs風味なvimのキー設定
+" [https://sites.google.com/site/fudist/Home/vim-nihongo-ban/tips/vim-key-emacs]
+"-----------------------------
+"sepが空でなければ、sepをセパレータとしてジャンプ。
+"見つからなければ見かけの行頭へ。
+"カーソル位置が見かけの行頭の場合は真の行頭へ。
+"-----------------------------
+function! MyJumptoBol(sep)
+    if col('.') == 1
+        call cursor(line('.')-1, col('$'))
+        call cursor(line('.'), col('$'))
+        return ''
+    endif
+    if matchend(strpart(getline('.'), 0, col('.')), '[[:blank:]]\+') >= col('.')-1
+        silent exec 'normal! 0'
+        return ''
+    endif
+    if a:sep != ''
+        call search('[^'.a:sep.']\+', 'bW', line("."))
+        if col('.') == 1
+            silent exec 'normal! ^'
+        endif
+        return ''
+    endif
+    exec 'normal! ^'
+    return ''
+endfunction
+
+"-----------------------------
+"sepが空でなければ、sepをセパレータとしてジャンプ。
+"見つからなければ行末へ。
+"-----------------------------
+function! MyJumptoEol(sep)
+    if col('.') == col('$')
+        silent exec 'normal! w'
+        return ''
+    endif
+
+    if a:sep != ''
+        let prevcol = col('.')
+        call search('['.a:sep.']\+[^'.a:sep.']', 'eW', line("."))
+        if col('.') != prevcol
+            return ''
+        endif
+    endif
+    call cursor(line('.'), col('$'))
+    return ''
+endfunction
+
+"-----------------------------
+"IMEの状態とカーソル位置保存のため<C-r>を使用してコマンドを実行。
+"-----------------------------
+function! MyExecExCommand(cmd, ...)
+    let saved_ve = &virtualedit
+    let index = 1
+    while index <= a:0
+        if a:{index} == 'onemore'
+            silent setlocal virtualedit+=onemore
+        endif
+        let index = index + 1
+    endwhile
+
+    silent exec a:cmd
+    if a:0 > 0
+        silent exec 'setlocal virtualedit='.saved_ve
+    endif
+    return ''
+endfunction
+
+"-----------------------------
+"行末でも停止する単語単位移動コマンド
+"-----------------------------
+function! MyMoveWord_i(cmd)
+    let isEol = 0
+    if col('$') == col('.')
+        let isEol = 1
+    endif
+    let prevline = line('.')
+    silent exec 'normal! '.a:cmd
+    if line('.') == prevline
+        return ''
+    endif
+    if a:cmd == 'w'
+        if isEol == 0
+            call cursor(prevline, 0)
+            call cursor(line('.'), col('$'))
+        endif
+        if line('.') - prevline > 1
+            call cursor(prevline+1, 0)
+            call cursor(line('.'), col('$'))
+        endif
+    elseif a:cmd == 'b'
+        call cursor(line('.'), col('$'))
+        if prevline - line('.') > 1
+            call cursor(prevline-1, 0)
+            call cursor(line('.'), col('$'))
+        endif
+    endif
+    return ''
+endfunction
+
+
+"行頭へ
+inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
+"行末へ
+inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
+
+"カーソル前の文字削除
+"inoremap <silent> <BS>  <C-g>u<BS>
+"inoremap <silent> <C-h> <C-g>u<C-h>
+"カーソル後の文字削除
+inoremap <silent> <Del> <C-g>u<Del>
+inoremap <silent> <C-d> <C-g>u<Del>
+"カーソル以降削除
+inoremap <silent> <C-k> <C-g>u<C-r>=MyExecExCommand('normal! D','onemore')<CR>
+
+"単語単位移動
+inoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
+inoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
+
 "-----------------------------------------------------------------------------
 "色の設定
 "colorscheme default
