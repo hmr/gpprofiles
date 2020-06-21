@@ -4,11 +4,17 @@
 
 echo Processing dot-bashrc_etc
 
+# Enable bash-completion
+echo "  Enabling bash-completion"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+# Set shell options
 TEMP_BASH_OPT="cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend "
 echo "  Setting bash shopts..."
 echo "    ${TEMP_BASH_OPT}"
 shopt -s ${TEMP_BASH_OPT}
 
+# Show private key(s) held by ssh-agent
 ssh-add -l >& /dev/null
 RESULT=$?
 if [ ${RESULT} -eq 0 ]; then
