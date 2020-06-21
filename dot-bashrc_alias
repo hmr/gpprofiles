@@ -1,4 +1,4 @@
-# dot-bashrc_liases
+#dot-bashrc_liases
 # ORIGIN by hmr
 # vim: filetype=bash
 
@@ -55,6 +55,12 @@ alias utcisodate_longp="date --utc +'%Y-%m-%dT%H%M%SZ'"
 alias isodate_short="date +'%Y%m%dT%H%M%S%z'"
 alias isodate_long="date +'%Y-%m-%dT%H:%M:%S%z'"
 alias isodate_longp="date +'%Y-%m-%dT%H%M%S%z'"
+
+# Aliases for grc
+if [ -r /usr/local/etc/grc.bashrc ]; then
+    echo "  Enabling grc alias"
+    source /usr/local/etc/grc.bashrc
+fi
 
 # Functions
 echo "  function spiceurl"
