@@ -59,7 +59,7 @@ set nobackup				" not to backup
 
 set history=50				" keep 50 lines of command line history
 set tabstop=4				" タブ幅
-"set expandtab				" タブを空白に展開する
+set expandtab				" タブを空白に展開する
 
 set cursorline				" カーソル行表示
 set number					" 行番号表示
