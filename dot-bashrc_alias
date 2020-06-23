@@ -1,6 +1,6 @@
+# vim: ft=bash:ts=2:sw=2:et
 #dot-bashrc_liases
 # ORIGIN by hmr
-# vim: filetype=bash
 
 echo Processing dot-bashrc_alias
 #
@@ -57,23 +57,26 @@ alias isodate_long="date +'%Y-%m-%dT%H:%M:%S%z'"
 alias isodate_longp="date +'%Y-%m-%dT%H%M%S%z'"
 
 # Aliases for grc
-if [ -r /usr/local/etc/grc.bashrc ]; then
-    echo "  Enabling grc alias"
-    source /usr/local/etc/grc.bashrc
-fi
+case "$(chkshell)" in
+  bash )
+    if [ -r /usr/local/etc/grc.bashrc ]; then
+      echo "  Enabling grc alias"
+      source /usr/local/etc/grc.bashrc
+    fi
+    ;;
 
-# Functions
-echo "  function spiceurl"
-function spiceurl {
-    if [ x$1 = "x" ]; then return; fi
-    echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
-}
+  zsh )
+    if [ -r /usr/local/etc/grc.zsh ]; then
+      echo "  Enabling grc alias"
+      source /usr/local/etc/grc.zsh
+    fi
+    ;;
 
-echo "  function spicelist"
-function spicelist {
-    for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
-    do
-        echo `spiceurl $VMNAME` [$VMNAME]
-    done
-}
+  fish )
+    if [ -r /usr/local/etc/grc.fish ]; then
+      echo "  Enabling grc alias"
+      source /usr/local/etc/grc.fish
+    fi
+    ;;
+esac
 

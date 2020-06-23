@@ -1,0 +1,43 @@
+# vim: ft=bash
+
+# dot-bashrc_function
+# AUTHOR: H.Maruyama
+# ORIGIN: 2020-06-23
+
+echo Processing dot-bashrc_function
+
+# Functions
+echo "  function spiceurl"
+function spiceurl {
+    if [ x$1 = "x" ]; then return; fi
+    echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
+}
+
+echo "  function spicelist"
+function spicelist {
+    for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
+    do
+        echo `spiceurl $VMNAME` [$VMNAME]
+    done
+}
+
+echo "  function chkshell"
+function chkshell {
+    if echo ${SHELL} | grep -qs bash; then
+        echo bash
+    elif echo ${SHELL} | grep -qs zsh; then
+        echo zsh
+    fi
+}
+
+echo "  function chkshell_internal"
+function chkshell_internal {
+    _PID=$$;
+    _PPID=$(ps -o ppid -p $_PID | tail -n 1);
+
+    if ps -p $_PPID | grep -qs bash ; then
+        echo "bash"
+    elif ps -p $_PPID | grep -qs zsh ; then
+        echo "zsh"
+    fi
+}
