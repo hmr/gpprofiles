@@ -1,30 +1,31 @@
+# vim: ft=bash:ts=2:sw=2:et
+
 # dot-bash_logout
 # ORIGIN by hmr
-# vim: filetype=bash
 
 SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
 # if SSH_AGENT_PID is defined.
 if [ -n "${SSH_AGENT_PID}" ]; then
-	# Decrement number of users who uses
-	TEMP_AGENTS=0
-	if [ -e $SSH_AGENT_NUM_FILE ]; then
-	    TEMP_AGENTS=`cat $SSH_AGENT_NUM_FILE`
-	fi
-	
-	TEMP_AGENTS=`expr $TEMP_AGENTS - 1`
-	echo Remaining TEMP_AGENTS is $TEMP_AGENTS
-	
-	if [ $TEMP_AGENTS -lt 1 ]; then
-		echo "Killing ssh-agent"
-		eval `ssh-agent -k`
-		rm -f $SSH_AGENT_FILE
-		rm -f $SSH_AGENT_NUM_FILE
-	else
-		echo -n $TEMP_AGENTS > $SSH_AGENT_NUM_FILE
-	fi
-	echo
+  # Decrement number of users who uses
+  TEMP_AGENTS=0
+  if [ -e $SSH_AGENT_NUM_FILE ]; then
+    TEMP_AGENTS=`cat $SSH_AGENT_NUM_FILE`
+  fi
+
+  TEMP_AGENTS=`expr $TEMP_AGENTS - 1`
+  echo Remaining TEMP_AGENTS is $TEMP_AGENTS
+
+  if [ $TEMP_AGENTS -lt 1 ]; then
+    echo "Killing ssh-agent"
+    eval `ssh-agent -k`
+    rm -f $SSH_AGENT_FILE
+    rm -f $SSH_AGENT_NUM_FILE
+  else
+    echo -n $TEMP_AGENTS > $SSH_AGENT_NUM_FILE
+  fi
+  echo
 fi
 
 echo bye bye. waiting for disconnect...
