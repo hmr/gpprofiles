@@ -138,6 +138,7 @@ noremap gV `[v`]
 
 "よくあるミスタイプでのポップアップを抑制する
 map q: :q
+noremap ; :
 
 "貼り付け時にペーストバッファが上書きされないようにする
 " vp doesn't replace paste buffer
@@ -266,21 +267,26 @@ function! MyMoveWord_i(cmd)
 endfunction
 
 
-"行頭へ
+"行頭・行末(Normal mode)
+nnoremap <silent> <C-a> ^
+nnoremap <silent> <C-e> $
+"行頭・行末(Insert mode)
 inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
-"行末へ
 inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
 
 "カーソル前の文字削除
 "inoremap <silent> <BS>  <C-g>u<BS>
 "inoremap <silent> <C-h> <C-g>u<C-h>
 "カーソル後の文字削除
+nnoremap <silent> <C-d> <Del>
 inoremap <silent> <Del> <C-g>u<Del>
 inoremap <silent> <C-d> <C-g>u<Del>
 "カーソル以降削除
 inoremap <silent> <C-k> <C-g>u<C-r>=MyExecExCommand('normal! D','onemore')<CR>
 
 "単語単位移動
+nnoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
+nnoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
 inoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
 inoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
 
