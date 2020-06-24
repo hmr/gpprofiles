@@ -1,12 +1,18 @@
+# vim: ft=bash:ts=2:sw=2:et
 # dot-bashrc_etc
 # ORIGIN: 2019/05/24 by hmr
-# vim: filetype=bash
 
 echo Processing dot-bashrc_etc
 
 # Enable bash-completion
-echo "  Enabling bash-completion"
-[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+case "$(chkshell)" in
+  bash )
+    if [ -r "/usr/local/etc/profile.d/bash_completion.sh" ]; then
+      echo "  Enabling bash-completion"
+      . "/usr/local/etc/profile.d/bash_completion.sh"
+    fi
+    ;;
+esac
 
 # Set shell options
 TEMP_BASH_OPT="cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend "

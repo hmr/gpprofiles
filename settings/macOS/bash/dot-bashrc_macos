@@ -1,6 +1,8 @@
+# vim: ft=bash:ts=2:sw=2:et
+
 # dot-bashrc_macos
-# ORIGIN: 2019-11-12 by hmr
-# vim: filetype=bash
+# AUTHOR: hmr
+# ORIGIN: 2019-11-12
 
 function HB_ADD_PATH () {
   [ -z "$1" ] && return 1
@@ -16,13 +18,16 @@ function HB_ADD_PATH () {
 echo "Processing dot-bashrc_macos"
 echo ${OSTYPE} | grep "darwin" >& /dev/null
 if [ $? -eq 0 ]; then
-
   # BASH
-  echo ${SHELL} | grep "bash" >& /dev/null
-  if [ $? -eq 0 ]; then
-    echo "  Suppress deprecation warning for bash."
-    export BASH_SILENCE_DEPRECATION_WARNING=1
-  fi
+  case "$(chkshell)" in
+    bash )
+      echo ${SHELL} | grep "bash" >& /dev/null
+      if [ $? -eq 0 ]; then
+        echo "  Suppress deprecation warning for bash."
+        export BASH_SILENCE_DEPRECATION_WARNING=1
+      fi
+      ;;
+  esac
 
   # use lesspipe
   which lesspipe.sh >& /dev/null
