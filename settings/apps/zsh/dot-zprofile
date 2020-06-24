@@ -1,0 +1,9 @@
+# vim: ft=zsh:ts=2:sw=2:et
+
+# dot-zprofile
+# AUTHOR: hmr
+# ORIGIN: 2020-06-24
+
+export SSH_AGENT_PRIV_KEYS="id_ed25519.entropy3"
+source ~/.bash_profile_ssh-agent   #bash_profile_ssh-agent[gpprofile]
+
