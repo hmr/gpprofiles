@@ -107,6 +107,11 @@ echo
 # generate dot-gitconfig file into SRCDIR
 cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/#name = .*/name = `whoami`@`hostname -s`/" -e "s/#email = .*/email = `whoami`@`hostname`/" > dot-gitconfig
 
+# generate byobu config files
+cat "${SRCDIR}/dot-byobu/datetime.tmux.tmpl" > "${SRCDIR}/dot-byobu/datetime.tmux"
+cat "${SRCDIR}/dot-byobu/status.tmpl" > "${SRCDIR}/dot-byobu/status"
+cat "${SRCDIR}/dot-byobu/statusrc.tmpl" > "${SRCDIR}/dot-byobu/statusrc"
+
 cd ~
 
 ##### Delete config file which isn't used now.
