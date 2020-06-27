@@ -4,9 +4,3 @@
 /dot-bashrc_history_local
 /dot-gitconfig
 
-/dot-vim/plugged/
-/dot-vim/.netrwhist
-/dot-vim/autoload/plug.vim.old
-/dot-vim/conf.d/personal.vim
-/dot-vim/templates/
-
