@@ -39,7 +39,7 @@ echo
 echo
 
 # GPProfiles
-source ~/.bashrc
+source ~/.bashrc_gpp # gpprofile
 
 case "$(chkshell)" in
   zsh)

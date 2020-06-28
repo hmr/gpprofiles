@@ -188,7 +188,9 @@ add_call_bashrc_into_bash_profile
 add_into_bash_profile bash_profile_ssh-agent
 echo
 
-echo "VERSION: ${GIT_HASH}" > ~/.gpprofile
+echo "GPP_VERSION=${GIT_HASH}" > ~/.gpprofile
+echo "GPP_HOME=${SRCDIR}" >> ~/.gpprofile
+
 
 echo "===== Finished ====="
 
