@@ -1,0 +1,26 @@
+# vim: ft=zsh
+
+# .zshenv
+
+# ORIGIN: 2020-06-30 by hmr
+
+# echo "Processing dot-zshenv..."
+
+
+# Color definition
+#local DEFAULT=$'%{^[[m%}'$
+#local RED=$'%{^[[1;31m%}'$
+#local GREEN=$'%{^[[1;32m%}'$
+#local YELLOW=$'%{^[[1;33m%}'$
+#local BLUE=$'%{^[[1;34m%}'$
+#local PURPLE=$'%{^[[1;35m%}'$
+#local LIGHT_BLUE=$'%{^[[1;36m%}'$
+#local WHITE=$'%{^[[1;37m%}'$
+local DEFAULT=$(tput sgr0)
+local RED=$(tput setaf 1)
+local GREEN=$(tput setaf 2)
+local YELLOW=$(tput setaf 3)
+local BLUE=$(tput setaf 4)
+local PURPLE=$(tput setaf 5)
+local LIGHT_BLUE=$(tput setaf 6)
+local WHITE=$(tput setaf 7)

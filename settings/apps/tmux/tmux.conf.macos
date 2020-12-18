@@ -1,0 +1,36 @@
+# Part of GPP(General Puropose Profiles)
+# vim: ft=tmux ts=2 sw=2 et fenc=utf-8 ff=unix
+
+# tmux.conf.macos
+# Tmux settings for macOS
+
+## Sharing clipboard with system
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "pbcopy"
+
+# Reset the status bar
+set-option -g  status-interval 1
+set-option -g  status-left  "#[default]"  # reset
+set-option -g  status-right "#[default]"  # reset
+
+# Reference: https://blog.black-cat.jp/2018/12/tmux-status-line/
+# Status line: left side
+set-option -ag status-left  "#[fg=black,bg=white] \uf179 "
+set-option -ag status-left  "#[fg=\#EEEEEE,bg=\#333333] #(sysctl kern.osproductversion | cut -d \" \" -f 2) "
+set-option -ga status-left  "#[bg=colour054]#[fg=colour255] #{host_short} "
+set-option -ga status-left  "#[bg=colour024] #(/usr/local/bin/print_ipaddr) "
+set-option -ga status-left  "#[bg=colour148]#[fg=colour234] #{session_name}:w#{window_index} "
+
+# Status line: right side
+set-option -g  status-right "#[bg=${TM_SL_BASE_BG}]#[fg=white]#[fg=black,bg=white](#(/usr/local/bin/print_uptime)) "
+set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=brightyellow]#[fg=black,bg=brightyellow][#(/usr/local/bin/print_loadavg)] "
+set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=green]#[fg=black,bg=green]MP:#(/usr/local/bin/print_mpressure)%% "
+set-option -ga status-right "#[fg=${TM_SL_BASE_BG}]#[bg=black]#[fg=\#EEEEEE]#[bg=${TM_SL_BASE_BG}][W%V/D%j]%Y-%m-%d(%a) %H:%M:%S %z "
+
+
+#set-option -ga status-right '#[default]#[fg=brightwhite,bold,bg=green]59#[default]#[fg=\#EEEEEE,bg=\#333333]#[default]#[fg=brightwhite,bg=green]G#[default]#[fg=\#EEEEEE,bg=\#333333]#[default]#[fg=brightyellow,bold,bg=green]96#[default]#[fg=\#EEEEEE,bg=\#333333]#[default]#[fg=brightyellow,bg=green]%#[default]#[fg=\#EEEEEE]#[bg=\#333333] '
+#set-option -ga status-right '#[default]#[fg=bold]entropy3#[default]#[fg=\#EEEEEE]#[bg=\#333333] '
+#set-option -ga status-right '#[default]#[fg=black,bold,bg=white]192.168.30.8#[default]#[fg=\#EEEEEE]#[bg=\#333333] '
+#set-option -ga status-right '| [W%V/D%j] %Y-%m-%d(%a) %H:%M:%S %z #[default]'
+

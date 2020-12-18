@@ -1,0 +1,15 @@
+# tmux.conf.cygwin
+# Settings for CYGWIN
+
+# Sharing clipboard with system
+bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel "win32yank.exe -i"
+unbind -T copy-mode-vi Enter
+bind-key -T copy-mode-vi Enter send -X copy-pipe-and-cancel "win32yank.exe -i"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "win32yank.exe -i"
+unbind-key -T prefix v
+bind-key v run "win32yank.exe -o | tmux load-buffer - && tmux paste-buffer"
+
+set-option -g status-left "#[default]Cygwin "↲
+
+
+# vim: ft=tmux ts=2 sw=2 et fenc=utf-8

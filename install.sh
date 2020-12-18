@@ -1,116 +1,50 @@
 #!/bin/bash
+# vim: ft=bash:ts=2:sw=0:et
 
 # GPProfile install script
 # #ORIGIN: 2018/10/11 by hmr
-# vim: ft=bash:ts=2:sw=0:et
 
-function get_git_hash() {
-  local gitHash=$(git rev-parse --short HEAD)
-  if [ $? -ne 0 ]; then
-    echo error
-    return 1
-  else
-    echo ${gitHash}
-  fi
-}
+# Load libraries
+if [ -r lib/install_lib.bash ]; then
+  source lib/install_lib.bash
+else
+  echo "Can't load libraries. Please move to repository root dir."
+  exit 127
+fi
 
-abs_dirname() {
-  local cwd="$(pwd)"
-  local path="$1"
-
-  while [ -n "$path" ]; do
-    cd "${path%/*}"
-    local name="${path##*/}"
-    path="$(readlink "$name" || true)"
-  done
-
-  pwd -P
-  cd "$cwd"
-}
-
-function del_from_bashrc () {
-  if [ -z "$1" ]; then
-    echo "del_from_bashrc(): Not enough args"
-    return
-  fi
-  grep "$1" ~/.bashrc >& /dev/null
-  if [ $? -eq 0 ]; then
-    echo "    Uninstalling $1"
-    sed -i -e "/$1/d" ~/.bashrc
-  else
-    echo "    $1 is already uninstalled."
-  fi
-}
-
-function add_into_bashrc () {
-  if [ -z "$1" ]; then
-    echo "add_into_bashrc(): Not enough args"
-    return
-  fi
-  grep "$1" ~/.bashrc >& /dev/null
-  if [ $? -ne 0 ]; then
-    echo "    Installing $1"
-    echo "source ~/.$1   #$1[gpprofile]" >> ~/.bashrc
-  else
-    echo "    $1 is already installed."
-  fi
-}
-
-function add_call_bashrc_into_bash_profile () {
-  grep ".bashrc" ~/.bash_profile >& /dev/null
-  if [ $? -ne 0 ]; then
-    echo "    Adding bashrc call routine into bash_profile."
-    echo "[ -r ~/.bashrc ] && . ~/.bashrc #call bashrc[gpprofile]" >> ~/.bash_profile
-  else
-    echo "    bashrc call routine is already installed."
-  fi
-}
-
-function add_into_bash_profile () {
-  if [ -z "$1" ]; then
-    echo "add_into_bash_profile(): Not enough args"
-    return
-  fi
-  grep "$1" ~/.bash_profile >& /dev/null
-  if [ $? -ne 0 ]; then
-    echo "    Installing $1"
-    echo "source ~/.$1   #$1[gpprofile]" >> ~/.bash_profile
-  else
-    echo "    $1 is already installed."
-  fi
-}
-
-function add_into_bashrc_before_specified_line () {
-  if [ -z "$2" ]; then
-    echo "add_into_bashrc_before_specified_line(): Not enough arg(s)"
-    return
-  fi
-  grep "$2" ~/.bashrc >& /dev/null && echo "    GPProfile signboard is alreasy installed." && return
-
-  echo "    Adding GPProfiles signboard."
-  sed -i ~/.bashrc -e "/$1/i $2"
-}
-
-
-SRCDIR=`abs_dirname "$0"`
+# Set basic variables.
+GPP_SRC_DIR=`abs_dirname "$0"`
 DATE=`date +'%Y%M%d_%H%M%S'`
-SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig .bash_logout"
-DEL_SRCS=".bashrc_ssh-agent"
 GIT_HASH=`get_git_hash`
 
+if [ -z "${GPP_SRC_DIR}" -o -z "${DATE}" -o -z "${GIT_HASH}" ]; then
+  echo "Can't determine required variables."
+  exit 126
+fi
+
+# Packages to install
+SRCS=".inputrc .vim .vimrc .bashrc_history .bashrc_alias .byobu .bash_profile_ssh-agent .bashrc_env .bashrc_etc .gitconfig .bash_logout"
+DEL_SRCS=".bashrc_ssh-agent"
+
+# ======================================================================
+# Install process
+# ======================================================================
 echo
 echo "===== Start ====="
-echo "SRCDIR: ${SRCDIR}"
+echo "GPP_SRC_DIR: ${GPP_SRC_DIR}"
 echo "VERSION: ${GIT_HASH}"
 echo
 
-# generate dot-gitconfig file into SRCDIR
-cat ${SRCDIR}/dot-gitconfig.tmpl | sed -e "s/#name = .*/name = `whoami`@`hostname -s`/" -e "s/#email = .*/email = `whoami`@`hostname`/" > dot-gitconfig
+# Generating install information.
+echo "Generating install information file(.gpprofile)"
+echo "# DON'T EDIT: This is GPProfiles' install information." > ~/.gpprofile
+echo "GPP_VERSION=${GIT_HASH}" >> ~/.gpprofile
+echo "GPP_HOME=${GPP_SRC_DIR}" >> ~/.gpprofile
 
 # generate byobu config files
-cat "${SRCDIR}/dot-byobu/datetime.tmux.tmpl" > "${SRCDIR}/dot-byobu/datetime.tmux"
-cat "${SRCDIR}/dot-byobu/status.tmpl" > "${SRCDIR}/dot-byobu/status"
-cat "${SRCDIR}/dot-byobu/statusrc.tmpl" > "${SRCDIR}/dot-byobu/statusrc"
+cat "${GPP_SRC_DIR}/dot-byobu/datetime.tmux.tmpl" > "${GPP_SRC_DIR}/dot-byobu/datetime.tmux"
+cat "${GPP_SRC_DIR}/dot-byobu/status.tmpl" > "${GPP_SRC_DIR}/dot-byobu/status"
+cat "${GPP_SRC_DIR}/dot-byobu/statusrc.tmpl" > "${GPP_SRC_DIR}/dot-byobu/statusrc"
 
 cd ~
 
@@ -148,7 +82,7 @@ do
   fi
   # Make symlink
   echo "    Making symbolic link"
-  ln -sf ${SRCDIR}/${TARGETSRC} ${TARGET}
+  ln -sf ${GPP_SRC_DIR}/${TARGETSRC} ${TARGET}
   echo
 done
 
@@ -187,10 +121,6 @@ fi
 add_call_bashrc_into_bash_profile
 add_into_bash_profile bash_profile_ssh-agent
 echo
-
-echo "GPP_VERSION=${GIT_HASH}" > ~/.gpprofile
-echo "GPP_HOME=${SRCDIR}" >> ~/.gpprofile
-
 
 echo "===== Finished ====="
 

@@ -1,0 +1,32 @@
+# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+
+# dot-shell_rc_misc
+# ORIGIN: 2019-05-24 by hmr
+
+
+echo "Processing dot-shell_rc_misc"
+
+case "$(chkshell)" in
+  bash )
+    # Enable bash-completion
+    if [ -r "/usr/local/etc/profile.d/bash_completion.sh" ]; then
+      echo "  Enabling bash-completion"
+      . "/usr/local/etc/profile.d/bash_completion.sh"
+    fi
+    # Set bash shell options
+    TEMP_BASH_OPT="cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend "
+    echo "  Setting bash shopts..."
+    echo "    ${TEMP_BASH_OPT}"
+    shopt -s ${TEMP_BASH_OPT}
+    ;;
+esac
+
+# Show private key(s) held by ssh-agent
+ssh-add -l >& /dev/null
+RESULT=$?
+if [ ${RESULT} -eq 0 ]; then
+	echo; echo "Keys held by ssh-agent:"
+	ssh-add -l
+fi
+echo
+

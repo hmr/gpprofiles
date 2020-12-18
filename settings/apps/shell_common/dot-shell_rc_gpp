@@ -1,0 +1,36 @@
+# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+
+# dot-shell_rc_gpp
+# ORIGIN: 2020-06-28 02:32 by hmr
+
+
+if [ -f ~/.gpprofiles ]; then
+  source ~/.gpprofiles
+  echo -n "GPP found. "
+  echo -n "Version: ${GPP_VERSION}. "
+  echo    "Installed on ${GPP_HOME}"
+
+  if [ -z "${GPP_VERSION}" -o -z "${GPP_HOME}" ]; then
+    echo "CAUTION: GPP IS NOT PROPERLY INSTALLED."
+    exit 1
+  fi
+
+  export GPP_HOME GPP_VERSION
+  # Don't change the order.
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_history
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_alias
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_misc
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos
+
+  # set shell prompt for bash
+  case "`chkshell`" in
+    bash)
+      [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt
+      ;;
+  esac
+else
+  echo "GPP not found. Bye"
+fi
+

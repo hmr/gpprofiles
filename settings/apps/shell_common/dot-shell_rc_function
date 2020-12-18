@@ -1,0 +1,57 @@
+# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+
+# dot-shell_rc_alias
+# ORIGIN: 2020-06-23 by hmr
+
+
+echo "Processing dot-shell_rc_alias"
+
+# shows url for SPICE which is KVM's remote connection system
+echo "  function spiceurl"
+function spiceurl {
+  if [ x$1 = "x" ]; then return; fi
+  echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
+}
+
+# shows running VM and SPICE connection url
+echo "  function spicelist"
+function spicelist {
+  for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
+  do
+    echo `spiceurl $VMNAME` [$VMNAME]
+  done
+}
+
+# shows current shell(bash or zsh)
+echo "  function chkshell"
+function chkshell {
+  if [ -n "${ZSH_VERSION}" ]; then
+    echo "zsh"
+  elif [ -n ${BASH_VERSION} ]; then
+    echo "bash"
+  fi
+#  if echo ${SHELL} | grep -qs bash; then
+#    echo bash
+#  elif echo ${SHELL} | grep -qs zsh; then
+#    echo zsh
+#  fi
+}
+
+echo "  function chkshell_internal"
+function chkshell_internal {
+  chkshell
+#  _PID=$$;
+#  _PPID=$(ps -o ppid -p $_PID | tail -n 1);
+#
+#  if ps -p $_PPID | grep -qs bash ; then
+#    echo "bash"
+#  elif ps -p $_PPID | grep -qs zsh ; then
+#    echo "zsh"
+#  fi
+}
+
+# cd then ls
+function cd(){
+      builtin cd $@ && ls;
+}
+

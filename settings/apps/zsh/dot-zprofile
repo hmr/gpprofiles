@@ -4,8 +4,8 @@
 # AUTHOR: hmr
 # ORIGIN: 2020-06-24
 
-echo "Processing dot-zprofile"
+echo "Processing dot-zprofile..."
 
-export SSH_AGENT_PRIV_KEYS="id_ed25519.entropy3"
+export GPP_SSH_AGENT_PRIV_KEYS="id_ed25519.entropy3"
 source ~/.bash_profile_gpp_ssh-agent
 

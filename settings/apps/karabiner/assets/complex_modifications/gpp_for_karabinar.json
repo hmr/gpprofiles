@@ -1,41 +1,8 @@
 {
-  "title": "Made by [GPP]",
+  "title": "[GPP] General Puropose Profiles",
   "rules": [
     {
-      "description": "[GPP] Ctrl+K to search the web at browser",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from":
-          {
-            "key_code": "k",
-            "modifiers": {
-              "mandatory": [ "control" ],
-              "optional": ["any"] }
-          },
-          "to": [
-            {
-              "key_code": "k",
-              "modifiers": [ "left_command" ]
-            } ],
-          "conditions": [
-            {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$",
-                "^org\\.mozilla\\.nightly$",
-                "^com\\.microsoft\\.Edge",
-                "^com\\.google\\.Chrome$",
-                "^com\\.apple\\.Safari$"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      "description": "[GPP] Single Left Command to 英数 mode(for US layout)",
+      "description": "[GPP] Single Left Command(⌘) to 英数 mode(for US layout)",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -55,7 +22,27 @@
     },
 
     {
-      "description": "[GPP] Single Left Option(Alt) to 英数 mode(for US layout)",
+      "description": "[GPP] Single Right Command(⌘) to かな mode(for US layout)",
+      "manipulators": [ {
+          "type": "basic",
+          "from": {
+            "key_code": "right_command",
+            "modifiers": { "optional": [ "any" ] }
+          },
+          "parameters": {
+            "basic.to_if_held_down_threshold_milliseconds": 100
+          },
+          "to": [ {
+              "key_code": "right_command",
+              "lazy": true
+            } ],
+          "to_if_held_down": [ { "key_code": "right_command" } ],
+          "to_if_alone": [ { "key_code": "japanese_kana" } ]
+        } ]
+    },
+
+    {
+      "description": "[GPP] Single Left Option(⌥) or Alt to 英数 mode(for US layout)",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -75,7 +62,7 @@
     },
 
     {
-      "description": "[GPP] Single Right Option(Alt) to かな mode(for US layout)",
+      "description": "[GPP] Single Right Option(⌥) or Alt to かな mode(for US layout)",
       "manipulators": [
         {
           "type": "basic",
@@ -94,13 +81,44 @@
     },
 
     {
-      "description": "[GPP] Do nothing when Command+D on iTerm2",
+      "description": "[GPP] Ctrl+K to search the web at browser",
+      "manipulators": [ {
+          "type": "basic",
+          "from": {
+            "key_code": "k",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": ["any"] }
+          },
+          "to": [ {
+              "key_code": "k",
+              "modifiers": [ "left_command" ]
+            } ],
+          "conditions": [ {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.mozilla\\.firefox$",
+                "^org\\.mozilla\\.nightly$",
+                "^com\\.microsoft\\.Edge",
+                "^com\\.google\\.Chrome$",
+                "^com\\.apple\\.Safari$"
+              ] }
+          ] }
+      ]
+    },
+
+    {
+      "description": "[GPP] Send Option(Alt)+D when Command+D on iTerm2",
       "manipulators": [ {
           "type": "basic",
           "from": {
             "key_code": "d",
             "modifiers": { "mandatory": [ "command" ] }
           },
+          "to": [ {
+              "key_code": "d",
+              "modifiers": [ "left_option" ]
+            } ],
           "conditions": [ {
             "type": "frontmost_application_if",
             "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] } ]
@@ -108,7 +126,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+C to start Calculator",
+      "description": "[GPP] Command+Option+C to open Calculator",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -123,7 +141,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+D to start Discord",
+      "description": "[GPP] Command+Option+D to open Discord",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -136,7 +154,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+F to start Firefox",
+      "description": "[GPP] Command+Option+F to open Firefox",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -144,12 +162,25 @@
             "modifiers": {"mandatory": ["command", "option"] }
           },
           "to": [ {
-            "shell_command": "open -a 'Firefox Nightly'" } ]
+            "shell_command": "open -a 'Firefox'" } ]
         } ]
     },
 
     {
-      "description": "[GPP] Command+Option+R to start RTM",
+      "description": "[GPP] Command+Option+L to open LINE",
+      "manipulators": [ {
+          "type": "basic",
+          "from": {
+            "key_code": "l",
+            "modifiers": {"mandatory": ["command", "option"] }
+          },
+          "to": [ {
+            "shell_command": "open -a 'LINE'" } ]
+        } ]
+    },
+
+    {
+      "description": "[GPP] Command+Option+R to open RTM",
       "manipulators": [
         {
           "type": "basic",
@@ -165,7 +196,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+S to start Slack",
+      "description": "[GPP] Command+Option+S to open Slack",
       "manipulators": [
         {
           "type": "basic",
@@ -181,7 +212,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+Shift+S to start Spotify",
+      "description": "[GPP] Command+Option+Shift+S to open Spotify",
       "manipulators": [
         {
           "type": "basic",
@@ -197,7 +228,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+T to start iTerm2",
+      "description": "[GPP] Command+Option+T to open iTerm2",
       "manipulators": [
         {
           "type": "basic",
@@ -213,7 +244,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+V to start VSCode",
+      "description": "[GPP] Command+Option+V to open VSCode",
       "manipulators": [
         {
           "type": "basic",
@@ -223,6 +254,386 @@
           },
           "to": [
             { "shell_command": "open -a 'Visual Studio Code - Insiders'" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "description": "[GPP] Command+Option+M to open Mail(Spark)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "m",
+            "modifiers": {"mandatory": ["command", "option"]}
+          },
+          "to": [
+            { "shell_command": "open -a 'Spark'" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "[GPP] PC-Style Copy/Paste/Cut unless RDP/Terminal/*Vim",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "c",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "c",
+              "modifiers": [
+                "left_command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc$",
+                "^com\\.microsoft\\.rdc\\.mac$",
+                "^com\\.microsoft\\.rdc\\.macos$",
+                "^com\\.microsoft\\.rdc\\.osx\\.beta$",
+                "^net\\.sf\\.cord$",
+                "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                "^com\\.itap-mobile\\.qmote$",
+                "^com\\.nulana\\.remotixmac$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+                "^com\\.teamviewer\\.TeamViewer$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.2X\\.Client\\.Mac$",
+                "^com\\.vmware\\.fusion$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.vmware\\.view$",
+                "^com\\.parallels\\.desktop$",
+                "^com\\.parallels\\.vm$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                "^com\\.citrix\\.XenAppViewer$",
+                "^com\\.vmware\\.proxyApp\\.",
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^co\\.zeit\\.hyperterm$",
+                "^co\\.zeit\\.hyper$",
+                "^io\\.alacritty$",
+                "^net\\.kovidgoyal\\.kitty$",
+                "^org\\.vim\\.MacVim$",
+                "^com\\.qvacua\\.VimR$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "v",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "v",
+              "modifiers": [
+                "left_command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc$",
+                "^com\\.microsoft\\.rdc\\.mac$",
+                "^com\\.microsoft\\.rdc\\.macos$",
+                "^com\\.microsoft\\.rdc\\.osx\\.beta$",
+                "^net\\.sf\\.cord$",
+                "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                "^com\\.itap-mobile\\.qmote$",
+                "^com\\.nulana\\.remotixmac$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+                "^com\\.teamviewer\\.TeamViewer$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.2X\\.Client\\.Mac$",
+                "^com\\.vmware\\.fusion$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.vmware\\.view$",
+                "^com\\.parallels\\.desktop$",
+                "^com\\.parallels\\.vm$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                "^com\\.citrix\\.XenAppViewer$",
+                "^com\\.vmware\\.proxyApp\\.",
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^co\\.zeit\\.hyperterm$",
+                "^co\\.zeit\\.hyper$",
+                "^io\\.alacritty$",
+                "^net\\.kovidgoyal\\.kitty$",
+                "^org\\.vim\\.MacVim$",
+                "^com\\.qvacua\\.VimR$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "x",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "x",
+              "modifiers": [
+                "left_command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc$",
+                "^com\\.microsoft\\.rdc\\.mac$",
+                "^com\\.microsoft\\.rdc\\.macos$",
+                "^com\\.microsoft\\.rdc\\.osx\\.beta$",
+                "^net\\.sf\\.cord$",
+                "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                "^com\\.itap-mobile\\.qmote$",
+                "^com\\.nulana\\.remotixmac$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+                "^com\\.teamviewer\\.TeamViewer$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.2X\\.Client\\.Mac$",
+                "^com\\.vmware\\.fusion$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.vmware\\.view$",
+                "^com\\.parallels\\.desktop$",
+                "^com\\.parallels\\.vm$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                "^com\\.citrix\\.XenAppViewer$",
+                "^com\\.vmware\\.proxyApp\\.",
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^co\\.zeit\\.hyperterm$",
+                "^co\\.zeit\\.hyper$",
+                "^io\\.alacritty$",
+                "^net\\.kovidgoyal\\.kitty$",
+                "^org\\.vim\\.MacVim$",
+                "^com\\.qvacua\\.VimR$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "[GPP] PC-Style Copy/Paste/Cut unless RDP/Terminal/*Vim",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "c",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "c",
+              "modifiers": [
+                "left_command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc$",
+                "^com\\.microsoft\\.rdc\\.",
+                "^net\\.sf\\.cord$",
+                "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                "^com\\.itap-mobile\\.qmote$",
+                "^com\\.nulana\\.remotixmac$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+                "^com\\.teamviewer\\.TeamViewer$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.2X\\.Client\\.Mac$",
+                "^com\\.vmware\\.fusion$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.vmware\\.view$",
+                "^com\\.parallels\\.desktop$",
+                "^com\\.parallels\\.vm$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                "^com\\.citrix\\.XenAppViewer$",
+                "^com\\.vmware\\.proxyApp\\.",
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^co\\.zeit\\.hyperterm$",
+                "^co\\.zeit\\.hyper$",
+                "^io\\.alacritty$",
+                "^net\\.kovidgoyal\\.kitty$",
+                "^org\\.vim\\.MacVim$",
+                "^com\\.qvacua\\.VimR$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "v",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "v",
+              "modifiers": [
+                "left_command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc$",
+                "^com\\.microsoft\\.rdc\\.",
+                "^net\\.sf\\.cord$",
+                "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                "^com\\.itap-mobile\\.qmote$",
+                "^com\\.nulana\\.remotixmac$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+                "^com\\.teamviewer\\.TeamViewer$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.2X\\.Client\\.Mac$",
+                "^com\\.vmware\\.fusion$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.vmware\\.view$",
+                "^com\\.parallels\\.desktop$",
+                "^com\\.parallels\\.vm$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                "^com\\.citrix\\.XenAppViewer$",
+                "^com\\.vmware\\.proxyApp\\.",
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^co\\.zeit\\.hyperterm$",
+                "^co\\.zeit\\.hyper$",
+                "^io\\.alacritty$",
+                "^net\\.kovidgoyal\\.kitty$",
+                "^org\\.vim\\.MacVim$",
+                "^com\\.qvacua\\.VimR$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "x",
+            "modifiers": {
+              "mandatory": [
+                "control"
+              ],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "x",
+              "modifiers": [
+                "left_command"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc$",
+                "^com\\.microsoft\\.rdc\\.",
+                "^net\\.sf\\.cord$",
+                "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                "^com\\.itap-mobile\\.qmote$",
+                "^com\\.nulana\\.remotixmac$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+                "^com\\.teamviewer\\.TeamViewer$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.2X\\.Client\\.Mac$",
+                "^com\\.vmware\\.fusion$",
+                "^com\\.vmware\\.horizon$",
+                "^com\\.vmware\\.view$",
+                "^com\\.parallels\\.desktop$",
+                "^com\\.parallels\\.vm$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                "^com\\.citrix\\.XenAppViewer$",
+                "^com\\.vmware\\.proxyApp\\.",
+                "^com\\.parallels\\.winapp\\.",
+                "^com\\.apple\\.Terminal$",
+                "^com\\.googlecode\\.iterm2$",
+                "^co\\.zeit\\.hyperterm$",
+                "^co\\.zeit\\.hyper$",
+                "^io\\.alacritty$",
+                "^net\\.kovidgoyal\\.kitty$",
+                "^org\\.vim\\.MacVim$",
+                "^com\\.qvacua\\.VimR$"
+              ]
+            }
           ]
         }
       ]

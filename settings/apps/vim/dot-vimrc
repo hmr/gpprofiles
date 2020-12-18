@@ -1,120 +1,198 @@
-" vim: ft=vim:ts=4:sw=0:et:fenc=utf-8:ff=unix
+" Part of GPP(General Puropose Profiles)
+" vim: ft=vim ts=2 sts=2 sw=2 expandtab fenc=utf-8 ff=unix
+
 scriptencoding utf-8
+
 "-----------------------------------------------------------------------------
-"vim Plugの設定
+"Settings for vim-plug [https://github.com/junegunn/vim-plug]
+"-----------------------------------------------------------------------------
 if empty(glob('~/.vim/autoload/plug.vim'))
-	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  augroup vimplug_g
+    autocmd!
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup END
 endif
-call plug#begin('~/.vim/plugged')
-"以下にインストールしたいプラグインを記述する()
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'
-Plug 'altercation/vim-colors-solarized'
-Plug 'airblade/vim-gitgutter'
-Plug 'mileszs/ack.vim'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-fugitive'
-Plug 'gisphm/vim-gitignore'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sleuth'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'scrooloose/nerdtree'
-Plug 't9md/vim-quickhl'
-Plug 'thinca/vim-prettyprint'
-Plug 'kien/ctrlp.vim'
-Plug 'Shougo/unite.vim'
-Plug 'lambdalisue/vim-gista'
-Plug 'lambdalisue/vim-gista-unite'
-Plug 'lambdalisue/vim-gista-ctrlp'
-Plug 'WolfgangMehner/bash-support'
-"Plug 'bronson/vim-trailing-whitespace' " Replaced by 'ntpeters/vim-better-whitespace'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'darfink/vim-plist'
-Plug 'vim-jp/vimdoc-ja'                 " Vim日本語ヘルプ
-call plug#end()
 
 "----------------------------------------------------------------------------
-"Misc settings
-"see more settings at: http://www.geek.sc/archives/977
+"Misc settings [http://www.geek.sc/archives/977]
+"----------------------------------------------------------------------------
 "filetype plugin on
-filetype plugin indent on	" ファイルタイプ検出プラグインと自動インデントを使う
-syntax on					" シンタックスハイライトを使う
-set encoding=utf-8			" Set utf-8 as default encoding.
+filetype plugin indent on " ファイルタイプ検出プラグインと自動インデントを使う
+set encoding=utf-8    " Set utf-8 as default encoding.
 set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,ucs-bom
 set fileformats=unix,dos,mac
 
-" Vimの拡張を使う(あたりまえ!!)
-set nocompatible
-
-set bs=indent,eol,start		" allow backspacing over everything in insert mode
-set ai						" always set autoindenting on
-set viminfo='20,\"50		" read/write a .viminfo file, don't store more than 50 lines of registers
-set noswapfile				" not to make swap file.
-set nowritebackup			" not to make backup file.
-set nobackup				" not to backup
-"set backup					" keep a backup file
-
-set history=50				" keep 50 lines of command line history
-set tabstop=4				" タブ幅
-set shiftwidth=0			" インデント幅(0でtabstopの値)
-set expandtab				" タブを空白に展開する
-
-set cursorline				" カーソル行表示
-set number					" 行番号表示
-"set ruler					" show the cursor position all the time
-set laststatus=2			" ステータスラインの位置(下から2行目)
+set backspace=indent,eol,start  " allow backspacing over everything in insert mode
+set autoindent        " always set autoindenting on
+set viminfo='20,\"50  " read/write a .viminfo file, don't store more than 50 lines of registers
+set noswapfile        " not to make swap file.
+set nowritebackup     " not to make backup file.
+set nobackup          " not to backup
+"set backup           " keep a backup file
+set history=50        " keep 50 lines of command line history
+set textwidth=1024    " default maximum width of text(0 means never use auto line break)
+set tabstop=4         " default tab width
+set shiftwidth=0      " default indent width(0 means same as tabstop)
+set expandtab         " expand tab to space
+set cursorline        " show cursor line indicator
+set number            " show line number
+"set ruler            " show the cursor position all the time
+set laststatus=2      " when the status line would be shown(2 means always)
 " set statusline=%F%r%h%=
 " set statusline=%F%m%r%h%w\%=[TYPE=%Y]\[FORMAT=%{&ff}]\[ENC=%{&fileencoding}]\[LOW=%l/%L]
-"set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}][%B]
+" set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}][%B]
 set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
-
-set nohlsearch				" 検索にマッチした部分をハイライト表示しない
-set incsearch				" インクリメンタルサーチ使用
-set ignorecase				" 大文字小文字の違いを無視
-set showmatch				" マッチした部分を強調
-set showmode				" 現在のモードを表示
-
-set title					" allow vim change terminal's title
-set virtualedit=block		" 矩形バーチャルモードで文字の有無を無視する
-set whichwrap=b,s,[,],<,>	" 行末を越えて次行に移動可能にする
-set ambiwidth=double		" 全角文字を上手く扱うためのおまじない
-set wildmenu				" ファイル名補完メニューを使う
-set wildmode=longest,full	" ファイル名補完機能
-set noerrorbells			" エラー時にベルを鳴らさない
-set novisualbell			" ビジュアルベルを使わない
-set visualbell t_vb=		" ビジュアルベルは空白(何もしない)
-
-set list					" 空白文字等を表示
+set nohlsearch            " not to highlight matching part
+set incsearch             " use incremental search
+set ignorecase            " ignore case distinctions
+set showmatch             " briefly jump to matched bracket
+set noshowmode            " not to show current mode at bottomost row
+set title                 " allow vim change terminal's title
+set virtualedit=block     " allow free cursor in visual block mode
+set whichwrap=b,s,[,],<,> " allow these keys move next or previous line(see help)
+set ambiwidth=double      " a magic to deal with full width characters well
+set wildmenu              " use command line completion
+set wildmode=longest,full " completion mode(see help)
+set noerrorbells          " no beep nor screen flush for error messages
+set novisualbell          " no flush screen instead of beeping
+set visualbell t_vb=      " visualbell is void(do nothing)
+set list                  " show control characters such as tab or EOL.
 "set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
 set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
-set showbreak=↪				" 折り返し記号
+set showbreak=↪           " string to put at the start of lines that have been wrapped. Useful values are "> " or "+++ "
+set hidden                " not to unload and to hide the buffer when abondoned
+"set paste                 " put Vim in Paste mode which is useful for pasting some text to Vim.
 
-set hidden
-"set paste					" vimにコピペしたとき、コメントアウトや余計な改行をさせない
+" Use <Leader>y <Leader>d <Leader>p to copy/cut/paste with system clipbord!
+"set clipboard&            " reset clipboard as default
+"set clipboard^=unnamed    " use system's clipboard
 
-"正規表現メタ文字のエスケープシーケンスを不要にする(very magic)
+set termguicolors         " Use True Color
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " Default foreground color(for $TERM != 'xterm')
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " Default background color(for $TERM != 'xterm')
+
+" 正規表現メタ文字のエスケープシーケンスを不要にする(very magic)
 "nnoremap /  /\v
-"-----------------------------------------------------------------------------
-"From Vimの生産性を高める12の方法
-"https://postd.cc/how-to-boost-your-vim-productivity/
 
-"リーダーをスペースキーにする
+"=============================================================================
+" General color settings
+"=============================================================================
+"colorscheme default
+colorscheme molokai
+
+" Try to use Solarized
+"try
+" set background=dark
+" colorscheme solarized
+"catch
+"endtry
+
+"=============================================================================
+" Settings for Airline(lean & mean status/tabline for vim that's light as air )
+" [https://github.com/vim-airline/vim-airline]
+"=============================================================================
+let g:airline_theme='light'
+"let g:airline_theme='tomorrow'
+"let g:airline_theme='solarized'
+"let g:airline_solarized_bg='dark'
+
+let g:airline_mode_map = {
+      \ 'n'  : ' [NORMAL] ',
+      \ 'i'  : ' <INSERT> ',
+      \ 'R'  : ' >REPLACE<',
+      \ 'c'  : ' [COMMAND]',
+      \ 'v'  : ' [VISUAL] ',
+      \ 'V'  : ' [V-LINE] ',
+      \ '' : ' [V-BLOCK]',
+      \ }
+
+"-+-+-+- Airline tab settings -+-+-+-
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+"-+-+-+- Airline status bar settings -+-+-+-
+"let g:airline_section_a = airline#section#create(['mode', 'crypt', 'paste', 'spell', 'iminsert'])
+"let g:airline_section_b = airline#section#create(['hunks', 'branch'])
+"let g:airline_section_c = airline#section#create(['file'])
+"let g:airline_section_x = airline#section#create(['tagbar', 'filetype'])
+"let g:airline_section_y = airline#section#create(['ffenc'])
+"let g:airline_section_z = airline#section#create(['linenr', 'maxlinenr'])
+
+"-+-+-+- Airline font and symbols -+-+-+-
+let g:airline_powerline_fonts = 1
+let g:Powerline_symbols = 'fancy'
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+
+
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+
+let g:airline_symbols.linenr = '☰ '
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+
+let g:airline_symbols.maxlinenr = ''
+"let g:airline_symbols.maxlinenr = '㏑'
+"let g:airline_symbols.maxlinenr = ''
+
+"let g:airline_symbols.branch = ''
+let g:airline_symbols.branch = '⎇'
+
+"let g:airline_symbols.paste = '<PASTE>'
+let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.spell = 'Ꞩ'       " Spell check
+let g:airline_symbols.notexists = '∄'   " Sign for non-git file
+let g:airline_symbols.whitespace = 'Ξ' " Warning sign for white spaces
+
+"------------------------------------------------
+" Airline extensions
+"------------------------------------------------
+"-+-+-+- Ale(Syntax checker) -+-+-+-
+let g:airline#extensions#ale#enabled = 1
+let airline#extensions#ale#error_symbol = 'E:'
+let airline#extensions#ale#warning_symbol = 'W:'
+let airline#extensions#ale#show_line_numbers = 1
+let airline#extensions#ale#open_lnum_symbol = '(L'
+let airline#extensions#ale#close_lnum_symbol = ')'
+
+"=============================================================================
+" From How to boost your Vim productivity
+" [https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/]
+"=============================================================================
+" I. Space is your Leader
 let mapleader = "\<Space>"
 
-"<Space>oを押して新しいファイルを開く
+" II. Map your most frequent actions to Leader
+"-- Type <Space>o to open a new file
 nnoremap <Leader>o :CtrlP<CR>
-
-"wを押してファイルを保存する
-nnoremap <Leader>w :w<CR> " <Space>
-
-"<Space><Space>でビジュアルラインモードに切り替える
+"-- Type <Space>w to save file (a lot faster than :w<Enter>)
+nnoremap <Leader>w :w<CR>
+"-- Enter visual line mode with <Space><Space>
 nmap <Leader><Leader> V
-
-"<Space>pと<Space>yでシステムのクリップボードにコピー＆ペーストする
+"-- Copy & paste to system clipboard with <Space>p and <Space>y
 vmap <Leader>y "+y
 vmap <Leader>d "+d
 nmap <Leader>p "+p
@@ -122,295 +200,622 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
-"貼り付けたテキストの末尾へ自動的に移動する(ppp...と押すだけで、複数行の貼り付けを繰り返す)
+" III. Use region expanding
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+" IV. Discover text search object
+vnoremap <silent> s //e<C-r>=&selection=='exclusive'?'+1':''<CR><CR>
+    \:<C-u>call histdel('search',-1)<Bar>let @/=histget('search',-1)<CR>gv
+omap s :normal vs<CR>
+
+" V. Invent more awesome key mappings
+"-- Automatically jump to end of text you pasted: paste multiple lines multiple times with simple ppppp
 vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
-
-"12<Enter>を押して、12行目に移動する & ただEnterを押して、ファイルの末尾に移動する
-nnoremap <CR> G
-
-"Backspaceを押して、ファイルの先頭に移動する
-nnoremap <BS> gg
-
-" 貼り付けたテキストを素早く選択する
-noremap gV `[v`]
-
-"よくあるミスタイプでのポップアップを抑制する
-map q: :q
-noremap ; :
-
-"貼り付け時にペーストバッファが上書きされないようにする
-" vp doesn't replace paste buffer
+"-- Prevent replacing paste buffer on paste: select some text and paste over it without replacing paste buffer
 function! RestoreRegister()
-  let @" = s:restore_reg
+  let @" = s:restore_reg  " 's:' means script local variable(:help usr_41)
   return ''
 endfunction
 function! s:Repl()
   let s:restore_reg = @"
   return "p@=RestoreRegister()\<cr>"
 endfunction
+" vp doesn't replace paste buffer
 vmap <silent> <expr> p <sid>Repl()
 
-"NERDTreeプラグインの設定
+"-- Type 12<Enter> to go to line 12 (12G breaks my wrist)
+"-- Hit Enter to go to end of file.
+"-- Hit Backspace to go to beginning of file.
+nnoremap <CR> G
+nnoremap <BS> gg
+"-- Quickly select text you just pasted:
+noremap gV `[v`]
+"-- Stop that stupid window from popping up:
+map q: :q
+noremap ; :
+
+"=============================================================================
+" Exit from any mode by Ctrl-C(Needless??)
+"=============================================================================
+noremap  <C-c> <ESC>
+vnoremap <C-c> <ESC>
+snoremap <C-c> <ESC>
+xnoremap <C-c> <ESC>
+onoremap <C-c> <ESC>
+inoremap <C-c> <ESC>
+
+"=============================================================================
+" From 若干Emacs風味なvimのキー設定
+" [https://sites.google.com/site/fudist/Home/vim-nihongo-ban/tips/vim-key-emacs]
+"=============================================================================
+" sepが空でなければ、sepをセパレータとしてジャンプ。見つからなければ見かけの行頭へ。
+" カーソル位置が見かけの行頭の場合は真の行頭へ。
+function! MyJumptoBol(sep)
+  if col('.') == 1
+    call cursor(line('.')-1, col('$'))
+    call cursor(line('.'), col('$'))
+    return ''
+  endif
+  if matchend(strpart(getline('.'), 0, col('.')), '[[:blank:]]\+') >= col('.')-1
+    silent exec 'normal! 0'
+    return ''
+  endif
+  if a:sep !=? ''
+    call search('[^'.a:sep.']\+', 'bW', line('.'))
+    if col('.') == 1
+      silent exec 'normal! ^'
+    endif
+    return ''
+  endif
+  exec 'normal! ^'
+  return ''
+endfunction
+
+" sepが空でなければ、sepをセパレータとしてジャンプ。見つからなければ行末へ。
+function! MyJumptoEol(sep)
+  if col('.') == col('$')
+    silent exec 'normal! w'
+    return ''
+  endif
+  if a:sep !=? ''
+    let prevcol = col('.')
+    call search('['.a:sep.']\+[^'.a:sep.']', 'eW', line('.'))
+    if col('.') != prevcol
+      return ''
+    endif
+  endif
+  call cursor(line('.'), col('$'))
+  return ''
+endfunction
+
+" IMEの状態とカーソル位置保存のため<C-r>を使用してコマンドを実行。
+function! MyExecExCommand(cmd, ...)
+  let saved_ve = &virtualedit
+  let index = 1
+  while index <= a:0
+    if a:{index} ==# 'onemore'
+      silent setlocal virtualedit+=onemore
+    endif
+    let index = index + 1
+  endwhile
+
+  silent exec a:cmd
+  if a:0 > 0
+    silent exec 'setlocal virtualedit='.saved_ve
+  endif
+  return ''
+endfunction
+
+" 行末でも停止する単語単位移動コマンド
+function! MyMoveWord_i(cmd)
+  let isEol = 0
+  if col('$') == col('.')
+    let isEol = 1
+  endif
+  let prevline = line('.')
+  silent exec 'normal! '.a:cmd
+  if line('.') == prevline
+    return ''
+  endif
+  if a:cmd ==? 'w'
+    if isEol == 0
+      call cursor(prevline, 0)
+      call cursor(line('.'), col('$'))
+    endif
+    if line('.') - prevline > 1
+      call cursor(prevline+1, 0)
+      call cursor(line('.'), col('$'))
+    endif
+  elseif a:cmd ==? 'b'
+    call cursor(line('.'), col('$'))
+    if prevline - line('.') > 1
+      call cursor(prevline-1, 0)
+      call cursor(line('.'), col('$'))
+    endif
+  endif
+  return ''
+endfunction
+
+
+" Argument <silent> makes the executed command not to output command line
+" further infomarion, consult :help :map-arguments
+"-- Jump to BOL/EOL
+nnoremap <silent> <C-a> ^
+nnoremap <silent> <C-e> $
+inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
+inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
+"-- Delete a character just before cursor(=BS key)
+"inoremap <silent> <BS>  <C-g>u<BS>
+"inoremap <silent> <C-h> <C-g>u<C-h>
+"-- Delete a character just after cursor(=Del key)
+nnoremap <silent> <C-d> <Del>
+inoremap <silent> <Del> <C-g>u<Del>
+inoremap <silent> <C-d> <C-g>u<Del>
+"-- Delete characters from cursor to EOL
+nnoremap <C-k> D
+inoremap <silent> <C-k> <C-g>u<C-r>=MyExecExCommand('normal! D','onemore')<CR>
+
+"-- Move word by word
+noremap f w
+"nnoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
+"nnoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
+inoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
+inoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
+
+"=============================================================================
+" Made by [hmr]
+"=============================================================================
+" ノーマルモードでaキーを押した場合、カーソルが行末にあればa、それ以外はiとして動作する
+function! AppendOrInsert()
+  if col('.') == col('$') - 1
+    exec 'startinsert!'
+  else
+    exec 'startinsert'
+  endif
+endfunction
+noremap <silent> a :call AppendOrInsert()<CR>
+
+" 挿入モードでもCtrl-zでサスペンドする
+inoremap <C-z> <ESC><C-z>
+
+" TODO: Outdated code: will be deleted
+"if &term=="xterm"
+" set t_Co=8
+" set t_Sb=[4%dm
+" set t_Sf=[3%dm
+"endif
+
+" TODO: Outdated code: will be deleted
+"if &term=="xterm-256color"
+" set t_Co=256
+" set t_Sb=^[[4%dm
+" set t_Sf=^[[3%dm
+"endif
+
+"-----------------------------------------------------------------------------
+" Capture(): redirect command output to file [https://gist.github.com/hokaccha/380535]
+"-----------------------------------------------------------------------------
+" Capture {{{
+command!
+  \ -nargs=1
+  \ -complete=command
+  \ Capture
+  \ call Capture(<f-args>)
+
+function! Capture(cmd)
+  redir => result
+  silent execute a:cmd
+  redir END
+
+  let bufname = 'Capture: ' . a:cmd
+  new
+  setlocal bufhidden=unload
+  setlocal nobuflisted
+  setlocal buftype=nofile
+  setlocal noswapfile
+  silent file `=bufname`
+  silent put =result
+  1,2delete _
+endfunction
+" }}}
+
+"-----------------------------------------------------------------------------
+" [Meta-N] Toggle line number (https://qiita.com/smison/items/f392037f1164eba5cc74)
+"-----------------------------------------------------------------------------
+function ToggleNumber()
+  if &number
+    setlocal nonumber
+  else
+    setlocal number
+  endif
+endfunction
+nmap <silent> <M-n> :silent call ToggleNumber()<CR>
+"-----------------------------------------------------------------------------
+" [Meta-H] Toggle search result highlighting (http://d.hatena.ne.jp/h1mesuke/20080327/p1)
+"-----------------------------------------------------------------------------
+function ToggleHighlight()
+  if &hlsearch
+    setlocal nohlsearch
+  else
+    setlocal hlsearch
+  endif
+endfunction
+nmap <silent> <M-h> :silent call ToggleHighlight()<CR>
+"-----------------------------------------------------------------------------
+" [Meta-L] Toggle control character
+"-----------------------------------------------------------------------------
+function ToggleList()
+  if &list
+    setlocal nolist
+  else
+    setlocal list
+  endif
+endfunction
+nmap <silent> <M-l> :silent call ToggleList()<CR>
+"-----------------------------------------------------------------------------
+" [Meta-N] Toggle line number (https://qiita.com/smison/items/f392037f1164eba5cc74)
+"-----------------------------------------------------------------------------
+function TogglePaste()
+  if &paste
+    setlocal nopaste
+  else
+    setlocal paste
+  endif
+endfunction
+nmap <silent> <M-p> :silent call TogglePaste()<CR>
+"-----------------------------------------------------------------------------
+" [Meta-G] Toggle GitGutter
+"-----------------------------------------------------------------------------
+nmap <silent> <M-g> :silent call gitgutter#toggle()<CR>
+
+"=============================================================================
+" Settings for autocmd
+"=============================================================================
+if has('autocmd')
+  augroup redhat
+    autocmd!
+    "In text files, always limit the width of text to 78 characters
+    autocmd BufRead *.txt set tw=78
+
+    "When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+          \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+          \     exe "normal! g'\"" |
+          \ endif
+    "don't write swapfile on most commonly used directories for NFS mounts or USB sticks
+    autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+    "start with spec file template
+    autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
+
+    " Trying to disable textwidth limitation.
+    autocmd FileType text setlocal textwidth=0
+  augroup END
+endif
+
+"=============================================================================
+" NERDTree(A tree explorer plugin for vim) [https://github.com/preservim/nerdtree]
+"=============================================================================
 map <Leader>t :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup nertree_g
+  autocmd!
+  autocmd BufEnter * if (winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree()) | q | endif
+augroup END
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
-"quick-hlプラグインの設定(Minimum)
-"https://github.com/t9md/vim-quickhl
+" 表示幅
+let g:NERDTreeWinSize=50
+" ブックマークを表示
+let g:NERDTreeShowBookmarks=1
+" 親ディレクトリへ移動
+let g:NERDTreeMapUpdir='<C-u>'
+" ファイルの開き方
+let g:NERDTreeMapOpenSplit='<C-j>'
+let g:NERDTreeMapOpenVSplit='<C-l>'
+" ファイルを開いたらNERDTreeを閉じる
+let g:NERDTreeQuitOnOpen=1
+" 隠しファイルを表示
+let g:NERDTreeShowHidden=0
+" 非表示ファイル
+let g:NERDTreeIgnore=['\.git$', '\.clean$', '\.swp$', '\.bak$', '\~$']
+
+augroup vimrc_nerdtree
+  autocmd!
+  " 他のバッファをすべて閉じた時にNERDTreeが開いていたらNERDTreeも一緒に閉じる。
+  autocmd bufenter * if (winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree()) | q | endif
+
+  " Tree内では5ずつ移動する
+  autocmd FileType nerdtree nnoremap 5j
+  autocmd FileType nerdtree nnoremap 5k
+augroup END
+
+"=============================================================================
+" Settings for NERD Commenter
+"=============================================================================
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1
+
+"=============================================================================
+" quickhl.vim(Quickly highlight multiple word) [https://github.com/t9md/vim-quickhl]
+"=============================================================================
 nmap <Leader>m <Plug>(quickhl-manual-this)
 xmap <Leader>m <Plug>(quickhl-manual-this)
 nmap <Leader>r <Plug>(quickhl-manual-reset)
 xmap <Leader>r <Plug>(quickhl-manual-reset)
+nmap <Leader>c <Plug>(quickhl-manual-clear)
+vmap <Leader>c <Plug>(quickhl-manual-clear)
+"nmap <Space>w <Plug>(quickhl-manual-this-whole-word)
+"xmap <Space>w <Plug>(quickhl-manual-this-whole-word)
+"nmap <Space>j <Plug>(quickhl-cword-toggle)
+"nmap <Space>] <Plug>(quickhl-tag-toggle)
+"map H <Plug>(operator-quickhl-manual-this-motion)
 
-" From 若干Emacs風味なvimのキー設定
-" [https://sites.google.com/site/fudist/Home/vim-nihongo-ban/tips/vim-key-emacs]
-"-----------------------------
-"sepが空でなければ、sepをセパレータとしてジャンプ。
-"見つからなければ見かけの行頭へ。
-"カーソル位置が見かけの行頭の場合は真の行頭へ。
-"-----------------------------
-function! MyJumptoBol(sep)
-    if col('.') == 1
-        call cursor(line('.')-1, col('$'))
-        call cursor(line('.'), col('$'))
-        return ''
-    endif
-    if matchend(strpart(getline('.'), 0, col('.')), '[[:blank:]]\+') >= col('.')-1
-        silent exec 'normal! 0'
-        return ''
-    endif
-    if a:sep != ''
-        call search('[^'.a:sep.']\+', 'bW', line("."))
-        if col('.') == 1
-            silent exec 'normal! ^'
-        endif
-        return ''
-    endif
-    exec 'normal! ^'
-    return ''
-endfunction
+"=============================================================================
+" Settings for cscope [:help if_cscop]
+"=============================================================================
+if has('cscope') && filereadable('/usr/local/bin/cscope')
+  set cscopeprg=/usr/local/bin/cscope
+  set cscopetagorder=0
+  set cscopetag
+  set nocscopeverbose
+  " add any database in current directory
+  if filereadable('cscope.out')
+    cs add cscope.out
+    " else add database pointed to by environment
+  elseif $CSCOPE_DB !=? ''
+    cs add $CSCOPE_DB
+  endif
+  set cscopeverbose
+endif
 
-"-----------------------------
-"sepが空でなければ、sepをセパレータとしてジャンプ。
-"見つからなければ行末へ。
-"-----------------------------
-function! MyJumptoEol(sep)
-    if col('.') == col('$')
-        silent exec 'normal! w'
-        return ''
-    endif
+"=============================================================================
+" Settings for syntax highlighting
+"=============================================================================
+if &t_Co > 2 || has('gui_running')  " Only for color environment
+  syntax on
+  " Use italic font for comment
+  highlight Comment cterm=italic
+  "set hlsearch
+  " show vertical line at col 100 if possible
+  if (exists('+colorcolumn'))
+    set colorcolumn=100
+    highlight ColorColumn ctermbg=9
+  endif
+endif
 
-    if a:sep != ''
-        let prevcol = col('.')
-        call search('['.a:sep.']\+[^'.a:sep.']', 'eW', line("."))
-        if col('.') != prevcol
-            return ''
-        endif
-    endif
-    call cursor(line('.'), col('$'))
-    return ''
-endfunction
+"=============================================================================
+" Additional settings for MacVim
+"=============================================================================
+if has('gui_macvim')
+  set antialias
+  " set guifont=Menlo:h14
+  set guifont=MesloLGS\ NF\ Regular:h14
+  "set guifont=RictyDiminished-Regular:h15
+  " MacVim now supports trasparency!
+  set transparency=7
+  "Supress cursor brinking [http://www.linuxpowertop.org/known.php]
+  let &guicursor = &guicursor . ',a:blinkon0'
+  let &t_ZH = '[3m'
+  let &t_ZR = '[23m'
+  " WinResizer can handle MacVim's window
+  let g:winresizer_gui_enable = 1
+endif
 
-"-----------------------------
-"IMEの状態とカーソル位置保存のため<C-r>を使用してコマンドを実行。
-"-----------------------------
-function! MyExecExCommand(cmd, ...)
-    let saved_ve = &virtualedit
-    let index = 1
-    while index <= a:0
-        if a:{index} == 'onemore'
-            silent setlocal virtualedit+=onemore
-        endif
-        let index = index + 1
-    endwhile
+"=============================================================================
+" Settings for fzf.vim
+"=============================================================================
+set runtimepath+=/usr/local/opt/fzf
+let g:fzf_buffers_jump = 1
+nnoremap <silent> <Leader>ff :<C-u>Ag<CR>
+nnoremap <silent> <Leader>fh :<C-u>History<CR>
+nnoremap <silent> <Leader>ft :<C-u>call fzf#vim#tags(expand('<cword>'))<CR>
+nnoremap <silent> <Leader>fb :<C-u>Buffers<CR>
+nnoremap <silent> <Leader>fgs :<C-u>GFiles?<CR>
+nnoremap <silent> <Leader>fgf :<C-u>GFiles<CR>
+nnoremap <silent> <Leader>fm :<C-u>Marks<CR>
+let g:fzf_layout = { 'down': '30%' }
+let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-j': 'split',
+      \ 'ctrl-l': 'vsplit' }
 
-    silent exec a:cmd
-    if a:0 > 0
-        silent exec 'setlocal virtualedit='.saved_ve
-    endif
-    return ''
-endfunction
+augroup vimrc_fzf
+  autocmd!
+  autocmd FileType fzf tnoremap <buffer> <leader>z <Esc>
+augroup END
 
-"-----------------------------
-"行末でも停止する単語単位移動コマンド
-"-----------------------------
-function! MyMoveWord_i(cmd)
-    let isEol = 0
-    if col('$') == col('.')
-        let isEol = 1
-    endif
-    let prevline = line('.')
-    silent exec 'normal! '.a:cmd
-    if line('.') == prevline
-        return ''
-    endif
-    if a:cmd == 'w'
-        if isEol == 0
-            call cursor(prevline, 0)
-            call cursor(line('.'), col('$'))
-        endif
-        if line('.') - prevline > 1
-            call cursor(prevline+1, 0)
-            call cursor(line('.'), col('$'))
-        endif
-    elseif a:cmd == 'b'
-        call cursor(line('.'), col('$'))
-        if prevline - line('.') > 1
-            call cursor(prevline-1, 0)
-            call cursor(line('.'), col('$'))
-        endif
-    endif
-    return ''
-endfunction
+"=============================================================================
+"Settings for vim-easymotion
+"=============================================================================
+map  <Leader>e <Plug>(easymotion-prefix)
+" Move to word
+map  <Leader>j <Plug>(easymotion-bd-w)
+nmap <Leader>j <Plug>(easymotion-overwin-w)
+" Move to line
+map  <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-overwin-line)
+" Move to character
+map  <Leader>k <Plug>(easymotion-bd-f)
+nmap <Leader>k <Plug>(easymotion-overwin-f)
 
+"=============================================================================
+" Misc Settings
+"=============================================================================
+"----- GitGutter
+nmap <silent> <C-g><C-n> <Plug>GitGutterNextHunk
+nmap <silent> <C-g><C-p> <Plug>GitGutterPrevHunk
 
-"行頭・行末(Normal mode)
-nnoremap <silent> <C-a> ^
-nnoremap <silent> <C-e> $
-"行頭・行末(Insert mode)
-inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
-inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
+"----- NERD Tag
+" コアファイルも含めるため.gitignoreを無視
+let g:vim_tags_ignore_files = []
+" Toggle Tagbar
+nnoremap <silent> <Leader>g :<C-u>TagbarToggle<CR>
 
-"カーソル前の文字削除
-"inoremap <silent> <BS>  <C-g>u<BS>
-"inoremap <silent> <C-h> <C-g>u<C-h>
-"カーソル後の文字削除
-nnoremap <silent> <C-d> <Del>
-inoremap <silent> <Del> <C-g>u<Del>
-inoremap <silent> <C-d> <C-g>u<Del>
-"カーソル以降削除
-inoremap <silent> <C-k> <C-g>u<C-r>=MyExecExCommand('normal! D','onemore')<CR>
+"----- vim-showmarks
+augroup show_marks_sync
+  autocmd!
+  autocmd BufReadPost * silent! DoShowMarks
+augroup END
 
-"単語単位移動
-nnoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
-nnoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
-inoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
-inoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
+"----- vim-polyglot
+let g:polyglot_disabled = ['markdown']
 
+"----- comfortable-motion.vim
+let g:comfortable_motion_no_default_key_mappings = 1
+nnoremap <silent> <M-d> :call comfortable_motion#flick(100)<CR>
+nnoremap <silent> <M-u> :call comfortable_motion#flick(-100)<CR>
+nnoremap <silent> <M-f> :call comfortable_motion#flick(200)<CR>
+nnoremap <silent> <M-b> :call comfortable_motion#flick(-200)<CR>
+nnoremap <silent> <S-PageDown> :call comfortable_motion#flick(200)<CR>
+nnoremap <silent> <S-PageUp> :call comfortable_motion#flick(-200)<CR>
+
+"noremap <silent> <ScrollWheelDown> :call comfortable_motion#flick(40)<CR>
+"noremap <silent> <ScrollWheelUp>   :call comfortable_motion#flick(-40)<CR>
+let g:comfortable_motion_interval = 2400.0 / 60
+let g:comfortable_motion_friction = 100.0
+let g:comfortable_motion_air_drag = 3.0
+
+"----- open-browser.vim
+nmap <Leader>b <Plug>(openbrowser-smart-search)
+vmap <Leader>b <Plug>(openbrowser-smart-search)
+
+"----- calendar.vim
+" let g:calendar_google_calendar = 1
+" let g:calendar_google_task = 1
+
+"----- winresizer
+" If you want to start window resize mode by `Ctrl+T`
+let g:winresizer_start_key = '<M-T>'
+
+" If you cancel and quit window resize mode by `z` (keycode 122)
+" let g:winresizer_keycode_cancel = 122"
+
+"----- auto-pairs
+let g:AutoPairsShortcutToggle     = '<M-P>'
+let g:AutoPairsShortcutJump       = '<M-N>'
+let g:AutoPairsShortcutFastWrap   = '<M-E>'
+let g:AutoPairsShortcutBackInsert = '<M-B>'
+
+"=============================================================================
+" Experimental settings
+"=============================================================================
+"-- Change cursor color depends on InputMethod status
+if has('gui_running') && (has('xim') || has('multi_byte_ime'))
+  "highlight Cursor guifg=NONE guibg=Green
+  highlight CursorIM guifg=Black guibg=Red
+endif
+
+"=============================================================================
+" Plugins
+"=============================================================================
+call plug#begin('~/.vim/plugged')
+" Plugins listed below will be treated by vim-plug.
+Plug 'airblade/vim-gitgutter'
+" Precision colorscheme for the vim text editor
+Plug 'altercation/vim-colors-solarized'
+" Add macOS plist editing support to Vim
+Plug 'darfink/vim-plist'
+" Automatic Lint
+Plug 'dense-analysis/ale'
+" Vim motions on speed!
+Plug 'easymotion/vim-easymotion'
+" Tab completion
+" Plug 'ervandew/supertab'
+" Syntax highlighting for .gitignore
+Plug 'gisphm/vim-gitignore'
+" A calendar application for Vim
+Plug 'itchyny/calendar.vim'
+" Give a visual aid to navigate marks
+Plug 'jacquesbh/vim-showmarks'
+" Insert or delete brackets, parens, quotes in pair
+Plug 'jiangmiao/auto-pairs'
+" So to called Zen mode for vim
+Plug 'junegunn/goyo.vim'
+" fzf for vim
+" Plug 'junegunn/fzf.vim'
+" Maintained version of CtrlP
+Plug 'ctrlpvim/ctrlp.vim'
+" Vim plugin which manipulate gists in Vim.
+Plug 'lambdalisue/vim-gista'
+" A harmonic plugin of vim-gista for unite.vim
+Plug 'lambdalisue/vim-gista-unite'
+" A harmonic plugin of vim-gista for ctrlp.vim
+Plug 'lambdalisue/vim-gista-ctrlp'
+" Ctags generator for Vim
+Plug 'masakuni-ito/vim-tags'
+" Vim plugin for the Perl module / CLI script 'ack'
+Plug 'mileszs/ack.vim'
+" A Vim plugin for visually displaying indent levels in code
+Plug 'nathanaelkane/vim-indent-guides'
+" Better whitespace highlighting for Vim
+Plug 'ntpeters/vim-better-whitespace'
+" Vim plugin for intensely nerdy commenting powers
+Plug 'preservim/nerdcommenter'
+" A tree explorer plugin for Vim
+Plug 'preservim/nerdtree'
+" Vim plugin that displays tags in a window, ordered by scope
+Plug 'preservim/tagbar'
+" Syntax highliting for many languages
+Plug 'sheerun/vim-polyglot'
+"Very simple vim plugin for easy resizing of your vim windows
+Plug 'simeji/winresizer'
+" search and display information from arbitrary sources like files, buffers, recently used files or registers.
+Plug 'Shougo/unite.vim'
+" quickly highlight <cword> or visually selected word
+Plug 't9md/vim-quickhl'
+" to visually select increasingly larger regions
+Plug 'terryma/vim-expand-region'
+" Print Vim variables
+Plug 'thinca/vim-prettyprint'
+" Comment stuff out.
+"Plug 'tpope/vim-commentary'
+" wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
+Plug 'tpope/vim-endwise'
+" A Git wrapper so awesome, it should be illegal
+Plug 'tpope/vim-fugitive'
+" '.' command enhancer
+Plug 'tpope/vim-repeat'
+" Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
+Plug 'tpope/vim-sleuth'
+" All about 'surroundings': parentheses, brackets, quotes, XML tags, and more.
+Plug 'tpope/vim-surround'
+" Open URI with your favorite browser from your most favorite editor
+Plug 'tyru/open-browser.vim'
+" Lean & mean status/tabline for vim that's light as air
+Plug 'vim-airline/vim-airline'
+" A collection of themes for vim-airline
+Plug 'vim-airline/vim-airline-themes'
+" Vim documents tranlated to Japanese
+Plug 'vim-jp/vimdoc-ja'
+" Set 'wildignore' from ./.gitignore
+Plug 'vim-scripts/gitignore'
+" Syntax checking hacks for vim
+" Plug 'vim-syntastic/syntastic'
+" smooth scrolling to the Vim world!
+Plug 'yuttie/comfortable-motion.vim'
+call plug#end()
 "-----------------------------------------------------------------------------
-"色の設定
-"colorscheme default
-colorscheme molokai
-
-" Try to use Solarized
-"try
-"	set background=dark
-"	colorscheme solarized
-"catch
-"endtry
-
-if (exists('+colorcolumn'))
-  set colorcolumn=100
-  highlight ColorColumn ctermbg=9
-endif
-
+" Read other files
 "-----------------------------------------------------------------------------
-"Only do this part when compiled with support for autocommands
-if has("autocmd")
-	augroup redhat
-		autocmd!
-		" In text files, always limit the width of text to 78 characters
-		autocmd BufRead *.txt set tw=78
-
-		" When editing a file, always jump to the last cursor position
-		autocmd BufReadPost *
-			\ if line("'\"") > 0 && line ("'\"") <= line("$") |
-			\     exe "normal! g'\"" |
-			\ endif
-
-		" don't write swapfile on most commonly used directories for NFS mounts or USB sticks
-		autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
-
-		" start with spec file template
-		autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
-		augroup END
-endif
-
-if has("cscope") && filereadable("/usr/bin/cscope")
-	set csprg=/usr/bin/cscope
-	set csto=0
-	set cst
-	set nocsverb
-	" add any database in current directory
-	if filereadable("cscope.out")
-		cs add cscope.out
-	" else add database pointed to by environment
-	elseif $CSCOPE_DB != ""
-		cs add $CSCOPE_DB
-	endif
-	set csverb
-endif
-
-"-----------------------------------------------------------------------------
-"Switch syntax highlighting on, when the terminal has colors
-"Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-	syntax on
-	"set hlsearch
-endif
-
-if &term=="xterm"
-	set t_Co=8
-	set t_Sb=[4%dm
-	set t_Sf=[3%dm
-endif
-
-if &term=="xterm-256color"
-	set t_Co=256
-	set t_Sb=^[[4%dm
-	set t_Sf=^[[3%dm
-endif
-
-
-"Don't wake up system with blinking cursor:
-"http://www.linuxpowertop.org/known.php
-let &guicursor = &guicursor . ",a:blinkon0"
-
-"https://qiita.com/smison/items/f392037f1164eba5cc74
-"行番号表示切り替え
-function ToggleNumber()
-	if &number
-		setlocal nonumber
-	else
-		setlocal number
-	endif
-endfunctio
-
-"検索ハイライト切替
-function ToggleHighlight()
-	if &hlsearch
-		setlocal nohlsearch
-	else
-		setlocal hlsearch
-	endif
-endfunction
-
-"制御記号表示切り替え
-function ToggleList()
-	if &list
-		setlocal nolist
-	else
-		setlocal list
-	endif
-endfunction
-
-"行番号表示On/Off(Ctrl-N)
-nmap <C-n> :call ToggleNumber()<CR>
-
-"検索ハイライトOn/Off(Ctrl-H)
-"http://d.hatena.ne.jp/h1mesuke/20080327/p1
-nmap <C-h> :call ToggleHighlight()<CR>
-
-"制御/空白文字表示On/Off(Ctrl-L)
-nmap <C-l> :call ToggleList()<CR>
-
-"GitGutter表示On/Off(Ctrl-g)
-nmap <C-g> :call gitgutter#toggle()<CR>
-
-"他の設定ファイルを読み込む
 "set runtimepath+=~/.vim/
 runtime! conf.d/*.vim
 

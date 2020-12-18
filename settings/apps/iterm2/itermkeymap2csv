@@ -1,0 +1,13 @@
+#!/bin/sh
+# vim: ft=sh ts=2 sw=2 ff=unix fenc=utf-8
+
+# ORIGIN: 2020-12-17 by hmr
+
+# Convert iTerm2 Keymap file to CSV
+
+# Usage: cat originalfile | itermkeymap2csv > CSVfile
+#        itermkeymap2csv < originalfile > CSVfile
+
+jq -r \
+  '."Key Mappings" | to_entries | .[] | [(.key), (.value.Label), (.value.Action), (.value.Text)] | @csv'
+

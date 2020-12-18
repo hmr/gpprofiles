@@ -1,0 +1,118 @@
+# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+
+# dot-shell_rc_macos
+# ORIGIN: 2019-11-12 by hmr
+
+
+function HB_ADD_PATH_GNU () {
+  [ -z "$1" ] && return 1
+  local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
+  if [ -d ${HB_TARGET} ]; then
+    export PATH=${HB_TARGET}:${PATH}
+    return 0
+  else
+    return 2
+  fi
+}
+
+function HB_ADD_PATH () {
+  [ -z "$1" ] && return 1
+  local HB_TARGET=/usr/local/opt/$1/bin
+  if [ -d ${HB_TARGET} ]; then
+    export PATH=${HB_TARGET}:${PATH}
+    return 0
+  else
+    return 2
+  fi
+}
+
+echo "Processing dot-shell_rc_macos"
+echo ${OSTYPE} | grep "darwin" >& /dev/null
+if [ $? -eq 0 ]; then
+  # BASH
+  case "$(chkshell)" in
+    bash )
+      echo ${SHELL} | grep "bash" >& /dev/null
+      if [ $? -eq 0 ]; then
+        echo "  Suppress deprecation warning for bash."
+        export BASH_SILENCE_DEPRECATION_WARNING=1
+      fi
+      ;;
+  esac
+
+  # use lesspipe
+  which lesspipe.sh >& /dev/null
+  if [ $? -eq 0 ]; then
+    echo "  Setting lesspipe."
+    #export LESSOPEN="|$(which lesspipe.sh) %s"
+    eval "$(lesspipe.sh)"
+  fi
+
+  # Homebrew
+  # Force to use Homebrew version of curl
+  export HOMEBREW_FORCE_BREWED_CURL=1
+  # Not to update automatically
+  # export HOMEBREW_NO_AUTO_UPDATE=1
+
+  # iTerm2 Shell Integration
+  #if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
+  #  echo "  Setting iTerm2 shell integration."
+  #  source ${HOME}/.iterm2_shell_integration.bash
+  #fi
+
+  # PATH
+  echo "  Setting path..."
+  # Android Debug Bridge(adb)
+  echo -n "    Android Studio"
+  export ANDROID_HOME=${HOME}/Library/Android/sdk
+  export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+  # Use HomeBrew binaries instead of macOS default.
+  TEMP_TGT=coreutils
+  HB_ADD_PATH_GNU ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=binutils
+  HB_ADD_PATH ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=grep
+  HB_ADD_PATH_GNU ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=gnu-sed
+  HB_ADD_PATH_GNU ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=gnu-tar
+  HB_ADD_PATH_GNU ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=gnu-time
+  HB_ADD_PATH_GNU ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=curl-openssl
+  HB_ADD_PATH ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=imagemagick@6
+  HB_ADD_PATH ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=sqlite
+  HB_ADD_PATH ${TEMP_TGT} \
+    && echo -n ", ${TEMP_TGT}"
+
+  # Python3.8
+#  if [ -d /usr/local/opt/python@3.8/bin ]; then
+#    export PATH="/usr/local/opt/python@3.8/bin:${PATH}"
+#    echo -n ", Python@3.8"
+#  fi
+
+  echo
+
+else
+  echo "  This environment isn't macOS."
+fi
+
