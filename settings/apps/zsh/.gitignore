@@ -2,4 +2,8 @@
 .zcompdump
 .zsh_history
 .zsh_history_temp
+zplug/cache/
+zplug/log/
+zplug/repos/
+zplug/zcompdump
 

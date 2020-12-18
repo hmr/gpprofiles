@@ -47,7 +47,7 @@ set nohlsearch            " not to highlight matching part
 set incsearch             " use incremental search
 set ignorecase            " ignore case distinctions
 set showmatch             " briefly jump to matched bracket
-set noshowmode            " not to show current mode at bottomost row
+set noshowmode            " not to show current mode at bottommost row
 set title                 " allow vim change terminal's title
 set virtualedit=block     " allow free cursor in visual block mode
 set whichwrap=b,s,[,],<,> " allow these keys move next or previous line(see help)
@@ -63,6 +63,7 @@ set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
 set showbreak=↪           " string to put at the start of lines that have been wrapped. Useful values are "> " or "+++ "
 set hidden                " not to unload and to hide the buffer when abondoned
 "set paste                 " put Vim in Paste mode which is useful for pasting some text to Vim.
+set modeline
 
 " Use <Leader>y <Leader>d <Leader>p to copy/cut/paste with system clipbord!
 "set clipboard&            " reset clipboard as default

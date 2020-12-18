@@ -28,6 +28,9 @@ elif [ -d /usr/share/zplug ]; then
 fi
 
 if [ -n "${ZPLUG_HOME}" ]; then
+  # zplug found
+
+  # load zplug
   source $ZPLUG_HOME/init.zsh
 
   zplug "zsh-users/zsh-completions"
@@ -44,39 +47,45 @@ if [ -n "${ZPLUG_HOME}" ]; then
   # Gitのエイリアスも補完
   zplug "peterhurford/git-aliases.zsh"
 
-# Use with fzf
-#zplug "junegunn/fzf", use:shell/key-bindings.zsh # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
-#zplug "junegunn/fzf", use:shell/completion.zsh # cd **[TAB], vim **[TAB]などでファイル名を補完できる#zplug "junegunn/fzf"
-# fzf でよく使う関数の詰め合わせ
-#zplug "mollifier/anyframe"
-# ディレクトリ移動を高速化（fzf であいまい検索）
-zplug "b4b4r07/enhancd", use:init.sh
-# git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
-#zplug "motemen/ghq", as:command, from:gh-r
+  # Use with fzf
+  #zplug "junegunn/fzf", use:shell/key-bindings.zsh # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
+  #zplug "junegunn/fzf", use:shell/completion.zsh # cd **[TAB], vim **[TAB]などでファイル名を補完できる#zplug "junegunn/fzf"
+  # fzf でよく使う関数の詰め合わせ
+  #zplug "mollifier/anyframe"
+  # ディレクトリ移動を高速化（fzf であいまい検索）
+  zplug "b4b4r07/enhancd", use:init.sh
+  # git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
+  #zplug "motemen/ghq", as:command, from:gh-r
 
-#zplug "modules/prompt", from:prezto
-zplug "romkatv/powerlevel10k", as:theme, depth:1
+  #zplug "modules/prompt", from:prezto
+  zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-# Install plugins if there are plugins that have not been installed
-# if ! zplug check --verbose; then
-if ! zplug check; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
+  # Install plugins if there are plugins that have not been installed
+  if ! zplug check --verbose; then
+    # if ! zplug check; then
+    printf "Install? [y/N]: "
+    if read -q; then
+      echo; zplug install
+    fi
   fi
-fi
 
-# Then, source plugins and add commands to $PATH
-#zplug load --verbose
-zplug load
-echo
+  # Then, source plugins and add commands to $PATH
+  #zplug load --verbose
+  zplug load
+  if [ $?=0 ]; then
+    echo "  zplug successfully loaded."
+  else
+    echo "  zplug abnormally loaded."
+  fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-${HOME}}/.p10k.zsh
-[[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
-echo
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-${HOME}}/.p10k.zsh
+  [[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
+  echo
+
 else
-  echo "===== zplug not found. Consider installing it. ====="
+  # zplug not found
+  echo "  ===== zplug not found. Consider installing it. ====="
 fi
 
 # GPProfiles
