@@ -1,0 +1,3 @@
+[submodule "settings/apps/tmux/libexec/os-stats-tools"]
+	path = settings/apps/tmux/libexec/os-stats-tools
+	url = https://github.com/hmr/os-stats-tools.git
