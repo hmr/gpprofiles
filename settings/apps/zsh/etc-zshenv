@@ -1,0 +1,14 @@
+# vim: ft=zsh ts=2 sw=2 et ff=unix fenc=utf-8
+#
+# Systemwide zshenv
+#
+# ORIGIN: 2020-12-18 by hmr
+
+# echo "Processing /usr/local/etc/zshenv..."
+
+# "XDG Base Directory" like settings
+[ -z "${XDG_CONFIG_HOME}" ] && export XDG_CONFIG_HOME=$HOME/.config
+[ -z "${XDG_CACHE_HOME}" ]  && export XDG_CACHE_HOME=$HOME/.cache
+[ -z "${XDG_DATA_HOME}" ]   && export XDG_DATA_HOME=$HOME/.local/share
+[ -z "${ZDOTDIR}" ]         && export ZDOTDIR=$HOME/.config/zsh
+
