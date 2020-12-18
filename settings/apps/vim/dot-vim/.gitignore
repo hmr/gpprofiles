@@ -1,4 +1,5 @@
 .netrwhist
+viminfo
 autoload/plug.vim.old
 conf.d/personal.vim
 templates/

@@ -22,10 +22,10 @@ filetype plugin indent on " ファイルタイプ検出プラグインと自動�
 set encoding=utf-8    " Set utf-8 as default encoding.
 set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,ucs-bom
 set fileformats=unix,dos,mac
-
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set autoindent        " always set autoindenting on
-set viminfo='20,\"50  " read/write a .viminfo file, don't store more than 50 lines of registers
+set viminfo='20,\"50  " read/write a viminfo file, don't store more than 50 lines of registers
+set viminfo+=n~/.vim/viminfo    " filepath viminfo
 set noswapfile        " not to make swap file.
 set nowritebackup     " not to make backup file.
 set nobackup          " not to backup
