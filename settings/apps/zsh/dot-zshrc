@@ -1,13 +1,17 @@
-# vim: ft=zsh
+# vim: ft=zsh ts=2 sw=2 et ff=unix fenc=utf-8
+
+# Part of GPP
 # dot-zshrc
+#
+# ORIGIN: 2020 by hmr
 
 echo "Processing dot-zshrc..."
 
-# Systemwide zshrc
+# System-wide zshrc
 [ -r /usr/local/etc/zshrc ] && source /usr/local/etc/zshrc
 
 # zsh options
-source ${ZDOTDIR:-~}/.zshrc_setopt
+source ${ZDOTDIR:-${HOME}}/.zshrc_setopt
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -17,22 +21,28 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Plug-in management by zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
+if [ -d /usr/local/opt/zplug ]; then
+  export ZPLUG_HOME=/usr/local/opt/zplug
+elif [ -d /usr/share/zplug ]; then
+  export ZPLUG_HOME=${ZDOTDIR:-${HOME}}/zplug
+fi
 
-zplug "zsh-users/zsh-completions"
-autoload -U compinit && compinit
-zplug "zsh-users/zsh-autosuggestions"
-# enhances the terminal environment with 256 colors
-zplug "chrissicool/zsh-256color"
-# コマンドを種類毎に色づけ
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-# ヒストリの補完強化
-zplug "zsh-users/zsh-history-substring-search", defer:3
-# Gitの補完
-zplug "plugins/git",   from:oh-my-zsh
-# Gitのエイリアスも補完
-zplug "peterhurford/git-aliases.zsh"
+if [ -n "${ZPLUG_HOME}" ]; then
+  source $ZPLUG_HOME/init.zsh
+
+  zplug "zsh-users/zsh-completions"
+  autoload -U compinit && compinit
+  zplug "zsh-users/zsh-autosuggestions"
+  # enhances the terminal environment with 256 colors
+  zplug "chrissicool/zsh-256color"
+  # コマンドを種類毎に色づけ
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  # ヒストリの補完強化
+  zplug "zsh-users/zsh-history-substring-search", defer:3
+  # Gitの補完
+  zplug "plugins/git",   from:oh-my-zsh
+  # Gitのエイリアスも補完
+  zplug "peterhurford/git-aliases.zsh"
 
 # Use with fzf
 #zplug "junegunn/fzf", use:shell/key-bindings.zsh # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
@@ -50,10 +60,10 @@ zplug "romkatv/powerlevel10k", as:theme, depth:1
 # Install plugins if there are plugins that have not been installed
 # if ! zplug check --verbose; then
 if ! zplug check; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
 fi
 
 # Then, source plugins and add commands to $PATH
@@ -65,6 +75,9 @@ echo
 export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-~}/.p10k.zsh
 [[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
 echo
+else
+  echo "===== zplug not found. Consider installing it. ====="
+fi
 
 # GPProfiles
 source ${ZDOTDIR:-~}/.zshrc_gpp # gpprofile
