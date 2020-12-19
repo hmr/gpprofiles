@@ -19,10 +19,6 @@ set-option -g  status-right "#[default]"  # reset
 TM_CONF_BASE="~/.config/tmux"
 TM_BIN_DIR="~/.config/tmux/libexec/os-stats-tools/bin"
 
-if-shell "type lsb_release" {
-TM_SYS="#(lsb_release -s -i)"
-}
-
 set-option -ag status-left  "#(#{TM_BIN_DIR}/print_sysname logo) "
 set-option -ag status-left  "#[fg=\#EEEEEE,bg=\#333333] #(lsb_release -sr) "
 set-option -ag status-left  "#[bg=colour054]#[fg=colour255] #{host_short} "
