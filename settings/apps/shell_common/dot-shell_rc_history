@@ -6,11 +6,12 @@
 
 echo "Processing dot-shell_rc_history"
 #
-export HISTSIZE=10000       # For bash and zsh
-export HISTFILESIZE=100000  # For bash
-export SAVEHIST=100000      # For zsh
+case "$(chkshell)" in
+  "bash" )
 
-if [ $(echo ${SHELL} | grep bash >& /dev/null) ]; then
+  export HISTSIZE=10000       # For bash and zsh
+  export HISTFILESIZE=100000  # For bash
+
   # Don't put duplicate lines in the history.
   export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoreboth
 
@@ -24,7 +25,36 @@ if [ $(echo ${SHELL} | grep bash >& /dev/null) ]; then
   #export PROMPT_COMMAND="history -a"
   export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
   shopt -u histappend
-elif [ $(echo ${SHELL} | grep zsh >& /dev/null) ]; then
-  setopt HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_FIND_NO_DUPS HIST_REDUCE_BLANKS HIST_NO_STORE
-fi
+  ;;
 
+"zsh" )
+
+  # Set histfile place by XDG
+  export HISTFILE=${XDG_DATA_HOME:-${ZDOTDIR:-$HOME}}/zsh/history
+
+  # Size of history
+  export HISTSIZE=100000        # Number of records read into memory
+  export SAVEHIST=100000        # Number of records saved into file
+
+  setopt hist_ignore_dups       # Don't save duplicated command into history list
+  setopt hist_ignore_all_dups   # Delete duplicated command from history
+  setopt hist_ignore_space      # Ignore space
+  setopt hist_find_no_dups      # Ignore duplicated command at search
+  setopt hist_reduce_blanks     # Ignore difference of space characters
+  setopt hist_no_store          # Don't save history command itself
+
+  setopt APPEND_HISTORY         # Don't overwrite history file
+  setopt EXTENDED_HISTORY       # Record history with time
+  setopt HIST_EXPIRE_DUPS_FIRST # Delete duplicated record when trimmed
+  setopt HIST_SAVE_NO_DUPS      # Delete duplicated record when saved
+  ;;
+
+"*" )
+  # Default value
+  export HISTSIZE=10000         # For bash and zsh
+  export HISTFILESIZE=100000    # For bash
+  export SAVEHIST=100000        # For zsh
+  ;;
+
+
+esac
