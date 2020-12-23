@@ -6,6 +6,6 @@
 
 echo "Processing dot-zprofile..."
 
-export GPP_SSH_AGENT_PRIV_KEYS="id_ed25519.entropy3"
-source ~/.bash_profile_gpp_ssh-agent
+export GPP_SSH_AGENT_PRIV_KEYS="id_ed25519"
+source ${ZDOTDIR:-${HOME}}/dot-zprofile_ssh-agent
 
