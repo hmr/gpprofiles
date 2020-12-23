@@ -26,8 +26,9 @@ set-option -ag status-left  "#[bg=colour024] #(#{TM_BIN_DIR}/print_ipaddr) "
 set-option -ag status-left  "#[bg=colour148]#[fg=colour234] #{session_name}:w#{window_index} "
 
 # Status line: right side
-set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=white]#[fg=black,bg=white](#(#{TM_BIN_DIR}/print_uptime)) "
+set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=white]#[fg=black,bg=white]Up:#(#{TM_BIN_DIR}/print_uptime) "
 set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=brightyellow]#[fg=black,bg=brightyellow][#(#{TM_BIN_DIR}/print_loadavg)] "
+set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=brightyellow]#[fg=black,bg=brightyellow]#(#{TM_BIN_DIR}/print_temp)'C "
 #set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=green]#[fg=black,bg=green]MP:#(#{TM_BIN_DIR}/(print_mpressure)%% "
 set-option -ga status-right "#[fg=${TM_SL_BASE_BG}]#[bg=black]#[fg=\#EEEEEE]#[bg=${TM_SL_BASE_BG}][W%V/D%j]%Y-%m-%d(%a) %H:%M:%S %z "
 
