@@ -384,6 +384,38 @@ noremap <silent> a :call AppendOrInsert()<CR>
 " 挿入モードでもCtrl-zでサスペンドする
 inoremap <C-z> <ESC><C-z>
 
+" Ctrl+Arrow: move between the windows
+map  [1;5A <C-Up>
+map  [1;5B <C-Down>
+map  [1;5C <C-Right>
+map  [1;5D <C-Left>
+map! [1;5A <C-Up>
+map! [1;5B <C-Down>
+map! [1;5C <C-Right>
+map! [1;5D <C-Left>
+noremap   <silent><C-Left>  :wincmd h<CR>
+noremap   <silent><C-Down>  :wincmd j<CR> " or <C-w>j
+noremap   <silent><C-Up>    :wincmd k<CR> " or <C-w>k
+noremap   <silent><C-Right> :wincmd l<CR> " or <C-w>l
+noremap!  <silent><C-Left>  <ESC>:wincmd l<CR> " or <C-w>h
+noremap!  <silent><C-Down>  <ESC>:wincmd l<CR> " or <C-w>j
+noremap!  <silent><C-Up>    <ESC>:wincmd l<CR> " or <C-w>k
+noremap!  <silent><C-Right> <ESC>:wincmd l<CR> " or <C-w>l
+
+" Shift+Ctrl+Arrow: move between the tabs
+map  [1;6A <C-S-Up>
+map  [1;6B <C-S-Down>
+map  [1;6C <C-S-Right>
+map  [1;6D <C-S-Left>
+map! [1;6A <C-S-Up>
+map! [1;6B <C-S-Down>
+map! [1;6C <C-S-Right>
+map! [1;6D <C-S-Left>
+noremap   <silent><C-S-Left>  :tabn<CR>
+noremap   <silent><C-S-Right> :tabp<CR>       " or <C-w>l
+noremap!  <silent><C-S-Left>  <ESC>:tabn<CR>  " or <C-w>h
+noremap!  <silent><C-S-Right> <ESC>:tabp<CR>  " or <C-w>l
+
 " TODO: Outdated code: will be deleted
 "if &term=="xterm"
 " set t_Co=8
@@ -468,7 +500,7 @@ function TogglePaste()
     setlocal paste
   endif
 endfunction
-nmap <silent> <M-p> :silent call TogglePaste()<CR>
+nmap  <silent> <M-p> :silent call TogglePaste()<CR>
 "-----------------------------------------------------------------------------
 " [Meta-G] Toggle GitGutter
 "-----------------------------------------------------------------------------
@@ -821,4 +853,21 @@ call plug#end()
 "-----------------------------------------------------------------------------
 "set runtimepath+=~/.vim/
 runtime! conf.d/*.vim
+
+"-----------------------------------------------------------------------------
+" Appendix I: Mode and Map
+"-----------------------------------------------------------------------------
+" [ ]map = normal, visual, select, operator (= Original vim map)
+" [n]map = normal
+" [v]map = visual, select
+" [s]map = select
+" [x]map = visual
+" [o]map = operator
+" map[!] = insert, commandline              (= Original vim map)
+" [i]map = insert
+" [l]map = insert, commandline, Lang-Arg
+" [c]map = commandline
+" [t]map = terminal
+
+
 
