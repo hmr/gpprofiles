@@ -20,17 +20,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Plug-in management by zplug
+# Zplug settings
 if [ -d /usr/local/opt/zplug ]; then
   export ZPLUG_HOME=/usr/local/opt/zplug
 elif [ -d /usr/share/zplug ]; then
   export ZPLUG_HOME=${ZDOTDIR:-${HOME}}/zplug
 fi
 
+# Loading Zplug
 if [ -n "${ZPLUG_HOME}" ]; then
-  # zplug found
-
-  # load zplug
   source $ZPLUG_HOME/init.zsh
 
   zplug "zsh-users/zsh-completions"
@@ -85,7 +83,6 @@ if [ -n "${ZPLUG_HOME}" ]; then
 
   # fzf settings
   export FZF_DEFAULT_OPTS="-m --height 80% --border"
-
   if type rg >& /dev/null; then
     export FZF_DEFAULT_COMMAND="rg --files"
     export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"

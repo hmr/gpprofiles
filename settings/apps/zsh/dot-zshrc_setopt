@@ -224,7 +224,8 @@ zstyle ':completion:*' verbose yes
 # _expand: グロブや変数の展開を行う。もともとあった展開と比べて、細かい制御が可能
 # _history: 履歴から補完を行う。_history_complete_wordから使われる
 # _prefix: カーソルの位置で補完を行う
-zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+zstyle ':completion:*' completer _complete _approximate _prefix _expand _match _list _history
+zstyle ':completion:*:approximate' max-errors 2 NUMERIC
 zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
 zstyle ':completion:*:warnings' format $RED'No matches for:'$YELLOW' %d'$DEFAULT
 zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
