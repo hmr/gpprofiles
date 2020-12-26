@@ -81,6 +81,8 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " Default background color(for $TERM != '
 "=============================================================================
 "colorscheme default
 colorscheme molokai
+" let g:molokai_original = 1
+let g:rehash256 = 1
 
 " Try to use Solarized
 "try
