@@ -34,7 +34,7 @@ if [ -n "${ZPLUG_HOME}" ]; then
   source $ZPLUG_HOME/init.zsh
 
   zplug "zsh-users/zsh-completions"
-  autoload -U compinit && compinit
+  autoload -Uz compinit && compinit
   zplug "zsh-users/zsh-autosuggestions"
   # enhances the terminal environment with 256 colors
   zplug "chrissicool/zsh-256color"
@@ -48,7 +48,7 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "peterhurford/git-aliases.zsh"
 
   # Use with fzf
-  #zplug "junegunn/fzf", use:shell/key-bindings.zsh # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
+  zplug "junegunn/fzf", use:shell/key-bindings.zsh # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
   #zplug "junegunn/fzf", use:shell/completion.zsh # cd **[TAB], vim **[TAB]などでファイル名を補完できる#zplug "junegunn/fzf"
   # fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
@@ -82,6 +82,19 @@ if [ -n "${ZPLUG_HOME}" ]; then
   export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-${HOME}}/.p10k.zsh
   [[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
   echo
+
+  # fzf settings
+  export FZF_DEFAULT_OPTS="-m --height 80% --border"
+
+  if type rg >& /dev/null; then
+    export FZF_DEFAULT_COMMAND="rg --files"
+    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+    export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+  elif type fd >& /dev/null; then
+    export FZF_DEFAULT_COMMAND="fd --type f"
+    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+    export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+  fi
 
 else
   # zplug not found
