@@ -94,6 +94,11 @@ if [ -n "${ZPLUG_HOME}" ]; then
     export FZF_DEFAULT_COMMAND="fd --type f"
     export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
     export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+  else
+    echo "fzf is used with super-slow 'find' now because neither 'ripgrep' nor 'fd' is installed. Consider installing one of them."
+    export FZF_DEFAULT_COMMAND="find * --type f"
+    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+    export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
   fi
 
 else
