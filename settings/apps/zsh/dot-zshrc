@@ -82,7 +82,7 @@ if [ -n "${ZPLUG_HOME}" ]; then
   echo
 
   # fzf settings
-  export FZF_DEFAULT_OPTS="-m --height 80% --border"
+  export FZF_DEFAULT_OPTS="-m --height 40% --border"
   if type rg >& /dev/null; then
     export FZF_DEFAULT_COMMAND="rg --files"
     export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
@@ -105,6 +105,9 @@ fi
 
 # GPProfiles
 source ${ZDOTDIR:-~}/.zshrc_gpp # gpprofile
+
+# Spotify-cli
+export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
 
 case "$(chkshell)" in
   zsh)

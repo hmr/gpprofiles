@@ -39,9 +39,6 @@ set cursorline        " show cursor line indicator
 set number            " show line number
 "set ruler            " show the cursor position all the time
 set laststatus=2      " when the status line would be shown(2 means always)
-" set statusline=%F%r%h%=
-" set statusline=%F%m%r%h%w\%=[TYPE=%Y]\[FORMAT=%{&ff}]\[ENC=%{&fileencoding}]\[LOW=%l/%L]
-" set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}][%B]
 set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
 set nohlsearch            " not to highlight matching part
 set incsearch             " use incremental search
@@ -64,6 +61,11 @@ set showbreak=↪           " string to put at the start of lines that have been
 set hidden                " not to unload and to hide the buffer when abondoned
 "set paste                 " put Vim in Paste mode which is useful for pasting some text to Vim.
 set modeline
+
+if has('persistent_undo')
+  set undodir=${HOME}/.vim/undo
+  set undofile
+endif
 
 " Use <Leader>y <Leader>d <Leader>p to copy/cut/paste with system clipbord!
 "set clipboard&            " reset clipboard as default
@@ -232,8 +234,8 @@ vmap <silent> <expr> p <sid>Repl()
 "-- Type 12<Enter> to go to line 12 (12G breaks my wrist)
 "-- Hit Enter to go to end of file.
 "-- Hit Backspace to go to beginning of file.
-nnoremap <CR> G
-nnoremap <BS> gg
+nnoremap <CR><CR> G
+nnoremap <BS><BS> gg
 "-- Quickly select text you just pasted:
 noremap gV `[v`]
 "-- Stop that stupid window from popping up:
@@ -355,6 +357,7 @@ inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
 "inoremap <silent> <C-h> <C-g>u<C-h>
 "-- Delete a character just after cursor(=Del key)
 nnoremap <silent> <C-d> <Del>
+"cnoremap <silent> <C-d> <Del>
 inoremap <silent> <Del> <C-g>u<Del>
 inoremap <silent> <C-d> <C-g>u<Del>
 "-- Delete characters from cursor to EOL
@@ -415,6 +418,9 @@ noremap   <silent><C-S-Left>  :tabn<CR>
 noremap   <silent><C-S-Right> :tabp<CR>       " or <C-w>l
 noremap!  <silent><C-S-Left>  <ESC>:tabn<CR>  " or <C-w>h
 noremap!  <silent><C-S-Right> <ESC>:tabp<CR>  " or <C-w>l
+
+" Testing for bash-readline
+let readline_has_bash = 1
 
 " TODO: Outdated code: will be deleted
 "if &term=="xterm"
@@ -868,6 +874,4 @@ runtime! conf.d/*.vim
 " [l]map = insert, commandline, Lang-Arg
 " [c]map = commandline
 " [t]map = terminal
-
-
 
