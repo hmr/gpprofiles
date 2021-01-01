@@ -55,3 +55,26 @@ function cd(){
       builtin cd $@ && ls;
 }
 
+# Git add
+case "$(chkshell)" in
+  bash | zsh )
+    if type fzf >& /dev/null; then
+      echo "function gadd"
+      function gadd() {
+        local selected
+        if type unbuffer >& /dev/null; then
+          selected=$(unbuffer git status -s | fzf -m --ansi | awk '{print $2}')
+        else
+          selected=$(git status -s | fzf -m --ansi | awk '{print $2}')
+        fi
+        if [[ -n "$selected" ]]; then
+          # Convert CR/LF to space
+          git add $(sed -e ':L;N;$!bL;s/\n/ /g' <<< "$selected")
+        fi
+      }
+    else
+      echo "fzf isn't installed. gadd() isn't enabled."
+    fi
+    ;;
+esac
+
