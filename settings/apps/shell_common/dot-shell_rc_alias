@@ -48,6 +48,8 @@ alias sudo='sudo -E'                          # sudo always preserves envs.
 
 alias apt='sudo apt'                          # APT is always with sudo(for Debian/Ubuntu)
 
+alias grep='grep --color=always'              # grep always outputs color
+
 #alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 #alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 
