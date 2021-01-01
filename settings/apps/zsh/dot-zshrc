@@ -105,16 +105,29 @@ fi
 
 # GPProfiles
 source ${ZDOTDIR:-~}/.zshrc_gpp # gpprofile
-
 # Spotify-cli
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
+# Help command(Alt+H)
+autoload -Uz run-help
+alias help=run-help
 
-case "$(chkshell)" in
-  zsh)
-    # set keybinding to emacs mode
-    bindkey -e
-    # zsh-history-substring-search
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-    ;;
-esac
+##### Keyboard and Keybinding
+# Keyboard layout(US, JP109, etc)
+KBDLAYOUT="US"
+
+# set keybinding to emacs mode
+bindkey -e
+# zsh-history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Extra key config
+if [ -r ~/.config/zsh/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
+  source ~/.config/zsh/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
+fi
+bindkey '^[[1;3D' backward-word     # Alt+Left
+bindkey '^[[1;3C' forward-word      # Alt+Right
+# Example settings
+# [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
+# [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+
