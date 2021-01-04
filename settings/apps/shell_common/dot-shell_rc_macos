@@ -69,40 +69,34 @@ if [ $? -eq 0 ]; then
 
   # Use HomeBrew binaries instead of macOS default.
   TEMP_TGT=coreutils
-  HB_ADD_PATH_GNU ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=binutils
-  HB_ADD_PATH ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=grep
-  HB_ADD_PATH_GNU ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=gnu-sed
-  HB_ADD_PATH_GNU ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=gnu-tar
-  HB_ADD_PATH_GNU ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=gnu-time
-  HB_ADD_PATH_GNU ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=curl-openssl
-  HB_ADD_PATH ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=imagemagick@6
-  HB_ADD_PATH ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT=sqlite
-  HB_ADD_PATH ${TEMP_TGT} \
-    && echo -n ", ${TEMP_TGT}"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT=bc
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   # Python3.8
 #  if [ -d /usr/local/opt/python@3.8/bin ]; then
@@ -113,6 +107,6 @@ if [ $? -eq 0 ]; then
   echo
 
 else
-  echo "  not macOS. skip."
+  echo "  skip because this isn't macOS."
 fi
 
