@@ -112,8 +112,8 @@ autoload -Uz run-help
 alias help=run-help
 
 ##### Keyboard and Keybinding
-# Keyboard layout(US, JP109, etc)
-KBDLAYOUT="US"
+# Keyboard layout(US101, JP109, Mac-US, Mac-JIS, Keychron_K2_Mac, etc...)
+KBDLAYOUT="Keychron_K2_Mac"
 
 # set keybinding to emacs mode
 bindkey -e
