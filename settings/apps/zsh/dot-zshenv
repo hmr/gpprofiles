@@ -12,6 +12,9 @@
 [ -z "${XDG_DATA_HOME}" ]   && export XDG_DATA_HOME=$HOME/.local/share
 [ -z "${ZDOTDIR}" ]         && export ZDOTDIR=$HOME/.config/zsh
 
+
+[[ "$-" != *i* ]] && return # return when non-interactive shell
+
 # Color definition
 #local DEFAULT=$'%{^[[m%}'$
 #local RED=$'%{^[[1;31m%}'$
