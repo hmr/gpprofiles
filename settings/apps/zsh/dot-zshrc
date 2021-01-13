@@ -98,6 +98,13 @@ if [ -n "${ZPLUG_HOME}" ]; then
     export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
   fi
 
+  # enhancd settings
+  export ENHANCD_DIR=${ZDOTDIR:-~}/enhancd
+  export ENHANCD_FILTER=fzf-tmux:fzf
+  export ENHANCD_DISABLE_DOT=1
+  export ENHANCD_DISABLE_HOME=1
+  export ENHANCD_HOOK_AFTER_CD=pwd
+
 else
   # zplug not found
   echo "  ===== zplug not found. Consider installing it. ====="
