@@ -40,14 +40,6 @@ if [ $? -eq 0 ]; then
       ;;
   esac
 
-  # use lesspipe
-  which lesspipe.sh >& /dev/null
-  if [ $? -eq 0 ]; then
-    echo "  Setting lesspipe."
-    #export LESSOPEN="|$(which lesspipe.sh) %s"
-    eval "$(lesspipe.sh)"
-  fi
-
   # Homebrew
   # Force to use Homebrew version of curl
   export HOMEBREW_FORCE_BREWED_CURL=1

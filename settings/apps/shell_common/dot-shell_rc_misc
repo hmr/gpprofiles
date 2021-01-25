@@ -21,6 +21,16 @@ case "$(chkshell)" in
     ;;
 esac
 
+# use lesspipe
+LESSPIPE=""
+[[ -z "${LESSPIPE}" ]] && type lesspipe >& /dev/null && LESSPIPE="lesspipe"
+[[ -z "${LESSPIPE}" ]] && type lesspipe.sh >& /dev/null && LESSPIPE="lesspipe.sh"
+if [ -n "${LESSPIPE}" ]; then
+  echo "  Setting lesspipe."
+  #export LESSOPEN="|$(which lesspipe.sh) %s"
+  eval "$(${LESSPIPE})"
+fi
+
 # Show private key(s) held by ssh-agent
 ssh-add -l >& /dev/null
 RESULT=$?
