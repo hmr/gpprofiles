@@ -1,66 +1,61 @@
 " Part of GPP(General Puropose Profiles)
 " vim: ft=vim ts=2 sts=2 sw=2 expandtab fenc=utf-8 ff=unix
+" Main Vim configuration
 
+set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
 
 "-----------------------------------------------------------------------------
-"Settings for vim-plug [https://github.com/junegunn/vim-plug]
+" Read configuration files
 "-----------------------------------------------------------------------------
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  augroup vimplug_g
-    autocmd!
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  augroup END
-endif
+runtime conf.d/keymap.vim   " Keymap definition
+runtime conf.d/vimplug.vim  " Vim-Plug
 
 "----------------------------------------------------------------------------
-"Misc settings [http://www.geek.sc/archives/977]
+" Misc settings [http://www.geek.sc/archives/977]
 "----------------------------------------------------------------------------
-"filetype plugin on
-filetype plugin indent on " ファイルタイプ検出プラグインと自動インデントを使う
-set encoding=utf-8    " Set utf-8 as default encoding.
+filetype plugin indent on       " Use filetype plugin and auto indent
 set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,ucs-bom
 set fileformats=unix,dos,mac
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
-set autoindent        " always set autoindenting on
-set viminfo='20,\"50  " read/write a viminfo file, don't store more than 50 lines of registers
+set autoindent                  " always set autoindenting on
+set viminfo='20,\"50            " read/write a viminfo file, don't store more than 50 lines of registers
 set viminfo+=n~/.vim/viminfo    " filepath viminfo
-set noswapfile        " not to make swap file.
-set nowritebackup     " not to make backup file.
-set nobackup          " not to backup
-"set backup           " keep a backup file
-set history=50        " keep 50 lines of command line history
-set textwidth=1024    " default maximum width of text(0 means never use auto line break)
-set tabstop=4         " default tab width
-set shiftwidth=0      " default indent width(0 means same as tabstop)
-set expandtab         " expand tab to space
-set cursorline        " show cursor line indicator
-set number            " show line number
-"set ruler            " show the cursor position all the time
-set laststatus=2      " when the status line would be shown(2 means always)
-set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
-set nohlsearch            " not to highlight matching part
-set incsearch             " use incremental search
-set ignorecase            " ignore case distinctions
-set showmatch             " briefly jump to matched bracket
-set noshowmode            " not to show current mode at bottommost row
-set title                 " allow vim change terminal's title
-set virtualedit=block     " allow free cursor in visual block mode
-set whichwrap=b,s,[,],<,> " allow these keys move next or previous line(see help)
-set ambiwidth=double      " a magic to deal with full width characters well
-set wildmenu              " use command line completion
-set wildmode=longest,full " completion mode(see help)
-set noerrorbells          " no beep nor screen flush for error messages
-set novisualbell          " no flush screen instead of beeping
-set visualbell t_vb=      " visualbell is void(do nothing)
-set list                  " show control characters such as tab or EOL.
+set noswapfile                  " not to make swap file.
+set nowritebackup               " not to make backup file.
+set nobackup                    " not to backup
+set history=50                  " keep 50 lines of command line history
+set textwidth=0                 " default maximum width of text(0 means never use auto line break)
+set tabstop=4                   " default tab width
+set shiftwidth=0                " default indent width(0 means same as tabstop)
+set expandtab                   " expand tab to space
+set cursorline                  " show cursor line indicator
+set cursorlineopt=number
+set number                      " show line number
+"set ruler                      " show the cursor position all the time
+set laststatus=2                " when the status line would be shown(2 means always)
+"set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
+set nohlsearch                  " not to highlight matching part
+set incsearch                   " use incremental search
+set ignorecase                  " ignore case distinctions
+set showmatch                   " briefly jump to matched bracket
+set noshowmode                  " not to show current mode at bottommost row
+set title                       " allow vim change terminal's title
+set virtualedit=block           " allow free cursor in visual block mode
+set whichwrap=b,s,[,],<,>       " allow these keys move next or previous line(see help)
+set ambiwidth=double            " a magic to deal with full width characters well
+set wildmenu                    " use command line completion
+set wildmode=longest,full       " completion mode(see help)
+set noerrorbells                " no beep nor screen flush for error messages
+set novisualbell                " no flush screen instead of beeping
+set visualbell t_vb=            " visualbell is void(do nothing)
+set list                        " show control characters such as tab or EOL.
 "set listchars=tab:»\ ,eol:↲,space:␣,trail:･,extends:⟩,precedes:⟨
 set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
-set showbreak=↪           " string to put at the start of lines that have been wrapped. Useful values are "> " or "+++ "
-set hidden                " not to unload and to hide the buffer when abondoned
-"set paste                 " put Vim in Paste mode which is useful for pasting some text to Vim.
-set modeline
+set showbreak=↪                 " string to put at the start of line wrapped. Useful values are '>' or '+++'
+set hidden                      " not to unload and to hide the buffer when abondoned
+"set paste                      " put Vim in Paste mode which is useful for pasting some text to Vim.
+set modeline                    " use modeline
 
 if has('persistent_undo')
   set undodir=${HOME}/.vim/undo
@@ -71,28 +66,8 @@ endif
 "set clipboard&            " reset clipboard as default
 "set clipboard^=unnamed    " use system's clipboard
 
-set termguicolors         " Use True Color
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " Default foreground color(for $TERM != 'xterm')
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " Default background color(for $TERM != 'xterm')
-
-" 正規表現メタ文字のエスケープシーケンスを不要にする(very magic)
-"nnoremap /  /\v
-
-"=============================================================================
-" General color settings
-"=============================================================================
-"colorscheme default
-colorscheme molokai
-let g:molokai_original = 1
-let g:rehash256 = 1
-set background=dark
-
-" Try to use Solarized
-"try
-" set background=dark
-" colorscheme solarized
-"catch
-"endtry
+" No need to escape regular expression meta characters when search(very magic)
+" nnoremap /  /\v
 
 "=============================================================================
 " Settings for Airline(lean & mean status/tabline for vim that's light as air )
@@ -141,7 +116,6 @@ endif
 "let g:airline_left_alt_sep = ''
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
-
 
 "let g:airline_right_sep = '«'
 "let g:airline_right_sep = '◀'
@@ -193,7 +167,7 @@ let mapleader = "\<Space>"
 
 " II. Map your most frequent actions to Leader
 "-- Type <Space>o to open a new file
-nnoremap <Leader>o :CtrlP<CR>
+"nnoremap <Leader>o :CtrlP<CR>
 "-- Type <Space>w to save file (a lot faster than :w<Enter>)
 nnoremap <Leader>w :w<CR>
 "-- Enter visual line mode with <Space><Space>
@@ -232,7 +206,7 @@ endfunction
 " vp doesn't replace paste buffer
 vmap <silent> <expr> p <sid>Repl()
 
-"-- Type 12<Enter> to go to line 12 (12G breaks my wrist)
+"-- Type 12<Enter><Enter> to go to line 12 (12G breaks my wrist)
 "-- Hit Enter to go to end of file.
 "-- Hit Backspace to go to beginning of file.
 nnoremap <CR><CR> G
@@ -252,6 +226,12 @@ snoremap <C-c> <ESC>
 xnoremap <C-c> <ESC>
 onoremap <C-c> <ESC>
 inoremap <C-c> <ESC>
+
+" Don't back 1 charactor when leaving insert mode
+augroup DoNotBack
+  autocmd!
+  autocmd InsertLeave * execute 'normal! l'
+augroup END
 
 "=============================================================================
 " From 若干Emacs風味なvimのキー設定
@@ -345,32 +325,50 @@ function! MyMoveWord_i(cmd)
   return ''
 endfunction
 
-
-" Argument <silent> makes the executed command not to output command line
-" further infomarion, consult :help :map-arguments
 "-- Jump to BOL/EOL
-nnoremap <silent> <C-a> ^
-nnoremap <silent> <C-e> $
+" nnoremap <C-a> ^
+nnoremap <C-a> 0
+" nnoremap <C-S-a> ^
+nnoremap <C-e> $
+vnoremap <C-a> 0
+" cnoremap <C-S-a> ^
+vnoremap <C-e> $
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
 inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
-"-- Delete a character just before cursor(=BS key)
-"inoremap <silent> <BS>  <C-g>u<BS>
-"inoremap <silent> <C-h> <C-g>u<C-h>
+
 "-- Delete a character just after cursor(=Del key)
-nnoremap <silent> <C-d> <Del>
-"cnoremap <silent> <C-d> <Del>
+nnoremap <C-d> <Del>
+cnoremap <C-d> <Del>
 inoremap <silent> <Del> <C-g>u<Del>
 inoremap <silent> <C-d> <C-g>u<Del>
+
+"-- Delete a word
+function DeleteForwardWord()
+  silent execute 'normal! dw'
+  return ''
+endfunction
+
+function DeleteBackwardWord()
+  silent execute 'normal! db'
+  return ''
+endfunction
+
+noremap  <silent> <M-d>  :call DeleteForwardWord()<CR>
+noremap  <silent> <M-BS> :call DeleteBackwardWord()<CR>
+noremap! <silent> <M-d>  <C-r>=DeleteForwardWord()<CR>
+noremap! <silent> <M-BS> <C-w>
+
 "-- Delete characters from cursor to EOL
 nnoremap <C-k> D
 inoremap <silent> <C-k> <C-g>u<C-r>=MyExecExCommand('normal! D','onemore')<CR>
 
 "-- Move word by word
-noremap f w
-"nnoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
-"nnoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
-inoremap <silent> <ESC>f <C-r>=MyMoveWord_i('w')<CR>
-inoremap <silent> <ESC>b <C-r>=MyMoveWord_i('b')<CR>
+noremap  <silent> <M-Right> :call MyMoveWord_i('W')<CR>
+noremap! <silent> <M-Right> <C-r>=MyMoveWord_i('W')<CR>
+noremap  <silent> <M-Left>  :call MyMoveWord_i('B')<CR>
+noremap! <silent> <M-Left>  <C-r>=MyMoveWord_i('B')<CR>
 
 "=============================================================================
 " Made by [hmr]
@@ -389,32 +387,16 @@ noremap <silent> a :call AppendOrInsert()<CR>
 inoremap <C-z> <ESC><C-z>
 
 " Ctrl+Arrow: move between the windows
-map  [1;5A <C-Up>
-map  [1;5B <C-Down>
-map  [1;5C <C-Right>
-map  [1;5D <C-Left>
-map! [1;5A <C-Up>
-map! [1;5B <C-Down>
-map! [1;5C <C-Right>
-map! [1;5D <C-Left>
 noremap   <silent><C-Left>  :wincmd h<CR>
 noremap   <silent><C-Down>  :wincmd j<CR> " or <C-w>j
 noremap   <silent><C-Up>    :wincmd k<CR> " or <C-w>k
 noremap   <silent><C-Right> :wincmd l<CR> " or <C-w>l
-noremap!  <silent><C-Left>  <ESC>:wincmd l<CR> " or <C-w>h
-noremap!  <silent><C-Down>  <ESC>:wincmd l<CR> " or <C-w>j
-noremap!  <silent><C-Up>    <ESC>:wincmd l<CR> " or <C-w>k
+noremap!  <silent><C-Left>  <ESC>:wincmd h<CR> " or <C-w>h
+noremap!  <silent><C-Down>  <ESC>:wincmd j<CR> " or <C-w>j
+noremap!  <silent><C-Up>    <ESC>:wincmd k<CR> " or <C-w>k
 noremap!  <silent><C-Right> <ESC>:wincmd l<CR> " or <C-w>l
 
 " Shift+Ctrl+Arrow: move between the tabs
-map  [1;6A <C-S-Up>
-map  [1;6B <C-S-Down>
-map  [1;6C <C-S-Right>
-map  [1;6D <C-S-Left>
-map! [1;6A <C-S-Up>
-map! [1;6B <C-S-Down>
-map! [1;6C <C-S-Right>
-map! [1;6D <C-S-Left>
 noremap   <silent><C-S-Left>  :tabn<CR>
 noremap   <silent><C-S-Right> :tabp<CR>       " or <C-w>l
 noremap!  <silent><C-S-Left>  <ESC>:tabn<CR>  " or <C-w>h
@@ -423,19 +405,41 @@ noremap!  <silent><C-S-Right> <ESC>:tabp<CR>  " or <C-w>l
 " Testing for bash-readline
 let readline_has_bash = 1
 
-" TODO: Outdated code: will be deleted
-"if &term=="xterm"
-" set t_Co=8
-" set t_Sb=[4%dm
-" set t_Sf=[3%dm
-"endif
+" PageUp/PageDown
+function PageUpFull()
+  silent execute 'normal!' "\<C-B>"
+  return ''
+endfunction
 
-" TODO: Outdated code: will be deleted
-"if &term=="xterm-256color"
-" set t_Co=256
-" set t_Sb=^[[4%dm
-" set t_Sf=^[[3%dm
-"endif
+function PageDownFull()
+  silent execute 'normal!' "\<C-F>"
+  return ''
+endfunction
+
+function PageUpHalf()
+  silent execute "normal! \<C-U>"
+  silent execute 'normal! zz'
+  return ''
+endfunction
+
+function PageDownHalf()
+  silent execute "normal! \<C-D>"
+  silent execute 'normal! zz'
+  return ''
+endfunction
+
+noremap  <silent> <PageUp>     :call PageUpFull()<CR>
+noremap  <silent> <PageDown>   :call PageDownFull()<CR>
+noremap! <silent> <PageUp>     <C-r>=PageUpFull()<CR>
+noremap! <silent> <PageDown>   <C-r>=PageDownFull()<CR>
+noremap  <silent> <S-PageUp>   :call PageUpHalf()<CR>
+noremap  <silent> <S-PageDown> :call PageDownHalf()<CR>
+noremap! <silent> <S-PageUp>   <C-r>=PageUpHalf()<CR>
+noremap! <silent> <S-PageDown> <C-r>=PageDownHalf()<CR>
+vnoremap <PageUp>     <C-b>
+vnoremap <PageDown>   <C-f>
+vnoremap <S-PageUp>   <C-u>
+vnoremap <S-PageDown> <C-d>
 
 "-----------------------------------------------------------------------------
 " Capture(): redirect command output to file [https://gist.github.com/hokaccha/380535]
@@ -465,7 +469,7 @@ endfunction
 " }}}
 
 "-----------------------------------------------------------------------------
-" [Meta-N] Toggle line number (https://qiita.com/smison/items/f392037f1164eba5cc74)
+" [Meta-n] Toggle line number (https://qiita.com/smison/items/f392037f1164eba5cc74)
 "-----------------------------------------------------------------------------
 function ToggleNumber()
   if &number
@@ -475,8 +479,9 @@ function ToggleNumber()
   endif
 endfunction
 nmap <silent> <M-n> :silent call ToggleNumber()<CR>
+
 "-----------------------------------------------------------------------------
-" [Meta-H] Toggle search result highlighting (http://d.hatena.ne.jp/h1mesuke/20080327/p1)
+" [Meta-h] Toggle search result highlighting (http://d.hatena.ne.jp/h1mesuke/20080327/p1)
 "-----------------------------------------------------------------------------
 function ToggleHighlight()
   if &hlsearch
@@ -486,8 +491,9 @@ function ToggleHighlight()
   endif
 endfunction
 nmap <silent> <M-h> :silent call ToggleHighlight()<CR>
+
 "-----------------------------------------------------------------------------
-" [Meta-L] Toggle control character
+" [Meta-l] Toggle control character
 "-----------------------------------------------------------------------------
 function ToggleList()
   if &list
@@ -497,8 +503,9 @@ function ToggleList()
   endif
 endfunction
 nmap <silent> <M-l> :silent call ToggleList()<CR>
+
 "-----------------------------------------------------------------------------
-" [Meta-N] Toggle line number (https://qiita.com/smison/items/f392037f1164eba5cc74)
+" [Meta-p] Toggle paste mode
 "-----------------------------------------------------------------------------
 function TogglePaste()
   if &paste
@@ -508,8 +515,9 @@ function TogglePaste()
   endif
 endfunction
 nmap  <silent> <M-p> :silent call TogglePaste()<CR>
+
 "-----------------------------------------------------------------------------
-" [Meta-G] Toggle GitGutter
+" [Meta-g] Toggle GitGutter
 "-----------------------------------------------------------------------------
 nmap <silent> <M-g> :silent call gitgutter#toggle()<CR>
 
@@ -549,7 +557,7 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 " 表示幅
-let g:NERDTreeWinSize=50
+let g:NERDTreeWinSize=30
 " ブックマークを表示
 let g:NERDTreeShowBookmarks=1
 " 親ディレクトリへ移動
@@ -596,6 +604,12 @@ let g:NERDTrimTrailingWhitespace = 1
 " Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
 
+" While the plugin does not directly support motions,
+" you can leverage its support for selections to do something very similar.
+" For example, to add motions to toggle comments on the paragraph text object you could use:
+"nnoremap <silent> <leader>c} V}:call NERDComment('x', 'toggle')<CR>
+"nnoremap <silent> <leader>c{ V{:call NERDComment('x', 'toggle')<CR>
+
 "=============================================================================
 " quickhl.vim(Quickly highlight multiple word) [https://github.com/t9md/vim-quickhl]
 "=============================================================================
@@ -630,19 +644,112 @@ if has('cscope') && filereadable('/usr/local/bin/cscope')
 endif
 
 "=============================================================================
-" Settings for syntax highlighting
+" Settings for color, visual and syntax highlighting
 "=============================================================================
 if &t_Co > 2 || has('gui_running')  " Only for color environment
+
+  if has('termguicolors')
+    set termguicolors
+    if $TERM !~? 'xterm'  " for $TERM != 'xterm'
+      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " Default foreground color
+      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " Default background color
+    endif
+  endif
+
+  " Reset and enable syntax highlighting(for w/o reset use ':syntax enable')
   syntax on
+
+  " Color scheme settings
+  try
+    set background=dark
+
+    " colorscheme monokai
+
+    " -----
+    " let g:molokai_original=1
+    " let g:rehash256=1
+    " colorscheme molokai
+
+    " -----
+    let g:sublimemonokai_term_italic=1
+    " " with vim's mainline Java
+    " let java_comment_strings=1
+    " let java_highlight_functions=1
+    " let java_highlight_java_lang_ids=1
+    " " with 'fatih/vim-go'
+    " let g:go_highlight_format_strings=1
+    " let g:go_highlight_function_arguments=1
+    " let g:go_highlight_function_calls=1
+    " let g:go_highlight_functions=1
+    " let g:go_highlight_operators=1
+    " let g:go_highlight_types=1
+    " let g:go_highlight_extra_types=1
+    " let g:go_highlight_fields=1
+    " let g:go_highlight_generate_tags=1
+    " let g:go_highlight_variable_assignments=1
+    " let g:go_highlight_variable_declarations=1
+
+    " with 'StanAngeloff/php.vim'
+    " let g:php_var_selector_is_identifier=1
+
+    colorscheme sublimemonokai
+  catch
+    colorscheme default
+  endtry
+
   " Use italic font for comment
   highlight Comment cterm=italic
-  "set hlsearch
+
   " show vertical line at col 100 if possible
   if (exists('+colorcolumn'))
     set colorcolumn=100
-    highlight ColorColumn ctermbg=9
   endif
+
+  if g:colors_name ==# 'molokai'
+    if has('termguicolors')
+      highlight Comment   guifg=#95917E
+      highlight Visual    guibg=#af5f00
+      highlight VisualNOS guibg=#af5f00
+
+      " Change background color by mode
+      augroup InsertHook
+        autocmd!
+        autocmd InsertEnter * highlight Normal guibg=#263026
+        autocmd InsertLeave * highlight Normal guibg=#262626
+      augroup END
+    else
+      highlight Comment   ctermfg=247
+      highlight Visual    ctermbg=130
+      highlight VisualNOS ctermbg=130
+    endif
+  endif
+
+  if g:colors_name ==# 'sublimemonokai'
+    highlight SignColumn guibg=#383a3e
+  endif
+
 endif
+
+"-- Change cursor color depends on InputMethod status
+if has('gui_running') && (has('xim') || has('multi_byte_ime'))
+  "highlight Cursor guifg=NONE guibg=Green
+  highlight CursorIM guifg=Black guibg=Red
+endif
+
+" Change cursor shape by mode
+if has('vim_starting')
+  " 1-2: Block
+  " 3-4: Underline
+  " 5-6: Vertical
+  " (*) Odd number is with blinking
+  let &t_SI .= "\e[5 q"   " Insert mode
+  let &t_EI .= "\e[3 q"   " Normal mode
+  let &t_SR .= "\e[1 q"   " Replace mode
+endif
+
+" ScroolUp/ScrollDown by mouse wheel
+"map <S-ScrollWhellUp> <C-Y>
+"map <S-ScrollWhellDown> <C-U>
 
 "=============================================================================
 " Additional settings for MacVim
@@ -662,42 +769,42 @@ if has('gui_macvim')
   let g:winresizer_gui_enable = 1
 endif
 
-"=============================================================================
-" Settings for fzf.vim
-"=============================================================================
-set runtimepath+=/usr/local/opt/fzf
-let g:fzf_buffers_jump = 1
-nnoremap <silent> <Leader>ff :<C-u>Ag<CR>
-nnoremap <silent> <Leader>fh :<C-u>History<CR>
-nnoremap <silent> <Leader>ft :<C-u>call fzf#vim#tags(expand('<cword>'))<CR>
-nnoremap <silent> <Leader>fb :<C-u>Buffers<CR>
-nnoremap <silent> <Leader>fgs :<C-u>GFiles?<CR>
-nnoremap <silent> <Leader>fgf :<C-u>GFiles<CR>
-nnoremap <silent> <Leader>fm :<C-u>Marks<CR>
-let g:fzf_layout = { 'down': '30%' }
-let g:fzf_action = {
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-j': 'split',
-      \ 'ctrl-l': 'vsplit' }
+" "=============================================================================
+" " Settings for fzf.vim
+" "=============================================================================
+" set runtimepath+=/usr/local/opt/fzf
+" let g:fzf_buffers_jump = 1
+" nnoremap <silent> <Leader>ff :<C-u>Ag<CR>
+" nnoremap <silent> <Leader>fh :<C-u>History<CR>
+" nnoremap <silent> <Leader>ft :<C-u>call fzf#vim#tags(expand('<cword>'))<CR>
+" nnoremap <silent> <Leader>fb :<C-u>Buffers<CR>
+" nnoremap <silent> <Leader>fgs :<C-u>GFiles?<CR>
+" nnoremap <silent> <Leader>fgf :<C-u>GFiles<CR>
+" nnoremap <silent> <Leader>fm :<C-u>Marks<CR>
+" let g:fzf_layout = { 'down': '30%' }
+" let g:fzf_action = {
+"       \ 'ctrl-t': 'tab split',
+"       \ 'ctrl-j': 'split',
+"       \ 'ctrl-l': 'vsplit' }
+"
+" augroup vimrc_fzf
+"   autocmd!
+"   autocmd FileType fzf tnoremap <buffer> <leader>z <Esc>
+" augroup END
 
-augroup vimrc_fzf
-  autocmd!
-  autocmd FileType fzf tnoremap <buffer> <leader>z <Esc>
-augroup END
-
-"=============================================================================
-"Settings for vim-easymotion
-"=============================================================================
-map  <Leader>e <Plug>(easymotion-prefix)
-" Move to word
-map  <Leader>j <Plug>(easymotion-bd-w)
-nmap <Leader>j <Plug>(easymotion-overwin-w)
-" Move to line
-map  <Leader>l <Plug>(easymotion-bd-jk)
-nmap <Leader>l <Plug>(easymotion-overwin-line)
-" Move to character
-map  <Leader>k <Plug>(easymotion-bd-f)
-nmap <Leader>k <Plug>(easymotion-overwin-f)
+" "=============================================================================
+" "Settings for vim-easymotion
+" "=============================================================================
+" map  <Leader>e <Plug>(easymotion-prefix)
+" " Move to word
+" map  <Leader>j <Plug>(easymotion-bd-w)
+" nmap <Leader>j <Plug>(easymotion-overwin-w)
+" " Move to line
+" map  <Leader>l <Plug>(easymotion-bd-jk)
+" nmap <Leader>l <Plug>(easymotion-overwin-line)
+" " Move to character
+" map  <Leader>k <Plug>(easymotion-bd-f)
+" nmap <Leader>k <Plug>(easymotion-overwin-f)
 
 "=============================================================================
 " Misc Settings
@@ -719,23 +826,23 @@ augroup show_marks_sync
 augroup END
 
 "----- vim-polyglot
-let g:polyglot_disabled = ['markdown']
+" let g:polyglot_disabled = ['markdown']
 
-"----- comfortable-motion.vim
-let g:comfortable_motion_no_default_key_mappings = 1
-nnoremap <silent> <M-d> :call comfortable_motion#flick(100)<CR>
-nnoremap <silent> <M-u> :call comfortable_motion#flick(-100)<CR>
-nnoremap <silent> <M-f> :call comfortable_motion#flick(200)<CR>
-nnoremap <silent> <M-b> :call comfortable_motion#flick(-200)<CR>
-nnoremap <silent> <S-PageDown> :call comfortable_motion#flick(200)<CR>
-nnoremap <silent> <S-PageUp> :call comfortable_motion#flick(-200)<CR>
-
-"noremap <silent> <ScrollWheelDown> :call comfortable_motion#flick(40)<CR>
-"noremap <silent> <ScrollWheelUp>   :call comfortable_motion#flick(-40)<CR>
-let g:comfortable_motion_interval = 2400.0 / 60
-let g:comfortable_motion_friction = 100.0
-let g:comfortable_motion_air_drag = 3.0
-
+" "----- comfortable-motion.vim
+" let g:comfortable_motion_no_default_key_mappings = 1
+" nnoremap <silent> <M-d> :call comfortable_motion#flick(100)<CR>
+" nnoremap <silent> <M-u> :call comfortable_motion#flick(-100)<CR>
+" nnoremap <silent> <M-f> :call comfortable_motion#flick(200)<CR>
+" nnoremap <silent> <M-b> :call comfortable_motion#flick(-200)<CR>
+" nnoremap <silent> <S-PageDown> :call comfortable_motion#flick(200)<CR>
+" nnoremap <silent> <S-PageUp> :call comfortable_motion#flick(-200)<CR>
+"
+" "noremap <silent> <ScrollWheelDown> :call comfortable_motion#flick(40)<CR>
+" "noremap <silent> <ScrollWheelUp>   :call comfortable_motion#flick(-40)<CR>
+" let g:comfortable_motion_interval = 2400.0 / 60
+" let g:comfortable_motion_friction = 100.0
+" let g:comfortable_motion_air_drag = 3.0
+"
 "----- open-browser.vim
 nmap <Leader>b <Plug>(openbrowser-smart-search)
 vmap <Leader>b <Plug>(openbrowser-smart-search)
@@ -748,10 +855,16 @@ vmap <Leader>b <Plug>(openbrowser-smart-search)
 " If you want to start window resize mode by `Ctrl+T`
 let g:winresizer_start_key = '<M-T>'
 
+let g:winresizer_keycode_left  = 104 " h
+let g:winresizer_keycode_right = 108 " l
+let g:winresizer_keycode_up    = 107 " k
+let g:winresizer_keycode_down  = 106 " j
+
 " If you cancel and quit window resize mode by `z` (keycode 122)
 " let g:winresizer_keycode_cancel = 122"
 
 "----- auto-pairs
+let b:autopairs_enabled           = 0         " Default Off
 let g:AutoPairsShortcutToggle     = '<M-P>'
 let g:AutoPairsShortcutJump       = '<M-N>'
 let g:AutoPairsShortcutFastWrap   = '<M-E>'
@@ -760,106 +873,6 @@ let g:AutoPairsShortcutBackInsert = '<M-B>'
 "=============================================================================
 " Experimental settings
 "=============================================================================
-"-- Change cursor color depends on InputMethod status
-if has('gui_running') && (has('xim') || has('multi_byte_ime'))
-  "highlight Cursor guifg=NONE guibg=Green
-  highlight CursorIM guifg=Black guibg=Red
-endif
-
-"=============================================================================
-" Plugins
-"=============================================================================
-call plug#begin('~/.vim/plugged')
-" Plugins listed below will be treated by vim-plug.
-Plug 'airblade/vim-gitgutter'
-" Precision colorscheme for the vim text editor
-Plug 'altercation/vim-colors-solarized'
-" Add macOS plist editing support to Vim
-Plug 'darfink/vim-plist'
-" Automatic Lint
-Plug 'dense-analysis/ale'
-" Vim motions on speed!
-Plug 'easymotion/vim-easymotion'
-" Tab completion
-" Plug 'ervandew/supertab'
-" Syntax highlighting for .gitignore
-Plug 'gisphm/vim-gitignore'
-" A calendar application for Vim
-Plug 'itchyny/calendar.vim'
-" Give a visual aid to navigate marks
-Plug 'jacquesbh/vim-showmarks'
-" Insert or delete brackets, parens, quotes in pair
-Plug 'jiangmiao/auto-pairs'
-" So to called Zen mode for vim
-Plug 'junegunn/goyo.vim'
-" fzf for vim
-" Plug 'junegunn/fzf.vim'
-" Maintained version of CtrlP
-Plug 'ctrlpvim/ctrlp.vim'
-" Vim plugin which manipulate gists in Vim.
-Plug 'lambdalisue/vim-gista'
-" A harmonic plugin of vim-gista for unite.vim
-Plug 'lambdalisue/vim-gista-unite'
-" A harmonic plugin of vim-gista for ctrlp.vim
-Plug 'lambdalisue/vim-gista-ctrlp'
-" Ctags generator for Vim
-Plug 'masakuni-ito/vim-tags'
-" Vim plugin for the Perl module / CLI script 'ack'
-Plug 'mileszs/ack.vim'
-" A Vim plugin for visually displaying indent levels in code
-Plug 'nathanaelkane/vim-indent-guides'
-" Better whitespace highlighting for Vim
-Plug 'ntpeters/vim-better-whitespace'
-" Vim plugin for intensely nerdy commenting powers
-Plug 'preservim/nerdcommenter'
-" A tree explorer plugin for Vim
-Plug 'preservim/nerdtree'
-" Vim plugin that displays tags in a window, ordered by scope
-Plug 'preservim/tagbar'
-" Syntax highliting for many languages
-Plug 'sheerun/vim-polyglot'
-"Very simple vim plugin for easy resizing of your vim windows
-Plug 'simeji/winresizer'
-" search and display information from arbitrary sources like files, buffers, recently used files or registers.
-Plug 'Shougo/unite.vim'
-" quickly highlight <cword> or visually selected word
-Plug 't9md/vim-quickhl'
-" to visually select increasingly larger regions
-Plug 'terryma/vim-expand-region'
-" Print Vim variables
-Plug 'thinca/vim-prettyprint'
-" Comment stuff out.
-"Plug 'tpope/vim-commentary'
-" wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
-Plug 'tpope/vim-endwise'
-" A Git wrapper so awesome, it should be illegal
-Plug 'tpope/vim-fugitive'
-" '.' command enhancer
-Plug 'tpope/vim-repeat'
-" Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
-Plug 'tpope/vim-sleuth'
-" All about 'surroundings': parentheses, brackets, quotes, XML tags, and more.
-Plug 'tpope/vim-surround'
-" Open URI with your favorite browser from your most favorite editor
-Plug 'tyru/open-browser.vim'
-" Lean & mean status/tabline for vim that's light as air
-Plug 'vim-airline/vim-airline'
-" A collection of themes for vim-airline
-Plug 'vim-airline/vim-airline-themes'
-" Vim documents tranlated to Japanese
-Plug 'vim-jp/vimdoc-ja'
-" Set 'wildignore' from ./.gitignore
-Plug 'vim-scripts/gitignore'
-" Syntax checking hacks for vim
-" Plug 'vim-syntastic/syntastic'
-" smooth scrolling to the Vim world!
-Plug 'yuttie/comfortable-motion.vim'
-call plug#end()
-"-----------------------------------------------------------------------------
-" Read other files
-"-----------------------------------------------------------------------------
-"set runtimepath+=~/.vim/
-runtime! conf.d/*.vim
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
@@ -875,4 +888,3 @@ runtime! conf.d/*.vim
 " [l]map = insert, commandline, Lang-Arg
 " [c]map = commandline
 " [t]map = terminal
-
