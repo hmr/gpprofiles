@@ -56,8 +56,8 @@ setopt combining_chars          #on
 # 語の途中でもカーソル位置で補完
 setopt complete_in_word         #off
 #setopt continue_on_error       #off
-setopt correct                  #off
-setopt correct_all              #off
+#setopt correct                  #off
+#setopt correct_all              #off
 #setopt c_precedences           #off
 #setopt csh_junkie_history      #off
 #setopt csh_junkie_loops        #off
