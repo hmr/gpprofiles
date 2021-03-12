@@ -1,3 +1,6 @@
+# Part of GPP(General Puropose Profiles)"
+# vim: ft=tmux ts=2 sw=2 et fenc=utf-8
+
 # tmux.conf.cygwin
 # Settings for CYGWIN
 
@@ -12,4 +15,3 @@ bind-key v run "win32yank.exe -o | tmux load-buffer - && tmux paste-buffer"
 set-option -g status-left "#[default]Cygwin "↲
 
 
-# vim: ft=tmux ts=2 sw=2 et fenc=utf-8
