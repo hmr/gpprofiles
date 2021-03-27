@@ -28,7 +28,7 @@ export REVERSE=$(tput smso)
 export UNDERLINE=$(tput smul)
 
 #set less tab width 4, print raw characters, use long status, show line numbers.
-export LESS="-x4 -q -R -M -N"
+export LESS="-x4 -q -R -M -N -I"
 export VISUAL="vim"
 export EDITOR="vim"
 export MANPAGER="less -n"
