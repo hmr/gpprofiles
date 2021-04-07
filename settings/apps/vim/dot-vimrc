@@ -760,7 +760,7 @@ if has('gui_macvim')
   set guifont=MesloLGS\ NF\ Regular:h14
   "set guifont=RictyDiminished-Regular:h15
   " MacVim now supports trasparency!
-  set transparency=7
+  " set transparency=7
   "Supress cursor brinking [http://www.linuxpowertop.org/known.php]
   let &guicursor = &guicursor . ',a:blinkon0'
   let &t_ZH = '[3m'
