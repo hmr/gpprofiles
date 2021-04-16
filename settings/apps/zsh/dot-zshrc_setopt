@@ -37,7 +37,7 @@ setopt auto_pushd               #off
 #setopt no_bare_glob_qual       #off
 #setopt bash_autolist           #off
 #setopt bash_rematch            #off
-#setopt no_beep                 #off
+setopt no_beep                  #off
 #setopt no_bgnice               #off
 #setopt brace_ccl               #off
 #setopt bsd_echo                #off
