@@ -37,7 +37,7 @@ echo "Processing dot-shell_rc_alias"
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
 
-alias ls='ls --color=auto'                    # color ls
+alias ls='ls -CF --color=always'                  # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls -CF'                              # MS-DOS Style
