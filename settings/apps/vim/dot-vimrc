@@ -873,6 +873,8 @@ let g:AutoPairsShortcutBackInsert = '<M-B>'
 "=============================================================================
 " Experimental settings
 "=============================================================================
+"----- tag search settings for both ctags and cscope
+noremap <Leader>j   g]
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
