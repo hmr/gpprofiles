@@ -126,6 +126,20 @@
     },
 
     {
+      "description": "[GPP] Ignore Command(⌘)+R(reset terminal) on iTerm2",
+      "manipulators": [ {
+          "type": "basic",
+          "from": {
+            "key_code": "r",
+            "modifiers": { "mandatory": [ "command" ] }
+          },
+          "conditions": [ {
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] } ]
+        } ]
+    },
+
+    {
       "description": "[GPP] Command+Option+C to open Calculator",
       "manipulators": [ {
           "type": "basic",
