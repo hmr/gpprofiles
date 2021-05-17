@@ -31,8 +31,12 @@ __zplug::core::load::from_cache()
 
         # Plugins with defer-level set
         source "$_zplug_cache[defer_1_plugin]"
-        compinit -d "$ZPLUG_HOME/zcompdump"
-        if (( $_zplug_boolean_true[(I)$is_verbose] )); then
+        # Modified by hmr via [https://github.com/zplug/zplug/issues/368#issuecomment-282503359]
+        #compinit -d "$ZPLUG_HOME/zcompdump"
+		if (( ! $+functions[_zplug] )); then
+			compinit -d "$ZPLUG_HOME/zcompdump"
+		fi
+		if (( $_zplug_boolean_true[(I)$is_verbose] )); then
             __zplug::io::print::f \
                 --zplug "$fg[yellow]Run compinit$reset_color\n"
         fi

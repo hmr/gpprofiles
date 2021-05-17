@@ -5,6 +5,8 @@
 #
 # ORIGIN: 2020-06-22 by hmr
 
+zmodload zsh/zprof && zprof
+
 echo "Processing dot-zshrc..."
 
 # System-wide zshrc
@@ -32,26 +34,27 @@ if [ -n "${ZPLUG_HOME}" ]; then
   source $ZPLUG_HOME/init.zsh
 
   zplug "zsh-users/zsh-completions"
-  autoload -Uz compinit && compinit
-  zplug "zsh-users/zsh-autosuggestions"
+  # autoload -Uz compinit && compinit
+  zplug "zsh-users/zsh-autosuggestions", defer:2
   # enhances the terminal environment with 256 colors
-  zplug "chrissicool/zsh-256color"
+  zplug "chrissicool/zsh-256color", defer:2
   # コマンドを種類毎に色づけ
-  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  zplug "zsh-users/zsh-syntax-highlighting", defer:3
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search", defer:3
   # Gitの補完
-  zplug "plugins/git",   from:oh-my-zsh
+  zplug "plugins/git",   from:oh-my-zsh, defer:3
   # Gitのエイリアスも補完
-  zplug "peterhurford/git-aliases.zsh"
+  zplug "peterhurford/git-aliases.zsh", defer:3
 
   # Use with fzf
-  zplug "junegunn/fzf", use:shell/key-bindings.zsh # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
+  # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
+  zplug "junegunn/fzf", use:shell/key-bindings.zsh, defer:2
   #zplug "junegunn/fzf", use:shell/completion.zsh # cd **[TAB], vim **[TAB]などでファイル名を補完できる#zplug "junegunn/fzf"
   # fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
   # ディレクトリ移動を高速化（fzf であいまい検索）
-  zplug "b4b4r07/enhancd", use:init.sh
+  zplug "b4b4r07/enhancd", use:init.sh, defer:2
   # git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
   #zplug "motemen/ghq", as:command, from:gh-r
 
@@ -59,13 +62,13 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   # Install plugins if there are plugins that have not been installed
-  if ! zplug check --verbose; then
-    # if ! zplug check; then
-    printf "Install? [y/N]: "
-    if read -q; then
-      echo; zplug install
-    fi
-  fi
+  # if ! zplug check --verbose; then
+  #   # if ! zplug check; then
+  #   printf "Install? [y/N]: "
+  #   if read -q; then
+  #     echo; zplug install
+  #   fi
+  # fi
 
   # Then, source plugins and add commands to $PATH
   #zplug load --verbose
@@ -137,4 +140,7 @@ bindkey '^[[1;3C' forward-word      # Alt+Right
 # Example settings
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 # [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
-
+# .zshrc
+if (which zprof > /dev/null 2>&1) ;then
+  zprof
+fi
