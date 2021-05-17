@@ -37,11 +37,13 @@ echo "Processing dot-shell_rc_alias"
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
 
-alias ls='ls -CF --color=always'                  # color ls
+alias ls='ls -CF --color=always'              # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls -CF'                              # MS-DOS Style
+alias lla='ls -lA'                              # long list
 alias lh='ls -lrth'                           # Human-readable special
+alias lha='ls -lrthA'                           # Human-readable special
 
 alias ssh='ssh -A'                            # SSH always try to use ssh-agent.
 alias sudo='sudo -E'                          # sudo always preserves envs.
@@ -78,6 +80,12 @@ case "$(chkshell)" in
     if [ -r /usr/local/etc/grc.bashrc ]; then
       echo "  Enabling grc alias"
       source /usr/local/etc/grc.bashrc
+    elif [ -r /usr/etc/grc.bashrc ]; then
+      echo "  Enabling grc alias"
+      source /usr/etc/grc.bashrc
+    elif [ -r /etc/grc.bashrc ]; then
+      echo "  Enabling grc alias"
+      source /etc/grc.bashrc
     fi
     ;;
 
@@ -85,6 +93,12 @@ case "$(chkshell)" in
     if [ -r /usr/local/etc/grc.zsh ]; then
       echo "  Enabling grc alias"
       source /usr/local/etc/grc.zsh
+    elif [ -r /usr/etc/grc.zsh ]; then
+      echo "  Enabling grc alias"
+      source /usr/etc/grc.zsh
+    elif [ -r /etc/grc.zsh ]; then
+      echo "  Enabling grc alias"
+      source /etc/grc.zsh
     fi
     ;;
 
@@ -92,6 +106,12 @@ case "$(chkshell)" in
     if [ -r /usr/local/etc/grc.fish ]; then
       echo "  Enabling grc alias"
       source /usr/local/etc/grc.fish
+    elif [ -r /usr/etc/grc.fish ]; then
+      echo "  Enabling grc alias"
+      source /usr/etc/grc.fish
+    elif [ -r /etc/grc.fish ]; then
+      echo "  Enabling grc alias"
+      source /etc/grc.fish
     fi
     ;;
 esac
