@@ -5,7 +5,8 @@
 #
 # ORIGIN: 2020-06-22 by hmr
 
-zmodload zsh/zprof && zprof
+# Uncomment to profile
+# zmodload zsh/zprof && zprof
 
 echo "Processing dot-zshrc..."
 
