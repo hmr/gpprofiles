@@ -124,7 +124,7 @@ KBDLAYOUT="Keychron_K2_Mac"
 
 # set keybinding to emacs mode
 bindkey -e
-# zsh-history-substring-search
+# zsh-history-substring-search(Up and Down key)
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
