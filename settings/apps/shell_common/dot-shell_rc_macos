@@ -99,6 +99,6 @@ if [ $? -eq 0 ]; then
   echo
 
 else
-  echo "  skip because this isn't macOS."
+  echo "  skip."
 fi
 

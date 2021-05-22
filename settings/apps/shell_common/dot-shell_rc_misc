@@ -32,11 +32,11 @@ if [ -n "${LESSPIPE}" ]; then
 fi
 
 # Show private key(s) held by ssh-agent
-ssh-add -l >& /dev/null
-RESULT=$?
-if [ ${RESULT} -eq 0 ]; then
-	echo; echo "Keys held by ssh-agent:"
-	ssh-add -l
-fi
-echo
+# ssh-add -l >& /dev/null
+# RESULT=$?
+# if [ ${RESULT} -eq 0 ]; then
+#   echo; echo "Keys held by ssh-agent:"
+#   ssh-add -l
+# fi
+# echo
 

@@ -1,10 +1,10 @@
 # vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
 
-# dot-shell_rc_alias
+# dot-shell_rc_function
 # ORIGIN: 2020-06-23 by hmr
 
 
-echo "Processing dot-shell_rc_alias"
+echo "Processing dot-shell_rc_function"
 
 # shows url for SPICE which is KVM's remote connection system
 echo "  function spiceurl"
@@ -51,6 +51,7 @@ function chkshell_internal {
 }
 
 # cd then ls
+echo "  function cd"
 function cd(){
       builtin cd $@ && ls;
 }
@@ -59,7 +60,7 @@ function cd(){
 case "$(chkshell)" in
   bash | zsh )
     if type fzf >& /dev/null; then
-      echo "function gadd"
+      echo "  function gadd"
       function gadd() {
         local selected
         if type unbuffer >& /dev/null; then
@@ -73,12 +74,13 @@ case "$(chkshell)" in
         fi
       }
     else
-      echo "fzf isn't installed. gadd() isn't enabled."
+      echo "  fzf isn't installed. gadd() isn't enabled."
     fi
     ;;
 esac
 
 # ESP32 development environment
+echo "  function esp_idf"
 function esp_idf {
   export IDF_PATH=${IDF_PATH:-${HOME}/esp/esp-idf}
   if [ -n "${IDF_PATH}" -a -d "${IDF_PATH}" ]; then
