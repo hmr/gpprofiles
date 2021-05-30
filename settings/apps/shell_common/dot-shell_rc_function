@@ -50,10 +50,26 @@ function chkshell_internal {
 #  fi
 }
 
-# cd then ls
-function cd(){
-      builtin cd $@ && ls;
+# ESP32 development environment
+echo "  function esp_idf"
+function esp_idf {
+  if [ $# -eq 1 ]; then
+    IDF_PATH=$1
+  fi
+
+  export IDF_PATH=${IDF_PATH:-${HOME}/esp/esp-idf}
+  if [ -n "${IDF_PATH}" -a -d "${IDF_PATH}" ]; then
+    echo "Setting ESP32 development environment."
+    source ${IDF_PATH}/export.sh
+  else
+    echo "Error: IDF_PATH[${IDF_PATH}] doesn't exist."
+  fi
 }
+
+# cd then ls
+# function cd(){
+#       builtin cd $@ && ls;
+# }
 
 # Git add
 case "$(chkshell)" in
@@ -77,13 +93,4 @@ case "$(chkshell)" in
     fi
     ;;
 esac
-
-# ESP32 development environment
-function esp_idf {
-  export IDF_PATH=${IDF_PATH:-${HOME}/esp/esp-idf}
-  if [ -n "${IDF_PATH}" -a -d "${IDF_PATH}" ]; then
-    echo "Setting ESP32 development environment."
-    source ${IDF_PATH}/export.sh
-  fi
-}
 
