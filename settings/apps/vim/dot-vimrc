@@ -30,7 +30,7 @@ set tabstop=4                   " default tab width
 set shiftwidth=0                " default indent width(0 means same as tabstop)
 set expandtab                   " expand tab to space
 set cursorline                  " show cursor line indicator
-set cursorlineopt=number
+set cursorlineopt=both          " number / line / both
 set number                      " show line number
 "set ruler                      " show the cursor position all the time
 set laststatus=2                " when the status line would be shown(2 means always)
@@ -326,15 +326,12 @@ function! MyMoveWord_i(cmd)
 endfunction
 
 "-- Jump to BOL/EOL
-" nnoremap <C-a> ^
-nnoremap <C-a> 0
-" nnoremap <C-S-a> ^
-nnoremap <C-e> $
 vnoremap <C-a> 0
-" cnoremap <C-S-a> ^
 vnoremap <C-e> $
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
+nnoremap <silent> <C-a> :call MyJumptoBol('　。、．，／！？「」')<CR>
+nnoremap <silent> <C-e> :call MyJumptoEol('　。、．，／！？「」')<CR>
 inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
 inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
 
@@ -875,18 +872,24 @@ let g:AutoPairsShortcutBackInsert = '<M-B>'
 "=============================================================================
 "----- tag search settings for both ctags and cscope
 noremap <Leader>j   g]
+noremap <Leader>J   <C-w>g]
+noremap <Leader>t   :pop<CR>
+
+"----- Arrow key: move screen line
+noremap   <silent><Down>  gj
+noremap   <silent><Up>    gk
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
-" [ ]map = normal, visual, select, operator (= Original vim map)
-" [n]map = normal
-" [v]map = visual, select
-" [s]map = select
-" [x]map = visual
-" [o]map = operator
-" map[!] = insert, commandline              (= Original vim map)
-" [i]map = insert
-" [l]map = insert, commandline, Lang-Arg
-" [c]map = commandline
-" [t]map = terminal
+"  [nore]map = normal, visual, select, operator (= Original-vim's map)
+" n[nore]map = normal
+" v[nore]map = visual, select
+" s[nore]map = select
+" x[nore]map = visual
+" o[nore]map = operator
+"  [nore]map!= insert, commandline (= Original-vim's map!)
+" i[nore]map = insert
+" l[nore]map = insert, commandline, Lang-Arg
+" c[nore]map = commandline
+" t[nore]map = terminal
