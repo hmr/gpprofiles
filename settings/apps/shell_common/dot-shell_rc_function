@@ -5,16 +5,17 @@
 
 
 echo "Processing dot-shell_rc_function"
+echo -n "  Setting functions:"
 
 # shows url for SPICE which is KVM's remote connection system
-echo "  function spiceurl"
+echo -n " spiceurl,"
 function spiceurl {
   if [ x$1 = "x" ]; then return; fi
   echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
 }
 
 # shows running VM and SPICE connection url
-echo "  function spicelist"
+echo -n " spicelist,"
 function spicelist {
   for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
   do
@@ -23,7 +24,7 @@ function spicelist {
 }
 
 # shows current shell(bash or zsh)
-echo "  function chkshell"
+echo -n " chkshell,"
 function chkshell {
   if [ -n "${ZSH_VERSION}" ]; then
     echo "zsh"
@@ -37,7 +38,7 @@ function chkshell {
 #  fi
 }
 
-echo "  function chkshell_internal"
+echo -n " chkshell_internal,"
 function chkshell_internal {
   chkshell
 #  _PID=$$;
@@ -51,7 +52,7 @@ function chkshell_internal {
 }
 
 # ESP32 development environment
-echo "  function esp_idf"
+echo -n " esp_idf,"
 function esp_idf {
   if [ $# -eq 1 ]; then
     IDF_PATH=$1
@@ -64,6 +65,7 @@ function esp_idf {
   else
     echo "Error: IDF_PATH[${IDF_PATH}] doesn't exist."
   fi
+}
 
 # cd then ls
 # function cd(){
@@ -74,7 +76,7 @@ function esp_idf {
 case "$(chkshell)" in
   bash | zsh )
     if type fzf >& /dev/null; then
-      echo "  function gadd"
+      echo -n " gadd"
       function gadd() {
         local selected
         if type unbuffer >& /dev/null; then
@@ -88,8 +90,10 @@ case "$(chkshell)" in
         fi
       }
     else
+      echo
       echo "  fzf isn't installed. gadd() isn't enabled."
     fi
     ;;
 esac
 
+echo
