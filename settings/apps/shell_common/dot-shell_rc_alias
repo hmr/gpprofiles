@@ -73,7 +73,6 @@ case "$(chkshell)" in
     ;;
 esac
 
-
 # Aliases for grc
 case "$(chkshell)" in
   bash )
@@ -115,4 +114,8 @@ case "$(chkshell)" in
     fi
     ;;
 esac
+
+# Quilt(Tool to manage series of patches)
+alias dquilt="quilt --quiltrc=${XDG_CONFIG_HOME:-${HOME}}/quilt/dpkg.quiltrc"
+complete -F _quilt_completion -o filenames dquilt
 
