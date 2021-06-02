@@ -119,3 +119,6 @@ esac
 alias dquilt="quilt --quiltrc=${XDG_CONFIG_HOME:-${HOME}}/quilt/dpkg.quiltrc"
 complete -F _quilt_completion -o filenames dquilt
 
+# System update combo
+alias systemupdate='sudo apt update && apt list --upgradable && echo -n "==================== HIT ENTER TO PROCEED ====================" && read && sudo apt upgrade -y && sudo apt autoremove -y'
+
