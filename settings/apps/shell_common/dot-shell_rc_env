@@ -35,7 +35,7 @@ export BLINK=$(tput blink)
 export REVERSE=$(tput smso)
 export UNDERLINE=$(tput smul)
 
-#set less tab width 4, print raw characters, use long status, show line numbers.
+# Set less tab width 4, print raw characters, use long status, show line numbers.
 echo -n " LESS"
 export LESS="-x4 -q -R -M -N -I"
 echo -n " VISUAL"
@@ -45,7 +45,7 @@ export EDITOR="vim"
 echo -n " MANPAGER"
 export MANPAGER="less -n"
 
-#colorize less output
+# Colorize less output
 echo -n " GREP_COLORS"
 export GREP_COLORS="ms=01;38;5;202:mc=01;31:sl=:cx=:fn=01;38;5;132:ln=32:bn=32:se=00;38;5;242"
 echo -n " LESS_TERMCAP"
@@ -57,7 +57,7 @@ export LESS_TERMCAP_so=$(printf '\e[03;38;5;202m') # enter standout mode – ora
 export LESS_TERMCAP_ue=$(printf '\e[0m')           # leave underline mode
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;139m') # enter underline mode – underline aubergine
 
-#set prompt
+# Set prompt
 echo -n " PS1"
 if [ `id -g` = "0" ]; then
 	TMP_PROMPT_SYM="#"
