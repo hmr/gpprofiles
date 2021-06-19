@@ -5,12 +5,15 @@
 
 
 echo "Processing dot-shell_rc_env"
+echo -n " "
 
-# PATH
+# Add /usr/local/[s]bin to $PATH
+echo -n " PATH(/usr/local/[s]bin)"
 echo ${PATH} | grep "/usr/local/sbin" >& /dev/null || export PATH="/usr/local/sbin:${PATH}"
 echo ${PATH} | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/bin:${PATH}"
 
 # Terminal Colors
+echo -n " COLORS"
 export BLACK=$(tput setaf 0)
 export RED=$(tput setaf 1)
 export GREEN=$(tput setaf 2)
@@ -28,13 +31,19 @@ export REVERSE=$(tput smso)
 export UNDERLINE=$(tput smul)
 
 #set less tab width 4, print raw characters, use long status, show line numbers.
+echo -n " LESS"
 export LESS="-x4 -q -R -M -N -I"
+echo -n " VISUAL"
 export VISUAL="vim"
+echo -n " EDITOR"
 export EDITOR="vim"
+echo -n " MANPAGER"
 export MANPAGER="less -n"
 
 #colorize less output
+echo -n " GREP_COLORS"
 export GREP_COLORS="ms=01;38;5;202:mc=01;31:sl=:cx=:fn=01;38;5;132:ln=32:bn=32:se=00;38;5;242"
+echo -n " LESS_TERMCAP"
 export LESS_TERMCAP_mb=$(printf '\e[01;31m')       # enter blinking mode – red
 export LESS_TERMCAP_md=$(printf '\e[01;38;5;180m') # enter double-bright mode – bold light orange
 export LESS_TERMCAP_me=$(printf '\e[0m')           # turn off all appearance modes (mb, md, so, us)
@@ -44,9 +53,19 @@ export LESS_TERMCAP_ue=$(printf '\e[0m')           # leave underline mode
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;139m') # enter underline mode – underline aubergine
 
 #set prompt
+echo -n " PS1"
 if [ `id -g` = "0" ]; then
 	TMP_PROMPT_SYM="#"
 else
 	TMP_PROMPT_SYM="$"
 fi
 PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\${TMP_PROMPT_SYM}\[\e[00m\] "
+
+# GnuPG home
+if [ -n "${XDG_CONFIG_HOME}" ]; then
+	echo -n " GNUPGHOME"
+	export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
+fi
+
+echo
+
