@@ -12,6 +12,11 @@ echo -n " PATH(/usr/local/[s]bin)"
 echo ${PATH} | grep "/usr/local/sbin" >& /dev/null || export PATH="/usr/local/sbin:${PATH}"
 echo ${PATH} | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/bin:${PATH}"
 
+# Local go installation
+if [ -d "${HOME}/go" ]; then
+	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin;${PATH}"
+fi
+
 # Terminal Colors
 echo -n " COLORS"
 export BLACK=$(tput setaf 0)
