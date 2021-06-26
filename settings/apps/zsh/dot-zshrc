@@ -47,11 +47,14 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "plugins/git",   from:oh-my-zsh, defer:3
   # Gitのエイリアスも補完
   zplug "peterhurford/git-aliases.zsh", defer:3
+  # Better line editor
+  zplug "marlonrichert/zsh-edit"
 
   # Use with fzf
-  # Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
+  ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
   zplug "junegunn/fzf", use:shell/key-bindings.zsh, defer:2
-  #zplug "junegunn/fzf", use:shell/completion.zsh # cd **[TAB], vim **[TAB]などでファイル名を補完できる#zplug "junegunn/fzf"
+  ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
+  #zplug "junegunn/fzf", use:shell/completion.zsh
   # fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
   # ディレクトリ移動を高速化（fzf であいまい検索）
@@ -60,6 +63,7 @@ if [ -n "${ZPLUG_HOME}" ]; then
   #zplug "motemen/ghq", as:command, from:gh-r
 
   #zplug "modules/prompt", from:prezto
+  # Powerlevel 10000(Theme)
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   # Install plugins if there are plugins that have not been installed
@@ -129,15 +133,20 @@ KBDLAYOUT="Keychron_K2_Mac"
 # set keybinding to emacs mode
 bindkey -e
 # zsh-history-substring-search(Up and Down key)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
+bindkey "${key[Up]}" history-substring-search-up
+bindkey "${key[Down]}" history-substring-search-down
 
 # Extra key config
 if [ -r ~/.config/zsh/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
   source ~/.config/zsh/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
 fi
-bindkey '^[[1;3D' backward-word     # Alt+Left
-bindkey '^[[1;3C' forward-word      # Alt+Right
+
+# Move by word
+bindkey "${key[M-Left]}"  backward-subword     # Alt+Left
+bindkey "${key[M-Right]}" forward-subword      # Alt+Right
+
 # Example settings
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 # [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
