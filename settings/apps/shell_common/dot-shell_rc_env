@@ -1,4 +1,4 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
 
 # dot-shell_rc_env
 # ORIGIN: date unknow by hmr
@@ -9,8 +9,8 @@ echo -n " "
 
 # Add /usr/local/[s]bin to $PATH
 echo -n " PATH(/usr/local/[s]bin)"
-echo ${PATH} | grep "/usr/local/sbin" >& /dev/null || export PATH="/usr/local/sbin:${PATH}"
-echo ${PATH} | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/bin:${PATH}"
+echo "${PATH}" | grep "/usr/local/sbin" >& /dev/null || export PATH="/usr/local/sbin:${PATH}"
+echo "${PATH}" | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/bin:${PATH}"
 
 # Local go installation
 if [ -d "${HOME}/go" ]; then
