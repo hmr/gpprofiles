@@ -87,3 +87,10 @@ if [ -n "${XDG_CONFIG_HOME}" ]; then
 else
   export WEECHAT_HOME=${HOME}/.weechat
 fi
+
+# Read secret data
+# If you want to set a password or other secret information,
+#     create a file "dot-shell_rc_env_secret" and put it in the file.
+if [ -r "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env_secret" ]; then
+  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env_secret
+fi
