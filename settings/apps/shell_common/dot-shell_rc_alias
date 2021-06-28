@@ -41,9 +41,9 @@ alias ls='ls -CF --color=always'              # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls -CF'                              # MS-DOS Style
-alias lla='ls -lA'                              # long list
+alias lla='ls -lA'                            # long list
 alias lh='ls -lrth'                           # Human-readable special
-alias lha='ls -lrthA'                           # Human-readable special
+alias lha='ls -lrthA'                         # Human-readable special
 
 alias ssh='ssh -A'                            # SSH always try to use ssh-agent.
 alias sudo='sudo -E'                          # sudo always preserves envs.
