@@ -1,4 +1,4 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
 
 # dot-shell_rc_history(for bash and zsh)
 # ORIGIN: date unknown by hmr
@@ -9,8 +9,8 @@ echo "Processing dot-shell_rc_history"
 case "$(chkshell)" in
   "bash" )
 
-  export HISTSIZE=10000       # For bash and zsh
-  export HISTFILESIZE=100000  # For bash
+  export HISTSIZE=10000
+  export HISTFILESIZE=100000
 
   # Don't put duplicate lines in the history.
   export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoreboth
@@ -33,27 +33,32 @@ case "$(chkshell)" in
   export HISTFILE=${XDG_DATA_HOME:-${ZDOTDIR:-$HOME}}/zsh/history
 
   # Size of history
-  export HISTSIZE=100000        # Number of records read into memory
-  export SAVEHIST=100000        # Number of records saved into file
+  export HISTSIZE=1000000        # Number of records read into memory
+  export SAVEHIST=1000000        # Number of records saved into file
 
-  setopt hist_ignore_dups       # Don't save duplicated command into history list
-  setopt hist_ignore_all_dups   # Delete duplicated command from history
-  setopt hist_ignore_space      # Ignore space
-  setopt hist_find_no_dups      # Ignore duplicated command at search
-  setopt hist_reduce_blanks     # Ignore difference of space characters
-  setopt hist_no_store          # Don't save history command itself
+  setopt hist_ignore_dups        # Don't save duplicated command into history list
+  setopt hist_ignore_all_dups    # Delete duplicated command from history
+  setopt hist_ignore_space       # Ignore space
+  setopt hist_find_no_dups       # Ignore duplicated command at search
+  setopt hist_reduce_blanks      # Ignore difference of space characters
+  setopt hist_no_store           # Don't save history command itself
 
-  setopt APPEND_HISTORY         # Don't overwrite history file
-  setopt EXTENDED_HISTORY       # Record history with time
-  setopt HIST_EXPIRE_DUPS_FIRST # Delete duplicated record when trimmed
-  setopt HIST_SAVE_NO_DUPS      # Delete duplicated record when saved
+  setopt extended_history        # Record history with time
+  setopt append_history          # Don't overwrite history file
+  setopt hist_expire_dups_first  # Delete duplicated record when trimmed
+  setopt hist_save_no_dups       # Delete duplicated record when saved
+
+  # The following 3 options are mutually exclusive
+  setopt share_history           # Share history among all the zsh processed
+  #setopt inc_append_history      # Append to history file immediately
+  #setopt inc_append_history_time # Append to history file immediately with duration
   ;;
 
 "*" )
   # Default value
-  export HISTSIZE=10000         # For bash and zsh
-  export HISTFILESIZE=100000    # For bash
-  export SAVEHIST=100000        # For zsh
+  export HISTSIZE=10000          # For bash and zsh
+  export HISTFILESIZE=100000     # For bash
+  export SAVEHIST=100000         # For zsh
   ;;
 
 
