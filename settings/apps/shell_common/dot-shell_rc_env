@@ -80,3 +80,10 @@ if [ -n "${XDG_CONFIG_HOME}" ]; then
 fi
 
 echo
+
+# WeeChat setting
+if [ -n "${XDG_CONFIG_HOME}" ]; then
+  export WEECHAT_HOME=${XDG_CONFIG_HOME}/weechat
+else
+  export WEECHAT_HOME=${HOME}/.weechat
+fi
