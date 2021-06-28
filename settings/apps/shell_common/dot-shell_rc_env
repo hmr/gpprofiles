@@ -35,8 +35,15 @@ export BLINK=$(tput blink)
 export REVERSE=$(tput smso)
 export UNDERLINE=$(tput smul)
 
-# Set less tab width 4, print raw characters, use long status, show line numbers.
-echo -n " LESS"
+# set prompt
+if [ `id -g` = "0" ]; then
+	TMP_PROMPT_SYM="#"
+else
+	TMP_PROMPT_SYM="$"
+fi
+PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\${TMP_PROMPT_SYM}\[\e[00m\] "
+
+# set less tab width 4, print raw characters, use long status, show line numbers.
 export LESS="-x4 -q -R -M -N -I"
 echo -n " VISUAL"
 export VISUAL="vim"
@@ -73,4 +80,3 @@ if [ -n "${XDG_CONFIG_HOME}" ]; then
 fi
 
 echo
-
