@@ -14,7 +14,7 @@ echo "${PATH}" | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/
 
 # Local go installation
 if [ -d "${HOME}/go" ]; then
-	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin;${PATH}"
+	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin:${PATH}"
 fi
 
 # Terminal Colors
