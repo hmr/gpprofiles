@@ -60,34 +60,43 @@ if [ $? -eq 0 ]; then
   export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # Use HomeBrew binaries instead of macOS default.
-  TEMP_TGT=coreutils
-  HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+  TEMP_TGT="coreutils"
+  if HB_ADD_PATH_GNU ${TEMP_TGT}; then
+    echo -n ", ${TEMP_TGT}"
+    alias  ls='gls -CF --color=auto'            # color ls
+    alias  ll='gls -CF --color=auto -l'         # long list
+    alias  la='gls -CF --color=auto -A'         # all but . and ..
+    alias   l='gls -CF --color=auto'            # MS-DOS Style
+    alias lla='gls -CF --color=auto -lA'        # long list
+    alias  lh='gls -CF --color=auto -lrth'      # Human-readable special
+    alias lha='gls -CF --color=auto -lrthA'     # Human-readable special
+  fi
 
-  TEMP_TGT=binutils
+  TEMP_TGT="binutils"
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=grep
+  TEMP_TGT="grep"
   HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=gnu-sed
+  TEMP_TGT="gnu-sed"
   HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=gnu-tar
+  TEMP_TGT="gnu-tar"
   HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=gnu-time
+  TEMP_TGT="gnu-time"
   HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=curl-openssl
+  TEMP_TGT="curl-openssl"
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=imagemagick@6
+  TEMP_TGT="imagemagick@6"
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=sqlite
+  TEMP_TGT="sqlite"
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-  TEMP_TGT=bc
+  TEMP_TGT="bc"
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   # Python3.8
