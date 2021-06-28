@@ -6,30 +6,27 @@
 # ORIGIN: 2020-12-10 by hmr
 
 echo "Processing dot-zsh_setopt"
-
+# OPTIONS                       DEFAULT
 #setopt no_aliases              #off
 #setopt alias_func_def          #off
 #setopt all_export              #off
 # カーソル位置は保持したままファイル名一覧を順次その場で表示
-#setopt no_always_lastprompt    #off
 setopt always_last_prompt       #on
-#setopt always_toend            #off
+#setopt always_to_end           #off
 #setopt append_create           #off
 #setopt no_append_history       #off
+# Recognize command as cd to directory if it couldn't be executed.
 setopt auto_cd                  #off
 #setopt auto_continue           #off
-#setopt no_auto_list            #off
+# Automatically list choices on an ambiguous completion.
 setopt auto_list                #on
 # 補完キー連打で順に補完候補を自動で補完
-#setopt no_auto_menu            #off
 setopt auto_menu                #on
 #setopt auto_name_dirs          #off
-#setopt no_auto_param_keys      #off
 # カッコの対応などを自動的に補完
 setopt auto_param_keys          #on
 # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
 setopt auto_param_slash         #on
-#setopt no_auto_param_slash     #off
 #setopt no_auto_remove_slash    #off
 setopt auto_pushd               #off
 #setopt auto_resume             #off
@@ -57,8 +54,8 @@ setopt combining_chars          #on
 # 語の途中でもカーソル位置で補完
 setopt complete_in_word         #off
 #setopt continue_on_error       #off
-#setopt correct                  #off
-#setopt correct_all              #off
+#setopt correct                 #off
+#setopt correct_all             #off
 #setopt c_precedences           #off
 #setopt csh_junkie_history      #off
 #setopt csh_junkie_loops        #off
@@ -77,7 +74,8 @@ setopt equals                   #on
 # 拡張グロブで補完(~とか^とか。例えばless *.txt~memo.txt ならmemo.txt 以外の *.txt にマッチ)
 setopt extended_glob            #off
 #setopt extended_history        #off
-#setopt no_flow_control         #off
+# Supress flow control by C-s/C-q
+setopt no_flow_control          #off
 #setopt force_float             #off
 #setopt no_function_arg_zero    #off
 #setopt no_glob                 #off
@@ -95,26 +93,27 @@ setopt glob_dots                #off
 #setopt no_hash_list_all        #off
 #setopt hist_allow_clobber      #off
 #setopt no_hist_beep            #off
-#setopt hist_expired_ups_first  #off
+#setopt hist_expire_dups_first  #off    # enabled in dot-shell_rc_history
 #setopt hist_fcntl_lock         #off
-#setopt hist_find_no_dups       #off
-#setopt hist_ignore_all_dups    #off
-setopt hist_ignore_dups         #on
-#setopt hist_ignore_space       #off
+#setopt hist_find_no_dups       #off    # enabled in dot-shell_rc_history
+#setopt hist_ignore_all_dups    #off    # enabled in dot-shell_rc_history
+setopt hist_ignore_dups         #on     # enabled in dot-shell_rc_history
+#setopt hist_ignore_space       #off    # enabled in dot-shell_rc_history
 #setopt hist_lex_words          #off
 #setopt hist_no_functions       #off
 #setopt hist_no_store           #off
-#setopt hist_reduce_blanks      #off
+#setopt hist_reduce_blanks      #off    # enabled in dot-shell_rc_history
 #setopt no_hist_save_by_copy    #off
-#setopt hist_save_no_dups       #off
+#setopt hist_save_no_dups       #off    # enabled in dot-shell_rc_history
 #setopt hist_subst_pattern      #off
+# Users can edit line which is called by "!nnnn" or "!!"
 #setopt hist_verify             #off
 #setopt no_hup                  #off
 #setopt ignore_braces           #off
 #setopt ignore_close_braces     #off
 #setopt ignore_eof              #off
-#setopt incappend_history       #off
-#setopt incappend_history_time  #off
+#setopt inc_append_history      #off
+#setopt inc_append_history_time #off
 #setopt interactive             #on
 # コマンドラインでも # 以降をコメントと見なす
 setopt interactive_comments     #on
