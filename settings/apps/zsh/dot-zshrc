@@ -67,6 +67,8 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   # Install plugins if there are plugins that have not been installed
+  echo "In order to shorten the startup time, 'zplug check' won't be executed."
+  echo "Please run '$(tput setaf 3)$(tput bold)zplug-check-combo$(tput sgr0)' manually if necessary."
   # if ! zplug check --verbose; then
   #   # if ! zplug check; then
   #   printf "Install? [y/N]: "
@@ -140,8 +142,8 @@ bindkey "${key[Up]}" history-substring-search-up
 bindkey "${key[Down]}" history-substring-search-down
 
 # Extra key config
-if [ -r ~/.config/zsh/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
-  source ~/.config/zsh/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
+if [ -r ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
+  source ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
 fi
 
 # Move by word
