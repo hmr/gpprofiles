@@ -163,4 +163,7 @@ Plug 'vim-scripts/gitignore'
 " vimproc is a great asynchronous execution library for Vim.
 " Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
+" CSV handling plugin
+Plug 'chrisbra/csv.vim'
+
 call plug#end()
