@@ -150,7 +150,7 @@ let g:airline_symbols.whitespace = 'Ξ' " Warning sign for white spaces
 "------------------------------------------------
 " Airline extensions
 "------------------------------------------------
-"-+-+-+- Ale(Syntax checker) -+-+-+-
+"-+-+-+- Airline with Ale(Syntax checker) -+-+-+-
 let g:airline#extensions#ale#enabled = 1
 let airline#extensions#ale#error_symbol = 'E:'
 let airline#extensions#ale#warning_symbol = 'W:'
@@ -878,6 +878,13 @@ noremap <Leader>t   :pop<CR>
 "----- Arrow key: move screen line
 noremap   <silent><Down>  gj
 noremap   <silent><Up>    gk
+
+"----- Ale
+" Command line option for languagetool
+let g:ale_languagetool_options = '--autoDetect --disable "WHITESPACE_RULE,DASH_RULE[1]"'
+
+" Command line option for mdl(Markdown linter implemented by ruby)
+let g:ale_markdown_mdl_options = '--style "$XDG_CONFIG_HOME/vim/conf.d/mdl_style.rb"'
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
