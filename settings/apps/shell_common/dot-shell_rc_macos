@@ -3,7 +3,9 @@
 # dot-shell_rc_macos
 # ORIGIN: 2019-11-12 by hmr
 
+echo "Processing dot-shell_rc_macos"
 
+# Add path to GNU software installed by Homebrew
 function HB_ADD_PATH_GNU () {
   [ -z "$1" ] && return 1
   local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
@@ -15,6 +17,7 @@ function HB_ADD_PATH_GNU () {
   fi
 }
 
+# Add path to software installed by Homebrew
 function HB_ADD_PATH () {
   [ -z "$1" ] && return 1
   local HB_TARGET=/usr/local/opt/$1/bin
@@ -26,10 +29,11 @@ function HB_ADD_PATH () {
   fi
 }
 
-echo "Processing dot-shell_rc_macos"
-echo ${OSTYPE} | grep "darwin" >& /dev/null
+# Entry point
+echo ${OSTYPE} | grep -i "darwin" >& /dev/null
 if [ $? -eq 0 ]; then
-  # BASH
+
+  # Only for bash
   case "$(chkshell)" in
     bash )
       echo ${SHELL} | grep "bash" >& /dev/null
@@ -40,24 +44,30 @@ if [ $? -eq 0 ]; then
       ;;
   esac
 
-  # Homebrew
-  # Force to use Homebrew version of curl
-  export HOMEBREW_FORCE_BREWED_CURL=1
-  # Not to update automatically
-  # export HOMEBREW_NO_AUTO_UPDATE=1
-
   # iTerm2 Shell Integration
   #if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
   #  echo "  Setting iTerm2 shell integration."
   #  source ${HOME}/.iterm2_shell_integration.bash
   #fi
 
+  # Homebrew
+  # Force to use Homebrew version of curl
+  export HOMEBREW_FORCE_BREWED_CURL=1
+
+  # Not to update automatically
+  # export HOMEBREW_NO_AUTO_UPDATE=1
+
   # PATH
   echo "  Setting path..."
+
   # Android Debug Bridge(adb)
   echo -n "    Android Studio"
   export ANDROID_HOME=${HOME}/Library/Android/sdk
   export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+  # Ruby gems installed by Homebrew's ruby
+  echo -n ", Rubygems"
+  export PATH=${PATH}:/usr/local/lib/ruby/gems/3.0.0/bin
 
   # Use HomeBrew binaries instead of macOS default.
   TEMP_TGT="coreutils"
@@ -97,6 +107,9 @@ if [ $? -eq 0 ]; then
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   TEMP_TGT="bc"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+
+  TEMP_TGT="ruby"
   HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
   # Python3.8
