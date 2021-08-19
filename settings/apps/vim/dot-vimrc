@@ -654,16 +654,16 @@ endif
 
 if &t_Co > 2 || has('gui_running')  " Only for color environment
 
+  " Reset and enable syntax highlighting(for w/o reset use ':syntax enable')
+  syntax on
+
   if has('termguicolors')
     set termguicolors
     if &term !~? 'xterm'  " for $TERM != 'xterm'
-      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " Default foreground color
-      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " Default background color
+      let &t_8f = "\e[38;2;%lu;%lu;%lum" " Default foreground color
+      let &t_8b = "\e[48;2;%lu;%lu;%lum" " Default background color
     endif
   endif
-
-  " Reset and enable syntax highlighting(for w/o reset use ':syntax enable')
-  syntax on
 
   " Color scheme settings
   try
@@ -671,18 +671,20 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
 
     " colorscheme monokai
 
-    " -----
+    " -- settings for molokai
     " let g:molokai_original=1
     " let g:rehash256=1
     " colorscheme molokai
 
-    " -----
+    " -- settings for sublime-monokai
     let g:sublimemonokai_term_italic=1
-    " " with vim's mainline Java
+
+    " -- with vim's mainline Java
     " let java_comment_strings=1
     " let java_highlight_functions=1
     " let java_highlight_java_lang_ids=1
-    " " with 'fatih/vim-go'
+
+    " -- with 'fatih/vim-go'
     " let g:go_highlight_format_strings=1
     " let g:go_highlight_function_arguments=1
     " let g:go_highlight_function_calls=1
