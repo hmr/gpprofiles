@@ -125,3 +125,18 @@ alias brew-update-combo=''
 
 # mtr
 alias mtr="sudo mtr -t -y2 -e -b"
+
+# APT
+if [ -x /usr/bin/apt ]; then
+  alias as="apt search"
+  alias ai="apt show"
+  alias aI="apt install"
+fi
+
+# BREW
+if [ -x /usr/local/bin/brew ]; then
+  alias bs="brew search"
+  alias bi="brew info"
+  alias bI="brew install"
+fi
+
