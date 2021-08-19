@@ -10,7 +10,7 @@ if-shell "type xsel" { bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X c
 if-shell "type xsel" { bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xsel -ib" }
 
 # Reset the status bar
-#set-option -g  status-interval 1
+set-option -g  status-interval 15
 set-option -g  status-left  "#[default]"  # reset
 set-option -g  status-right "#[default]"  # reset
 
