@@ -1,0 +1,74 @@
+# vim: ft=zsh
+
+# Part of GPProfiles
+# dot-zshrc_setopt
+
+# ORIGIN: 2021-08-16 by hmr
+
+# Settings for completion [http://voidy21.hatenablog.jp/entry/20090902/1251918174]
+
+# ----- Allow arrow keys to select completion candidates
+zstyle ':completion:*:default' menu select=2
+
+# ----- Allow excessive use of completion functions
+zstyle ':completion:*' verbose yes
+
+# _complete:    Normal completion functions
+# _approximate: Correct misspelling then complete
+# _match:       Allow use of glob as part of command(e.g. vi*<TAB> -> vi vim vimr...)
+# _expand:      グロブや変数の展開を行う。もともとあった展開と比べて、細かい制御が可能
+# _history:     Complete from history. This is used from _history_complete_word.
+# _prefix:      カーソルの位置で補完を行う
+
+# zstyle ':completion:*' completer _complete _approximate _prefix _expand _match _list _history
+zstyle ':completion:*' completer _complete _approximate _prefix _expand _match _list
+zstyle ':completion:*:approximate' max-errors 2 NUMERIC
+zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
+zstyle ':completion:*:warnings' format $RED'No matches for:'$YELLOW' %d'$DEFAULT
+zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
+zstyle ':completion:*:corrections' format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
+zstyle ':completion:*:options' description 'yes'
+
+# グループ名に空文字列を指定すると，マッチ対象のタグ名がグループ名に使われる。
+# したがって，すべての マッチ種別を別々に表示させたいなら以下のようにする
+zstyle ':completion:*' group-name ''
+
+# Don't allow to use object files or intermediate files as completion candidate
+zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
+
+# ----- Directory moving completion
+# Set cdpath in advance
+# cdpath=(~ ~/src/ ~/src/gpprofiles/settings/apps/)
+cdpath=(~ ~/src)
+
+# Allow use of directories under cdpath only if there's no candidates in the current directory.
+zstyle ':completion:*:cd:*' tag-order local-directories path-directories
+
+# Not allow use of current directory as a candidate of 'cd' (e.g. cd ../<TAB>)
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+# ----- Colorize file completion
+# Set LS_COLORS
+# export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+eval "$(dircolors $ZDOTDIR/dircolors.conf)"
+
+# Allow colorization of file completion candidates
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+
+# ----- Other settings
+# Allow use of cache to speed up for commands like apt, dpkg and so on.
+zstyle ':completion:*' use-cache true
+
+# Separator for listing options(default is '--')
+zstyle ':completion:*' list-separator '-->'
+
+# Allow ignore case except for intentionally inputted upper case.
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
+
+# Allow completion for index(of array)
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+# Allow display completion candidates of 'man' by section number
+zstyle ':completion:*:manuals' separate-sections true
+

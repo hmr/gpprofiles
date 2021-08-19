@@ -54,8 +54,14 @@ setopt combining_chars          #on
 # 語の途中でもカーソル位置で補完
 setopt complete_in_word         #off
 #setopt continue_on_error       #off
-#setopt correct                 #off
+# コマンドやファイル名の間違いを修正
+setopt correct                 #off
 #setopt correct_all             #off
+## Auto correction ignorance settings
+## https://neocat.hatenablog.com/entry/20140911/1410401762
+export CORRECT_IGNORE='_*'
+export CORRECT_IGNORE_FILE='.*'
+
 #setopt c_precedences           #off
 #setopt csh_junkie_history      #off
 #setopt csh_junkie_loops        #off
@@ -207,66 +213,4 @@ setopt share_history            #off
 #setopt warn_nested_var         #off
 #setopt xtrace                  #off
 #setopt zle                     #on
-
-## Auto correction ignorance settings
-CORRECT_IGNORE='_*'
-CORRECT_IGNORE_FILE='.*'
-
-##補完に関するオプション [http://voidy21.hatenablog.jp/entry/20090902/1251918174]
-# 補完候補を ←↓↑→ でも選択出来るようにする
-zstyle ':completion:*:default' menu select=2
-
-# 補完関数の表示を過剰にする
-zstyle ':completion:*' verbose yes
-# _complete: 普通の補完関数
-# _approximate: ミススペルを訂正した上で補完を行う。
-# _match: *などのグロブによってコマンドを補完できる(例えばvi* と打つとviとかvimとか補完候補が表示される)
-# _expand: グロブや変数の展開を行う。もともとあった展開と比べて、細かい制御が可能
-# _history: 履歴から補完を行う。_history_complete_wordから使われる
-# _prefix: カーソルの位置で補完を行う
-zstyle ':completion:*' completer _complete _approximate _prefix _expand _match _list _history
-zstyle ':completion:*:approximate' max-errors 2 NUMERIC
-zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
-zstyle ':completion:*:warnings' format $RED'No matches for:'$YELLOW' %d'$DEFAULT
-zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
-zstyle ':completion:*:corrections' format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
-zstyle ':completion:*:options' description 'yes'
-
-# グループ名に空文字列を指定すると，マッチ対象のタグ名がグループ名に使われる。
-# # したがって，すべての マッチ種別を別々に表示させたいなら以下のようにする
-zstyle ':completion:*' group-name ''
-
-# オブジェクトファイルとか中間ファイルとかはfileとして補完させない
-zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
-
-# ディレクトリを切り替える時の色々な補完スタイル
-# あらかじめcdpathを適当に設定しておく
-cdpath=(~ ~/src/ ~/src/gpprofiles/settings/apps/)
-
-# カレントディレクトリに候補がない場合のみ cdpath 上のディレクトリを候補に出す
-zstyle ':completion:*:cd:*' tag-order local-directories path-directories
-
-#cd は親ディレクトリからカレントディレクトリを選択しないので表示させないようにする (例: cd ../<TAB>):
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
-
-#LS_COLORSを設定しておく
-export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-
-#ファイル補完候補に色を付ける
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-# apt-getとかdpkgコマンドをキャッシュを使って速くする
-zstyle ':completion:*' use-cache true
-
-#オプションとかを表示するときのセパレータを指定(デフォルトは'--')
-zstyle ':completion:*' list-separator '-->'
-
-# 大文字小文字を同一視。ただしわざと入力した大文字はそのまま。
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
-
-# 変数の添字を補完する
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-
-# manの補完をセクション番号別に表示させる
-zstyle ':completion:*:manuals' separate-sections true
 

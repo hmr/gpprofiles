@@ -14,7 +14,8 @@ echo "Processing dot-zshrc..."
 [ -r /usr/local/etc/zshrc ] && source /usr/local/etc/zshrc
 
 # zsh options
-source ${ZDOTDIR:-${HOME}}/.zshrc_setopt
+source ${ZDOTDIR:-${HOME}}/dot-zshrc_setopt
+source ${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -41,6 +42,7 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "chrissicool/zsh-256color", defer:2
   # コマンドを種類毎に色づけ
   zplug "zsh-users/zsh-syntax-highlighting", defer:3
+  zplug "zdharma/fast-syntax-highlighting", defer:3
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search", defer:3
   # Gitの補完
@@ -113,16 +115,16 @@ if [ -n "${ZPLUG_HOME}" ]; then
   export ENHANCD_FILTER=fzf-tmux:fzf
   export ENHANCD_DISABLE_DOT=1
   export ENHANCD_DISABLE_HOME=1
-  export ENHANCD_HOOK_AFTER_CD=pwd
+  export ENHANCD_HOOK_AFTER_CD="pwd; ls"
   export ENHANCD_HYPHEN_NUM=20
-
 else
   # zplug not found
   echo "  ===== zplug not found. Consider installing it. ====="
 fi
 
-# GPProfiles
-source ${ZDOTDIR:-~}/.zshrc_gpp # gpprofile
+# Read GPProfiles settings
+source ${ZDOTDIR:-~}/dot-zshrc_gpp # gpprofile
+
 # Spotify-cli
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
 # Help command(Alt+H)
@@ -133,6 +135,11 @@ alias help=run-help
 # Keyboard layout(US101, JP109, Mac-US, Mac-JIS, Keychron_K2_Mac, etc...)
 KBDLAYOUT="Keychron_K2_Mac"
 
+# Extra key config
+if [ -r ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
+  source ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
+fi
+
 # set keybinding to emacs mode
 bindkey -e
 # zsh-history-substring-search(Up and Down key)
@@ -141,14 +148,27 @@ bindkey -e
 bindkey "${key[Up]}" history-substring-search-up
 bindkey "${key[Down]}" history-substring-search-down
 
-# Extra key config
-if [ -r ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
-  source ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
-fi
-
 # Move by word
 bindkey "${key[M-Left]}"  backward-subword     # Alt+Left
 bindkey "${key[M-Right]}" forward-subword      # Alt+Right
+
+# Backspace just one directory level
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+bindkey "^W" backward-kill-word
+
+# Explicitly bind to "do-nothing" widget to prevent unnecessary characters from being entered
+function _do-nothing-at-all() {
+  # A widget which do nothing
+}
+zle -N do-nothing _do-nothing-at-all
+bindkey "${key[C-Left]}"    do-nothing
+bindkey "${key[C-Up]}"      do-nothing
+bindkey "${key[C-Down]}"    do-nothing
+bindkey "${key[C-Right]}"   do-nothing
+bindkey "${key[C-M-Left]}"  do-nothing
+bindkey "${key[C-M-Up]}"    do-nothing
+bindkey "${key[C-M-Down]}"  do-nothing
+bindkey "${key[C-M-Right]}" do-nothing
 
 # Example settings
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
