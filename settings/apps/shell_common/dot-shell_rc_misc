@@ -6,30 +6,42 @@
 
 echo "Processing dot-shell_rc_misc"
 
+echo -n "  Setting "
 case "$(chkshell)" in
   bash )
     # Enable bash-completion
     if [ -r "/usr/local/etc/profile.d/bash_completion.sh" ]; then
-      echo "  Enabling bash-completion"
+      echo -n "bash-completion, "
       . "/usr/local/etc/profile.d/bash_completion.sh"
     fi
     # Set bash shell options
     TEMP_BASH_OPT="cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend "
-    echo "  Setting bash shopts..."
-    echo "    ${TEMP_BASH_OPT}"
-    shopt -s ${TEMP_BASH_OPT}
+    echo -n "bash shopts, "
+    # echo "    ${TEMP_BASH_OPT}"
+    shopt -s "${TEMP_BASH_OPT}"
     ;;
 esac
 
-# use lesspipe
+# lesspipe
 LESSPIPE=""
 [[ -z "${LESSPIPE}" ]] && type lesspipe >& /dev/null && LESSPIPE="lesspipe"
 [[ -z "${LESSPIPE}" ]] && type lesspipe.sh >& /dev/null && LESSPIPE="lesspipe.sh"
 if [ -n "${LESSPIPE}" ]; then
-  echo "  Setting lesspipe."
+  echo -n "lesspipe, "
   #export LESSOPEN="|$(which lesspipe.sh) %s"
   eval "$(${LESSPIPE})"
 fi
+
+# dircolors
+echo -n ", dircolors"
+if ! which dircolors >& /dev/null; then
+    if [ -x "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
+      _TMP_DIRCOLORS_BIN="/usr/local/opt/coreutils/libexec/gnubin/dircolors"
+    fi
+  else
+    _TMP_DIRCOLORS_BIN="$(which dircolors)"
+fi
+eval "$("${_TMP_DIRCOLORS_BIN}" "${XDG_CONFIG_HOME}/dircolors/dircolors.conf")"
 
 # Show private key(s) held by ssh-agent
 # ssh-add -l >& /dev/null
@@ -38,5 +50,6 @@ fi
 #   echo; echo "Keys held by ssh-agent:"
 #   ssh-add -l
 # fi
-# echo
+
+echo
 

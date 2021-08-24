@@ -23,6 +23,41 @@ function spicelist {
   done
 }
 
+# shows system type
+echo -n " _chksystem,"
+function _chksystem {
+  case "${OSTYPE}" in
+
+    darwin* )
+      echo "darwin"
+      ;;
+
+    linux* )
+      echo "linux"
+      ;;
+  esac
+}
+
+# shows linux distribution type
+echo -n " _chkdist,"
+function _chkdist {
+  local _TMP_DIST
+  if   [ -e /etc/fedora-release ]; then _TMP_DIST="fedora"
+  elif [ -e /etc/oracle-release ]; then _TMP_DIST="oracle"
+  elif [ -e /etc/redhat-release ]; then _TMP_DIST="redhat"
+  elif [ -e /etc/arch-release   ]; then _TMP_DIST="arch"
+  elif [ -e /etc/SuSE-release   ]; then _TMP_DIST="suse"
+  elif [ -e /etc/debian_version ]; then
+    if [ -e /etc/lsb-release    ]; then _TMP_DIST="ubuntu"
+                                   else _TMP_DIST="debian"
+    fi
+  else _TMP_DIST="unknown"
+  fi
+
+  echo ${_TMP_DIST}
+}
+
+
 # shows current shell(bash or zsh)
 echo -n " chkshell,"
 function chkshell {
@@ -76,7 +111,7 @@ function esp_idf {
 case "$(chkshell)" in
   bash | zsh )
     if type fzf >& /dev/null; then
-      echo -n " gadd"
+      echo -n " gadd,"
       function gadd() {
         local selected
         if type unbuffer >& /dev/null; then
@@ -95,5 +130,25 @@ case "$(chkshell)" in
     fi
     ;;
 esac
+
+# System update combo
+echo -n " ubuntu-update"
+function ubuntu-update() {
+  sudo apt update \
+    && apt list --upgradable \
+    && echo -n "==================== HIT ENTER TO PROCEED ====================" \
+    && read \
+    && sudo apt upgrade -y \
+    && sudo apt autoremove -y
+
+  echo "===== Update done ====="
+
+  if [ -e /var/run/reboot-required.pkgs ]; then
+    echo "*** Reboot required due to these package(s):"
+    cat /var/run/reboot-required.pkgs
+  else
+    echo "No need to reboot."
+  fi
+}
 
 echo
