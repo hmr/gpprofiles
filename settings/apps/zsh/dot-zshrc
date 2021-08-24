@@ -122,10 +122,10 @@ else
 fi
 
 # Read GPProfiles settings
-source ${ZDOTDIR:-~}/dot-zshrc_gpp # gpprofile
+source ${ZDOTDIR:-${HOME}}/dot-zshrc_gpp # gpprofile
 
 # Zsh completion settings
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+source ${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle
 
 # Spotify-cli settings
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
