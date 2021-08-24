@@ -116,7 +116,7 @@ esac
 
 # Quilt(Tool to manage series of patches)
 alias dquilt="quilt --quiltrc=${XDG_CONFIG_HOME:-${HOME}}/quilt/dpkg.quiltrc"
-complete -F _quilt_completion -o filenames dquilt
+[ "$(chkshell)" = "bash" ] && complete -F _quilt_completion -o filenames dquilt
 
 # mtr
 alias mtr="sudo mtr -t -y2 -e -b"
