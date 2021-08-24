@@ -33,7 +33,7 @@ if [ -n "${LESSPIPE}" ]; then
 fi
 
 # dircolors
-echo -n ", dircolors"
+echo -n "dircolors, "
 if ! which dircolors >& /dev/null; then
     if [ -x "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
       _TMP_DIRCOLORS_BIN="/usr/local/opt/coreutils/libexec/gnubin/dircolors"
