@@ -15,7 +15,6 @@ echo "Processing dot-zshrc..."
 
 # zsh options
 source ${ZDOTDIR:-${HOME}}/dot-zshrc_setopt
-source ${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -125,8 +124,12 @@ fi
 # Read GPProfiles settings
 source ${ZDOTDIR:-~}/dot-zshrc_gpp # gpprofile
 
-# Spotify-cli
+# Zsh completion settings
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# Spotify-cli settings
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
+
 # Help command(Alt+H)
 autoload -Uz run-help
 alias help=run-help

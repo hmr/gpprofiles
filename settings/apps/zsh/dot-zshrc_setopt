@@ -5,7 +5,8 @@
 
 # ORIGIN: 2020-12-10 by hmr
 
-echo "Processing dot-zsh_setopt"
+echo "Processing dot-zsh_setopt..."
+
 # OPTIONS                       DEFAULT
 #setopt no_aliases              #off
 #setopt alias_func_def          #off
