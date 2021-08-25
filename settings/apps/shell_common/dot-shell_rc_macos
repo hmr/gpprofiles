@@ -127,6 +127,10 @@ if [ $? -eq 0 ]; then
   #   echo -n ", Python@3.8"
   # fi
 
+  # jEnv
+  echo -n ", jenv"
+  eval "$(jenv init -)"
+
   echo
 
 else
