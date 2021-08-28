@@ -7,8 +7,8 @@ scriptencoding utf-8
 "=============================================================================
 " Settings for vim-plug
 "=============================================================================
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+if empty(glob('~/.config/vim/autoload/plug.vim'))
+  silent !curl -fLo ${XDG_CONFIG_HOME}/vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup vimplug_g
     autocmd!
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -18,7 +18,7 @@ endif
 "=============================================================================
 " Plugins
 "=============================================================================
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/vim/plugged')
 " Plugins listed below will be treated by vim-plug.
 
 " Color Schemes

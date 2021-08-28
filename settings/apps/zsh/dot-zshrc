@@ -19,18 +19,36 @@ source ${ZDOTDIR:-${HOME}}/dot-zshrc_setopt
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Zplug settings
+## Homebrew
 if [ -d /usr/local/opt/zplug ]; then
   export ZPLUG_HOME=/usr/local/opt/zplug
+## APT
 elif [ -d /usr/share/zplug ]; then
-  export ZPLUG_HOME=${ZDOTDIR:-${HOME}}/zplug
+  export ZPLUG_HOME=${ZDOTDIR:-${HOME}/.config}/zplug
+fi
+# Per-user plugin repo directory
+if [ -d ${XDG_DATA_HOME:-${HOME}/.local} ]; then
+  export ZPLUG_REPOS=${XDG_DATA_HOME:-${HOME}/.local}/zplug/repos
+fi
+# Per-user cache directory
+if [ -d ${XDG_CACHE_HOME:-${HOME}/.cache} ]; then
+  export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME:-${HOME}/.cache}/zplug
 fi
 
-# Loading Zplug
+# enhancd settings
+export ENHANCD_DIR=${ZDOTDIR:-~}/enhancd
+export ENHANCD_FILTER=fzf-tmux:fzf
+export ENHANCD_DISABLE_DOT=1
+export ENHANCD_DISABLE_HOME=1
+export ENHANCD_HOOK_AFTER_CD="pwd; ls"
+export ENHANCD_HYPHEN_NUM=20
+
+# Load Zplug
 if [ -n "${ZPLUG_HOME}" ]; then
   source $ZPLUG_HOME/init.zsh
 
@@ -88,8 +106,8 @@ if [ -n "${ZPLUG_HOME}" ]; then
   fi
 
   # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-  export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-${HOME}}/.p10k.zsh
-  [[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
+  export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-${HOME}}/p10k.zsh
+  [[ ! -f ${ZDOTDIR:-${HOME}}/p10k.zsh ]] || source ${ZDOTDIR:-${HOME}}/p10k.zsh
   echo
 
   # fzf settings
@@ -108,14 +126,6 @@ if [ -n "${ZPLUG_HOME}" ]; then
     export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
     export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
   fi
-
-  # enhancd settings
-  export ENHANCD_DIR=${ZDOTDIR:-~}/enhancd
-  export ENHANCD_FILTER=fzf-tmux:fzf
-  export ENHANCD_DISABLE_DOT=1
-  export ENHANCD_DISABLE_HOME=1
-  export ENHANCD_HOOK_AFTER_CD="pwd; ls"
-  export ENHANCD_HYPHEN_NUM=20
 else
   # zplug not found
   echo "  ===== zplug not found. Consider installing it. ====="
@@ -182,3 +192,4 @@ bindkey "${key[C-M-Right]}" do-nothing
 if (which zprof > /dev/null 2>&1) ;then
   zprof
 fi
+

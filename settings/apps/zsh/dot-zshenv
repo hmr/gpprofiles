@@ -6,14 +6,27 @@
 
 # echo "Processing dot-zshenv..."
 
-# XDG like setting...
-[ -z "${XDG_CONFIG_HOME}" ] && export XDG_CONFIG_HOME=$HOME/.config
-[ -z "${XDG_CACHE_HOME}" ]  && export XDG_CACHE_HOME=$HOME/.cache
-[ -z "${XDG_DATA_HOME}" ]   && export XDG_DATA_HOME=$HOME/.local/share
-[ -z "${ZDOTDIR}" ]         && export ZDOTDIR=$HOME/.config/zsh
+# XDG Base Directory conformance
+[[ -z "${XDG_CONFIG_HOME}" ]] && export XDG_CONFIG_HOME=$HOME/.config
+[[ -z "${XDG_CACHE_HOME}" ]]  && export XDG_CACHE_HOME=$HOME/.cache
+[[ -z "${XDG_DATA_HOME}" ]]   && export XDG_DATA_HOME=$HOME/.local/share
+[[ -z "${XDG_STATE_HOME}" ]]  && export XDG_STATE_HOME=$HOME/.local/state
+[[ -z "${XDG_RUNTIME_DIR}" ]] && export XDG_RUNTIME_DIR=$HOME/.run
+[[ -z "${ZDOTDIR}" ]]         && export ZDOTDIR=$HOME/.config/zsh
+
+# Terminfo(ncurses) settings
+if [[ -d "${XDG_DATA_HOME}/terminfo" ]]; then
+  export TERMINFO="${XDG_DATA_HOME}/terminfo"
+  export TERMINFO_DIRS="${TERMINFO}"
+fi
+[[ -d /usr/local/share/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/usr/local/share/terminfo"
+[[ -d /usr/local/opt/ncurses/share/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/usr/local/opt/ncurses/share/terminfo"
+[[ -d /usr/share/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/usr/share/terminfo"
+[[ -d /lib/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/lib/terminfo"
 
 
-[[ "$-" != *i* ]] && return # return when non-interactive shell
+# return when non-interactive shell
+[[ "$-" != *i* ]] && return
 
 # Color definition
 #local DEFAULT=$'%{^[[m%}'$
