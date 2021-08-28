@@ -133,8 +133,6 @@ if [ -d "${XDG_CONFIG_HOME}/elinks" ]; then
   export ELINKS_CONFDIR="${XDG_CONFIG_HOME}/elinks"
 fi
 
-echo
-
 # Set prompt
 echo -n ", PS1"
 if [ `id -g` = "0" ]; then
@@ -143,6 +141,8 @@ else
 	TMP_PROMPT_SYM="$"
 fi
 PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\${TMP_PROMPT_SYM}\[\e[00m\] "
+
+echo
 
 # Read secret data
 # If you want to set a password or other secret information,
