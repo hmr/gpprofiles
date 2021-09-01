@@ -165,7 +165,7 @@ Plug 'vim-jp/vimdoc-ja'
 " Plug 'vim-scripts/gitignore'
 
 " Set 'wildignore' from git repo root or home folder
-Plug 'octref/RootIgnore'
+Plug 'hmr/vim-rootignore' "was once 'octref/RootIgnore'
 
 " Syntax checking hacks for vim
 " Plug 'vim-syntastic/syntastic'
