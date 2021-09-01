@@ -77,26 +77,38 @@ set modeline                    " use modeline
 " Settings for Airline(lean & mean status/tabline for vim that's light as air )
 " [https://github.com/vim-airline/vim-airline]
 "=============================================================================
-let g:airline_theme='light'
-"let g:airline_theme='tomorrow'
-"let g:airline_theme='solarized'
-"let g:airline_solarized_bg='dark'
+" let g:airline_theme='light'
+" let g:airline_theme='tomorrow'
+" let g:airline_theme='solarized'
+" let g:airline_solarized_bg='dark'
+let g:airline_theme='gruvbox'
+
+" let g:airline_mode_map = {
+"       \ 'n'  : ' [NORMAL] ',
+"       \ 'i'  : ' <INSERT> ',
+"       \ 'R'  : ' >REPLACE<',
+"       \ 'c'  : ' [COMMAND]',
+"       \ 'v'  : ' [VISUAL] ',
+"       \ 'V'  : ' [V-LINE] ',
+"       \ '' : ' [V-BLOCK]',
+"       \ }
 
 let g:airline_mode_map = {
-      \ 'n'  : ' [NORMAL] ',
-      \ 'i'  : ' <INSERT> ',
-      \ 'R'  : ' >REPLACE<',
-      \ 'c'  : ' [COMMAND]',
-      \ 'v'  : ' [VISUAL] ',
-      \ 'V'  : ' [V-LINE] ',
-      \ '' : ' [V-BLOCK]',
+      \ 'n'  : '[N]',
+      \ 'i'  : '<I>',
+      \ 'R'  : '>R<',
+      \ 'c'  : 'COM',
+      \ 'v'  : '[v]',
+      \ 'V'  : '[V]',
+      \ '' : 'V-B',
       \ }
 
 "-+-+-+- Airline tab settings -+-+-+-
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 "-+-+-+- Airline status bar settings -+-+-+-
 "let g:airline_section_a = airline#section#create(['mode', 'crypt', 'paste', 'spell', 'iminsert'])
@@ -529,7 +541,7 @@ if has('autocmd')
   augroup redhat
     autocmd!
     "In text files, always limit the width of text to 78 characters
-    autocmd BufRead *.txt set tw=78
+    " autocmd BufRead *.txt set tw=78
 
     "When editing a file, always jump to the last cursor position
     autocmd BufReadPost *
@@ -542,7 +554,7 @@ if has('autocmd')
     autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
 
     " Trying to disable textwidth limitation.
-    autocmd FileType text setlocal textwidth=0
+    " autocmd FileType text setlocal textwidth=0
   augroup END
 endif
 
@@ -704,7 +716,8 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
     " with 'StanAngeloff/php.vim'
     " let g:php_var_selector_is_identifier=1
 
-    colorscheme sublimemonokai
+    " colorscheme sublimemonokai
+    colorscheme gruvbox
   catch
     colorscheme default
   endtry
@@ -907,6 +920,9 @@ let g:ale_languagetool_options = '--autoDetect --disable "WHITESPACE_RULE,DASH_R
 " Command line option for mdl(Markdown linter implemented by ruby)
 let g:ale_markdown_mdl_options = '--style "$XDG_CONFIG_HOME/vim/conf.d/mdl_style.rb"'
 
+" Settings to use mouse
+set mouse=a                     " use mouse in all modes
+set ttymouse=xterm2             " code system sent when a mouse button is clicked
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
