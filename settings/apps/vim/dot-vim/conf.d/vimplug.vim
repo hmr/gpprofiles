@@ -26,12 +26,19 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
 Plug 'crusoexia/vim-monokai'
 Plug 'ErichDonGubler/vim-sublime-monokai'
+Plug 'sainnhe/sonokai'
+Plug 'phanviet/vim-monokai-pro'
+Plug 'morhetz/gruvbox'
+Plug 'bluz71/vim-moonfly-colors'
+Plug 'joshdick/onedark.vim'
+Plug 'kaicataldo/material.vim'
 
 " Syntax
 " Syntax highliting for many languages
 Plug 'sheerun/vim-polyglot' " Meta plugin for many languages
-Plug 'darfink/vim-plist' " macOS plist
+Plug 'darfink/vim-plist'    " macOS plist
 " Plug 'gisphm/vim-gitignore' " gitignore
+Plug 'b4winckler/vim-objc'  " Objective-C
 
 " A Vim plugin which shows a git diff in the sign column.
 Plug 'airblade/vim-gitgutter'
@@ -44,6 +51,9 @@ Plug 'dense-analysis/ale'
 
 " Vim motions on speed!
 "Plug 'easymotion/vim-easymotion'
+
+" Jump to any location specified by two characters.
+Plug 'justinmk/vim-sneak'
 
 " Tab completion
 " Plug 'ervandew/supertab'
@@ -152,7 +162,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-jp/vimdoc-ja'
 
 " Set 'wildignore' from ./.gitignore
-Plug 'vim-scripts/gitignore'
+" Plug 'vim-scripts/gitignore'
+
+" Set 'wildignore' from git repo root or home folder
+Plug 'octref/RootIgnore'
 
 " Syntax checking hacks for vim
 " Plug 'vim-syntastic/syntastic'
