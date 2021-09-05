@@ -36,6 +36,7 @@ echo "Processing dot-shell_rc_alias"
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
 
+echo -n "ls"
 alias ls='ls -CF --color=always'              # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
@@ -44,16 +45,21 @@ alias lla='ls -lA'                            # long list
 alias lh='ls -lrth'                           # Human-readable special
 alias lha='ls -lrthA'                         # Human-readable special
 
+echo -n ", ssh"
 alias ssh='ssh -A'                            # SSH always try to use ssh-agent.
+echo -n ", sudo"
 alias sudo='sudo -E'                          # sudo always preserves envs.
 
+echo -n ", apt"
 alias apt='sudo apt'                          # APT is always with sudo(for Debian/Ubuntu)
 
+echo -n ", grep"
 alias grep='grep --color=always'              # grep always outputs color
 
 #alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 #alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 
+echo -n ", isodate"
 alias utcisodate_short=" date --utc +'%Y%m%dT%H%M%SZ'"
 alias utcisodate_long="date --utc +'%Y-%m-%dT%H:%M:%SZ'"
 alias utcisodate_longp="date --utc +'%Y-%m-%dT%H%M%SZ'"
@@ -64,6 +70,7 @@ alias isodate_longp="date +'%Y-%m-%dT%H%M%S%z'"
 # Don't correct spelling
 case "$(chkshell)" in
   zsh )
+    echo -n ", zsh-nocorrect"
     alias ssh='nocorrect ssh -A'
     alias npm='nocorrect npm'
     alias mv='nocorrect mv'
@@ -138,5 +145,16 @@ fi
 # Use bat instead of less
 if which bat > /dev/null; then
   alias less="bat"
+fi
+
+# ffmpeg/ffplay/ffprobe
+if which ffmpeg > /dev/null; then
+  alias ffmpeg="ffmpeg -hide_banner"
+fi
+if which ffplay > /dev/null; then
+  alias ffplay="ffplay -hide_banner -autoexit"
+fi
+if which ffprobe > /dev/null; then
+  alias ffprobe="ffprobe -hide_banner"
 fi
 

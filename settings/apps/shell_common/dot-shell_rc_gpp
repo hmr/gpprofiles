@@ -32,6 +32,14 @@ if [ -f ~/.gpprofiles ]; then
       [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt
       ;;
   esac
+
+  # print tty device of itself
+  if [ -n "${TTY}" ]; then
+    printf 'This is at [%s]\n' "${TTY}"
+  elif which tty >& /dev/null; then
+    printf 'This is at [%s]\n' "$(tty)"
+  fi
+
 else
   echo "GPP not found. Bye"
 fi
