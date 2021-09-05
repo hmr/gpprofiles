@@ -49,12 +49,12 @@ echo -n ", EDITOR"
 export EDITOR="vim"
 
 # less options
-echo -n ", LESS"
-export LESS="-x4 -q -R -M -N -I"  # tab width 4, print raw characters, use long status, show line numbers
-
-# Colorize grep output
-echo -n ", GREP_COLORS"
-export GREP_COLORS="ms=01;38;5;202:mc=01;31:sl=:cx=:fn=01;38;5;132:ln=32:bn=32:se=00;38;5;242"
+# echo -n ", LESS"
+# export LESS="-x4 -q -R -M -N -I"  # tab width 4, print raw characters, use long status, show line numbers
+# export LESSHISTSIZE=1000
+# if [ -r "${XDG_DATA_HOME}/less/lesshst" ]; then
+#   export LESSHISTFILE="${XDG_DATA_HOME}/less/lesshst"
+# fi
 
 # Colorize less output
 echo -n ", LESS_TERMCAP"
@@ -65,6 +65,23 @@ export LESS_TERMCAP_se=$(printf '\e[0m')           # leave standout mode
 export LESS_TERMCAP_so=$(printf '\e[03;38;5;202m') # enter standout mode – orange background highlight (or italics)
 export LESS_TERMCAP_ue=$(printf '\e[0m')           # leave underline mode
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;139m') # enter underline mode – underline aubergine
+
+# lesspipe
+LESSPIPE=""
+[ -z "${LESSPIPE}" ] && which lesspipe >& /dev/null && LESSPIPE="lesspipe"
+[ -z "${LESSPIPE}" ] && which lesspipe.sh >& /dev/null && LESSPIPE="lesspipe.sh"
+if [ -n "${LESSPIPE}" ]; then
+  echo -n ", LESSPIPE"
+  eval "$(${LESSPIPE})"
+  if which pygmentize >& /dev/null; then
+    export LESSCOLORIZER="$(which pygmentize)"
+  fi
+fi
+unset LESSPIPE
+
+# Colorize grep output
+echo -n ", GREP_COLORS"
+export GREP_COLORS="ms=01;38;5;202:mc=01;31:sl=:cx=:fn=01;38;5;132:ln=32:bn=32:se=00;38;5;242"
 
 # man
 echo -n ", MANPAGER"

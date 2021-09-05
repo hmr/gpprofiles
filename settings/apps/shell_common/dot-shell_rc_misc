@@ -22,16 +22,6 @@ case "$(chkshell)" in
     ;;
 esac
 
-# lesspipe
-LESSPIPE=""
-[[ -z "${LESSPIPE}" ]] && type lesspipe >& /dev/null && LESSPIPE="lesspipe"
-[[ -z "${LESSPIPE}" ]] && type lesspipe.sh >& /dev/null && LESSPIPE="lesspipe.sh"
-if [ -n "${LESSPIPE}" ]; then
-  echo -n "lesspipe, "
-  #export LESSOPEN="|$(which lesspipe.sh) %s"
-  eval "$(${LESSPIPE})"
-fi
-
 # dircolors
 echo -n "dircolors, "
 if ! which dircolors >& /dev/null; then

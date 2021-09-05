@@ -1,0 +1,28 @@
+#command
+h   left-scroll
+j   forw-line
+k   back-line
+l   right-scroll
+
+J   forw-scroll
+K   back-scroll
+
+^j  forw-screen
+^k  back-screen
+
+^f  forw-search
+
+#line-edit
+^d  delete
+^a  home
+^e  end
+#^j  down
+#^k  up
+#^h  left
+#^l  right
+
+#env
+LESS = -x4 -q -R -M -N -I
+LESSCHARSET = utf-8
+LESSHISTSIZE = 1000
+
