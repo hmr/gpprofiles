@@ -233,6 +233,9 @@ noremap gV `[v`]
 map q: :q
 noremap ; :
 
+"-- Force write with root privilege
+cabbrev w!! w !sudo tee > /dev/null %
+
 "=============================================================================
 " Exit from any mode by Ctrl-C(Needless??)
 "=============================================================================
