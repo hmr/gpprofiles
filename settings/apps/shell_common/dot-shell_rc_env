@@ -150,9 +150,15 @@ if [ -d "${XDG_CONFIG_HOME}/elinks" ]; then
   export ELINKS_CONFDIR="${XDG_CONFIG_HOME}/elinks"
 fi
 
+# XZ
+if which xz >& /dev/null; then
+  echo -n ", XZ"
+  export XZ_DEFAULTS="-0 --block-size=1MiB -T0"
+fi
+
 # Set prompt
 echo -n ", PS1"
-if [ `id -g` = "0" ]; then
+if [ "$(id -g)" = "0" ]; then
 	TMP_PROMPT_SYM="#"
 else
 	TMP_PROMPT_SYM="$"
