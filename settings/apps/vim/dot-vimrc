@@ -5,7 +5,9 @@
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
 
+"-----------------------------------------------------------------------------
 " XDG Base Dirctory conformance
+"-----------------------------------------------------------------------------
 if has('persistent_undo')
   set undodir=${XDG_DATA_HOME}/vim/undo
   set undofile
