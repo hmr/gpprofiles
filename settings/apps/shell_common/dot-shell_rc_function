@@ -143,6 +143,12 @@ function ubuntu-update() {
 
   echo "===== Update done ====="
 
+  echo "Saving package list"
+  LANG=C apt list --installed > $XDG_CONFIG_HOME/apt/installed_packages_$(date +'%s').txt 2> /dev/null
+  /bin/ls -t $XDG_CONFIG_HOME/apt/installed_* | tail -n +11 | xargs rm -f
+  echo "done"
+  echo
+
   if [ -e /var/run/reboot-required.pkgs ]; then
     echo "*** Reboot required due to these package(s):"
     cat /var/run/reboot-required.pkgs
