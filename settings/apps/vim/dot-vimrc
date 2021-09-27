@@ -24,6 +24,16 @@ set runtimepath+=${XDG_CONFIG_HOME}/vim,${VIMRUNTIME},${XDG_CONFIG_HOME}/vim/aft
 runtime conf.d/keymap.vim   " Keymap definition
 runtime conf.d/vimplug.vim  " Vim-Plug
 
+"-----------------------------------------------------------------------------
+" Path settings
+"-----------------------------------------------------------------------------
+if has('macunix')
+  set path+=/usr/local/include
+  set path+=${HOME}/Library/Arduino15/packages/**
+  set path+=${HOME}/Arduino/libraries/**
+  set path+=/Applications/Arduino.app/Contents/Java/hardware/**
+endif
+
 "----------------------------------------------------------------------------
 " Misc settings [http://www.geek.sc/archives/977]
 "----------------------------------------------------------------------------
