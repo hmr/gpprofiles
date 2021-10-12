@@ -50,7 +50,7 @@ Plug 'dense-analysis/ale'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Vim motions on speed!
-"Plug 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 
 " Jump to any location specified by two characters.
 Plug 'justinmk/vim-sneak'
@@ -150,7 +150,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 
 " Open URI with your favorite browser from your most favorite editor
-Plug 'tyru/open-browser.vim'
+" Plug 'tyru/open-browser.vim'
 
 " Lean & mean status/tabline for vim that's light as air
 Plug 'vim-airline/vim-airline'
