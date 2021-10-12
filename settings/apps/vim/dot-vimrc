@@ -78,10 +78,6 @@ set hidden                      " not to unload and to hide the buffer when abon
 "set paste                      " put Vim in Paste mode which is useful for pasting some text to Vim.
 set modeline                    " use modeline
 
-" Use <Leader>y <Leader>d <Leader>p to copy/cut/paste with system clipbord!
-"set clipboard&            " reset clipboard as default
-"set clipboard^=unnamed    " use system's clipboard
-
 " No need to escape regular expression meta characters when search(very magic)
 " nnoremap /  /\v
 
@@ -200,13 +196,15 @@ let mapleader = "\<Space>"
 nnoremap <Leader>w :w<CR>
 "-- Enter visual line mode with <Space><Space>
 nmap <Leader><Leader> V
-"-- Copy & paste to system clipboard with <Space>p and <Space>y
+"-- Copy, cut & paste to system clipboard with <Leader>y, <Leader>d and <Leader>p
+"set clipboard&            " reset clipboard as default
+"set clipboard^=unnamed    " use system's clipboard
 vmap <Leader>y "+y
 vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
+nmap <Leader>p "+p
+nmap <Leader>P "+P
 
 " III. Use region expanding
 vmap v <Plug>(expand_region_expand)
@@ -293,7 +291,7 @@ endfunction
 
 " sepが空でなければ、sepをセパレータとしてジャンプ。見つからなければ行末へ。
 function! MyJumptoEol(sep)
-  if col('.') == col('$')
+  if col('.') == col('$') - 1
     silent exec 'normal! w'
     return ''
   endif
@@ -841,23 +839,23 @@ endif
 " "=============================================================================
 " "Settings for vim-easymotion
 " "=============================================================================
-" map  <Leader>e <Plug>(easymotion-prefix)
+map  <Leader>e <Plug>(easymotion-prefix)
 " " Move to word
-" map  <Leader>j <Plug>(easymotion-bd-w)
-" nmap <Leader>j <Plug>(easymotion-overwin-w)
+map  <Leader>j <Plug>(easymotion-bd-w)
+nmap <Leader>j <Plug>(easymotion-overwin-w)
 " " Move to line
-" map  <Leader>l <Plug>(easymotion-bd-jk)
-" nmap <Leader>l <Plug>(easymotion-overwin-line)
+map  <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-overwin-line)
 " " Move to character
-" map  <Leader>k <Plug>(easymotion-bd-f)
-" nmap <Leader>k <Plug>(easymotion-overwin-f)
+map  <Leader>k <Plug>(easymotion-bd-f)
+nmap <Leader>k <Plug>(easymotion-overwin-f)
 
 "=============================================================================
 " Misc Settings
 "=============================================================================
 "----- GitGutter
-nmap <silent> <C-g><C-n> <Plug>GitGutterNextHunk
-nmap <silent> <C-g><C-p> <Plug>GitGutterPrevHunk
+nmap <silent> <C-g><C-n> <Plug>(GitGutterNextHunk)
+nmap <silent> <C-g><C-p> <Plug>(GitGutterPrevHunk)
 
 "----- NERD Tag
 " コアファイルも含めるため.gitignoreを無視
@@ -890,8 +888,8 @@ augroup END
 " let g:comfortable_motion_air_drag = 3.0
 "
 "----- open-browser.vim
-nmap <Leader>b <Plug>(openbrowser-smart-search)
-vmap <Leader>b <Plug>(openbrowser-smart-search)
+" nmap <Leader>b <Plug>(openbrowser-smart-search)
+" vmap <Leader>b <Plug>(openbrowser-smart-search)
 
 "----- calendar.vim
 " let g:calendar_google_calendar = 1
@@ -938,6 +936,22 @@ let g:ale_markdown_mdl_options = '--style "$XDG_CONFIG_HOME/vim/conf.d/mdl_style
 " Settings to use mouse
 set mouse=a                     " use mouse in all modes
 set ttymouse=xterm2             " code system sent when a mouse button is clicked
+
+" <Leader>n/p/b will next/prev/swap buffer
+noremap <silent> <Leader>n   :bn<cr>
+noremap <silent> <Leader>p   :bp<cr>
+noremap <silent> <Leader>b   :b#<cr>
+
+" Folding(:help fold.txt)
+set foldmethod=syntax " manual / indent / marker / expr / syntax
+set foldlevel=9999
+set foldcolumn=0
+augroup FoldingAutoCommand
+  autocmd!
+  autocmd BufWinLeave * mkview
+  autocmd BufWinEnter * silent loadview
+augroup END
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
