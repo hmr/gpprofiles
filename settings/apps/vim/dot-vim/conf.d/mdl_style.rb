@@ -1,3 +1,7 @@
+# Part of GPP(General Puropose Profiles)
+# mdl style configuration file
+#  (*) mdl is a markdown linter implemented by ruby.
+
 all
 
 # Exclude rules: MD013 - Line length
