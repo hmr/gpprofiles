@@ -1,6 +1,9 @@
-" Part of GPP(General Puropose Profiles)
 " vim: ft=vim ts=2 sts=2 sw=2 expandtab fenc=utf-8 ff=unix
+" Part of GPP(General Puropose Profiles)
 " Main Vim configuration
+
+" Origin: Very old
+" Last Update: [2021-10-15T15:53:34+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -9,14 +12,26 @@ scriptencoding utf-8
 " XDG Base Dirctory conformance
 "-----------------------------------------------------------------------------
 if has('persistent_undo')
-  set undodir=${XDG_DATA_HOME}/vim/undo
+  set undodir=$XDG_DATA_HOME/vim/undo
   set undofile
 endif
-set directory=${XDG_DATA_HOME}/vim/swap
-set backupdir=${XDG_DATA_HOME}/vim/backup
-set viewdir=${XDG_DATA_HOME}/vim/view
-set viminfo+='1000,n${XDG_DATA_HOME}/vim/viminfo
-set runtimepath+=${XDG_CONFIG_HOME}/vim,${VIMRUNTIME},${XDG_CONFIG_HOME}/vim/after
+set directory=$XDG_DATA_HOME/vim/swap
+set backupdir=$XDG_DATA_HOME/vim/backup
+set viewdir=$XDG_DATA_HOME/vim/view
+set viminfo='1000,s100,<1000,:50000,/50000,!,h,n$XDG_DATA_HOME/vim/viminfo
+set runtimepath^=$XDG_CONFIG_HOME/vim
+
+"----------------------------------------------------------------------------
+" Viminfo settings [:help viminfo]
+"----------------------------------------------------------------------------
+" save marks in mru 1000 files.
+" save registers up to 100KB.
+" save registers up to 1000 lines.
+" save command history up to 50000 lines.
+" save search history up to 50000 lines.
+" save ALL_ALPHABET_VARIABLES.
+" disable hlsearch when viminfo file read.
+" set viminfo^='1000,s100,<1000,:50000,/50000,!,h
 
 "-----------------------------------------------------------------------------
 " Read configuration files
@@ -24,18 +39,19 @@ set runtimepath+=${XDG_CONFIG_HOME}/vim,${VIMRUNTIME},${XDG_CONFIG_HOME}/vim/aft
 runtime conf.d/keymap.vim   " Keymap definition
 runtime conf.d/vimplug.vim  " Vim-Plug
 
+set runtimepath+=$XDG_DATA_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
 "-----------------------------------------------------------------------------
 " Path settings
 "-----------------------------------------------------------------------------
 if has('macunix')
-  set path+=/usr/local/include
-  set path+=${HOME}/Library/Arduino15/packages/**
-  set path+=${HOME}/Arduino/libraries/**
-  set path+=/Applications/Arduino.app/Contents/Java/hardware/**
+  set path^=/usr/local/include
+  " set path+=${HOME}/Library/Arduino15/packages/**
+  " set path+=${HOME}/Arduino/libraries/**
+  " set path+=/Applications/Arduino.app/Contents/Java/hardware/**
 endif
 
 "----------------------------------------------------------------------------
-" Misc settings [http://www.geek.sc/archives/977]
+" General settings [http://www.geek.sc/archives/977]
 "----------------------------------------------------------------------------
 filetype plugin indent on       " Use filetype plugin and auto indent
 set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,ucs-bom
@@ -47,9 +63,9 @@ set nowritebackup               " not to make backup file.
 set nobackup                    " not to backup
 set history=50                  " keep 50 lines of command line history
 set textwidth=0                 " default maximum width of text(0 means never use auto line break)
-set tabstop=4                   " default tab width
+set tabstop=8                   " default tab width
 set shiftwidth=0                " default indent width(0 means same as tabstop)
-set expandtab                   " expand tab to space
+set noexpandtab                 " expand tab to space
 set cursorline                  " show cursor line indicator
 set cursorlineopt=both          " number / line / both
 set number                      " show line number
@@ -77,6 +93,9 @@ set showbreak=↪                 " string to put at the start of line wrapped. 
 set hidden                      " not to unload and to hide the buffer when abondoned
 "set paste                      " put Vim in Paste mode which is useful for pasting some text to Vim.
 set modeline                    " use modeline
+set showcmd                     " show command
+set cmdheight=2                 " height of command line
+
 
 " No need to escape regular expression meta characters when search(very magic)
 " nnoremap /  /\v
@@ -89,7 +108,8 @@ set modeline                    " use modeline
 " let g:airline_theme='tomorrow'
 " let g:airline_theme='solarized'
 " let g:airline_solarized_bg='dark'
-let g:airline_theme='gruvbox'
+" let g:airline_theme='gruvbox'
+let g:airline_theme='ayu_dark'
 
 " let g:airline_mode_map = {
 "       \ 'n'  : ' [NORMAL] ',
@@ -111,12 +131,27 @@ let g:airline_mode_map = {
       \ '' : 'V-B',
       \ }
 
+let g:airline_filetype_overrides = {
+      \ 'coc-explorer':  [ 'CoC Explorer', '' ],
+      \ 'defx':  ['defx', '%{b:defx.paths[0]}'],
+      \ 'fugitive': ['fugitive', '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}'],
+      \ 'gundo': [ 'Gundo', '' ],
+      \ 'help':  [ 'Help', '%f' ],
+      \ 'minibufexpl': [ '(mbe)', '' ],
+      \ 'nerdtree': [ get(g:, 'NERDTreeStatusline', 'NERD'), '' ],
+      \ 'startify': [ 'startify', '' ],
+      \ 'vim-plug': [ 'Plugins', '' ],
+      \ 'vimfiler': [ 'vimfiler', '%{vimfiler#get_status_string()}' ],
+      \ 'vimshell': ['vimshell','%{vimshell#get_status_string()}'],
+      \ 'vaffle' : [ 'Vaffle', '%{b:vaffle.dir}' ],
+      \ }
+
 "-+-+-+- Airline tab settings -+-+-+-
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#show_buffers = 1
+" let g:airline#extensions#tabline#tab_nr_type = 1
+" let g:airline#extensions#tabline#fnamemod = ':t'
+" let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 "-+-+-+- Airline status bar settings -+-+-+-
 "let g:airline_section_a = airline#section#create(['mode', 'crypt', 'paste', 'spell', 'iminsert'])
@@ -259,8 +294,14 @@ inoremap <C-c> <ESC>
 " Don't back 1 charactor when leaving insert mode
 augroup DoNotBack
   autocmd!
-  autocmd InsertLeave * execute 'normal! l'
+  autocmd InsertLeave * call MyInsertLeave()
 augroup END
+
+function! MyInsertLeave()
+  if col('.') != 1
+    exec 'normal! l'
+  endif
+endfunction
 
 "=============================================================================
 " From 若干Emacs風味なvimのキー設定
@@ -407,7 +448,7 @@ function! AppendOrInsert()
     exec 'startinsert'
   endif
 endfunction
-noremap <silent> a :call AppendOrInsert()<CR>
+nmap <silent> a :call AppendOrInsert()<CR>
 
 " 挿入モードでもCtrl-zでサスペンドする
 inoremap <C-z> <ESC><C-z>
@@ -551,7 +592,7 @@ nmap <silent> <M-g> :silent call gitgutter#toggle()<CR>
 " Settings for autocmd
 "=============================================================================
 if has('autocmd')
-  augroup redhat
+  augroup defgrp1
     autocmd!
     "In text files, always limit the width of text to 78 characters
     " autocmd BufRead *.txt set tw=78
@@ -561,13 +602,18 @@ if has('autocmd')
           \ if line("'\"") > 0 && line ("'\"") <= line("$") |
           \     exe "normal! g'\"" |
           \ endif
+
     "don't write swapfile on most commonly used directories for NFS mounts or USB sticks
-    autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+    " autocmd BufNewFile,BufReadPre /media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+
     "start with spec file template
-    autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
+    " autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
 
     " Trying to disable textwidth limitation.
     " autocmd FileType text setlocal textwidth=0
+
+    " CD to the directory where the file editing exist.
+    autocmd BufEnter *  execute ":lcd " . expand("%:p:h")
   augroup END
 endif
 
@@ -687,7 +733,7 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
   syntax on
 
   if has('termguicolors')
-    set termguicolors
+    set termguicolors  " true color support
     if &term !~? 'xterm'  " for $TERM != 'xterm'
       let &t_8f = "\e[38;2;%lu;%lu;%lum" " Default foreground color
       let &t_8b = "\e[48;2;%lu;%lu;%lum" " Default background color
@@ -706,7 +752,23 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
     " colorscheme molokai
 
     " -- settings for sublime-monokai
-    let g:sublimemonokai_term_italic=1
+    " let g:sublimemonokai_term_italic=1
+
+    " -- settings for gruvbox
+    let g:gruvbox_bold = 1
+    let g:gruvbox_italic = 1
+    let g:gruvbox_underline = 1
+    let g:gruvbox_undercurl = 1
+    let g:gruvbox_inverse = 1
+    " let g:gruvbox_guisp_fallback = 1  " guisp is color of undercurl
+    let g:gruvbox_improved_strings = 1
+    let g:gruvbox_improved_warnings = 1
+    let g:gruvbox_termcolors = 256
+    let g:gruvbox_invert_indent_guides = 1
+
+    let g:gruvbox_contrast_dark  = 'medium'
+    " let g:gruvbox_contrast_light = 'medium'
+    " let g:gruvbox_invert_tabline = 1
 
     " -- with vim's mainline Java
     " let java_comment_strings=1
@@ -839,7 +901,7 @@ endif
 " "=============================================================================
 " "Settings for vim-easymotion
 " "=============================================================================
-map  <Leader>e <Plug>(easymotion-prefix)
+" map  <Leader>e <Plug>(easymotion-prefix)
 " " Move to word
 map  <Leader>j <Plug>(easymotion-bd-w)
 nmap <Leader>j <Plug>(easymotion-overwin-w)
@@ -847,8 +909,26 @@ nmap <Leader>j <Plug>(easymotion-overwin-w)
 map  <Leader>l <Plug>(easymotion-bd-jk)
 nmap <Leader>l <Plug>(easymotion-overwin-line)
 " " Move to character
-map  <Leader>k <Plug>(easymotion-bd-f)
-nmap <Leader>k <Plug>(easymotion-overwin-f)
+map  <Leader>k <Plug>(easymotion-bd-f2)
+nmap <Leader>k <Plug>(easymotion-overwin-f2)
+nmap s <Plug>(easymotion-sn)
+xmap s <Plug>(easymotion-sn)
+omap z <Plug>(easymotion-sn)
+
+" Disable default mappings
+let g:EasyMotion_do_mapping = 0
+" Characters to use as label
+let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTASDGZXCVBJF'
+" Show target key with upper case to improve readability
+let g:EasyMotion_use_upper = 1
+" Jump to first match with enter & space
+let g:EasyMotion_enter_jump_first = 1
+let g:EasyMotion_space_jump_first = 1
+" Turn on case sensitive feature
+let g:EasyMotion_smartcase = 1
+" keep cursor column with `JK` motions
+let g:EasyMotion_startofline = 0
+
 
 "=============================================================================
 " Misc Settings
@@ -920,7 +1000,7 @@ let g:AutoPairsShortcutBackInsert = '<M-B>'
 "----- tag search settings for both ctags and cscope
 noremap <Leader>j   g]
 noremap <Leader>J   <C-w>g]
-noremap <Leader>t   :pop<CR>
+noremap <Leader>T   :pop<CR>
 
 "----- Arrow key: move screen line
 noremap   <silent><Down>  gj
@@ -934,7 +1014,7 @@ let g:ale_languagetool_options = '--autoDetect --disable "WHITESPACE_RULE,DASH_R
 let g:ale_markdown_mdl_options = '--style "$XDG_CONFIG_HOME/vim/conf.d/mdl_style.rb"'
 
 " Settings to use mouse
-set mouse=a                     " use mouse in all modes
+set mouse=nvh                   " use mouse in normal, visual and help modes
 set ttymouse=xterm2             " code system sent when a mouse button is clicked
 
 " <Leader>n/p/b will next/prev/swap buffer
@@ -948,9 +1028,21 @@ set foldlevel=9999
 set foldcolumn=0
 augroup FoldingAutoCommand
   autocmd!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent loadview
+  autocmd BufWinLeave ?* mkview 1
+  autocmd BufWinEnter ?* silent loadview 1
 augroup END
+
+" autodate
+let autodate_format='%Y-%m-%dT%H:%M:%S%z'
+let autodate_keyword_pre='Last Update: \['
+let autodate_keyword_post='\]'
+
+" MRU
+let MRU_File = '$XDG_DATA_HOME/vim/plugin/mru/vim_mru_files'
+let MRU_Max_Entries = 1000
+
+" MBE(Mini Buffer Explorer)
+let g:miniBufExplUseSingleClick = 1
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map

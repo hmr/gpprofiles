@@ -1,6 +1,8 @@
-" Part of GPP(General Puropose Profiles)
 " vim: ft=vim ts=2 sts=2 sw=2 expandtab fenc=utf-8 ff=unix
+" Part of GPP(General Puropose Profiles)
+
 " ORIGIN: 2021-03-01 by hmr
+" Last Update: [2021-10-14T13:50:42+0900]
 
 scriptencoding utf-8
 
@@ -22,16 +24,16 @@ call plug#begin('~/.config/vim/plugged')
 " Plugins listed below will be treated by vim-plug.
 
 " Color Schemes
-Plug 'altercation/vim-colors-solarized'
-Plug 'tomasr/molokai'
-Plug 'crusoexia/vim-monokai'
-Plug 'ErichDonGubler/vim-sublime-monokai'
-Plug 'sainnhe/sonokai'
-Plug 'phanviet/vim-monokai-pro'
+" Plug 'altercation/vim-colors-solarized'
+" Plug 'tomasr/molokai'
+" Plug 'crusoexia/vim-monokai'
+" Plug 'ErichDonGubler/vim-sublime-monokai'
+" Plug 'sainnhe/sonokai'
+" Plug 'phanviet/vim-monokai-pro'
 Plug 'morhetz/gruvbox'
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'joshdick/onedark.vim'
-Plug 'kaicataldo/material.vim'
+" Plug 'bluz71/vim-moonfly-colors'
+" Plug 'joshdick/onedark.vim'
+" Plug 'kaicataldo/material.vim'
 
 " Syntax
 " Syntax highliting for many languages
@@ -53,13 +55,13 @@ Plug 'dense-analysis/ale'
 Plug 'easymotion/vim-easymotion'
 
 " Jump to any location specified by two characters.
-Plug 'justinmk/vim-sneak'
+" Plug 'justinmk/vim-sneak'
 
 " Tab completion
 " Plug 'ervandew/supertab'
 
 " A calendar application for Vim
-Plug 'itchyny/calendar.vim'
+" Plug 'itchyny/calendar.vim', { 'on': 'Calendar' }
 
 " Give a visual aid to navigate marks
 Plug 'jacquesbh/vim-showmarks'
@@ -69,10 +71,13 @@ Plug 'jacquesbh/vim-showmarks'
 Plug 'jiangmiao/auto-pairs'
 
 " So to called Zen mode for vim
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " fzf for vim
 " Plug 'junegunn/fzf.vim'
+
+" A simple, easy-to-use Vim alignment plugin
+Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
 
 " Maintained version of CtrlP
 Plug 'ctrlpvim/ctrlp.vim'
@@ -101,8 +106,8 @@ Plug 'lambdalisue/vim-gista-ctrlp'
 " Ctags generator for Vim
 Plug 'masakuni-ito/vim-tags'
 
-" Vim plugin for the Perl module / CLI script 'ack'
-Plug 'mileszs/ack.vim'
+" Vim frontend for the programmer's search tool 'ack' which is grep-like text finder
+Plug 'mileszs/ack.vim', { 'on': ['Ack','AckAdd', 'AckFile', 'AckFromSearch', 'AckHelp', 'AckWindow', 'LAck', 'LAckAdd', 'LAckHelp', 'LAckWindow'] }
 
 " A Vim plugin for visually displaying indent levels in code
 Plug 'nathanaelkane/vim-indent-guides'
@@ -114,13 +119,13 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'preservim/nerdcommenter'
 
 " A tree explorer plugin for Vim
-Plug 'preservim/nerdtree'
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " Vim plugin that displays tags in a window, ordered by scope
-Plug 'preservim/tagbar'
+Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
 
 "Very simple vim plugin for easy resizing of your vim windows
-Plug 'simeji/winresizer'
+Plug 'simeji/winresizer', { 'on': ['WinResizerStartFocus', 'WinResizerStartMove', 'WinResizerStartResize'] }
 
 " quickly highlight <cword> or visually selected word
 Plug 't9md/vim-quickhl'
@@ -128,8 +133,8 @@ Plug 't9md/vim-quickhl'
 " to visually select increasingly larger regions
 Plug 'terryma/vim-expand-region'
 
-" Print Vim variables
-Plug 'thinca/vim-prettyprint'
+" print vim variables
+Plug 'thinca/vim-prettyprint', { 'on': 'PrettyPrint' }
 
 " Comment stuff out.
 "Plug 'tpope/vim-commentary'
@@ -178,5 +183,11 @@ Plug 'hmr/vim-rootignore' "was once 'octref/RootIgnore'
 
 " CSV handling plugin
 Plug 'chrisbra/csv.vim'
+
+" Elegant buffer explorer - takes very little screen space
+Plug 'fholgado/minibufexpl.vim'
+
+" Provides an easy access to a list of recently opened/edited files
+Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
 
 call plug#end()
