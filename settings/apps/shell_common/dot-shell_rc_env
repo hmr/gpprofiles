@@ -18,6 +18,11 @@ if [ -d "${HOME}/go" ]; then
 	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin:${PATH}"
 fi
 
+# Add local installation to PATH
+if [ -d "${HOME}/.local/bin" ]; then
+  print "${PATH}" | grep "${HOME}/.local/bin" >& /dev/null || export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
 # Readline
 if [ -r "${XDG_CONFIG_HOME}/readline/inputrc" ]; then
   echo -n ", INPUTRC"
