@@ -38,10 +38,13 @@ fi
 #local LIGHT_BLUE=$'%{^[[1;36m%}'$
 #local WHITE=$'%{^[[1;37m%}'$
 local DEFAULT=$(tput sgr0)
+local BOLD=$(tput bold)
+local BLINK=$(tput blink)
+local ITALIC=$(tput sitm)
 local RED=$(tput setaf 1)
 local GREEN=$(tput setaf 2)
 local YELLOW=$(tput setaf 3)
 local BLUE=$(tput setaf 4)
-local PURPLE=$(tput setaf 5)
-local LIGHT_BLUE=$(tput setaf 6)
+local MAGENTA=$(tput setaf 5)
+local CYAN=$(tput setaf 6)
 local WHITE=$(tput setaf 7)
