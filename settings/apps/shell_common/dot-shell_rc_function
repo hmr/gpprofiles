@@ -134,23 +134,28 @@ esac
 # System update combo
 echo -n " ubuntu-update"
 function ubuntu-update() {
+  echo "${MAGENTA}===== Updating system =====${DEFAULT}"
   sudo apt update \
     && apt list --upgradable \
-    && echo -n "==================== HIT ENTER TO PROCEED ====================" \
+    && echo -n "${YELLOW}==================== HIT ENTER TO PROCEED ====================${DEFAULT}" \
     && read \
     && sudo apt upgrade -y \
     && sudo apt autoremove -y
 
-  echo "===== Update done ====="
+  echo "${CYAN}===== Update done =====${DEFAULT}"
+  echo
 
-  echo "Saving package list"
-  LANG=C apt list --installed > $XDG_CONFIG_HOME/apt/installed_packages_$(date +'%s').txt 2> /dev/null
+  echo "${MAGENTA}===== Saving package list =====${DEFAULT}"
+  [ -d "${XDG_CONFIG_HOME}/apt" ] || mkdir -p "${XDG_CONFIG_HOME}/apt"
+  FILENAME="$XDG_CONFIG_HOME/apt/installed-packages_$(hostname -s)_$(date +'%s').txt.gz"
+  LANG=C apt list --installed 2> /dev/null | gzip -c > ${FILENAME}
+  echo "Saved as ${FILENAME}"
   /bin/ls -t $XDG_CONFIG_HOME/apt/installed_* | tail -n +11 | xargs rm -f
-  echo "done"
+  echo "${CYAN}===== Saving done =====${DEFAULT}"
   echo
 
   if [ -e /var/run/reboot-required.pkgs ]; then
-    echo "*** Reboot required due to these package(s):"
+    echo "${BOLD}${RED}*** Reboot required due to these package(s):${DEFAULT}"
     cat /var/run/reboot-required.pkgs
   else
     echo "No need to reboot."
