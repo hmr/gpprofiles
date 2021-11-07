@@ -1,9 +1,11 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+#!/bin/bash
 
+# Part of GPProfiles
 # dot-shell_rc_alias
 # ORIGIN: date unknown by hmr
 
 echo "Processing dot-shell_rc_alias"
+echo -n "  "
 #
 # Some people use a different file for aliases
 # if [ -f "${HOME}/.bash_aliases" ]; then
@@ -83,60 +85,68 @@ esac
 case "$(chkshell)" in
   bash )
     if [ -r /usr/local/etc/grc.bashrc ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /usr/local/etc/grc.bashrc
     elif [ -r /usr/etc/grc.bashrc ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /usr/etc/grc.bashrc
     elif [ -r /etc/grc.bashrc ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /etc/grc.bashrc
     fi
     ;;
 
   zsh )
     if [ -r /usr/local/etc/grc.zsh ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /usr/local/etc/grc.zsh
     elif [ -r /usr/etc/grc.zsh ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /usr/etc/grc.zsh
     elif [ -r /etc/grc.zsh ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /etc/grc.zsh
     fi
     ;;
 
   fish )
     if [ -r /usr/local/etc/grc.fish ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /usr/local/etc/grc.fish
     elif [ -r /usr/etc/grc.fish ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /usr/etc/grc.fish
     elif [ -r /etc/grc.fish ]; then
-      echo "  Enabling grc alias"
+      echo -n ", grc aliases"
       source /etc/grc.fish
     fi
     ;;
 esac
 
 # Quilt(Tool to manage series of patches)
-alias dquilt="quilt --quiltrc=${XDG_CONFIG_HOME:-${HOME}}/quilt/dpkg.quiltrc"
-[ "$(chkshell)" = "bash" ] && complete -F _quilt_completion -o filenames dquilt
+if which quilt > /dev/null; then
+  echo -n ", quilt"
+  alias dquilt="quilt --quiltrc=${XDG_CONFIG_HOME:-${HOME}}/quilt/dpkg.quiltrc"
+  [ "$(chkshell)" = "bash" ] && complete -F _quilt_completion -o filenames dquilt
+fi
 
 # mtr
-alias mtr="sudo mtr -t -y2 -e -b"
+if which mtr > /dev/null; then
+  echo -n ", mtr"
+  alias mtr="sudo mtr -t -y2 -e -b"
+fi
 
 # APT
-if [ -x /usr/bin/apt ]; then
+if which apt > /dev/null; then
+  echo -n ", apt"
   alias as="apt search"
   alias ai="apt show"
   alias aI="apt install"
 fi
 
 # BREW
-if [ -x /usr/local/bin/brew ]; then
+if which brew > /dev/null; then
+  echo -n ", brew"
   alias bs="brew search"
   alias bi="brew info"
   alias bI="brew install"
@@ -144,17 +154,23 @@ fi
 
 # Use bat instead of less
 if which bat > /dev/null; then
+  echo -n ", bat"
   alias less="bat"
 fi
 
 # ffmpeg/ffplay/ffprobe
 if which ffmpeg > /dev/null; then
+  echo -n ", ffmpeg"
   alias ffmpeg="ffmpeg -hide_banner"
 fi
 if which ffplay > /dev/null; then
+  echo -n ", ffplay"
   alias ffplay="ffplay -hide_banner -autoexit"
 fi
 if which ffprobe > /dev/null; then
+  echo -n ", ffprobe"
   alias ffprobe="ffprobe -hide_banner"
 fi
 
+echo
+# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
