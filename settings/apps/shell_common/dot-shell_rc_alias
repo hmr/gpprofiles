@@ -172,5 +172,11 @@ if which ffprobe > /dev/null; then
   alias ffprobe="ffprobe -hide_banner"
 fi
 
+# Colorlized ip
+if which ip > /dev/null; then
+  echo -n ", ip"
+  alias ip="ip -c"
+fi
+
 echo
 # vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
