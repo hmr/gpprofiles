@@ -133,7 +133,7 @@ fi
 # mtr
 if which mtr > /dev/null; then
   echo -n ", mtr"
-  alias mtr="sudo mtr -t -y2 -e -b"
+  alias mtr="sudo mtr -t -y0 -e -b"
 fi
 
 # APT
