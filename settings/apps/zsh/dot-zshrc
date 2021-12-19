@@ -58,8 +58,8 @@ if [ -n "${ZPLUG_HOME}" ]; then
   # enhances the terminal environment with 256 colors
   zplug "chrissicool/zsh-256color", defer:2
   # コマンドを種類毎に色づけ
-  zplug "zsh-users/zsh-syntax-highlighting", defer:3
-  zplug "zdharma/fast-syntax-highlighting", defer:3
+  #zplug "zsh-users/zsh-syntax-highlighting", defer:3
+  zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search", defer:3
   # Gitの補完
