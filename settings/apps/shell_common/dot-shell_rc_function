@@ -150,7 +150,7 @@ function ubuntu-update() {
   FILENAME="$XDG_CONFIG_HOME/apt/installed-packages_$(hostname -s)_$(date +'%s').txt.gz"
   LANG=C apt list --installed 2> /dev/null | gzip -c > ${FILENAME}
   echo "Saved as ${FILENAME}"
-  /bin/ls -t $XDG_CONFIG_HOME/apt/installed_* | tail -n +11 | xargs rm -f
+  /bin/ls -t $XDG_CONFIG_HOME/apt/installed-* | tail -n +11 | xargs rm -f
   echo "${CYAN}===== Saving done =====${DEFAULT}"
   echo
 
