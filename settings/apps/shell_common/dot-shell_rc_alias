@@ -142,6 +142,11 @@ if which apt > /dev/null; then
   alias as="apt search"
   alias ai="apt show"
   alias aI="apt install"
+  if which apt-file > /dev/null; then
+    echo -n ", apt-file"
+    alias afl="apt-file list"
+    alias afs="apt-file search"
+  fi
 fi
 
 # BREW
