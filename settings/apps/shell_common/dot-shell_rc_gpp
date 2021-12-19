@@ -8,6 +8,11 @@
 
 if [ -f ~/.gpprofiles ]; then
   source ~/.gpprofiles
+elif [ -n "${XDG_CONFIG_HOME}" ] && [ -f $XDG_CONFIG_HOME/gpprofiles/gpprofiles ]; then
+  source ${XDG_CONFIG_HOME}/gpprofiles/gpprofiles
+fi
+
+if [ -n "${GPP_HOME}" ]; then
   echo -n "GPP found. "
   echo -n "Version: ${GPP_VERSION}. "
   echo    "Installed on ${GPP_HOME}"
