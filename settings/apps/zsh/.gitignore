@@ -6,4 +6,5 @@ zplug/cache/
 zplug/log/
 zplug/repos/
 zplug/zcompdump
+*.zwc
 

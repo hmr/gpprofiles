@@ -10,6 +10,14 @@
 
 echo "Processing dot-zshrc..."
 
+# Compile rc files
+for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle
+if [ ! -f ${_SELF}.zwc -o ${_SELF} -nt ${_SELF}.zwc ]; then
+  echo "  Compiling ${_SELF}"
+  zcompile ${_SELF}
+fi
+unset _SELF
+
 # System-wide zshrc
 [ -r /usr/local/etc/zshrc ] && source /usr/local/etc/zshrc
 
