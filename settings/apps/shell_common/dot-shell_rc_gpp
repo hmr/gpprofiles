@@ -39,11 +39,15 @@ if [ -n "${GPP_HOME}" ]; then
   esac
 
   # print tty device of itself
+  echo
   if [ -n "${TTY}" ]; then
-    printf 'This is at [%s]\n' "${TTY}"
+    printf 'This tty is [%s]' "${TTY}"
   elif which tty >& /dev/null; then
-    printf 'This is at [%s]\n' "$(tty)"
+    printf 'This tty is [%s]' "$(tty)"
   fi
+  # print $TERM
+  [ -n "${TERM}" ] && printf ' and TERM is "%s"' "${TERM}"
+  echo
 
 else
   echo "GPP not found. Bye"
