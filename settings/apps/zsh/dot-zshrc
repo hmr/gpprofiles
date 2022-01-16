@@ -162,6 +162,8 @@ KBDLAYOUT="Keychron_K2_Mac"
 # Extra key config
 if [ -r ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
   source ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
+else
+  echo; echo "${RED}Warning: Keyconfig file [$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}] not found.${NORMAL}"
 fi
 
 # set keybinding to emacs mode
