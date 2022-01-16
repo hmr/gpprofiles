@@ -13,9 +13,14 @@ echo -n " PATH"
 echo "${PATH}" | grep "/usr/local/sbin" >& /dev/null || export PATH="/usr/local/sbin:${PATH}"
 echo "${PATH}" | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/bin:${PATH}"
 
-# Add local go installation to PATH
+# Add local Go installation to PATH
 if [ -d "${HOME}/go" ]; then
 	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin:${PATH}"
+fi
+
+# Add local Cargo(rust) installation to PATH
+if [ -d "${XDG_DATA_HOME}/cargo/bin" ]; then
+	echo "${PATH}" | grep "${XDG_DATA_HOME}/cargo/bin" >& /dev/null || export PATH="${XDG_DATA_HOME}/cargo/bin:${PATH}"
 fi
 
 # Add local installation to PATH
