@@ -108,7 +108,7 @@
     },
 
     {
-      "description": "[GPP] Send Option(Alt)+D when Command+D on iTerm2",
+      "description": "[GPP] Send Option(Alt)+D instead of Command+D on iTerm2",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -126,7 +126,7 @@
     },
 
     {
-      "description": "[GPP] Ignore ⌘+R(reset terminal) on iTerm2",
+      "description": "[GPP] (OBSOLETE) Ignore ⌘+R(reset terminal) on iTerm2",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -140,7 +140,7 @@
     },
 
     {
-      "description": "[GPP] Ignore ⌘+K(clear buffer) on iTerm2",
+      "description": "[GPP] (OBSOLETE) Ignore ⌘+K(clear buffer) on iTerm2",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -158,7 +158,7 @@
       "manipulators": [ {
           "type": "basic",
           "from": {
-            "key_code": "g",
+            "key_code": "c",
             "modifiers": {"mandatory": ["command", "option"] }
           },
           "to": [
