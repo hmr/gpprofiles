@@ -12,6 +12,8 @@ K   back-scroll
 
 ^f  forw-search
 
+?   goto-end
+
 #line-edit
 ^d  delete
 ^a  home
