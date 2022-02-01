@@ -68,8 +68,8 @@ alias sudo='sudo -E'                          # sudo always preserves envs.
 echo -n ", apt"
 alias apt='sudo apt'                          # APT is always with sudo(for Debian/Ubuntu)
 
-echo -n ", grep"
-alias grep='grep --color=always'              # grep always outputs color
+#echo -n ", grep"
+#alias grep='grep --color=always'              # grep always outputs color
 
 #alias isodate="date --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 #alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
@@ -140,6 +140,12 @@ fi
 if which ip > /dev/null; then
   echo -n ", ip"
   alias ip="ip -c"
+fi
+
+# sysctl w/o pager
+if which sysctl > /dev/null; then
+  echo -n ", sysctl"
+  alias sysctl="sysctl --no-pager"
 fi
 
 echo
