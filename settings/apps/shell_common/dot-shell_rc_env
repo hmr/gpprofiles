@@ -166,6 +166,13 @@ if which xz >& /dev/null; then
   export XZ_DEFAULTS="-0 --block-size=1MiB -T0"
 fi
 
+# Zstandard
+if which zstd >& /dev/null; then
+  echo -n ", ZSTD"
+  export ZSTD_CLEVEL=7
+  export ZSTD_NBTHREADS=0
+fi
+
 # Set prompt
 echo -n ", PS1"
 if [ "$(id -g)" = "0" ]; then
