@@ -6,6 +6,21 @@
 
 echo "Processing dot-zprofile..."
 
-export GPP_SSH_AGENT_PRIV_KEYS="id_ed25519"
+TMP_SSHDIR="${HOME}/.ssh"
+if [[ -d "${TMP_SSHDIR}" ]]; then
+  if [[ -r "${TMP_SSHDIR}/prefered_key" ]]; then
+    GPP_SSH_AGENT_PRIV_KEYS="$(readlink -f ${TMP_SSHDIR}/preferred_key)"
+  elif [[ -r "${TMP_SSHDIR}/id_ed25519" ]]; then
+    GPP_SSH_AGENT_PRIV_KEYS="id_ed25519"
+  elif [[ -r "${TMP_SSHDIR}/id_ecdsa" ]]; then
+    GPP_SSH_AGENT_PRIV_KEYS="id_ecdsa"
+  elif [[ -r "${TMP_SSHDIR}/id_rsa" ]]; then
+    GPP_SSH_AGENT_PRIV_KEYS="id_rsa"
+  else
+    GPP_SSH_AGENT_PRIV_KEYS=""
+  fi
+fi
+export GPP_SSH_AGENT_PRIV_KEYS
+
 source ${ZDOTDIR:-${HOME}}/dot-zprofile_ssh-agent
 
