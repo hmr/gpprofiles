@@ -142,11 +142,5 @@ if which ip > /dev/null; then
   alias ip="ip -c"
 fi
 
-# sysctl w/o pager
-if which sysctl > /dev/null; then
-  echo -n ", sysctl"
-  alias sysctl="sysctl --no-pager"
-fi
-
 echo
 # vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix

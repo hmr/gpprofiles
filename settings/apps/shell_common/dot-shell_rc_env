@@ -173,6 +173,13 @@ if which zstd >& /dev/null; then
   export ZSTD_NBTHREADS=0
 fi
 
+# Systemctl
+if which systemctl >& /dev/null; then
+  echo -n ", SYSTEMD"
+  export SYSTEMD_PAGER=""
+  export SYSTEMD_LESS="FRSXMKn"
+fi
+
 # Set prompt
 echo -n ", PS1"
 if [ "$(id -g)" = "0" ]; then
