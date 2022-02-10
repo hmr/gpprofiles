@@ -1,27 +1,34 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
 
 # dot-shell_rc_macos
 # ORIGIN: 2019-11-12 by hmr
 
 echo "Processing dot-shell_rc_macos"
 
-# Add path to GNU software installed by Homebrew
-function HB_ADD_PATH_GNU () {
+# Check arg is already set into PATH
+function CHECK_PATH () {
   [ -z "$1" ] && return 1
-  local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
-  if [ -d ${HB_TARGET} ]; then
-    export PATH=${HB_TARGET}:${PATH}
-    return 0
-  else
-    return 2
-  fi
-}
+  echo "${PATH}" | grep "${1}" >& /dev/null \
+    && return 0 \
+    || return 1
+  }
+  # Add path to GNU software installed by Homebrew
+  function HB_ADD_PATH_GNU () {
+    [ -z "$1" ] && return 1
+    local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
+    if [ -d "${HB_TARGET}" ]; then
+      export PATH=${HB_TARGET}:${PATH}
+      return 0
+    else
+      return 2
+    fi
+  }
 
 # Add path to software installed by Homebrew
 function HB_ADD_PATH () {
   [ -z "$1" ] && return 1
   local HB_TARGET=/usr/local/opt/$1/bin
-  if [ -d ${HB_TARGET} ]; then
+  if [ -d "${HB_TARGET}" ]; then
     export PATH=${HB_TARGET}:${PATH}
     return 0
   else
