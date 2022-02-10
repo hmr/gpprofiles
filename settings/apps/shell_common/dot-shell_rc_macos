@@ -12,23 +12,26 @@ function CHECK_PATH () {
   echo "${PATH}" | grep "${1}" >& /dev/null \
     && return 0 \
     || return 1
-  }
-  # Add path to GNU software installed by Homebrew
-  function HB_ADD_PATH_GNU () {
-    [ -z "$1" ] && return 1
-    local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
-    if [ -d "${HB_TARGET}" ]; then
-      export PATH=${HB_TARGET}:${PATH}
-      return 0
-    else
-      return 2
-    fi
-  }
+}
+
+# Add path to GNU software installed by Homebrew
+function HB_ADD_PATH_GNU () {
+  [ -z "$1" ] && return 1
+  local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
+  CHECK_PATH "${HB_TARGET}" && return 1
+  if [ -d "${HB_TARGET}" ]; then
+    export PATH=${HB_TARGET}:${PATH}
+    return 0
+  else
+    return 2
+  fi
+}
 
 # Add path to software installed by Homebrew
 function HB_ADD_PATH () {
   [ -z "$1" ] && return 1
   local HB_TARGET=/usr/local/opt/$1/bin
+  CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
     export PATH=${HB_TARGET}:${PATH}
     return 0
@@ -39,17 +42,15 @@ function HB_ADD_PATH () {
 
 # Entry point
 if ! echo "${OSTYPE}" | grep -i "darwin" >& /dev/null; then
-  echo "  not macOS environmentt."
+  echo "  not macOS environment."
+  return
 fi
 
 # Only for bash
 case "$(chkshell)" in
   bash )
-    echo ${SHELL} | grep "bash" >& /dev/null
-    if [ $? -eq 0 ]; then
-      echo "  Suppress deprecation warning for bash."
-      export BASH_SILENCE_DEPRECATION_WARNING=1
-    fi
+    echo "  Suppress deprecation warning for bash."
+    export BASH_SILENCE_DEPRECATION_WARNING=1
     ;;
 esac
 
@@ -92,7 +93,7 @@ if HB_ADD_PATH_GNU ${TEMP_TGT}; then
 fi
 
 TEMP_TGT="binutils"
-CHECK_PATH ${TEMP_TGT} && HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="grep"
 HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
@@ -136,16 +137,10 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 TEMP_TGT="llvm"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-TEMP_TGT="python@3.10"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+#TEMP_TGT="python@3.10"
+#HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-# Python3.8
-# if [ -d /usr/local/opt/python@3.8/bin ]; then
-#   export PATH="/usr/local/opt/python@3.8/bin:${PATH}"
-#   echo -n ", Python@3.8"
-# fi
-
-# jEnv
+# jEnv(Java environment switcher)
 echo -n ", jenv"
 eval "$(jenv init -)"
 
