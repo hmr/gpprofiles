@@ -181,6 +181,12 @@ if which systemctl >& /dev/null; then
   export SYSTEMD_LESS="FRSXMKn"
 fi
 
+# jenv
+if which jenv >& /dev/null; then
+  echo -n ", JENV_ROOT"
+  export JENV_ROOT="${XDG_CONFIG_HOME}/jenv"
+fi
+
 # Set prompt
 echo -n ", PS1"
 if [ "$(id -g)" = "0" ]; then

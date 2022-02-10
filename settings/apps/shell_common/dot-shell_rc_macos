@@ -140,10 +140,6 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 #TEMP_TGT="python@3.10"
 #HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-# jEnv(Java environment switcher)
-echo -n ", jenv"
-eval "$(jenv init -)"
-
 echo
 
 

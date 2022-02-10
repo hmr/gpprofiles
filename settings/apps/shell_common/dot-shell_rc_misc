@@ -33,6 +33,11 @@ if ! which dircolors >& /dev/null; then
 fi
 eval "$("${_TMP_DIRCOLORS_BIN}" "${XDG_CONFIG_HOME}/dircolors/dircolors.conf")"
 
+# jEnv(Java environment switcher)
+# Beware that JENV_ROOT has been defined.
+echo -n ", jenv"
+eval "$(jenv init -)"
+
 # Show private key(s) held by ssh-agent
 # ssh-add -l >& /dev/null
 # RESULT=$?
