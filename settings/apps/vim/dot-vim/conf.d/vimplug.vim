@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2021-10-14T13:50:42+0900]
+" Last Update: [2022-02-13T15:31:06+0900]
 
 scriptencoding utf-8
 
@@ -189,5 +189,8 @@ Plug 'fholgado/minibufexpl.vim'
 
 " Provides an easy access to a list of recently opened/edited files
 Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
+
+" Print function name in editing
+Plug 'tyru/current-func-info.vim'
 
 call plug#end()
