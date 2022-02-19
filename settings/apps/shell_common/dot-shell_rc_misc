@@ -24,20 +24,24 @@ case "$(chkshell)" in
 esac
 
 # dircolors
-echo -n "dircolors, "
 if ! which dircolors >& /dev/null; then
-    if [ -x "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
-      _TMP_DIRCOLORS_BIN="/usr/local/opt/coreutils/libexec/gnubin/dircolors"
-    fi
-  else
-    _TMP_DIRCOLORS_BIN="$(which dircolors)"
+  if [ -x "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
+    _TMP_DIRCOLORS_BIN="/usr/local/opt/coreutils/libexec/gnubin/dircolors"
+  fi
+else
+  _TMP_DIRCOLORS_BIN="$(which dircolors)"
 fi
-eval "$("${_TMP_DIRCOLORS_BIN}" "${XDG_CONFIG_HOME}/dircolors/dircolors.conf")"
+if [[ -n ${_TMP_DIRCOLORS_BIN} ]]; then
+  echo -n "dircolors, "
+  eval "$("${_TMP_DIRCOLORS_BIN}" "${XDG_CONFIG_HOME}/dircolors/dircolors.conf")"
+fi
 
 # jEnv(Java environment switcher)
 # Beware that JENV_ROOT has been defined.
-echo -n ", jenv"
-eval "$(jenv init -)"
+if which jenv >& /dev/null && [[ -n ${JENV_ROOT} ]]; then
+  echo -n ", jenv"
+  eval "$(jenv init -)"
+fi
 
 # Show private key(s) held by ssh-agent
 # ssh-add -l >& /dev/null
