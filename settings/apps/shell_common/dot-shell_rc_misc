@@ -1,4 +1,5 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+#!/bin/bash
+# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
 
 # dot-shell_rc_misc
 # ORIGIN: 2019-05-24 by hmr
