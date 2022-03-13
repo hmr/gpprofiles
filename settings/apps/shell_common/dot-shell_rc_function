@@ -8,14 +8,14 @@ echo "Processing dot-shell_rc_function"
 echo -n "  Setting functions:"
 
 # shows url for SPICE which is KVM's remote connection system
-echo -n " spiceurl,"
+echo -n " spiceurl"
 function spiceurl {
   if [ x$1 = "x" ]; then return; fi
   echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
 }
 
 # shows running VM and SPICE connection url
-echo -n " spicelist,"
+echo -n ", spicelist"
 function spicelist {
   for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
   do
@@ -24,7 +24,7 @@ function spicelist {
 }
 
 # shows system type
-echo -n " _chksystem,"
+echo -n ", _chksystem"
 function _chksystem {
   case "${OSTYPE}" in
 
@@ -39,7 +39,7 @@ function _chksystem {
 }
 
 # shows linux distribution type
-echo -n " _chkdist,"
+echo -n ", _chkdist"
 function _chkdist {
   local _TMP_DIST
   if   [ -e /etc/fedora-release ]; then _TMP_DIST="fedora"
@@ -51,6 +51,7 @@ function _chkdist {
     if [ -e /etc/lsb-release    ]; then _TMP_DIST="ubuntu"
                                    else _TMP_DIST="debian"
     fi
+  elif [ -x /usr/bin/sw_vers ] && [ "$(sw_vers -productName)" = "Mac OS X" ]; then _TMP_DIST="macos"
   else _TMP_DIST="unknown"
   fi
 
@@ -59,7 +60,7 @@ function _chkdist {
 
 
 # shows current shell(bash or zsh)
-echo -n " chkshell,"
+echo -n ", chkshell"
 function chkshell {
   if [ -n "${ZSH_VERSION}" ]; then
     echo "zsh"
@@ -73,7 +74,7 @@ function chkshell {
 #  fi
 }
 
-echo -n " chkshell_internal,"
+echo -n ", chkshell_internal"
 function chkshell_internal {
   chkshell
 #  _PID=$$;
@@ -87,7 +88,7 @@ function chkshell_internal {
 }
 
 # ESP32 development environment
-echo -n " esp_idf,"
+echo -n ", esp_idf"
 function esp_idf {
   if [ $# -eq 1 ]; then
     IDF_PATH=$1
@@ -111,7 +112,7 @@ function esp_idf {
 case "$(chkshell)" in
   bash | zsh )
     if type fzf >& /dev/null; then
-      echo -n " gadd,"
+      echo -n ", gadd"
       function gadd() {
         local selected
         if type unbuffer >& /dev/null; then
@@ -132,7 +133,7 @@ case "$(chkshell)" in
 esac
 
 # System update combo
-echo -n " ubuntu-update"
+echo -n ", ubuntu-update"
 function ubuntu-update() {
   echo "${MAGENTA}===== Updating system =====${DEFAULT}"
   sudo apt update \
@@ -161,5 +162,45 @@ function ubuntu-update() {
     echo "No need to reboot."
   fi
 }
+
+# Check if brew package is installed
+if command -v brew >& /dev/null; then
+  echo -n ", bii"
+  function bii() {
+    local BREW_LIST_FRML="/tmp/BREW_LIST_FRML.txt"
+    local BREW_LIST_CASK="/tmp/BREW_LIST_CASK.txt"
+    local EXPIRATION="86400"
+    local FOUND
+
+    if [[ $# != 1 ]]; then
+      echo "Usage: bii <formula|cask>"
+      return
+    fi
+
+    # Check if it is installed as a formula
+    if [[ ! -r ${BREW_LIST_FRML} \
+      || "$(echo "$(date +"%s") - $(stat -c %Y ${BREW_LIST_FRML})" | bc)" -ge ${EXPIRATION} ]]; then
+        brew list --formula --versions > ${BREW_LIST_FRML}
+    fi
+    grep -q $1 "${BREW_LIST_FRML}" && FOUND="Formula"
+
+    # Check if it is installed as a cask
+    if [[ -z "${FOUND}"  ]]; then
+      if [[ ! -r ${BREW_LIST_CASK} \
+        || "$(echo "$(date +"%s") - $(stat -c %Y ${BREW_LIST_CASK})" | bc)" -ge ${EXPIRATION} ]]; then
+          brew list --cask --versions > ${BREW_LIST_CASK}
+      fi
+      grep -q $1 "${BREW_LIST_CASK}" && FOUND="Cask"
+    fi
+
+    if [ -n "${FOUND}" ]; then
+      echo "$1 is ${GREEN}installed${NORMAL} as a ${BLUE}${FOUND}${NORMAL}."
+      return
+    fi
+
+    echo "$1 is ${RED}${BOLD}NOT installed${NORMAL}."
+    return 1
+  }
+fi
 
 echo
