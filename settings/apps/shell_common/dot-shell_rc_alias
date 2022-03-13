@@ -65,8 +65,10 @@ alias ssh='ssh -A'                            # SSH always try to use ssh-agent.
 echo -n ", sudo"
 alias sudo='sudo -E'                          # sudo always preserves envs.
 
-echo -n ", apt"
-alias apt='sudo apt'                          # APT is always with sudo(for Debian/Ubuntu)
+if [ ! "$(_chkdist)" = "macos" ]; then
+  echo -n ", apt"
+  alias apt='sudo apt'                        # APT is always with sudo(for Debian/Ubuntu)
+fi
 
 #echo -n ", grep"
 #alias grep='grep --color=always'              # grep always outputs color
