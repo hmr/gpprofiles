@@ -142,4 +142,12 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 echo
 
+echo "Setting vatiables..."
+if [ -d /usr/local/opt/dotnet ]; then
+  echo -n "  DOTNET_ROOT"
+  export DOTNET_ROOT="/usr/local/opt/dotnet/libexec"
+elif [ -d /usr/local/share/dotnet ]; then
+  echo -n "  DOTNET_ROOT"
+  export DOTNET_ROOT="/usr/local/share/dotnet"
+fi
 
