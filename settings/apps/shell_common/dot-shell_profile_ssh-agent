@@ -1,120 +1,139 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+#!/bin/bash
+
+# Part of GPP
 
 # dot-shell_profile_ssh-agent
 # ORIGIN: date unknown by hmr
 
-
 echo "Processing dot-shell_profile_ssh-agent"
 
-# Settings
+###
+### Settings
+###
 GPP_SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
 GPP_SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
 GPP_SSH_ADD_BIN=$(which ssh-add)
 GPP_SSH_AGENT_BIN=$(which ssh-agent)
 
-# Check GPP installation
-if [ -f ~/.gpprofiles ]; then
-  source ~/.gpprofiles
-elif [ -n "${XDG_CONFIG_HOME}" ] && [ -f $XDG_CONFIG_HOME/gpprofiles/gpprofiles ]; then
-  source ${XDG_CONFIG_HOME}/gpprofiles/gpprofiles
+###
+### Check GPP installation
+###
+if [ -f "${HOME}/.gpprofiles" ]; then
+	source "${HOME}/.gpprofiles"
+elif [ -n "${XDG_CONFIG_HOME}" ] && [ -f "${XDG_CONFIG_HOME}/gpprofiles/gpprofiles" ]; then
+	source "${XDG_CONFIG_HOME}/gpprofiles/gpprofiles"
 fi
 
 if [ -n "${GPP_HOME}" ]; then
-  echo -n "  GPP found. "
-  echo -n "  Version: ${GPP_VERSION}. "
-  echo    "  Installed on ${GPP_HOME}"
+	echo -n "  GPP found. "
+	echo -n "  Version: ${GPP_VERSION}. "
+	echo    "  Installed on ${GPP_HOME}"
 
-  if [ -z "${GPP_VERSION}" -o -z "${GPP_HOME}" ]; then
-    echo "  CAUTION: GPP ISN'T PROPERLY INSTALLED. Bye."
-    exit 1
-  fi
+	if [ -z "${GPP_VERSION}" ] || [ -z "${GPP_HOME}" ]; then
+		echo "  CAUTION: GPP ISN'T PROPERLY INSTALLED. Bye."
+		exit 1
+	fi
 else
-  echo "  GPP not found. Bye"
-  exit 1
+	echo "  GPP not found. Bye"
+	exit 1
 fi
 
-echo "  Checking ssh-agent config file..."
-if [ -f ${GPP_SSH_AGENT_FILE} ]; then
-  echo -n "    Found. Loading ssh-agent configuration: "
-  source ${GPP_SSH_AGENT_FILE}
+echo "  Checking ssh-agent configuration file(${GPP_SSH_AGENT_FILE})..."
+if [ -f "${GPP_SSH_AGENT_FILE}" ]; then
+	echo -n "    Found. Loading the configuration file: "
+	source "${GPP_SSH_AGENT_FILE}"
 else
-  echo "    Not found."
-  GPP_SSH_AGENT_FILE_NOT_FOUND=1
+	echo    "    Not found."
+	GPP_SSH_AGENT_FILE_NOT_FOUND=1
 fi
 
-# Check ssh-agent status
-echo "  Checking ssh-agent status...?"
+###
+### Check ssh-agent status
+###
+echo "  Checking ssh-agent on this host..."
 ${GPP_SSH_ADD_BIN} -l > /dev/null 2>&1
-RESULT=$? #;echo "ssh-add result: ${RESULT}"
+RESULT=$?
 case "${RESULT}" in
-  0 )
-  echo -n "    ssh-agent is running."
-  if [ -n "${GPP_SSH_AGENT_FILE_NOT_FOUND}" ]; then
-    echo " inherited from upstream."
-  else
-    echo " on this host."
-  fi
-  ;;
+	0 )
+		echo -n "    ssh-agent"
+		if [ -n "${GPP_SSH_AGENT_FILE_NOT_FOUND}" ]; then
+			echo -n " inherited from upstream to this host"
+		else
+			echo -n " started on this host"
+		fi
+		echo " is running normally."
+		;;
 
-  1 | 2 )
-    echo "    ssh-agent is running(but not consisted to use)."
-    PS_AGENT=$(ps aux | grep "ssh-agent " | grep -v grep)
-    if [ -n "${PS_AGENT}" ]; then
-      echo "      ssh-agent process running on this host."
-      echo "        - - - - - - - -"
-      echo "        ${PS_AGENT}"
-      #pgrep -lfa "^ssh-agent"
-      #echo "Killing existing ssh-agent processes:"
-      #pkill -fe -u `id -u` "^ssh-agent"
-      echo "        - - - - - - - -"
-    fi
-    echo "      Starting new ssh-agent..."
-    case `ssh -V 2>&1 | grep -oP 'OpenSSH_\d+'` in
-      "OpenSSH_6" )
-        echo -n "        OpenSSH V6 installed: "
-        ${GPP_SSH_AGENT_BIN} -s > $GPP_SSH_AGENT_FILE
-        ;;
-      * )
-        echo -n "        OpenSSH V7 or later installed: "
-        ${GPP_SSH_AGENT_BIN} -E sha1 > $GPP_SSH_AGENT_FILE
-        ;;
-    esac
-    source $GPP_SSH_AGENT_FILE
-    rm -f $GPP_SSH_AGENT_NUM_FILE
+	1 | 2 )
+		echo "    ssh-agent is running but not configured for use."
+		echo "    Please consider using one of them."
+		if type pgrep &> /dev/null; then
+			PS_AGENT="$(pgrep -Lx ssh-agent)"
+		else
+			PS_AGENT=$(ps ax | grep "ssh-agent " | grep -v grep)
+		fi
+		if [ -n "${PS_AGENT}" ]; then
+			echo "      ssh-agent processes running on this host."
+			echo "        - - - - - - - -"
+			while read -r TMP_LINE; do
+				echo "        ${TMP_LINE}"
+			done <<< "${PS_AGENT}"
+			#pgrep -lfa "^ssh-agent"
+			#echo "Killing existing ssh-agent processes:"
+			#pkill -fe -u `id -u` "^ssh-agent"
+			echo "        - - - - - - - -"
+		fi
+		echo "      Starting new ssh-agent..."
+		case $(ssh -V 2>&1 | grep -oP 'OpenSSH_\d+') in
+			"OpenSSH_6" )
+				echo -n "        OpenSSH V6 installed: "
+				${GPP_SSH_AGENT_BIN} -s > "${GPP_SSH_AGENT_FILE}"
+				;;
+			* )
+				echo -n "        OpenSSH V7 or later installed: "
+				${GPP_SSH_AGENT_BIN} -E sha1 > "${GPP_SSH_AGENT_FILE}"
+				;;
+		esac
+		source "${GPP_SSH_AGENT_FILE}"
+		rm -f "${GPP_SSH_AGENT_NUM_FILE}"
 
-    if [ -n "${GPP_SSH_AGENT_PRIV_KEYS}" ]; then
-      echo "      Adding private key to agent... "
-      for PRIV_KEY_FILE in ${GPP_SSH_AGENT_PRIV_KEYS}
-      do
-        ${GPP_SSH_ADD_BIN} $HOME/.ssh/$PRIV_KEY_FILE
-        #if [ $? -eq 0 ]; then
-        # echo "${PRIV_KEY_FILE} "
-        #fi
-      done
-    else
-      echo "      Skipping to add private key(GPP_SSH_AGENT_PRIV_KEYS isn't set)."
-    fi
-    ;;
+		if [ -n "${GPP_SSH_AGENT_PRIV_KEYS}" ]; then
+			echo "      Adding private key to agent... "
+			for PRIV_KEY_FILE in ${GPP_SSH_AGENT_PRIV_KEYS}
+			do
+				${GPP_SSH_ADD_BIN} "${HOME}/.ssh/${PRIV_KEY_FILE}"
+				#if [ $? -eq 0 ]; then
+				# echo "${PRIV_KEY_FILE} "
+				#fi
+			done
+		else
+			echo "      Skipping to add private key(GPP_SSH_AGENT_PRIV_KEYS isn't set)."
+		fi
+		;;
 
-  * )
-    echo "    Fail(${RESULT})"
-    ;;
+	* )
+		echo "    Unexpectedly failed(RES=${RESULT})"
+		echo "    Please report to your admin."
+		;;
 esac
 
 echo
 if [ -n "${SSH_AGENT_PID}" ]; then
-  echo "  Keys held by ssh-agent:"
-  ${GPP_SSH_ADD_BIN} -l
-  echo
+	### Show keys
+	echo "  Keys held by ssh-agent:"
+	while read -r TMP_LINE; do
+		echo "    ${TMP_LINE}"
+	done <<< "$(${GPP_SSH_ADD_BIN} -l)"
+	echo
 
-  # Increment number of users who uses
-  TEMP_AGENTS=0
-  if [ -e $GPP_SSH_AGENT_NUM_FILE ]; then
-    TEMP_AGENTS=`cat $GPP_SSH_AGENT_NUM_FILE`
-  fi
-  echo -n `expr $TEMP_AGENTS + 1` > $GPP_SSH_AGENT_NUM_FILE
-  #echo "ssh-agent pid #${SSH_AGENT_PID:-INHERITED} is shared by `cat $GPP_SSH_AGENT_NUM_FILE` users."
-  echo "  `cat $GPP_SSH_AGENT_NUM_FILE` processes are using #${SSH_AGENT_PID:-INHERITED} ssh-agent."
+	### Increment shared number
+	TEMP_AGENTS=0
+	if [ -e "${GPP_SSH_AGENT_NUM_FILE}" ]; then
+		TEMP_AGENTS=$(cat "${GPP_SSH_AGENT_NUM_FILE}")
+	fi
+	echo -n "$((TEMP_AGENTS + 1))" > "${GPP_SSH_AGENT_NUM_FILE}"
+	echo "  $(cat "${GPP_SSH_AGENT_NUM_FILE}") processes are sharing #${SSH_AGENT_PID:-INHERITED} ssh-agent."
 fi
 
+# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
