@@ -1,6 +1,11 @@
-# vim: ft=zsh ts=2 sw=2 et ff=unix fenc=utf-8
 
-# .zshenv
+# Part of GPP
+
+# dot-zshenv
+# Login: Yes / Interactive: Yes / Non-interactive: Yes
+# - This file is read first when zsh invoked as login, interactive or non-interactive(shell script).
+# - This file should contain variables which is available to other programs like 'PATH', 'EDITOR',
+#   'PAGER', 'ZDOTDIR', etc.
 
 # ORIGIN: 2020-06-30 by hmr
 
@@ -48,3 +53,5 @@ local BLUE=$(tput setaf 4)
 local MAGENTA=$(tput setaf 5)
 local CYAN=$(tput setaf 6)
 local WHITE=$(tput setaf 7)
+
+# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script

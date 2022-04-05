@@ -1,15 +1,20 @@
-# vim: ft=zsh ts=2 sw=2 et ff=unix fenc=utf-8
 
 # Part of GPP
+
 # dot-zshrc
-#
+# Login: Yes / Interactive: Yes / Non-interactive: No
+# - This file is read after .zprofile when zsh invoked as login shell or interactive shell.
+# - According to the zsh manual, it is not intended to use both zlogin and zprofile together.
+# - This file should contain about interactive shell options like '[un]setopt', history, prompt,
+#   zle, completion, etc.
+
 # ORIGIN: 2020-06-22 by hmr
 
-# Uncomment to profile
+# Uncomment ↓this↓ line when profiling
 # zmodload zsh/zprof && zprof
 
 echo "Processing dot-zshrc..."
-
+# 😩😂😅😝
 # Compile rc files
 for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle
 if [ ! -f ${_SELF}.zwc -o ${_SELF} -nt ${_SELF}.zwc ]; then
@@ -206,3 +211,4 @@ if (which zprof > /dev/null 2>&1) ;then
   zprof
 fi
 
+# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
