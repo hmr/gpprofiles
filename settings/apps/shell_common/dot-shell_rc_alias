@@ -144,5 +144,13 @@ if which ip > /dev/null; then
   alias ip="ip -c"
 fi
 
+# SSH key pair generation function
+if which ssh-keygen > /dev/null; then
+  echo -n ", ssh-keygen-ecdsa"
+  alias ssh-keygen-ecdsa='ssh-keygen -t ecdsa -b 256 -C "${USER}@${HOST%%.*}[ECDSA@256]($(date +"%Y-%m-%d"))"'
+  echo -n ", ssh-keygen-ed25519"
+  alias ssh-keygen-ed25519='ssh-keygen -t ed25519 -C "${USER}@${HOST%%.*}[Ed25519]($(date +"%Y-%m-%d"))"'
+fi
+
 echo
 # vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
