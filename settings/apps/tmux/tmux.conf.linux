@@ -17,7 +17,7 @@ set-option -g  status-right "#[default]"  # reset
 # Reference: https://blog.black-cat.jp/2018/12/tmux-status-line/
 # Status line: left side
 set-option -ag status-left  "#(#{TM_BIN_DIR}/print_sysname logo)"
-#set-option -ag status-left  "#[fg=\#EEEEEE,bg=\#333333] #(lsb_release -sr) "
+set-option -ag status-left  "#[fg=\#EEEEEE,bg=\#333333] #(lsb_release -sr) "
 #set-option -ag status-left  "#(#{TM_BIN_DIR}/print_sysupdate)"
 set-option -ag status-left  "#[bg=colour054,fg=colour255] #{host_short} "
 set-option -ag status-left  "#[bg=colour024,fg=colour255] #(#{TM_BIN_DIR}/print_ipaddr) "
