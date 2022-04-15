@@ -59,6 +59,11 @@ alias l='ls -CF'                              # MS-DOS Style
 alias lla='ls -lA'                            # long list
 alias lh='ls -lrth'                           # Human-readable special
 alias lha='ls -lrthA'                         # Human-readable special
+if which lsd >& /dev/null; then
+  echo -n "(uses lsd)"
+  alias ls='lsd'
+  alias l='ls -F'
+fi
 
 echo -n ", ssh"
 alias ssh='ssh -A'                            # SSH always try to use ssh-agent.
