@@ -1,30 +1,33 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+# shellcheck shell=bash
 
-# dot-bash_logout_gpp
+# dot-shell_logout
+# dot-zlogout
+# Login: Yes / Interactive: No / Non-interactive: No
+# - This file is read when logout from login shell.
+
 # ORIGIN: date unknow by hmr
 
+# GPP_SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
+# GPP_SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
 
-GPP_SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
-GPP_SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
-
-# if SSH_AGENT_PID is defined.
-if [ -n "${SSH_AGENT_PID}" ]; then
-  # Decrement number of users who uses
+# ssh-agent logout process
+if [[ -n "${SSH_AGENT_PID}" && -n "${GPP_SSH_AGENT_NUM_FILE}" ]]; then
+  # Decrement number of shared process
   TEMP_AGENTS=0
-  if [ -e $GPP_SSH_AGENT_NUM_FILE ]; then
-    TEMP_AGENTS=`cat $GPP_SSH_AGENT_NUM_FILE`
+  if [[ -e "${GPP_SSH_AGENT_NUM_FILE}" ]]; then
+		TEMP_AGENTS=$(cat "${GPP_SSH_AGENT_NUM_FILE}")
   fi
 
-  TEMP_AGENTS=`expr $TEMP_AGENTS - 1`
-  echo Remaining TEMP_AGENTS is $TEMP_AGENTS
+	((TEMP_AGENTS--))
+  echo "Remaining TEMP_AGENTS is ${TEMP_AGENTS}"
 
-  if [ $TEMP_AGENTS -lt 1 ]; then
+  if [[ "${TEMP_AGENTS}" -lt 1 ]]; then
     echo "Killing ssh-agent"
-    eval `ssh-agent -k`
-    rm -f $GPP_SSH_AGENT_FILE
-    rm -f $GPP_SSH_AGENT_NUM_FILE
+		eval "$(ssh-agent -k)"
+    rm -f "${GPP_SSH_AGENT_FILE}"
+    rm -f "${GPP_SSH_AGENT_NUM_FILE}"
   else
-    echo -n $TEMP_AGENTS > $GPP_SSH_AGENT_NUM_FILE
+    echo -n "${TEMP_AGENTS}" > "${GPP_SSH_AGENT_NUM_FILE}"
   fi
   echo
 fi
@@ -32,3 +35,4 @@ fi
 echo bye bye. waiting for disconnect...
 sleep 1.5
 
+# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script

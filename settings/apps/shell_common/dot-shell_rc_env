@@ -1,5 +1,4 @@
-#!/bin/bash
-# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
+# shellcheck shell=bash
 
 # Part of GPP
 # dot-shell_rc_env
@@ -34,24 +33,6 @@ if [ -r "${XDG_CONFIG_HOME}/readline/inputrc" ]; then
   echo -n ", INPUTRC"
   export INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
 fi
-
-# Terminal Colors
-echo -n ", colors"
-export BLACK=$(tput setaf 0)
-export RED=$(tput setaf 1)
-export GREEN=$(tput setaf 2)
-export YELLOW=$(tput setaf 3)
-export LIME_YELLOW=$(tput setaf 190)
-export POWDER_BLUE=$(tput setaf 153)
-export BLUE=$(tput setaf 4)
-export MAGENTA=$(tput setaf 5)
-export CYAN=$(tput setaf 6)
-export WHITE=$(tput setaf 7)
-export BRIGHT=$(tput bold)
-export NORMAL=$(tput sgr0)
-export BLINK=$(tput blink)
-export REVERSE=$(tput smso)
-export UNDERLINE=$(tput smul)
 
 # Editor settings
 echo -n ", VISUAL"
@@ -204,3 +185,5 @@ echo
 if [ -r "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env_secret" ]; then
   source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env_secret
 fi
+
+# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script

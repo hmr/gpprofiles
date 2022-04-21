@@ -1,9 +1,11 @@
+# shellcheck shell=bash
 
 # Part of GPP
 
 # dot-zprofile
 # Login: Yes / Interactive: No / Non-interactive: No
 # - This file is read after .zshenv when zsh is invoked as a login shell.
+# - According to the zsh manual, it is not intended to use both zlogin and zprofile together.
 # - This file should contains things applied only at login not for interactive.
 # - In GPP, ssh-agent script is invoked here.
 
