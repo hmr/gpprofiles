@@ -10,7 +10,7 @@
 
 # ORIGIN: 2022-04-05 by hmr
 
-# echo "Processing dot-zlogin..."
+# echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-zlogin${NORMAL}"
 
 ###########################
 # Describe prosesses here #

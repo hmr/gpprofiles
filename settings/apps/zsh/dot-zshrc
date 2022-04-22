@@ -14,7 +14,7 @@
 # Uncomment ↓this↓ line when profiling
 # zmodload zsh/zprof && zprof
 
-echo "Processing dot-zshrc..."
+echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 # 😩😂😅😝
 # Compile rc files
 for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle
@@ -103,8 +103,8 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   # Install plugins if there are plugins that have not been installed
-  echo "In order to shorten the startup time, 'zplug check' won't be executed."
-  echo "Please run '${YELLOW}zplug-check-combo${NORMAL}' manually if necessary."
+  echo "  In order to shorten the startup time, 'zplug check' won't be executed."
+  echo "  Please run '${YELLOW}zplug-check-combo${NORMAL}' manually if necessary."
   # if ! zplug check --verbose; then
   #   # if ! zplug check; then
   #   printf "Install? [y/N]: "

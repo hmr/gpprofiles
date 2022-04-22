@@ -4,7 +4,7 @@
 # dot-shell_rc_alias
 # ORIGIN: date unknown by hmr
 
-echo "Processing dot-shell_rc_alias"
+echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_alias${NORMAL}"
 echo -n "  "
 #
 function exist_and_read() {

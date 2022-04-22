@@ -5,6 +5,7 @@
 
 # ORIGIN: 2020-06-28 02:32 by hmr
 
+echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_gpp${NORMAL}"
 
 if [ -f ~/.gpprofiles ]; then
   source ~/.gpprofiles
@@ -13,12 +14,12 @@ elif [ -n "${XDG_CONFIG_HOME}" ] && [ -f $XDG_CONFIG_HOME/gpprofiles/gpprofiles 
 fi
 
 if [ -n "${GPP_HOME}" ]; then
-  echo -n "GPP found. "
+  echo -n "  GPP found. "
   echo -n "Version: ${GPP_VERSION}. "
   echo    "Installed on ${GPP_HOME}"
 
   if [ -z "${GPP_VERSION}" -o -z "${GPP_HOME}" ]; then
-    echo "CAUTION: GPP IS NOT PROPERLY INSTALLED."
+    echo "  CAUTION: GPP IS NOT PROPERLY INSTALLED."
     exit 1
   fi
 
@@ -39,6 +40,7 @@ if [ -n "${GPP_HOME}" ]; then
   esac
 
   # print tty device of itself
+  echo
   echo
   if [ -n "${TTY}" ]; then
     printf 'This tty is [%s]' "${TTY}"

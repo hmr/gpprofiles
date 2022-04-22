@@ -4,7 +4,7 @@
 # dot-shell_rc_macos
 # ORIGIN: 2019-11-12 by hmr
 
-echo "Processing dot-shell_rc_macos"
+echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_macos${NORMAL}"
 
 # Check arg is already set into PATH
 function CHECK_PATH () {
@@ -142,12 +142,12 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 echo
 
-echo "Setting vatiables..."
+echo "  Setting vatiables..."
 if [ -d /usr/local/opt/dotnet ]; then
-  echo -n "  DOTNET_ROOT"
+  echo -n "    Dotnet"
   export DOTNET_ROOT="/usr/local/opt/dotnet/libexec"
 elif [ -d /usr/local/share/dotnet ]; then
-  echo -n "  DOTNET_ROOT"
+  echo -n "    Dotnet"
   export DOTNET_ROOT="/usr/local/share/dotnet"
 fi
 

@@ -7,7 +7,7 @@
 
 # Settings for completion [http://voidy21.hatenablog.jp/entry/20090902/1251918174]
 
-echo "Processing dot-zshrc_zstyle"
+echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-zshrc_zstyle${NORMAL}"
 
 # ----- Allow arrow keys to select completion candidates
 zstyle ':completion:*:default' menu select=2

@@ -35,8 +35,10 @@ fi
 [[ "$-" != *i* ]] && return
 
 # Terminal Colors
+# Color names are come from https://www.ditig.com/256-colors-cheat-sheet
 if which tput >& /dev/null; then
 	echo -n ", colors"
+	# Decoration
 	export NORMAL=$(tput sgr0)
 	export BOLD=$(tput bold)
 	export ITALIC=$(tput sitm)
@@ -44,16 +46,43 @@ if which tput >& /dev/null; then
 	export REVERSE=$(tput smso)
 	export UNDERLINE=$(tput smul)
 
+	# System colors
 	export BLACK=$(tput setaf 0)
-	export RED=$(tput setaf 1)
+	export MAROON=$(tput setaf 1)
 	export GREEN=$(tput setaf 2)
-	export YELLOW=$(tput setaf 3)
-	export LIME_YELLOW=$(tput setaf 190)
+	export OLIVE=$(tput setaf 3)
+	export NAVY=$(tput setaf 4)
+	export PURPLE=$(tput setaf 5)
+	export TEAL=$(tput setaf 6)
+	export SILVER=$(tput setaf 7)
+	export GREY=$(tput setaf 8)
+	## System color(brite)
+	export RED=$(tput setaf 9)
+	export LIME=$(tput setaf 10)    # W3C color name
+	export YELLOW=$(tput setaf 11)
+	export BLUE=$(tput setaf 12)
+	export FUCHSIA=$(tput setaf 13) # W3C color name
+	export MAGENTA=$(tput setaf 13)	# X11 color name
+	export AQUA=$(tput setaf 14)    # W3C color name
+	export CYAN=$(tput setaf 14)    # X11 color name
+	export WHITE=$(tput setaf 15)
+
+	export GREEN1=$(tput setaf 46)
+	export GREEN2=$(tput setaf 40)
+	export GREEN3=$(tput setaf 34)
+	export GREEN4=$(tput setaf 28)
+	export DARK_GREEN=$(tput setaf 22)
+
+	export MAGENTA1=$(tput setaf 201)
+	export MAGENTA2=$(tput setaf 154)
+	export MAGENTA3=$(tput setaf 127)
+
+	export PURPLE=$(tput setaf 93)
 	export POWDER_BLUE=$(tput setaf 153)
-	export BLUE=$(tput setaf 4)
-	export MAGENTA=$(tput setaf 5)
-	export CYAN=$(tput setaf 6)
-	export WHITE=$(tput setaf 7)
+	export LIME_YELLOW=$(tput setaf 190)
+	#export =$(tput setaf )
 fi
+
+echo
 
 # vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
