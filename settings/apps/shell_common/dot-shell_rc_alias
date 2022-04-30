@@ -27,9 +27,9 @@ case "$(chkshell)" in
     ;;
 
   zsh )
-    _FILE="/usr/local/etc/grc.zsh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
-      || _FILE="/usr/etc/grc.zsh" ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
-      || _FILE="/etc/grc.zsh"     ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")"
+    (_FILE="/usr/local/etc/grc.zsh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")") \
+      || (_FILE="/usr/etc/grc.zsh" ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")") \
+      || (_FILE="/etc/grc.zsh"     ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")")
     ;;
 
   fish )
@@ -51,14 +51,14 @@ case "$(chkshell)" in
     ;;
 esac
 
-echo -n "ls"
+echo -n ", ls"
 alias ls='ls -CF --color=auto'                # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
-alias l='ls -CF'                              # MS-DOS Style
-alias lla='ls -lA'                            # long list
-alias lh='ls -lrth'                           # Human-readable special
-alias lha='ls -lrthA'                         # Human-readable special
+alias l='ls'                                  # MS-DOS Style
+alias lla='ls -lA'                            # long list, all
+alias lh='ls -lrth'                           # Human friendly, reverse order by time
+alias lha='ls -lrthA'                         # Human friendly, reverse order by time, all
 if which lsd >& /dev/null; then
   echo -n "(uses lsd)"
   alias ls='lsd'

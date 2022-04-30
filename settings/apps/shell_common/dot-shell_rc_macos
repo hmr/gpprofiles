@@ -79,18 +79,19 @@ export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 echo -n ", Rubygems"
 export PATH=${PATH}:/usr/local/lib/ruby/gems/3.0.0/bin
 
-# Use HomeBrew binaries instead of macOS default.
-TEMP_TGT="coreutils"
-if HB_ADD_PATH_GNU ${TEMP_TGT}; then
-  echo -n ", ${TEMP_TGT}"
-  alias  ls='gls -CF --color=auto'            # color ls
-  alias  ll='gls -CF --color=auto -l'         # long list
-  alias  la='gls -CF --color=auto -A'         # all but . and ..
-  alias   l='gls -CF --color=auto'            # MS-DOS Style
-  alias lla='gls -CF --color=auto -lA'        # long list
-  alias  lh='gls -CF --color=auto -lrth'      # Human-readable special
-  alias lha='gls -CF --color=auto -lrthA'     # Human-readable special
-fi
+# TODO: This section will be deleted in the near future.
+# # Use HomeBrew binaries instead of macOS default.
+# TEMP_TGT="coreutils"
+# if HB_ADD_PATH_GNU ${TEMP_TGT}; then
+#   echo -n ", ${TEMP_TGT}"
+#   alias  ls='gls -CF --color=auto'            # color ls
+#   alias  ll='gls -CF --color=auto -l'         # long list
+#   alias  la='gls -CF --color=auto -A'         # all but . and ..
+#   alias   l='gls -CF --color=auto'            # MS-DOS Style
+#   alias lla='gls -CF --color=auto -lA'        # long list
+#   alias  lh='gls -CF --color=auto -lrth'      # Human-readable special
+#   alias lha='gls -CF --color=auto -lrthA'     # Human-readable special
+# fi
 
 TEMP_TGT="binutils"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
