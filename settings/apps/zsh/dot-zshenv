@@ -37,7 +37,7 @@ fi
 # Terminal Colors
 # Color names are come from https://www.ditig.com/256-colors-cheat-sheet
 if which tput >& /dev/null; then
-	echo -n ", colors"
+	# echo -n ", colors"
 	# Decoration
 	export NORMAL=$(tput sgr0)
 	export BOLD=$(tput bold)
@@ -83,6 +83,6 @@ if which tput >& /dev/null; then
 	#export =$(tput setaf )
 fi
 
-echo
+# echo
 
 # vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script

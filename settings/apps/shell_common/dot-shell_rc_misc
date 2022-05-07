@@ -5,7 +5,7 @@
 # ORIGIN: 2019-05-24 by hmr
 
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_misc${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_misc${NORMAL}"
 
 echo -n "  Setting "
 case "$(chkshell)" in

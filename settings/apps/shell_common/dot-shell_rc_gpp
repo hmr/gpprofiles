@@ -5,7 +5,7 @@
 
 # ORIGIN: 2020-06-28 02:32 by hmr
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_gpp${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_gpp${NORMAL}"
 
 if [ -f ~/.gpprofiles ]; then
   source ~/.gpprofiles

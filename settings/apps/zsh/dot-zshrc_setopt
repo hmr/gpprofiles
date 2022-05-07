@@ -5,7 +5,7 @@
 
 # ORIGIN: 2020-12-10 by hmr
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-zsh_setopt${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-zsh_setopt${NORMAL}"
 
 # OPTIONS                       DEFAULT
 #setopt no_aliases              #off

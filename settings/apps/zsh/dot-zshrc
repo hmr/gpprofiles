@@ -14,7 +14,7 @@
 # Uncomment ↓this↓ line when profiling
 # zmodload zsh/zprof && zprof
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 # 😩😂😅😝
 # Compile rc files
 for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle

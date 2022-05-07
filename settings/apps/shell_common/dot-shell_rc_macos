@@ -4,7 +4,7 @@
 # dot-shell_rc_macos
 # ORIGIN: 2019-11-12 by hmr
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_macos${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_macos${NORMAL}"
 
 # Check arg is already set into PATH
 function CHECK_PATH () {

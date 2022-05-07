@@ -11,7 +11,7 @@
 
 # ORIGIN: 2020-06-24 by hmr
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-zprofile${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-zprofile${NORMAL}"
 
 TMP_SSHDIR="${HOME}/.ssh"
 if [[ -d "${TMP_SSHDIR}" ]]; then

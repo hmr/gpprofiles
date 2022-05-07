@@ -5,7 +5,7 @@
 # ORIGIN: Long long ago by hmr
 
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_rc_env${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_env${NORMAL}"
 echo -n " "
 
 # Add "/usr/local/sbin" and "/usr/local/bin" to PATH

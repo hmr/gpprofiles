@@ -5,7 +5,7 @@
 # dot-shell_profile_ssh-agent
 # ORIGIN: date unknown by hmr
 
-echo "${BOLD}Processing ${UNDERLINE}${GREEN}dot-shell_profile_ssh-agent${NORMAL}"
+echo "Processing ${UNDERLINE}${GREEN}dot-shell_profile_ssh-agent${NORMAL}"
 
 ###
 ### Settings
