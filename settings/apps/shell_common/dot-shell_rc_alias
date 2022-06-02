@@ -59,11 +59,11 @@ alias l='ls'                                  # MS-DOS Style
 alias lla='ls -lA'                            # long list, all
 alias lh='ls -lrth'                           # Human friendly, reverse order by time
 alias lha='ls -lrthA'                         # Human friendly, reverse order by time, all
-# if which lsd >& /dev/null; then
-#   echo -n "(uses lsd)"
-#   alias ls='lsd'
-#   alias l='ls -F'
-# fi
+if which lsd >& /dev/null; then
+  echo -n "(uses lsd)"
+  alias ls='lsd'
+  alias l='ls -F'
+fi
 
 echo -n ", ssh"
 alias ssh='ssh -A'                            # SSH always try to use ssh-agent.
