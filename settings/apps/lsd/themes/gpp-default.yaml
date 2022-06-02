@@ -6,9 +6,9 @@ permission:
   exec: dark_red
   exec-sticky: 5
   no-access: 245
-  octal: 6
-  acl: dark_cyan
-  context: cyan
+  # octal: 6
+  # acl: dark_cyan
+  # context: cyan
 date:
   hour-old: 117
   day-old: 115
