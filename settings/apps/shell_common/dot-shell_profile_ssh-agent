@@ -48,6 +48,7 @@ else
 	GPP_SSH_AGENT_FILE_NOT_FOUND=1
 fi
 
+
 ###
 ### Check ssh-agent status
 ###
@@ -66,14 +67,25 @@ case "${RESULT}" in
 		;;
 
 	1 | 2 )
-		echo "    ssh-agent is running but not configured for use."
-		echo "    Please consider using one of them."
+		if [[ -n "${SSH_AGENT_PID}" ]]; then
+			TEMP_PS="$(ps -p "${SSH_AGENT_PID}" | tail -n 1)"
+			if echo "${TEMP_PS} | "grep "CMD"; then
+				echo "    pid ${SSH_AGENT_PID} isn't exist."
+			elif echo "${TEMP_PS} | "grep "ssh-agent"; then
+				echo "    ssh-agent is running but not configured for use."
+			else
+				echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
+			fi
+		fi
+
 		if type pgrep &> /dev/null; then
-			PS_AGENT="$(pgrep -Lx ssh-agent)"
+			PS_AGENT="$(pgrep -x ssh-agent)"
 		else
 			PS_AGENT=$(ps ax | grep "ssh-agent " | grep -v grep)
 		fi
+
 		if [ -n "${PS_AGENT}" ]; then
+			echo "    Please consider using one of them."
 			echo "      ssh-agent processes running on this host."
 			echo "        - - - - - - - -"
 			while read -r TMP_LINE; do
