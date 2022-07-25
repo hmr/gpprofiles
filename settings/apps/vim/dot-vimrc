@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2021-10-15T15:53:34+0900]
+" Last Update: [2022-07-26T04:45:51+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -96,9 +96,19 @@ set modeline                    " use modeline
 set showcmd                     " show command
 set cmdheight=2                 " height of command line
 
-
 " No need to escape regular expression meta characters when search(very magic)
 " nnoremap /  /\v
+
+"=============================================================================
+" Completion settings
+" [https://note.com/yasukotelin/n/na87dc604e042]
+"=============================================================================
+set completeopt=menuone,noinsert
+" Prohibit entering cariage return on popup menu
+inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
+" Don't automatically enter the selecting value on popup menu
+inoremap <expr><C-n> pumvisible() ? "<Down>" : "<C-n>"
+inoremap <expr><C-p> pumvisible() ? "<Up>" : "<C-p>"
 
 "=============================================================================
 " Settings for Airline(lean & mean status/tabline for vim that's light as air )
@@ -217,6 +227,9 @@ let airline#extensions#ale#show_line_numbers = 1
 let airline#extensions#ale#open_lnum_symbol = '(L'
 let airline#extensions#ale#close_lnum_symbol = ')'
 
+"-+-+-+- Airline with Tagbar -+-+-+-
+let g:airline#extensions#tagbar#enabled = 1
+
 "=============================================================================
 " From How to boost your Vim productivity
 " [https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/]
@@ -274,8 +287,9 @@ nnoremap <CR><CR> G
 nnoremap <BS><BS> gg
 "-- Quickly select text you just pasted:
 noremap gV `[v`]
-"-- Stop that stupid window from popping up:
-map q: :q
+"-- [Obsolete] Stop opening command history.
+" map q: :q
+"-- '; = :' in this world.
 noremap ; :
 
 "-- Force write with root privilege
@@ -403,7 +417,8 @@ cnoremap <C-e> <End>
 nnoremap <silent> <C-a> :call MyJumptoBol('　。、．，／！？「」')<CR>
 nnoremap <silent> <C-e> :call MyJumptoEol('　。、．，／！？「」')<CR>
 inoremap <silent> <C-a> <C-r>=MyJumptoBol('　。、．，／！？「」')<CR>
-inoremap <silent> <C-e> <C-r>=MyJumptoEol('　。、．，／！？「」')<CR>
+" Don't overwrite the completion abort command in CTRL-X mode
+inoremap <silent> <expr> <C-e> pumvisible() ? "<C-e>" : "<C-r>=MyJumptoEol('　。、．，／！？「」')<CR>"
 
 "-- Delete a character just after cursor(=Del key)
 nnoremap <C-d> <Del>
@@ -903,8 +918,8 @@ endif
 " "=============================================================================
 " map  <Leader>e <Plug>(easymotion-prefix)
 " " Move to word
-map  <Leader>j <Plug>(easymotion-bd-w)
-nmap <Leader>j <Plug>(easymotion-overwin-w)
+map  <Leader>e <Plug>(easymotion-bd-w)
+nmap <Leader>e <Plug>(easymotion-overwin-w)
 " " Move to line
 map  <Leader>l <Plug>(easymotion-bd-jk)
 nmap <Leader>l <Plug>(easymotion-overwin-line)
@@ -942,6 +957,7 @@ nmap <silent> <C-g><C-p> <Plug>(GitGutterPrevHunk)
 let g:vim_tags_ignore_files = []
 " Toggle Tagbar
 nnoremap <silent> <Leader>g :<C-u>TagbarToggle<CR>
+nnoremap <silent> <F8> :<C-u>TagbarToggle<CR>
 
 "----- vim-showmarks
 augroup show_marks_sync
