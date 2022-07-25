@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2022-02-13T15:31:06+0900]
+" Last Update: [2022-07-26T02:35:22+0900]
 
 scriptencoding utf-8
 
@@ -185,12 +185,13 @@ Plug 'hmr/vim-rootignore' "was once 'octref/RootIgnore'
 Plug 'chrisbra/csv.vim'
 
 " Elegant buffer explorer - takes very little screen space
-Plug 'fholgado/minibufexpl.vim'
+" Plug 'fholgado/minibufexpl.vim'
+Plug 'weynhamz/vim-plugin-minibufexpl'
 
 " Provides an easy access to a list of recently opened/edited files
 Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
 
 " Print function name in editing
-Plug 'tyru/current-func-info.vim'
+" Plug 'tyru/current-func-info.vim'
 
 call plug#end()
