@@ -581,6 +581,118 @@
           ]
         }
       ]
+    },
+
+    {
+      "description": "[GPP] Mouse button 5 to Lookup dictionary",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "pointing_button": "button5",
+            "modifiers": {
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+            "key_code": "d",
+            "modifiers": ["control", "command"]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "description": "[GPP] CapsLock -> Control / Escape (unless Apple Internal Keyboard)",
+      "manipulators": [
+        {
+          "description": "CapsLock -> Esc(click) | Control(hold)",
+          "type": "basic",
+          "from": {
+            "key_code": "caps_lock",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_control"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "escape"
+            }
+          ],
+          "conditions": [
+            {
+              "description": "Apply if it isn't Apple Internal Keyboard / Trackpad",
+              "type": "device_unless",
+              "identifiers": [
+                {
+                  "description": "Apple Internal Keyboard (MacBook Pro Retina / JIS)",
+                  "vendor_id": 1452,
+                  "product_id": 612,
+                  "is_keyboard": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "description": "[GPP] CapsLock -> Hyper / Escape (unless Apple Internal Keyboard)",
+      "manipulators": [
+        {
+          "description": "CapsLock -> Esc(click) | Hyper(hold)",
+          "type": "basic",
+          "from": {
+            "key_code": "caps_lock",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_shift",
+              "modifiers": [
+                "right_command",
+                "right_control",
+                "right_option"
+              ]
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "escape"
+            }
+          ],
+          "conditions": [
+            {
+              "description": "Apply if it isn't Apple Internal Keyboard / Trackpad",
+              "type": "device_unless",
+              "identifiers": [
+                {
+                  "description": "Apple Internal Keyboard (MacBook Pro Retina / JIS)",
+                  "vendor_id": 1452,
+                  "product_id": 612,
+                  "is_keyboard": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
 
   ]
