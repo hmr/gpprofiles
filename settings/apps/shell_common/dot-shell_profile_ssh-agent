@@ -52,7 +52,11 @@ fi
 ###
 ### Check ssh-agent status
 ###
-echo "  Checking ssh-agent on this host..."
+echo "  Checking ssh-agent running on this host..."
+if [[ ${SSH_AUTH_SOCK} =~ com.apple.launchd ]]; then
+	echo "looks loke macOS's launchd socket so it'll be disabled."
+	SSH_AUTH_SOCK=
+fi
 ${GPP_SSH_ADD_BIN} -l > /dev/null 2>&1
 RESULT=$?
 case "${RESULT}" in
