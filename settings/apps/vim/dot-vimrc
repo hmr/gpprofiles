@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2022-07-26T04:45:51+0900]
+" Last Update: [2022-08-14T14:42:20+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -12,14 +12,24 @@ scriptencoding utf-8
 " XDG Base Dirctory conformance
 "-----------------------------------------------------------------------------
 if has('persistent_undo')
-  set undodir=$XDG_DATA_HOME/vim/undo
+  set undodir=$XDG_DATA_HOME/vim/undo | call mkdir(&undodir,   'p')
   set undofile
 endif
-set directory=$XDG_DATA_HOME/vim/swap
-set backupdir=$XDG_DATA_HOME/vim/backup
-set viewdir=$XDG_DATA_HOME/vim/view
-set viminfo='1000,s100,<1000,:50000,/50000,!,h,n$XDG_DATA_HOME/vim/viminfo
-set runtimepath^=$XDG_CONFIG_HOME/vim
+
+set directory=$XDG_DATA_HOME/vim/swap   | call mkdir(&directory, 'p')
+set backupdir=$XDG_DATA_HOME/vim/backup | call mkdir(&backupdir, 'p')
+set viewdir=$XDG_DATA_HOME/vim/view     | call mkdir(&viewdir, 'p')
+
+if !has('nvim')
+  set viminfo='1000,s100,<1000,:50000,/50000,!,h,n$XDG_DATA_HOME/vim/viminfo
+endif
+
+set runtimepath^=$XDG_CONFIG_HOME/vim,$XDG_DATA_HOME/vim
+set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+
+let g:netrw_home = $XDG_DATA_HOME.'/vim'
+call mkdir($XDG_DATA_HOME.'/vim/spell', 'p')
 
 "----------------------------------------------------------------------------
 " Viminfo settings [:help viminfo]
@@ -39,7 +49,7 @@ set runtimepath^=$XDG_CONFIG_HOME/vim
 runtime conf.d/keymap.vim   " Keymap definition
 runtime conf.d/vimplug.vim  " Vim-Plug
 
-set runtimepath+=$XDG_DATA_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
+set runtimepath+=$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
 "-----------------------------------------------------------------------------
 " Path settings
 "-----------------------------------------------------------------------------
@@ -870,14 +880,47 @@ endif
 " Additional settings for MacVim
 "=============================================================================
 if has('gui_macvim')
+  set macmeta
+  set macligatures
+  set macthinstrokes
   set antialias
 
-  " Font for MacVim
-  set guifont=MesloLGS\ NF\ Regular:h14
-  "set guifont=RictyDiminished-Regular:h15
+  " Font settings
+  " set guifont=Cica-Regular:h15
+  " set guifont=MesloLGS\ NF\ Regular:h13
+  " set guifont=RictyDiminished-Regular:h15
+  " set guifont=PlemolJP\ Console\ Regular:h15
+  set guifont=PlemolJP\ Console\ NF\ Regular:h15
+  " set guifontwide=Cica-Regular:h14
+  " set guifontwide=PlemolJP\ Console\ Regular:h15
+  set guifontwide=PlemolJP\ Console\ NF\ Regular:h15
+
+  " Font test
+  " Strings:
+  "   (EN) Hello world
+  "   (RU) Привет, мир
+  "   (CZ) Ahoj světe
+  "   (HI) नमस्ते दुनिया
+  "   (TH) สวัสดีชาวโลก
+  "   (VN) Chào thế giới
+  "   (KR) 안녕하세요 세계
+  "   (CN) 你好世界
+  "   (JP) 本日は晴天なり。
+  " Chars_and_Ligatures:
+  "   *a **abc) ***abc
+  "   ++a a--- a->b, c-->d, e<-f, g<--h, i=>j, k==>l
+  "   www != ^= ~= ~@
+  "   <~> <~~ --> === =:=
+  " PowerLine:
+  "   ro=, ws=☲, lnr=☰, mlnr=, br=, nx=Ɇ, crypt=🔒
+  "   ro=⊝, ws=☲, lnr=☰, mlnr=㏑, br=ᚠ, nx=Ɇ, crypt=🔒
+  "      
+  " Emoji:
+  "   😀😂🙃
 
   " MacVim now supports trasparency!
-  " set transparency=7
+  set transparency=15
+  set blurradius=5
 
   " Supress cursor brinking [http://www.linuxpowertop.org/known.php]
   let &guicursor .= ',a:blinkon0'
@@ -888,6 +931,10 @@ if has('gui_macvim')
 
   " WinResizer can handle MacVim's window
   let g:winresizer_gui_enable = 1
+  " Don't set MacVim's default color scheme and keymaps
+  let macvim_skip_colorscheme = 1
+  let macvim_skip_cmd_opt_movement = 1
+  let macvim_hig_shift_movement = 1
 endif
 
 " "=============================================================================

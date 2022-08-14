@@ -2,15 +2,16 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2022-07-26T02:35:22+0900]
+" Last Update: [2022-08-15T00:57:51+0900]
 
 scriptencoding utf-8
 
 "=============================================================================
 " Settings for vim-plug
 "=============================================================================
-if empty(glob('~/.config/vim/autoload/plug.vim'))
-  silent !curl -fLo ${XDG_CONFIG_HOME}/vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+if empty(glob($XDG_DATA_HOME.'/vim/autoload/plug.vim'))
+  silent !curl -fLo ${XDG_DATA_HOME}/vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup vimplug_g
     autocmd!
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -20,10 +21,9 @@ endif
 "=============================================================================
 " Plugins
 "=============================================================================
-call plug#begin('~/.config/vim/plugged')
-" Plugins listed below will be treated by vim-plug.
+call plug#begin($XDG_DATA_HOME.'/vim/plugged')
 
-" Color Schemes
+" Color Schemes:
 " Plug 'altercation/vim-colors-solarized'
 " Plug 'tomasr/molokai'
 " Plug 'crusoexia/vim-monokai'
@@ -35,13 +35,13 @@ Plug 'morhetz/gruvbox'
 " Plug 'joshdick/onedark.vim'
 " Plug 'kaicataldo/material.vim'
 
-" Syntax
-" Syntax highliting for many languages
+" Syntax:
 Plug 'sheerun/vim-polyglot' " Meta plugin for many languages
 Plug 'darfink/vim-plist'    " macOS plist
 " Plug 'gisphm/vim-gitignore' " gitignore
 Plug 'b4winckler/vim-objc'  " Objective-C
 
+" Misc:
 " A Vim plugin which shows a git diff in the sign column.
 Plug 'airblade/vim-gitgutter'
 
@@ -186,7 +186,7 @@ Plug 'chrisbra/csv.vim'
 
 " Elegant buffer explorer - takes very little screen space
 " Plug 'fholgado/minibufexpl.vim'
-Plug 'weynhamz/vim-plugin-minibufexpl'
+" Plug 'weynhamz/vim-plugin-minibufexpl'
 
 " Provides an easy access to a list of recently opened/edited files
 Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
