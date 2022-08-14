@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2022-08-15T00:57:51+0900]
+" Last Update: [2022-08-15T01:14:32+0900]
 
 scriptencoding utf-8
 
@@ -12,6 +12,9 @@ scriptencoding utf-8
 if empty(glob($XDG_DATA_HOME.'/vim/autoload/plug.vim'))
   silent !curl -fLo ${XDG_DATA_HOME}/vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  if empty($MYVIMRC)
+    let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+  endif
   augroup vimplug_g
     autocmd!
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
