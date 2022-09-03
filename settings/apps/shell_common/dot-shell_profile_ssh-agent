@@ -73,7 +73,7 @@ case "${RESULT}" in
 	1 | 2 )
 		if [[ -n "${SSH_AGENT_PID}" ]]; then
 			TEMP_PS="$(ps -p "${SSH_AGENT_PID}" | tail -n 1)"
-			if echo "${TEMP_PS} | "grep "CMD"; then
+			if echo "${TEMP_PS}" | grep -sq "CMD"; then
 				echo "    pid ${SSH_AGENT_PID} isn't exist."
 			elif echo "${TEMP_PS} | "grep "ssh-agent"; then
 				echo "    ssh-agent is running but not configured for use."
