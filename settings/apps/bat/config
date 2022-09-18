@@ -19,7 +19,8 @@
 # enable mouse scrolling support in `bat` when running inside tmux. This might
 # disable text selection, unless you press shift.
 #--pager="less --RAW-CONTROL-CHARS --quit-if-one-screen --mouse"
---pager="less -n"
+#--pager="less -n"
+--pager="less --use-color --mouse --wheel-lines=5 -x4 -q -R -M -n -I"
 
 # Syntax mappings: map a certain filename pattern to a language.
 #   Example 1: use the C++ syntax for .ino files
