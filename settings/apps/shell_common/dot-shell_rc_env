@@ -58,12 +58,16 @@ export LESS_TERMCAP_so=$(printf '\e[03;38;5;202m') # enter standout mode – ora
 export LESS_TERMCAP_ue=$(printf '\e[0m')           # leave underline mode
 export LESS_TERMCAP_us=$(printf '\e[04;38;5;139m') # enter underline mode – underline aubergine
 
-# lesspipe
+# LESSOPEN(lesspipe)
 LESSPIPE=""
-[ -z "${LESSPIPE}" ] && which lesspipe >& /dev/null && LESSPIPE="lesspipe"
+[ -z "${LESSPIPE}" ] && which /usr/local/bin/lesspipe.sh >& /dev/null && LESSPIPE="/usr/local/bin/lesspipe.sh"
+[ -z "${LESSPIPE}" ] && which /usr/local/bin/lesspipe    >& /dev/null && LESSPIPE="/usr/local/bin/lesspipe"
+[ -z "${LESSPIPE}" ] && which /usr/bin/lesspipe.sh >& /dev/null && LESSPIPE="/usr/bin/lesspipe.sh"
+[ -z "${LESSPIPE}" ] && which /usr/bin/lesspipe    >& /dev/null && LESSPIPE="/usr/bin/lesspipe"
 [ -z "${LESSPIPE}" ] && which lesspipe.sh >& /dev/null && LESSPIPE="lesspipe.sh"
+[ -z "${LESSPIPE}" ] && which lesspipe    >& /dev/null && LESSPIPE="lesspipe"
 if [ -n "${LESSPIPE}" ]; then
-  echo -n ", LESSPIPE"
+  echo -n ", LESSOPEN"
   eval "$(${LESSPIPE})"
   if which pygmentize >& /dev/null; then
     export LESSCOLORIZER="$(which pygmentize)"

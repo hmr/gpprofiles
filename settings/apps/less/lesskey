@@ -24,7 +24,15 @@ K   back-scroll
 #^l  right
 
 #env
-LESS = -x4 -q -R -M -N -I
+LESS = --use-color -x4 -q -R -M -N -I
+#LESS = --use-color --mouse --wheel-lines=5 -x4 -q -R -M -N -I
 LESSCHARSET = utf-8
 LESSHISTSIZE = 1000
+
+#NOTES
+# To use latest lesspipe.sh [https://github.com/wofr06/lesspipe], install packages as below:
+# [Debian / Ubuntu]
+# apt install rpm2cpio unrar cabextract libarchive-tools genisoimage brotli procyon-decompiler pandoc csvkit unrtf hdf5-tools netcdf-bin source-highlight poppler-utils matio-tools djvulibre-bin libplist-utils libimage-exiftool-perl id3v2
+# [MacOS]
+#
 
