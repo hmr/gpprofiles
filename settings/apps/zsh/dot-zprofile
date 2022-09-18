@@ -19,10 +19,6 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 	builtin return
 fi
 
-TMP_SLEEP=$((RANDOM % 7))
-echo -n "  Random sleep for ${TMP_SLEEP} secs..."; sleep ${TMP_SLEEP}; echo " OK."
-unset TMP_SLEEP
-
 TMP_SSHDIR="${HOME}/.ssh"
 if [[ -d "${TMP_SSHDIR}" ]]; then
   if [[ -r "${TMP_SSHDIR}/prefered_key" ]]; then

@@ -10,11 +10,11 @@ echo "Processing ${UNDERLINE}${GREEN}dot-shell_profile_ssh-agent${NORMAL}"
 ###
 ### Settings
 ###
-GPP_SSH_AGENT_FILE=$HOME/.ssh/.ssh-agent
-GPP_SSH_AGENT_NUM_FILE=$HOME/.ssh/.ssh-agent-num
+GPP_SSH_AGENT_FILE="$HOME/.ssh/.ssh-agent"
+GPP_SSH_AGENT_NUM_FILE="$HOME/.ssh/.ssh-agent-num"
 
-GPP_SSH_ADD_BIN=$(which ssh-add)
-GPP_SSH_AGENT_BIN=$(which ssh-agent)
+GPP_SSH_ADD_BIN="$(which ssh-add)"
+GPP_SSH_AGENT_BIN="$(which ssh-agent)"
 
 ###
 ### Check GPP installation
@@ -39,6 +39,15 @@ else
 	exit 1
 fi
 
+# Sleep to avoid invoking multiple ssh-agent
+TMP_SLEEP1=$((RANDOM % 5 + 1))
+TMP_SLEEP2=$((RANDOM % 9))
+echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
+unset TMP_SLEEP1 TMP_SLEEP2
+
+###
+### Try to load ssh-agent configuration
+###
 echo "  Checking ssh-agent configuration file(${GPP_SSH_AGENT_FILE})..."
 if [ -f "${GPP_SSH_AGENT_FILE}" ]; then
 	echo -n "    Found. Loading the configuration file: "
@@ -47,7 +56,6 @@ else
 	echo    "    Not found."
 	GPP_SSH_AGENT_FILE_NOT_FOUND=1
 fi
-
 
 ###
 ### Check ssh-agent status
