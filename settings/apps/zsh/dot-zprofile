@@ -13,6 +13,12 @@
 
 echo "Processing ${UNDERLINE}${GREEN}dot-zprofile${NORMAL}"
 
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+	. "$(code --locate-shell-integration-path zsh)"
+	echo "  ${GREEN3}VSCode environmant detected. Skip.${NORMAL}"
+	builtin return
+fi
+
 TMP_SLEEP=$((RANDOM % 7))
 echo -n "  Random sleep for ${TMP_SLEEP} secs..."; sleep ${TMP_SLEEP}; echo " OK."
 unset TMP_SLEEP
