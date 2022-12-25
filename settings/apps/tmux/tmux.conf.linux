@@ -25,11 +25,12 @@ set-option -ag status-left  "#[bg=colour148,fg=colour234] #{session_name}:w#{win
 
 # Status line: right side
 #set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=white       ] #[fg=black,bg=white](#(#{TM_BIN_DIR}/print_spotify) "
-set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=white       ] #[fg=black,bg=white](#(#{TM_BIN_DIR}/print_uptime)) "
-set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=brightyellow] #[fg=black,bg=brightyellow][#(#{TM_BIN_DIR}/print_loadavg)] "
-set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=brightyellow] #[fg=black,bg=brightyellow]#(#{TM_BIN_DIR}/print_temp)'C "
-set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=green       ] #[fg=black,bg=green]MP:#(#{TM_BIN_DIR}/print_mpressure)%% "
-set-option -ag status-right "#[fg=${TM_SL_BASE_BG},bg=black       ] #[fg=\#EEEEEE,bg=${TM_SL_BASE_BG}][#(#{TM_BIN_DIR}/print_ydrate)]"
+set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=brightyellow]#(#{TM_BIN_DIR}/print_sysupdate) "
+set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=white       ]#[fg=black,bg=white] #(#{TM_BIN_DIR}/print_uptime) "
+set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=brightyellow]#[fg=black,bg=brightyellow] [#(#{TM_BIN_DIR}/print_loadavg)] "
+set-option -ga status-right "#[bg=${TM_SL_BASE_BG}]#[fg=brightyellow]#[fg=black,bg=brightyellow]#(#{TM_BIN_DIR}/print_temp)'C "
+set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=green       ]#[fg=black,bg=green] MP:#(#{TM_BIN_DIR}/print_mpressure)%% "
+set-option -ag status-right "#[fg=${TM_SL_BASE_BG},bg=black       ]#[fg=\#EEEEEE,bg=${TM_SL_BASE_BG}] [#(#{TM_BIN_DIR}/print_ydrate)]"
 set-option -ag status-right "#[bg=${TM_SL_BASE_BG},fg=\#EEEEEE][W%V/D%j]%Y-%m-%d(%a) %H:%M:%S %z "
 
 
