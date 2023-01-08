@@ -149,7 +149,7 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 echo
 
-echo "  Setting vatiables..."
+echo "  Setting other variables..."
 if [ -d /usr/local/opt/dotnet ]; then
   echo -n "    Dotnet"
   export DOTNET_ROOT="/usr/local/opt/dotnet/libexec"
