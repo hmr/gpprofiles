@@ -39,6 +39,20 @@ else
 	exit 1
 fi
 
+# Check for ssh-agent
+if [[ -e ${GPP_SSH_AGENT_FILE} ]]; then
+	TMP_PID=$(grep -o "SSH_AGENT_PID.*" ${GPP_SSH_AGENT_FILE} | grep -Po "\d+")
+	TMP_PS="$(ps -p ${TMP_PID} | tail -n 1)"
+	if echo "${TMP_PS}" | grep -sq "CMD"; then
+		echo "    pid ${SSH_AGENT_PID} isn't exist."
+	elif echo "${TMP_PS} | "grep "ssh-agent"; then
+		echo "    ssh-agent is running but not configured for use."
+	else
+		echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
+	fi
+
+fi
+
 # Sleep to avoid invoking multiple ssh-agent
 TMP_SLEEP1=$((RANDOM % 5 + 1))
 TMP_SLEEP2=$((RANDOM % 9))

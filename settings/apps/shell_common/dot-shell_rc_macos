@@ -75,6 +75,12 @@ echo -n "    Android Studio"
 export ANDROID_HOME=${HOME}/Library/Android/sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
+# CUDA
+if [ -d /Developer/NVIDIA/CUDA-10.2/bin ]; then
+  echo -n ", CUDA for macOS"
+  export PATH=${PATH}:/Developer/NVIDIA/CUDA-10.2/bin
+fi
+
 # Ruby gems installed by Homebrew's ruby
 echo -n ", Rubygems"
 export PATH=${PATH}:/usr/local/lib/ruby/gems/3.0.0/bin
