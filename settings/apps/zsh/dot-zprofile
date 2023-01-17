@@ -13,12 +13,6 @@
 
 echo "Processing ${UNDERLINE}${GREEN}dot-zprofile${NORMAL}"
 
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-	. "$(code --locate-shell-integration-path zsh)"
-	echo "  ${GREEN3}VSCode environmant detected. Skip.${NORMAL}"
-	builtin return
-fi
-
 TMP_SSHDIR="${HOME}/.ssh"
 if [[ -d "${TMP_SSHDIR}" ]]; then
   if [[ -r "${TMP_SSHDIR}/prefered_key" ]]; then
@@ -34,6 +28,7 @@ if [[ -d "${TMP_SSHDIR}" ]]; then
   fi
 fi
 export GPP_SSH_AGENT_PRIV_KEYS
+unset TMP_SSHDIR
 
 source ${ZDOTDIR:-${HOME}}/dot-zprofile_ssh-agent
 

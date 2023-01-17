@@ -16,10 +16,10 @@
 
 echo "Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-	echo "  VSCode environmant detected. Skip."
-	builtin return
-fi
+# if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+#   echo "  VSCode environmant detected. Skip."
+#   builtin return
+# fi
 
 # 😩😂😅😝
 # Compile rc files
@@ -212,6 +212,11 @@ bindkey "${key[C-M-Right]}" do-nothing
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 # [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
 # .zshrc
+
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+	. "$(code --locate-shell-integration-path zsh)"
+	echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
+fi
 
 # Show profiling result if enabled.
 if (which zprof > /dev/null 2>&1) ;then
