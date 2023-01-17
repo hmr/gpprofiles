@@ -65,7 +65,10 @@ esac
 export HOMEBREW_FORCE_BREWED_CURL=1
 
 # Not to update automatically
-# export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Use bat when brew cat
+export HOMEBREW_BAT=1
 
 # PATH
 echo "  Setting PATH..."
@@ -83,7 +86,7 @@ fi
 
 # Ruby gems installed by Homebrew's ruby
 echo -n ", Rubygems"
-export PATH=${PATH}:/usr/local/lib/ruby/gems/3.0.0/bin
+export PATH=${PATH}:/usr/local/lib/ruby/gems/3.2.0/bin
 
 # TODO: This section will be deleted in the near future.
 # # Use HomeBrew binaries instead of macOS default.
@@ -147,6 +150,7 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 #TEMP_TGT="python@3.10"
 #HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
+unset TEMP_TGT
 echo
 
 echo "  Setting other variables..."
