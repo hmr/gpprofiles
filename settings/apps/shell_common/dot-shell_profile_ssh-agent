@@ -40,13 +40,15 @@ else
 fi
 
 # Check for ssh-agent
+echo "  Searching running ssh-agent..."
 if [[ -e ${GPP_SSH_AGENT_FILE} ]]; then
-	TMP_PID=$(grep -o "SSH_AGENT_PID.*" ${GPP_SSH_AGENT_FILE} | grep -Po "\d+")
-	TMP_PS="$(ps -p ${TMP_PID} | tail -n 1)"
+	TMP_PID=$(grep -o "SSH_AGENT_PID.*" "${GPP_SSH_AGENT_FILE}" | grep -Po "\d+")
+	TMP_PS=$(ps -p "${TMP_PID}" | tail -n 1)
 	if echo "${TMP_PS}" | grep -sq "CMD"; then
-		echo "    pid ${SSH_AGENT_PID} isn't exist."
-	elif echo "${TMP_PS} | "grep "ssh-agent"; then
-		echo "    ssh-agent is running but not configured for use."
+		echo "    ssh-agent pid ${SSH_AGENT_PID} isn't exist."
+	elif echo "${TMP_PS}" | grep -sq "ssh-agent"; then
+		echo "    ssh-agent found. Setting to use it."
+		TMP_AGENT_OK=1
 	else
 		echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
 	fi
@@ -54,10 +56,12 @@ if [[ -e ${GPP_SSH_AGENT_FILE} ]]; then
 fi
 
 # Sleep to avoid invoking multiple ssh-agent
-TMP_SLEEP1=$((RANDOM % 5 + 1))
-TMP_SLEEP2=$((RANDOM % 9))
-echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
-unset TMP_SLEEP1 TMP_SLEEP2
+if ((TMP_AGENT_OK < 1)); then
+	TMP_SLEEP1=$((RANDOM % 5 + 1))
+	TMP_SLEEP2=$((RANDOM % 9))
+	echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
+	unset TMP_SLEEP1 TMP_SLEEP2
+fi
 
 ###
 ### Try to load ssh-agent configuration
@@ -76,9 +80,10 @@ fi
 ###
 echo "  Checking ssh-agent running on this host..."
 if [[ ${SSH_AUTH_SOCK} =~ com.apple.launchd ]]; then
-	echo "looks loke macOS's launchd socket so it'll be disabled."
+	echo "Seems to be a macOS's Launchd socket. Starting new one."
 	SSH_AUTH_SOCK=
 fi
+
 ${GPP_SSH_ADD_BIN} -l > /dev/null 2>&1
 RESULT=$?
 case "${RESULT}" in
@@ -87,7 +92,7 @@ case "${RESULT}" in
 		if [ -n "${GPP_SSH_AGENT_FILE_NOT_FOUND}" ]; then
 			echo -n " inherited from upstream to this host"
 		else
-			echo -n " started on this host"
+			echo -n " already existed on this host"
 		fi
 		echo " is running normally."
 		;;
@@ -125,11 +130,11 @@ case "${RESULT}" in
 		echo "      Starting new ssh-agent..."
 		case $(ssh -V 2>&1 | grep -oP 'OpenSSH_\d+') in
 			"OpenSSH_6" )
-				echo -n "        OpenSSH V6 installed: "
+				echo -n "        OpenSSH V6 found: "
 				${GPP_SSH_AGENT_BIN} -s > "${GPP_SSH_AGENT_FILE}"
 				;;
 			* )
-				echo -n "        OpenSSH V7 or later installed: "
+				echo -n "        OpenSSH V7+ found: "
 				${GPP_SSH_AGENT_BIN} -E sha1 > "${GPP_SSH_AGENT_FILE}"
 				;;
 		esac
@@ -174,4 +179,5 @@ if [ -n "${SSH_AGENT_PID}" ]; then
 	echo "  $(cat "${GPP_SSH_AGENT_NUM_FILE}") processes are sharing #${SSH_AGENT_PID:-INHERITED} ssh-agent."
 fi
 
+unset TMP_AGENT_OK TMP_PID TMP_PS TMP_LINE TEMP_AGENTS TEMP_PS
 # vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
