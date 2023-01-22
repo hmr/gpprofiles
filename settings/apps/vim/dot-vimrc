@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2022-08-14T14:42:20+0900]
+" Last Update: [2023-01-23T02:14:09+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -50,6 +50,7 @@ runtime conf.d/keymap.vim   " Keymap definition
 runtime conf.d/vimplug.vim  " Vim-Plug
 
 set runtimepath+=$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
+
 "-----------------------------------------------------------------------------
 " Path settings
 "-----------------------------------------------------------------------------
@@ -79,7 +80,7 @@ set noexpandtab                 " expand tab to space
 set cursorline                  " show cursor line indicator
 set cursorlineopt=both          " number / line / both
 set number                      " show line number
-"set ruler                      " show the cursor position all the time
+set noruler                     " show the cursor position all the time
 set laststatus=2                " when the status line would be shown(2 means always)
 "set statusline=%F%m%r%h%w\ \ \ \ %y\ lines:%L\%=(%l,%v)\ [%{&fileencoding}][%{&ff}]
 set nohlsearch                  " not to highlight matching part
@@ -105,6 +106,8 @@ set hidden                      " not to unload and to hide the buffer when abon
 set modeline                    " use modeline
 set showcmd                     " show command
 set cmdheight=2                 " height of command line
+
+set helplang=ja,en              " Prefer Japanse help
 
 " No need to escape regular expression meta characters when search(very magic)
 " nnoremap /  /\v
