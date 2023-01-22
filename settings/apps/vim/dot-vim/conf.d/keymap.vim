@@ -54,7 +54,8 @@ map!    d         <M-d>
 map             <M-BS>
 map!            <M-BS>
 
-if has('osx')
+" if has('osx')
+if has('unix')      " Apply for linux and macOS
   map     a         <M-a>
   map!    a         <M-a>
   map     b         <M-b>
