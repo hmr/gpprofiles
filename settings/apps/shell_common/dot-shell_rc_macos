@@ -40,6 +40,18 @@ function HB_ADD_PATH () {
   fi
 }
 
+# Add path to libexec installed by Homebrew
+function HB_ADD_PATH_LIBEXEC () {
+  [ -z "$1" ] && return 1
+  local HB_TARGET=/usr/local/opt/$1/libexec
+  CHECK_PATH "${HB_TARGET}" && return 1
+  if [ -d "${HB_TARGET}" ]; then
+    export PATH=${HB_TARGET}:${PATH}
+    return 0
+  else
+    return 2
+  fi
+}
 # Entry point
 if ! echo "${OSTYPE}" | grep -i "darwin" >& /dev/null; then
   echo "  not macOS environment."
@@ -63,12 +75,14 @@ esac
 # Homebrew
 # Force to use Homebrew version of curl
 export HOMEBREW_FORCE_BREWED_CURL=1
-
 # Not to update automatically
 export HOMEBREW_NO_AUTO_UPDATE=1
-
 # Use bat when brew cat
 export HOMEBREW_BAT=1
+# Parallel compile
+export HOMEBREW_MAKE_JOBS=4
+export HOMEBREW_NO_INSTALL_FROM_API=1
+export HOMEBREW_BOOTSNAP=1
 
 # PATH
 echo "  Setting PATH..."
@@ -102,8 +116,9 @@ export PATH=${PATH}:/usr/local/lib/ruby/gems/3.2.0/bin
 #   alias lha='gls -CF --color=auto -lrthA'     # Human-readable special
 # fi
 
-TEMP_TGT="binutils"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+# Caution: binutils' ranlib is incompatible with macOS ld
+# TEMP_TGT="binutils"
+# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="grep"
 HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
@@ -149,6 +164,9 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 #TEMP_TGT="python@3.10"
 #HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+
+TEMP_TGT="ccache"
+HB_ADD_PATH_LIBEXEC ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 unset TEMP_TGT
 echo
