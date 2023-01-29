@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2023-01-30T00:05:40+0900]
+" Last Update: [2023-01-30T01:02:37+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -122,6 +122,28 @@ inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
 " Don't automatically enter the selecting value on popup menu
 inoremap <expr><C-n> pumvisible() ? "<Down>" : "<C-n>"
 inoremap <expr><C-p> pumvisible() ? "<Up>" : "<C-p>"
+
+"------ Settigs for AutoCompletion.vim
+" 補完を開始するキー入力数
+" let MyAutoComplete_StartLength = 2
+let MyAutoComplete_StartLength = 3
+
+" デフォルトの補完コマンド
+" let MyAutoComplete_cmd = "\<C-n>\<C-p>"
+"
+" デフォルト補完候補はVimのcompleteオプションに従って検索されます。
+" set complete = '.,w,b,u,t,i'
+" (詳細は :help 'complete')
+
+" 補完候補はsmartcaseの設定値にかかわらず、smartcaseを有効にして検索されま
+" す。無効にしたい場合は.vimrcに以下を設定してください。
+" let MyAutoComplete_smartcase_Control = 0
+
+" ファイルタイプ別に補完コマンドの設定を変更可能です。
+" ファイルタイプcppの場合のcompleteオプション
+" let cpt_cpp = '.,w,b,u,t,i'
+" ファイルタイプcppの場合はオムニ補完を指定 (詳細は :help 'omnifunc')
+" let cptcmd_cpp = "\<C-x>\<C-o>\<C-p>"
 
 "=============================================================================
 " Settings for Airline(lean & mean status/tabline for vim that's light as air )
@@ -316,7 +338,7 @@ vnoremap <C-c> <ESC>
 snoremap <C-c> <ESC>
 xnoremap <C-c> <ESC>
 onoremap <C-c> <ESC>
-inoremap <C-c> <ESC>
+inoremap <expr><C-c> pumvisible() ? "<C-e>" : "<ESC>"
 
 " Don't back 1 charactor when leaving insert mode
 augroup DoNotBack
@@ -629,6 +651,7 @@ if has('autocmd')
     autocmd BufReadPost *
           \ if line("'\"") > 0 && line ("'\"") <= line("$") |
           \     exe "normal! g'\"" |
+          \     exe "normal! zz'\"" |
           \ endif
 
     "don't write swapfile on most commonly used directories for NFS mounts or USB sticks
@@ -728,20 +751,20 @@ vmap <Leader>c <Plug>(quickhl-manual-clear)
 "=============================================================================
 " Settings for cscope [:help if_cscop]
 "=============================================================================
-if has('cscope') && filereadable('/usr/local/bin/cscope')
-  set cscopeprg=/usr/local/bin/cscope
-  set cscopetagorder=0
-  set cscopetag
-  set nocscopeverbose
-  " add any database in current directory
-  if filereadable('cscope.out')
-    cs add cscope.out
-    " else add database pointed to by environment
-  elseif $CSCOPE_DB !=? ''
-    cs add $CSCOPE_DB
-  endif
-  set cscopeverbose
-endif
+" if has('cscope') && filereadable('/usr/local/bin/cscope')
+"   set cscopeprg=/usr/local/bin/cscope
+"   set cscopetagorder=0
+"   set cscopetag
+"   set nocscopeverbose
+"   " add any database in current directory
+"   if filereadable('cscope.out')
+"     cs add cscope.out
+"     " else add database pointed to by environment
+"   elseif $CSCOPE_DB !=? ''
+"     cs add $CSCOPE_DB
+"   endif
+"   set cscopeverbose
+" endif
 
 "=============================================================================
 " Settings for terminal, color, visual and syntax highlighting
@@ -1018,7 +1041,7 @@ augroup END
 "----- vim-polyglot
 " let g:polyglot_disabled = ['markdown']
 
-" "----- comfortable-motion.vim
+"----- comfortable-motion.vim
 " let g:comfortable_motion_no_default_key_mappings = 1
 " nnoremap <silent> <M-d> :call comfortable_motion#flick(100)<CR>
 " nnoremap <silent> <M-u> :call comfortable_motion#flick(-100)<CR>
@@ -1118,7 +1141,7 @@ let autodate_format='%Y-%m-%dT%H:%M:%S%z'
 let autodate_keyword_pre='Last Update: \['
 let autodate_keyword_post='\]'
 
-" MRU
+" MRU (Most recent used)
 let MRU_File = '$XDG_DATA_HOME/vim/vim_mru_files'
 let MRU_Max_Entries = 1000
 

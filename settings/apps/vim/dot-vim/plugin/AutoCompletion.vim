@@ -1,4 +1,5 @@
 scriptencoding utf-8
+" This script is derived from https://fuenor.hatenadiary.org/entry/20090509/1241868781
 "=============================================================================
 "    Description: 入力自動補完
 "
@@ -120,7 +121,7 @@ call s:AutoCompletionRegKeys('a', 'z') " a-z
 call s:AutoCompletionRegKeys('A', 'Z') " A-Z
 call s:AutoCompletionRegKeys('0', '9') " 0-9
 call s:AutoCompletionRegLetters('_') " _
-inoremap <silent> <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
+" inoremap <silent> <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 
 augroup AutoCompletion
   autocmd!
@@ -130,6 +131,7 @@ augroup END
 
 let s:saved_scs = &smartcase
 let s:saved_ic = &ignorecase
+
 function! s:AutoCompletionEnter()
   call s:AutoCompletionInit()
   if g:MyAutoComplete_smartcase_Control
