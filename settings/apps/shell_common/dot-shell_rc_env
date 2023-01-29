@@ -167,6 +167,12 @@ if which systemctl >& /dev/null; then
   export SYSTEMD_LESS="FRSXMKn"
 fi
 
+# GNU Global
+if which gtags >& /dev/null && which pygmentize >& /dev/null; then
+  echo -n ", GLOBAL"
+  export GTAGSLABEL="native-pygments"
+fi
+
 # jenv
 if which jenv >& /dev/null; then
   echo -n ", JENV_ROOT"
