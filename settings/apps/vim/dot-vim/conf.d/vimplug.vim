@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2022-08-15T01:14:32+0900]
+" Last Update: [2023-01-29T14:32:11+0900]
 
 scriptencoding utf-8
 
@@ -94,7 +94,7 @@ Plug 'lambdalisue/vim-gista-ctrlp'
 " search and display information from arbitrary sources like files, buffers, recently used files or registers.
 "Plug 'Shougo/unite.vim'
 
-" " Denite is a dark powered plugin for Neovim/Vim to unite all interfaces
+" Denite is a dark powered plugin for Neovim/Vim to unite all interfaces
 " if has('nvim')
 "   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 " else
