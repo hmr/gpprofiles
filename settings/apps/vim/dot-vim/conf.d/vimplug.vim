@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2023-01-29T14:32:11+0900]
+" Last Update: [2023-01-29T17:52:16+0900]
 
 scriptencoding utf-8
 
@@ -83,7 +83,7 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
 
 " Maintained version of CtrlP
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 
 " Vim plugin which manipulate gists in Vim.
 Plug 'lambdalisue/vim-gista'
@@ -192,7 +192,8 @@ Plug 'chrisbra/csv.vim'
 " Plug 'weynhamz/vim-plugin-minibufexpl'
 
 " Provides an easy access to a list of recently opened/edited files
-Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
+" Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
+Plug 'fuenor/mru', { 'on': ['MRU', 'MRUToggle'] }
 
 " Print function name in editing
 " Plug 'tyru/current-func-info.vim'

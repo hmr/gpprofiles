@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2023-01-29T15:57:51+0900]
+" Last Update: [2023-01-30T00:05:40+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1006,7 +1006,7 @@ nmap <silent> <C-g><C-p> <Plug>(GitGutterPrevHunk)
 " コアファイルも含めるため.gitignoreを無視
 let g:vim_tags_ignore_files = []
 " Toggle Tagbar
-nnoremap <silent> <Leader>g :<C-u>TagbarToggle<CR>
+nnoremap <silent> <Leader>G :<C-u>TagbarToggle<CR>
 nnoremap <silent> <F8> :<C-u>TagbarToggle<CR>
 
 "----- vim-showmarks
@@ -1067,15 +1067,21 @@ let g:AutoPairsShortcutBackInsert = '<M-B>'
 " noremap <Leader>j   g]
 " noremap <Leader>J   <C-w>g]
 " noremap <Leader>T   :pop<CR>
-map <Leader>G   :Gtags
+
+map <Leader>g   :Gtags
+" Show definition in the file.
 map <Leader>h   :Gtags -f %<CR>
+" Jump to definition or reference of under-cursor keyword
 map <Leader>j   :GtagsCursor<CR>
 map <C-]>       :GtagsCursor<CR>
 map g]          :GtagsCursor<CR>
-map <Leader>[   :pop
-map <C-[>       :pop
+" Move line at Quickfix
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>
+
+" Pop up the stack
+map <Leader>[   :pop<cr>
+map <C-[>       :pop<cr>
 
 "----- Arrow key: move screen line
 noremap   <silent><Down>  gj
@@ -1101,11 +1107,11 @@ noremap <silent> <Leader>b   :b#<cr>
 set foldmethod=syntax " manual / indent / marker / expr / syntax
 set foldlevel=9999
 set foldcolumn=0
-augroup FoldingAutoCommand
-  autocmd!
-  autocmd BufWinLeave ?* mkview 1
-  autocmd BufWinEnter ?* silent loadview 1
-augroup END
+" augroup FoldingAutoCommand
+"   autocmd!
+"   autocmd BufWinLeave ?* mkview 1
+"   autocmd BufWinEnter ?* silent loadview 1
+" augroup END
 
 " autodate
 let autodate_format='%Y-%m-%dT%H:%M:%S%z'
@@ -1113,11 +1119,11 @@ let autodate_keyword_pre='Last Update: \['
 let autodate_keyword_post='\]'
 
 " MRU
-let MRU_File = '$XDG_DATA_HOME/vim/plugin/mru/vim_mru_files'
+let MRU_File = '$XDG_DATA_HOME/vim/vim_mru_files'
 let MRU_Max_Entries = 1000
 
 " MBE(Mini Buffer Explorer)
-let g:miniBufExplUseSingleClick = 1
+" let g:miniBufExplUseSingleClick = 1
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
