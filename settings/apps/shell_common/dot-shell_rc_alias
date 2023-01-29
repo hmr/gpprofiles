@@ -60,9 +60,11 @@ alias lla='ls -lA'                            # long list, all
 alias lh='ls -lrth'                           # Human friendly, reverse order by time
 alias lha='ls -lrthA'                         # Human friendly, reverse order by time, all
 if which lsd >& /dev/null; then
-  echo -n "(uses lsd)"
+  echo -n " (uses lsd)"
   alias ls='lsd'
   alias l='ls -F'
+  alias llb='lsd -l --size=bytes'
+  alias lhb='lsd -lrth --size=bytes'
 fi
 
 echo -n ", ssh"
@@ -127,6 +129,7 @@ fi
 if which bat > /dev/null; then
   echo -n ", bat"
   alias less="bat"
+  alias cless='command less'
 fi
 
 # ffmpeg/ffplay/ffprobe
