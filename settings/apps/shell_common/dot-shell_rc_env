@@ -68,7 +68,8 @@ LESSPIPE=""
 [ -z "${LESSPIPE}" ] && which lesspipe    >& /dev/null && LESSPIPE="lesspipe"
 if [ -n "${LESSPIPE}" ]; then
   echo -n ", LESSOPEN"
-  eval "$(${LESSPIPE})"
+	# FIXME: need to be fixed in lesspipe...
+	eval "$(${LESSPIPE})"
   if which pygmentize >& /dev/null; then
     export LESSCOLORIZER="$(which pygmentize)"
   fi
