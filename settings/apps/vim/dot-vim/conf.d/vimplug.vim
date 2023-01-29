@@ -44,6 +44,16 @@ Plug 'darfink/vim-plist'    " macOS plist
 " Plug 'gisphm/vim-gitignore' " gitignore
 Plug 'b4winckler/vim-objc'  " Objective-C
 
+" Unmanaged plugins:
+" My version of auto completion
+" Plug '$XDG_CONFIG_HOME/vim/unmanaged/MyAutoCompletion'
+" autodate
+Plug '$XDG_CONFIG_HOME/vim/unmanaged/autodate'
+" cmdex
+Plug '$XDG_CONFIG_HOME/vim/unmanaged/cmdex'
+" GNU Global
+Plug '$XDG_CONFIG_HOME/vim/unmanaged/gtags'
+
 " Misc:
 " A Vim plugin which shows a git diff in the sign column.
 Plug 'airblade/vim-gitgutter'
