@@ -102,9 +102,9 @@ set list                        " show control characters such as tab or EOL.
 set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
 set showbreak=↪                 " string to put at the start of line wrapped. Useful values are '>' or '+++'
 set hidden                      " not to unload and to hide the buffer when abondoned
-"set paste                      " put Vim in Paste mode which is useful for pasting some text to Vim.
+set nopaste                      " put Vim in Paste mode which is useful for pasting some text to Vim.
 set modeline                    " use modeline
-set showcmd                     " show command
+set noshowcmd                     " show command
 set cmdheight=2                 " height of command line
 
 set helplang=ja,en              " Prefer Japanse help
