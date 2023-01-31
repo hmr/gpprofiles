@@ -52,7 +52,7 @@ case "$(chkshell)" in
 esac
 
 echo -n ", ls"
-alias ls='ls -CF --color=auto'                # color ls
+alias ls='ls -CFv --color=auto'                # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls'                                  # MS-DOS Style
@@ -61,7 +61,7 @@ alias lh='ls -lrth'                           # Human friendly, reverse order by
 alias lha='ls -lrthA'                         # Human friendly, reverse order by time, all
 if which lsd >& /dev/null; then
   echo -n " (uses lsd)"
-  alias ls='lsd'
+  alias ls='lsd -v'
   alias l='ls -F'
   alias llb='lsd -l --size=bytes'
   alias lhb='lsd -lrth --size=bytes'
