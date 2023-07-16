@@ -154,7 +154,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+C to open Calculator",
+      "description": "[GPP] Start <Calculator> by Command+Option+C",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -169,7 +169,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+D to open Discord",
+      "description": "[GPP] Start <Discord> by Command+Option+D",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -182,7 +182,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+D to open DeepL",
+      "description": "[GPP] Start <DeepL> by Command+Option+D",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -195,7 +195,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+F to open Firefox",
+      "description": "[GPP] Start <Firefox> by Command+Option+F",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -208,7 +208,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+G to open Google Chrome",
+      "description": "[GPP] Start <Google Chrome> by Command+Option+G",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -223,7 +223,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+L to open LINE",
+      "description": "[GPP] Start <LINE> by Command+Option+L",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -236,7 +236,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+R to open RTM",
+      "description": "[GPP] Start <RtM> by Command+Option+R",
       "manipulators": [
         {
           "type": "basic",
@@ -252,7 +252,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+S to open Spotify",
+      "description": "[GPP] Start <Spotyify> by Command+Option+S",
       "manipulators": [
         {
           "type": "basic",
@@ -268,7 +268,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+Shift+S to open Slack",
+      "description": "[GPP] Start <Slack> by Command+Option+Shift+S",
       "manipulators": [
         {
           "type": "basic",
@@ -284,7 +284,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+T to open iTerm2",
+      "description": "[GPP] Start <iTerm2> by Command+Option+T",
       "manipulators": [
         {
           "type": "basic",
@@ -300,7 +300,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+V to open VSCode",
+      "description": "[GPP] Start VSCode by Command+Option+V",
       "manipulators": [
         {
           "type": "basic",
@@ -316,7 +316,7 @@
     },
 
     {
-      "description": "[GPP] Command+Option+M to open Mail(Spark)",
+      "description": "[GPP] Start <Spark Desktop> by Command+Option+M",
       "manipulators": [
         {
           "type": "basic",
@@ -325,7 +325,7 @@
             "modifiers": {"mandatory": ["command", "option"]}
           },
           "to": [
-            { "shell_command": "open -a 'Spark'" }
+            { "shell_command": "open -a 'Spark Desktop'" }
           ]
         }
       ]
