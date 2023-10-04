@@ -2,7 +2,7 @@
   "title": "[GPP] General Puropose Profiles",
   "rules": [
     {
-      "description": "[GPP] Single Left Command(⌘) to 英数 mode(for US layout)",
+      "description": "[GPP] Single Left Command(⌘) to 英数 key (if not on RDP/VM console)",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -10,19 +10,47 @@
             "modifiers": { "optional": [ "any" ] }
           },
           "parameters": {
-            "basic.to_if_held_down_threshold_milliseconds": 100
+            "basic.to_if_held_down_threshold_milliseconds": 200
           },
           "to": [ {
               "key_code": "left_command",
               "lazy": true
             } ],
           "to_if_held_down": [ { "key_code": "left_command" } ],
-          "to_if_alone": [ { "key_code": "japanese_eisuu" } ]
-        } ]
+          "to_if_alone": [ { "key_code": "japanese_eisuu" } ],
+          "conditions": [ {
+            "type": "frontmost_application_unless",
+            "bundle_identifiers": [
+              "^com\\.microsoft\\.rdc$",
+              "^com\\.microsoft\\.rdc\\.",
+              "^net\\.sf\\.cord$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.itap-mobile\\.qmote$",
+              "^com\\.nulana\\.remotixmac$",
+              "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+              "^com\\.teamviewer\\.TeamViewer$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.vmware\\.fusion$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.vmware\\.view$",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.vmware\\.proxyApp\\.",
+              "^com\\.parallels\\.winapp\\.",
+              "^com\\.utmapp\\.UTM$"
+            ]
+          } ]
+      } ]
     },
 
     {
-      "description": "[GPP] Single Right Command(⌘) to かな mode(for US layout)",
+      "description": "[GPP] Single Right Command(⌘) to かな key (if not on RDP/VM console)",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -30,19 +58,47 @@
             "modifiers": { "optional": [ "any" ] }
           },
           "parameters": {
-            "basic.to_if_held_down_threshold_milliseconds": 100
+            "basic.to_if_held_down_threshold_milliseconds": 200
           },
           "to": [ {
               "key_code": "right_command",
               "lazy": true
             } ],
           "to_if_held_down": [ { "key_code": "right_command" } ],
-          "to_if_alone": [ { "key_code": "japanese_kana" } ]
-        } ]
+          "to_if_alone": [ { "key_code": "japanese_kana" } ],
+          "conditions": [ {
+            "type": "frontmost_application_unless",
+            "bundle_identifiers": [
+              "^com\\.microsoft\\.rdc$",
+              "^com\\.microsoft\\.rdc\\.",
+              "^net\\.sf\\.cord$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.itap-mobile\\.qmote$",
+              "^com\\.nulana\\.remotixmac$",
+              "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+              "^com\\.teamviewer\\.TeamViewer$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.vmware\\.fusion$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.vmware\\.view$",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.vmware\\.proxyApp\\.",
+              "^com\\.parallels\\.winapp\\.",
+              "^com\\.utmapp\\.UTM$"
+            ]
+          } ]
+      } ]
     },
 
     {
-      "description": "[GPP] Single Left Option(⌥) or Alt to 英数 mode(for US layout)",
+      "description": "[GPP] Single Left Option(⌥) to 英数 mode",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -62,7 +118,7 @@
     },
 
     {
-      "description": "[GPP] Single Right Option(⌥) or Alt to かな mode(for US layout)",
+      "description": "[GPP] Single Right Option(⌥) to かな mode",
       "manipulators": [
         {
           "type": "basic",
@@ -81,7 +137,7 @@
     },
 
     {
-      "description": "[GPP] Ctrl+K to search the web at browser",
+      "description": "[GPP] Ctrl+K to search the web in the browser",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -108,7 +164,7 @@
     },
 
     {
-      "description": "[GPP] Send Option(Alt)+D instead of Command+D on iTerm2",
+      "description": "[GPP] ⌘D to ⌥D on iTerm2 (word deletion)",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -126,7 +182,7 @@
     },
 
     {
-      "description": "[GPP] (OBSOLETE) Ignore ⌘+R(reset terminal) on iTerm2",
+      "description": "[GPP] (OBSOLETE) Ignore Command(⌘)+R(reset terminal) on iTerm2",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -140,7 +196,7 @@
     },
 
     {
-      "description": "[GPP] (OBSOLETE) Ignore ⌘+K(clear buffer) on iTerm2",
+      "description": "[GPP] (OBSOLETE) Ignore Command(⌘)+K on iTerm2 (clear buffer)",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -154,7 +210,7 @@
     },
 
     {
-      "description": "[GPP] Start <Calculator> by Command+Option+C",
+      "description": "[GPP] Start <Calculator> by ⌥⌘C",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -169,7 +225,7 @@
     },
 
     {
-      "description": "[GPP] Start <Discord> by Command+Option+D",
+      "description": "[GPP] Start <Discord> by ⌥⌘D",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -182,7 +238,7 @@
     },
 
     {
-      "description": "[GPP] Start <DeepL> by Command+Option+D",
+      "description": "[GPP] Start <DeepL> by ⌥⌘D",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -195,7 +251,7 @@
     },
 
     {
-      "description": "[GPP] Start <Firefox> by Command+Option+F",
+      "description": "[GPP] Start <Firefox> by ⌥⌘F",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -208,7 +264,7 @@
     },
 
     {
-      "description": "[GPP] Start <Google Chrome> by Command+Option+G",
+      "description": "[GPP] Start <Google Chrome> by ⌥⌘G",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -223,7 +279,7 @@
     },
 
     {
-      "description": "[GPP] Start <LINE> by Command+Option+L",
+      "description": "[GPP] Start <LINE> by ⌥⌘L",
       "manipulators": [ {
           "type": "basic",
           "from": {
@@ -236,7 +292,7 @@
     },
 
     {
-      "description": "[GPP] Start <RtM> by Command+Option+R",
+      "description": "[GPP] Start <RtM> by ⌥⌘R",
       "manipulators": [
         {
           "type": "basic",
@@ -252,7 +308,7 @@
     },
 
     {
-      "description": "[GPP] Start <Spotyify> by Command+Option+S",
+      "description": "[GPP] Start <Spotyify> by ⌥⌘S",
       "manipulators": [
         {
           "type": "basic",
@@ -268,7 +324,7 @@
     },
 
     {
-      "description": "[GPP] Start <Slack> by Command+Option+Shift+S",
+      "description": "[GPP] Start <Slack> by ⌥⇧⌘S",
       "manipulators": [
         {
           "type": "basic",
@@ -284,7 +340,7 @@
     },
 
     {
-      "description": "[GPP] Start <iTerm2> by Command+Option+T",
+      "description": "[GPP] Start <iTerm2> by ⌥⌘T",
       "manipulators": [
         {
           "type": "basic",
@@ -300,7 +356,7 @@
     },
 
     {
-      "description": "[GPP] Start VSCode by Command+Option+V",
+      "description": "[GPP] Start <VSCode> by ⌥⌘V",
       "manipulators": [
         {
           "type": "basic",
@@ -316,7 +372,7 @@
     },
 
     {
-      "description": "[GPP] Start <Spark Desktop> by Command+Option+M",
+      "description": "[GPP] Start <Spark Desktop> by ⌥⌘M",
       "manipulators": [
         {
           "type": "basic",
@@ -404,7 +460,7 @@
     },
 
     {
-      "description": "[GPP] Enable PC-Style Copy/Paste/Cut on RDP/Terminal/*Vim",
+      "description": "[GPP] Enable PC-Style Copy/Paste/Cut on RDP/VM/Terminal/*Vim (⌃X/C/V → ⌘X/C/V)",
       "manipulators": [
         {
           "type": "basic",
@@ -437,6 +493,7 @@
                 "^com\\.thinomenon\\.RemoteDesktopConnection$",
                 "^com\\.itap-mobile\\.qmote$",
                 "^com\\.nulana\\.remotixmac$",
+                "^com\\.nulana\\.remotixmacwild$",
                 "^com\\.p5sys\\.jump\\.mac\\.viewer$",
                 "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
                 "^com\\.teamviewer\\.TeamViewer$",
@@ -452,6 +509,7 @@
                 "^com\\.citrix\\.XenAppViewer$",
                 "^com\\.vmware\\.proxyApp\\.",
                 "^com\\.parallels\\.winapp\\.",
+                "^com\\.utmapp\\.UTM$",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
@@ -495,6 +553,7 @@
                 "^com\\.thinomenon\\.RemoteDesktopConnection$",
                 "^com\\.itap-mobile\\.qmote$",
                 "^com\\.nulana\\.remotixmac$",
+                "^com\\.nulana\\.remotixmacwild$",
                 "^com\\.p5sys\\.jump\\.mac\\.viewer$",
                 "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
                 "^com\\.teamviewer\\.TeamViewer$",
@@ -510,6 +569,7 @@
                 "^com\\.citrix\\.XenAppViewer$",
                 "^com\\.vmware\\.proxyApp\\.",
                 "^com\\.parallels\\.winapp\\.",
+                "^com\\.utmapp\\.UTM$",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
@@ -553,6 +613,7 @@
                 "^com\\.thinomenon\\.RemoteDesktopConnection$",
                 "^com\\.itap-mobile\\.qmote$",
                 "^com\\.nulana\\.remotixmac$",
+                "^com\\.nulana\\.remotixmacwild$",
                 "^com\\.p5sys\\.jump\\.mac\\.viewer$",
                 "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
                 "^com\\.teamviewer\\.TeamViewer$",
@@ -584,7 +645,7 @@
     },
 
     {
-      "description": "[GPP] Mouse button 5 to Lookup dictionary",
+      "description": "[GPP] Mouse button 5 to Lookup dictionary (⌃⌘D)",
       "manipulators": [
         {
           "type": "basic",
@@ -622,7 +683,8 @@
           },
           "to": [
             {
-              "key_code": "right_control"
+              "key_code": "right_control",
+              "lazy": true
             }
           ],
           "to_if_alone": [
@@ -665,6 +727,7 @@
           "to": [
             {
               "key_code": "right_shift",
+              "lazy": true,
               "modifiers": [
                 "right_command",
                 "right_control",
@@ -693,7 +756,53 @@
           ]
         }
       ]
+    },
+
+    {
+      "description": "[GPP] ⌘C to ⌃C on RDP/VM console (not to call up Cortana on Windows 10)",
+      "manipulators": [ {
+          "type": "basic",
+          "from": {
+            "key_code": "c",
+            "modifiers": {"mandatory": ["command"] }
+          },
+          "to": [
+            {
+              "key_code": "c",
+              "modifiers": [ "control" ]
+            }
+          ],
+          "conditions": [ {
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.microsoft\\.rdc$",
+              "^com\\.microsoft\\.rdc\\.",
+              "^net\\.sf\\.cord$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.itap-mobile\\.qmote$",
+              "^com\\.nulana\\.remotixmac$",
+              "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+              "^com\\.teamviewer\\.TeamViewer$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.vmware\\.fusion$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.vmware\\.view$",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.vmware\\.proxyApp\\.",
+              "^com\\.parallels\\.winapp\\.",
+              "^com\\.utmapp\\.UTM$"
+            ]
+          } ]
+      } ]
     }
+
 
   ]
 }
