@@ -629,6 +629,7 @@
                 "^com\\.citrix\\.XenAppViewer$",
                 "^com\\.vmware\\.proxyApp\\.",
                 "^com\\.parallels\\.winapp\\.",
+                "^com\\.utmapp\\.UTM$",
                 "^com\\.apple\\.Terminal$",
                 "^com\\.googlecode\\.iterm2$",
                 "^co\\.zeit\\.hyperterm$",
@@ -759,7 +760,7 @@
     },
 
     {
-      "description": "[GPP] ⌘C to ⌃C on RDP/VM console (not to call up Cortana on Windows 10)",
+      "description": "[GPP] ⌘C to ⌃C on RDP/VM console (not to call up Cortana/Teams on Windows 10/11)",
       "manipulators": [ {
           "type": "basic",
           "from": {
