@@ -29,3 +29,6 @@
 --map-syntax ".ignore:Git Ignore"
 --map-syntax "vimrc:VimL"
 --map-syntax "*.mbox:Email"
+--map-syntax "dot-shell_*:Bourne Again Shell (bash)"
+--map-syntax "dot-z*:Bourne Again Shell (bash)"
+
