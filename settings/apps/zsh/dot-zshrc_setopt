@@ -1,6 +1,7 @@
-# vim: ft=zsh
+# vim: set noet syn=zsh ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for zsh script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${ZDOTDIR}
 
-# Part of GPProfiles
+# Part of GPP
 # dot-zshrc_setopt
 
 # ORIGIN: 2020-12-10 by hmr
