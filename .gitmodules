@@ -4,3 +4,6 @@
 [submodule "settings/apps/tmux/plugins/tpm"]
 	path = settings/apps/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "settings/apps/kitty/kitty-themes"]
+	path = settings/apps/kitty/kitty-themes
+	url = https://github.com/kovidgoyal/kitty-themes.git
