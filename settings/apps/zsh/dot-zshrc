@@ -1,4 +1,5 @@
-# shellcheck shell=bash
+# vim: set noet syn=zsh ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for zsh script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${ZDOTDIR}
 
 # Part of GPP
 
@@ -23,12 +24,13 @@ echo "Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 
 # 😩😂😅😝
 # Compile rc files
-for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle
-if [ ! -f ${_SELF}.zwc -o ${_SELF} -nt ${_SELF}.zwc ]; then
-  echo "  Compiling ${_SELF}"
-  zcompile ${_SELF}
-fi
-unset _SELF
+for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle; do
+	if [ ! -f ${_SELF}.zwc -o ${_SELF} -nt ${_SELF}.zwc ]; then
+		echo "  Compiling ${_SELF}"
+		zcompile ${_SELF}
+	fi
+	unset _SELF
+done
 
 # System-wide zshrc
 [ -r /usr/local/etc/zshrc ] && source /usr/local/etc/zshrc
@@ -60,7 +62,7 @@ if [ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]; then
 fi
 # Per-user cache directory
 if [ -d "${XDG_CACHE_HOME:-${HOME}/.cache}" ]; then
-  export ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zplug"
+  export ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zplug/cache"
 fi
 
 # enhancd settings
@@ -71,15 +73,32 @@ export ENHANCD_DISABLE_HOME=1
 export ENHANCD_HOOK_AFTER_CD="pwd; ls"
 export ENHANCD_HYPHEN_NUM=20
 
+# fzf settings
+export FZF_DEFAULT_OPTS="--height 40% --border --multi --ansi"
+if type rg >& /dev/null; then
+	export FZF_DEFAULT_COMMAND="rg --files --follow"
+	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+elif type fd >& /dev/null; then
+	export FZF_DEFAULT_COMMAND="fd --type f"
+	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+else
+	echo "fzf is used with super-slow 'find' now because neither 'ripgrep' nor 'fd' is installed. Consider installing one of them."
+	export FZF_DEFAULT_COMMAND="find * --type f"
+	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+fi
+
 # Load Zplug
 if [ -n "${ZPLUG_HOME}" ]; then
   source $ZPLUG_HOME/init.zsh
-
   zplug "zsh-users/zsh-completions"
   # autoload -Uz compinit && compinit
   zplug "zsh-users/zsh-autosuggestions", defer:2
   # enhances the terminal environment with 256 colors
-  zplug "chrissicool/zsh-256color", defer:2
+	# export ZSH_256COLOR_DEBUG=1
+  # zplug "chrissicool/zsh-256color", defer:2
   # コマンドを種類毎に色づけ
   #zplug "zsh-users/zsh-syntax-highlighting", defer:3
   zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
@@ -94,7 +113,7 @@ if [ -n "${ZPLUG_HOME}" ]; then
 
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
-  zplug "junegunn/fzf", use:shell/key-bindings.zsh, defer:2
+  zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2
   ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
   #zplug "junegunn/fzf", use:shell/completion.zsh
   # fzf でよく使う関数の詰め合わせ
@@ -120,45 +139,29 @@ if [ -n "${ZPLUG_HOME}" ]; then
   # fi
 
   # Then, source plugins and add commands to $PATH
-  #zplug load --verbose
-  zplug load
-  if [ $?=0 ]; then
+	# zplug load --verbose
+	zplug load
+  if [[ $? -eq 0 ]]; then
     echo "  zplug successfully loaded."
   else
-    echo "  zplug abnormally loaded."
+    echo "  ${RED}zplug abnormally loaded.${NORMAL}"
   fi
 
   # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
   export POWERLEVEL9K_CONFIG_FILE=${ZDOTDIR:-${HOME}}/p10k.zsh
-  [[ ! -f ${ZDOTDIR:-${HOME}}/p10k.zsh ]] || source ${ZDOTDIR:-${HOME}}/p10k.zsh
+  [[ ! -f "${ZDOTDIR:-${HOME}}/p10k.zsh" ]] || source "${ZDOTDIR:-${HOME}}/p10k.zsh"
   echo
 
-  # fzf settings
-  export FZF_DEFAULT_OPTS="-m --height 40% --border"
-  if type rg >& /dev/null; then
-    export FZF_DEFAULT_COMMAND="rg --files"
-    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-    export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
-  elif type fd >& /dev/null; then
-    export FZF_DEFAULT_COMMAND="fd --type f"
-    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-    export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
-  else
-    echo "fzf is used with super-slow 'find' now because neither 'ripgrep' nor 'fd' is installed. Consider installing one of them."
-    export FZF_DEFAULT_COMMAND="find * --type f"
-    export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-    export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
-  fi
 else
   # zplug not found
   echo "  ===== zplug not found. Consider installing it. ====="
 fi
 
 # Read GPProfiles settings
-source ${ZDOTDIR:-${HOME}}/dot-zshrc_gpp # gpprofile
+source "${ZDOTDIR:-${HOME}}/dot-zshrc_gpp" # gpprofile
 
 # Zsh completion settings
-source ${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle
+source "${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle"
 
 # Spotify-cli settings
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
@@ -172,10 +175,17 @@ alias help=run-help
 KBDLAYOUT="Keychron_K2_Mac"
 
 # Extra key config
-if [ -r ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT} ]; then
-  source ${ZDOTDIR}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}
+if [[ ${DISPLAY:t} =~ ^org.xquartz:[0-9]+$ ]]; then
+	ZKBDTYPE="${TERM}-${VENDOR}-${OSTYPE}-${KBDLAYOUT}"
 else
-  echo; echo "${RED}Warning: Keyconfig file [$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}] not found.${NORMAL}"
+	ZKBDTYPE="$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}"
+fi
+
+if [ -r "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" ]; then
+	echo "Loading ${ZKBDTYPE}"
+  source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}"
+else
+  echo; echo "${RED}Warning: Keyconfig file [${ZKBDTYPE}] not found.${NORMAL}"
 fi
 
 # set keybinding to emacs mode
@@ -197,6 +207,7 @@ bindkey "^W" backward-kill-word
 # Explicitly bind to "do-nothing" widget to prevent unnecessary characters from being entered
 function _do-nothing-at-all() {
   # A widget which do nothing
+	:
 }
 zle -N do-nothing _do-nothing-at-all
 bindkey "${key[C-Left]}"    do-nothing
@@ -216,6 +227,11 @@ bindkey "${key[C-M-Right]}" do-nothing
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 	. "$(code --locate-shell-integration-path zsh)"
 	echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
+fi
+
+# FPATH settings
+if [[ -d $(brew --prefix)/share/zsh-completions ]]; then
+	fpath+=$(brew --prefix)/share/zsh-completions
 fi
 
 # Show profiling result if enabled.
