@@ -1,4 +1,7 @@
-# shellcheck shell=bash
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
+
+# Part of GPP
 
 # dot-shell_logout
 # dot-zlogout
@@ -35,5 +38,3 @@ unset TEMP_AGENTS
 
 echo bye bye. waiting for disconnect...
 sleep 1.5
-
-# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script

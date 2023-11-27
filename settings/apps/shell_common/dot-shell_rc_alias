@@ -1,12 +1,14 @@
-#!/bin/bash
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 
-# Part of GPProfiles
+# Part of GPP
+
 # dot-shell_rc_alias
 # ORIGIN: date unknown by hmr
 
 echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_alias${NORMAL}"
 echo -n "  "
-#
+
 function exist_and_read() {
   local _arg1=$1
   [ -z "${_arg1}" ] && return 2
@@ -18,28 +20,31 @@ function exist_and_read() {
   fi
 }
 
-# Aliases for grc
+# grc's alias
 case "$(chkshell)" in
   bash )
-    _FILE="/usr/local/etc/grc.bashrc"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
-      || _FILE="/usr/etc/grc.bashrc" ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
-      || _FILE="/etc/grc.bashrc"     ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")"
+    _FILE="${HOMEBREW_PREFIX:-/opt/homebrew}/etc/grc.sh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
+      || _FILE="/usr/local/etc/grc.sh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
+      || _FILE="/usr/etc/grc.sh" ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
+      || _FILE="/etc/grc.sh"     ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")"
     ;;
 
   zsh )
-    (_FILE="/usr/local/etc/grc.zsh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")") \
+    (_FILE="${HOMEBREW_PREFIX:-/opt/homebrew}/etc/grc.zsh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")") \
+      || (_FILE="/usr/local/etc/grc.zsh"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")") \
       || (_FILE="/usr/etc/grc.zsh" ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")") \
       || (_FILE="/etc/grc.zsh"     ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")")
     ;;
 
   fish )
-    _FILE="/usr/local/etc/grc.fish"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
+    _FILE="${HOMEBREW_PREFIX:-/opt/homebrew}/etc/grc.fish"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
+      || _FILE="/usr/local/etc/grc.fish"; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
       || _FILE="/usr/etc/grc.fish" ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")" \
       || _FILE="/etc/grc.fish"     ; exist_and_read "$_FILE" && echo -n "$(basename "$_FILE")"
     ;;
 esac
 
-# Don't correct spelling
+# Commands excluded from spelling correction
 case "$(chkshell)" in
   zsh )
     echo -n ", zsh-nocorrect"
@@ -52,7 +57,7 @@ case "$(chkshell)" in
 esac
 
 echo -n ", ls"
-alias ls='ls -CFv --color=auto'                # color ls
+alias ls='ls -CFv --color=auto'               # color ls
 alias ll='ls -l'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls'                                  # MS-DOS Style
@@ -84,14 +89,14 @@ fi
 #alias utcisodate="date --utc --iso-8601=seconds | sed -e 's/\+00:00/Z/' -e 's/[-:]//g'"
 
 echo -n ", isodate"
-alias utcisodate_short=" date --utc +'%Y%m%dT%H%M%SZ'"
+alias utcisodate_short="date --utc +'%Y%m%dT%H%M%SZ'"
 alias utcisodate_long="date --utc +'%Y-%m-%dT%H:%M:%SZ'"
 alias utcisodate_longp="date --utc +'%Y-%m-%dT%H%M%SZ'"
-alias isodate_short="date +'%Y%m%dT%H%M%S%z'"
+alias isodate_short="date +'%Y%m%dT%H%M%S%:::z'"
 alias isodate_long="date +'%Y-%m-%dT%H:%M:%S%z'"
 alias isodate_longp="date +'%Y-%m-%dT%H%M%S%z'"
 
-# Quilt(Tool to manage series of patches)
+# Quilt (Tools to manage a series of patches)
 if which quilt > /dev/null; then
   echo -n ", quilt"
   alias dquilt="quilt --quiltrc=${XDG_CONFIG_HOME:-${HOME}}/quilt/dpkg.quiltrc"
@@ -128,8 +133,8 @@ fi
 # Use bat instead of less
 if which bat > /dev/null; then
   echo -n ", bat"
-  alias less="bat"
-  alias cless='command less'
+	# 'cless' means color less
+  alias cless='bat'
 fi
 
 # ffmpeg/ffplay/ffprobe
@@ -146,7 +151,7 @@ if which ffprobe > /dev/null; then
   alias ffprobe="ffprobe -hide_banner"
 fi
 
-# Colorlized ip
+# Colorlize ip
 if which ip > /dev/null; then
   echo -n ", ip"
   alias ip="ip -c"
@@ -160,5 +165,10 @@ if which ssh-keygen > /dev/null; then
   alias ssh-keygen-ed25519='ssh-keygen -t ed25519 -C "${USER}@${HOST%%.*}[Ed25519]($(date +"%Y-%m-%d"))"'
 fi
 
+# Colorized cat
+if which bat > /dev/null; then
+  echo -n ", ccat"
+  alias ccat="bat --paging=never --style=plain"
+fi
+
 echo
-# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix

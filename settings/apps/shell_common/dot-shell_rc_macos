@@ -1,6 +1,8 @@
-#!/bin/bash
-# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 
+# Part of GPP
+#
 # dot-shell_rc_macos
 # ORIGIN: 2019-11-12 by hmr
 
@@ -8,19 +10,20 @@ echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_macos${NORMAL}"
 
 # Check arg is already set into PATH
 function CHECK_PATH () {
-  [ -z "$1" ] && return 1
-  echo "${PATH}" | grep "${1}" >& /dev/null \
-    && return 0 \
-    || return 1
+  (( $# < 1 )) && return 1
+  # echo "${PATH}" | grep "${1}" >& /dev/null \
+  #   && return 0 \
+  #   || return 1
+  [[ ${PATH} =~ ${1} ]] && return 0 || return 1
 }
 
 # Add path to GNU software installed by Homebrew
 function HB_ADD_PATH_GNU () {
-  [ -z "$1" ] && return 1
-  local HB_TARGET=/usr/local/opt/$1/libexec/gnubin
+  (( $# < 1 )) && return 1
+  local HB_TARGET="/usr/local/opt/${1}/libexec/gnubin"
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-    export PATH=${HB_TARGET}:${PATH}
+    export PATH="${HB_TARGET}:${PATH}"
     return 0
   else
     return 2
@@ -29,11 +32,11 @@ function HB_ADD_PATH_GNU () {
 
 # Add path to software installed by Homebrew
 function HB_ADD_PATH () {
-  [ -z "$1" ] && return 1
-  local HB_TARGET=/usr/local/opt/$1/bin
+  (( $# < 1 )) && return 1
+  local HB_TARGET="/usr/local/opt/$1/bin"
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-    export PATH=${HB_TARGET}:${PATH}
+    export PATH="${HB_TARGET}:${PATH}"
     return 0
   else
     return 2
@@ -42,18 +45,23 @@ function HB_ADD_PATH () {
 
 # Add path to libexec installed by Homebrew
 function HB_ADD_PATH_LIBEXEC () {
-  [ -z "$1" ] && return 1
-  local HB_TARGET=/usr/local/opt/$1/libexec
+  (( $# < 1 )) && return 1
+  local HB_TARGET="/usr/local/opt/$0/libexec"
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-    export PATH=${HB_TARGET}:${PATH}
+    export PATH="${HB_TARGET}:${PATH}"
     return 0
   else
     return 2
   fi
 }
+
+#
 # Entry point
-if ! echo "${OSTYPE}" | grep -i "darwin" >& /dev/null; then
+#
+# echo $PATH | tr ":" "\n" | sort | uniq -c | sort -rn
+# echo $PATH | tr ":" "\n"
+if [[ ${OSTYPE} != *darwin* ]]; then
   echo "  not macOS environment."
   return
 fi
@@ -73,16 +81,38 @@ esac
 #fi
 
 # Homebrew
-# Force to use Homebrew version of curl
-export HOMEBREW_FORCE_BREWED_CURL=1
-# Not to update automatically
-export HOMEBREW_NO_AUTO_UPDATE=1
-# Use bat when brew cat
-export HOMEBREW_BAT=1
-# Parallel compile
-export HOMEBREW_MAKE_JOBS=4
-export HOMEBREW_NO_INSTALL_FROM_API=1
-export HOMEBREW_BOOTSNAP=1
+if [ -x /opt/homebrew/bin/brew ]; then
+  echo "  Homebrew found. Setting variables..."
+  export HOMEBREW_PREFIX="/opt/homebrew";
+  export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar";
+  export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}";
+  # export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin${PATH+:$PATH}";
+  DEL_FROM_PATH "${HOMEBREW_PREFIX}/sbin"
+  DEL_FROM_PATH "${HOMEBREW_PREFIX}/bin"
+  ADD_INTO_PATH "${HOMEBREW_PREFIX}/sbin" "H"
+  ADD_INTO_PATH "${HOMEBREW_PREFIX}/bin" "H"
+  export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}";
+  export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
+
+  # Add path to replaced gnu tools
+  # export PATH="${HOMEBREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
+
+  # Force to use Homebrew version of curl
+  export HOMEBREW_FORCE_BREWED_CURL=1
+  # Not to update automatically
+  export HOMEBREW_AUTO_UPDATE=1
+  # Use bat when brew cat
+  export HOMEBREW_BAT=1
+  # Parallel compile
+  HOMEBREW_MAKE_JOBS=$(/usr/sbin/sysctl -n hw.perflevel0.logicalcpu)
+  [[ -z ${HOMEBREW_MAKE_JOBS} ]] && HOMEBREW_MAKE_JOBS=4
+  export HOMEBREW_MAKE_JOBS
+  # export HOMEBREW_NO_INSTALL_FROM_API=1
+  export HOMEBREW_BOOTSNAP=1
+else
+  echo "  Homebrew not found."
+fi
+echo
 
 # PATH
 echo "  Setting PATH..."
@@ -99,8 +129,10 @@ if [ -d /Developer/NVIDIA/CUDA-10.2/bin ]; then
 fi
 
 # Ruby gems installed by Homebrew's ruby
-echo -n ", Rubygems"
-export PATH=${PATH}:/usr/local/lib/ruby/gems/3.2.0/bin
+# echo -n ", Rubygems"
+# export PATH=${PATH}:/usr/local/lib/ruby/gems/3.2.0/bin
+
+echo
 
 # TODO: This section will be deleted in the near future.
 # # Use HomeBrew binaries instead of macOS default.
@@ -171,12 +203,169 @@ HB_ADD_PATH_LIBEXEC ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 unset TEMP_TGT
 echo
 
-echo "  Setting other variables..."
+echo "  Setting variables for macOS..."
+echo -n "    "
+
+# Dotnet
 if [ -d /usr/local/opt/dotnet ]; then
-  echo -n "    Dotnet"
+  echo -n "Dotnet"
   export DOTNET_ROOT="/usr/local/opt/dotnet/libexec"
 elif [ -d /usr/local/share/dotnet ]; then
-  echo -n "    Dotnet"
+  echo -n "Dotnet"
   export DOTNET_ROOT="/usr/local/share/dotnet"
 fi
 
+# Unicode Ambiguous Width (For Go lang)
+echo -n ", RUNEWIDTH_EASTASIAN"
+if [ ! "${RUNEWIDTH_EASTASIAN}" ]; then
+  export RUNEWIDTH_EASTASIAN=0
+fi
+
+# TERMINFO_DIRS for iTerm2
+# if [[ -n "${ITERM_PROFILE}" && -d /Applications/iTerm.app/Contents/Resources/terminfo ]]; then
+#   echo -n ", TERMINFO_DIRS(for iTerm2)"
+#   export TERMINFO_DIRS="/Applications/iTerm.app/Contents/Resources/terminfo:${TERMINFO_DIRS}"
+# fi
+
+echo
+
+# Aliases
+echo
+echo "  Setting aliases for macOS..."
+echo -n "    "
+
+echo -n "chwp"
+alias chwp="osascript -e 'tell application \"System Events\" to set picture of every desktop to \"\"'"
+
+echo -n ", whichwp"
+alias whichwp='idx=0; for file in $(sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "select * from data" | tail -2); do echo -n Display $((++idx)):; realpath ~/Pictures/Wallpaper_Mixed_All/${file}; done'
+
+# echo -n ", setipv6route"
+# alias setipv6route='echo "Checking IPv6 routing... "; ping6 -c 3 ipv6.google.com >& /dev/null && echo "IPv6 routing seems to be OK!" || (echo "IPv6 ping fails. Trying to configure IPv6 default root." && netstat -nr -f inet6 | grep default; sudo route -n delete -inet6 default fe80::6ab:18ff:fe98:22d3%en0; sudo route -n delete -inet6 default fe80::6ab:18ff:fe98:22d3%en1; sudo route -n add -inet6 default fe80::6ab:18ff:fe98:22d3%en1; netstat -nr -f inet6 | grep default; ping6 -c 3 ipv6.google.com)'
+
+if alias mtr >& /dev/null; then
+  echo -n ", mtr(workaround)"
+  alias mtr='TERM=xterm-256color sudo mtr -t -y0 -e -b'
+fi
+
+if [[ -x ${HOME}/src/deadman/deadman ]]; then
+	echo -n ", deadman(workaround)"
+	alias deadman="TERM=xterm-256color ~/src/deadman/deadman"
+fi
+echo
+
+# Functions
+echo
+echo "  Setting finctions for macOS..."
+echo -n "    "
+
+echo -n "_gpp_wait_for_secs"
+function _gpp_wait_for_secs() {
+  local secs
+  [[ $# -lt 1 ]] && return 1
+  secs=${1}
+  [[ ${secs} =~ ^[0-9]+$ ]] || return 2
+
+  echo -n "Wait for ${secs} secs "
+  local c
+  for ((c=1; c <= secs; c++)) {
+    sleep 1
+    if (( c % 5 == 0 )); then
+      printf "%2d" "$c"
+    else
+      echo -n "."
+    fi
+  }
+  echo
+}
+
+echo -n ", _gpp_ping6_to"
+function _gpp_ping6_to() {
+  local tgt pingbin pingopt
+
+  [[ $# -lt 1 ]] && tgt="dns.google" || tgt="${1}"
+
+  if which fping >& /dev/null; then
+    pingbin="fping"
+    pingopt="-6 -p 1000 -t 1000 -i 1000 -r 0 -q"
+  else
+    pingbin="ping6"
+    pingopt="-i 1 -c 1"
+  fi
+
+  if eval "${pingbin}" "${pingopt}" "${tgt}"; then
+    return
+  else
+    return 1
+  fi
+}
+
+echo -n ", setipv6route"
+function setipv6route() {
+  local router_addr="fe80::6ab:18ff:fe98:22d3"
+
+  echo "Pinging dns.google to check IPv6 routing... ";
+  if _gpp_ping6_to; then
+    echo "  IPv6 routing seems to be OK!"
+    return 0
+  fi
+
+  echo "  IPv6 ping fails. Trying to configure IPv6 default root."
+  local IFACE
+  while read IFACE; do
+    case "${IFACE}" in
+      "en0" )
+        echo "    Deleting default route (en0)."
+        sudo route -n delete -inet6 default "${router_addr}"%en0 >& /dev/null;
+        ;;
+
+      "en1" )
+        echo "    Deleting default route (en1)."
+        sudo route -n delete -inet6 default "${router_addr}"%en1 >& /dev/null;
+        ;;
+
+      * )
+        echo "    Can't handle interface ${IFACE}."
+        ;;
+    esac
+  done <<< "$(netstat -nr -f inet6 | grep "default" | grep -E "en0|en1" | awk '{print $4}')"
+
+  echo "    Adding IPv6 Default Route (en1)."
+  sudo route -n add -inet6 default "${router_addr}"%en1 >& /dev/null;
+  local ROUTE6
+  ROUTE6="$(netstat -nr -f inet6 | grep default | grep UGScg | awk '{print $4}')"
+  if [[ ${ROUTE6} != "en1" ]]; then
+    echo "  Weird. No default route found..."
+    return 1
+  fi
+
+  local cnt
+  for ((cnt=0; cnt < 2; cnt++)) {
+    _gpp_wait_for_secs 10
+    echo "  OK! Let's ping to dns.google..."
+    if _gpp_ping6_to; then
+      echo "    It seems to be OK. Doesn't it?"
+      return 0
+    fi
+  }
+
+  echo "  Hmmmm... looks like it's still not working."
+  echo "  OK. Trying to disconnect the Wi-Fi. Then reconnect."
+  sudo ifconfig en1 down
+  sleep 5
+  sudo ifconfig en1 up
+  echo "    Done. Wait for something that is needed to work well "
+
+  for ((cnt=0; cnt < 3; cnt++)) {
+    _gpp_wait_for_secs 10
+    echo "  OK! Let's ping to dns.google..."
+    if _gpp_ping6_to; then
+      echo "    It seems to be OK. Doesn't it?"
+      return 0
+    fi
+  }
+
+  echo "  Ohhhhh... There's no more way... Giving up. (sigh)"
+  return 2
+}
+echo

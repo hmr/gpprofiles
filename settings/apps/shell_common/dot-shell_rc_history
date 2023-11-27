@@ -1,5 +1,8 @@
-# vim: ft=sh ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 
+# Part of GPP
+#
 # dot-shell_rc_history(for bash and zsh)
 # ORIGIN: date unknown by hmr
 
@@ -60,6 +63,5 @@ case "$(chkshell)" in
   export HISTFILESIZE=100000     # For bash
   export SAVEHIST=100000         # For zsh
   ;;
-
 
 esac

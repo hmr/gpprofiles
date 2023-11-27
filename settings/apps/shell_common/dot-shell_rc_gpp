@@ -1,16 +1,18 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 
 # Part of GPP
+
 # dot-shell_rc_gpp
 
 # ORIGIN: 2020-06-28 02:32 by hmr
 
 echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_gpp${NORMAL}"
 
-if [ -f ~/.gpprofiles ]; then
-  source ~/.gpprofiles
-elif [ -n "${XDG_CONFIG_HOME}" ] && [ -f $XDG_CONFIG_HOME/gpprofiles/gpprofiles ]; then
-  source ${XDG_CONFIG_HOME}/gpprofiles/gpprofiles
+if [[ -f ~/.gpprofiles ]]; then
+  . ~/.gpprofiles
+elif [[ -n ${XDG_CONFIG_HOME} && -f ${XDG_CONFIG_HOME}/gpprofiles/gpprofiles ]]; then
+  . "${XDG_CONFIG_HOME}/gpprofiles/gpprofiles"
 fi
 
 if [ -n "${GPP_HOME}" ]; then
@@ -18,24 +20,28 @@ if [ -n "${GPP_HOME}" ]; then
   echo -n "Version: ${GPP_VERSION}. "
   echo    "Installed on ${GPP_HOME}"
 
-  if [ -z "${GPP_VERSION}" -o -z "${GPP_HOME}" ]; then
+  if [[ -z "${GPP_VERSION}" || -z "${GPP_HOME}" ]]; then
     echo "  CAUTION: GPP IS NOT PROPERLY INSTALLED."
     exit 1
   fi
 
   export GPP_HOME GPP_VERSION
+
+  # Set base environment
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv"
+
   # Don't change the order.
-  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function
-  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_history
-  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_alias
-  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env
-  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_misc
-  source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function"
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_history"
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_alias"
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env"
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_misc"
+  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos"
 
   # set shell prompt for bash
-  case "`chkshell`" in
+  case $(chkshell) in
     bash)
-      [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt
+      [[ -r ~/.byobu/prompt ]] && . ~/.byobu/prompt
       ;;
   esac
 
@@ -54,4 +60,3 @@ if [ -n "${GPP_HOME}" ]; then
 else
   echo "GPP not found. Bye"
 fi
-

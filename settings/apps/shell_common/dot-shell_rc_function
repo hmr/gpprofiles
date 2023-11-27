@@ -1,4 +1,7 @@
-# vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
+
+# Part of GPP
 
 # dot-shell_rc_function
 # ORIGIN: 2020-06-23 by hmr
@@ -10,8 +13,8 @@ echo -n "  Setting functions:"
 # shows url for SPICE which is KVM's remote connection system
 echo -n " spiceurl"
 function spiceurl {
-  if [ x$1 = "x" ]; then return; fi
-  echo spice://`hostname`:$(ps ax | grep $1 | grep -oP '\-spice port=\d+' | grep -oP '\d+')
+  if [[ -z $1 ]]; then return; fi
+  echo "spice://$(hostname):$(ps ax | grep "$1" | grep -oP '\-spice port=\d+' | grep -oP '\d+')"
 }
 
 # shows running VM and SPICE connection url
@@ -19,7 +22,7 @@ echo -n ", spicelist"
 function spicelist {
   for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
   do
-    echo `spiceurl $VMNAME` [$VMNAME]
+    echo "$(spiceurl ${VMNAME}) [${VMNAME}]"
   done
 }
 
@@ -51,20 +54,24 @@ function _chkdist {
     if [ -e /etc/lsb-release    ]; then _TMP_DIST="ubuntu"
                                    else _TMP_DIST="debian"
     fi
-  elif [ -x /usr/bin/sw_vers ] && [ "$(sw_vers -productName)" = "Mac OS X" ]; then _TMP_DIST="macos"
+  elif [ -x /usr/bin/sw_vers ]; then
+    local tmp_swvers
+    tmp_swvers=$(sw_vers -productName)
+    if [[ ${tmp_swvers} == "Mac OS X" ]]; then _TMP_DIST="macos"
+    elif [[ ${tmp_swvers} == "macOS"  ]]; then _TMP_DIST="macos"
+    fi
   else _TMP_DIST="unknown"
   fi
 
   echo ${_TMP_DIST}
 }
 
-
 # shows current shell(bash or zsh)
 echo -n ", chkshell"
 function chkshell {
-  if [ -n "${ZSH_VERSION}" ]; then
+  if [[ -n ${ZSH_VERSION} ]]; then
     echo "zsh"
-  elif [ -n ${BASH_VERSION} ]; then
+  elif [[ -n ${BASH_VERSION} ]]; then
     echo "bash"
   fi
 #  if echo ${SHELL} | grep -qs bash; then
@@ -95,9 +102,9 @@ function esp_idf {
   fi
 
   export IDF_PATH=${IDF_PATH:-${HOME}/esp/esp-idf}
-  if [ -n "${IDF_PATH}" -a -d "${IDF_PATH}" ]; then
+  if [[ -n ${IDF_PATH} && -d ${IDF_PATH} ]]; then
     echo "Setting ESP32 development environment."
-    source ${IDF_PATH}/export.sh
+    source "${IDF_PATH}"/export.sh
   else
     echo "Error: IDF_PATH[${IDF_PATH}] doesn't exist."
   fi
@@ -132,63 +139,68 @@ case "$(chkshell)" in
     ;;
 esac
 
-# System update combo
-echo -n ", ubuntu-update"
-function ubuntu-update() {
-  echo "${MAGENTA}===== Updating system =====${NORMAL}"
-  sudo apt update \
-    && apt list --upgradable \
-    && echo -n "${YELLOW}==================== HIT ENTER TO PROCEED ====================${NORMAL}" \
-    && read \
-    && sudo apt upgrade -y \
-    && sudo apt autoremove -y
+# System update combo for debian/ubuntu
+if [[ $(_chkdist) == "ubuntu" || $(_chkdist) == "debian" ]]; then
+	echo -n ", ubuntu-update"
+	function ubuntu-update() {
+	echo "${MAGENTA}===== Updating system =====${NORMAL}"
+	sudo apt update \
+		&& apt list --upgradable \
+		&& echo -n "${YELLOW}==================== HIT ENTER TO PROCEED ====================${NORMAL}" \
+		&& read -r \
+		&& sudo apt upgrade -y \
+		&& sudo apt autoremove -y
 
-  echo "${CYAN}===== Update done =====${NORMAL}"
-  echo
+	echo "${CYAN}===== Update done =====${NORMAL}"
+	echo
 
-  echo "${MAGENTA}===== Saving package list =====${NORMAL}"
-  [ -d "${XDG_CONFIG_HOME}/apt" ] || mkdir -p "${XDG_CONFIG_HOME}/apt"
-  FILENAME="$XDG_CONFIG_HOME/apt/installed-packages_$(hostname -s)_$(date +'%s').txt.gz"
-  LANG=C apt list --installed 2> /dev/null | gzip -c > ${FILENAME}
-  echo "Saved as ${FILENAME}"
-  /bin/ls -t $XDG_CONFIG_HOME/apt/installed-* | tail -n +11 | xargs rm -f
-  echo "${CYAN}===== Saving done =====${NORMAL}"
-  echo
+	echo "${MAGENTA}===== Saving package list =====${NORMAL}"
+	[ -d "${XDG_CONFIG_HOME}/apt" ] || mkdir -p "${XDG_CONFIG_HOME}/apt"
+	FILENAME="$XDG_CONFIG_HOME/apt/installed-packages_$(hostname -s)_$(date +'%s').txt.gz"
+	LANG=C apt list --installed 2> /dev/null | gzip -c > ${FILENAME}
+	echo "Saved as ${FILENAME}"
+	/bin/ls -t $XDG_CONFIG_HOME/apt/installed-* | tail -n +11 | xargs rm -f
+	echo "${CYAN}===== Saving done =====${NORMAL}"
+	echo
 
-  if [ -e /var/run/reboot-required.pkgs ]; then
-    echo "${BOLD}${RED}*** Reboot required due to these package(s):${NORMAL}"
-    cat /var/run/reboot-required.pkgs
-  else
-    echo "No need to reboot."
-  fi
+	if [ -e /var/run/reboot-required.pkgs ]; then
+		echo "${BOLD}${RED}*** Reboot required due to these package(s):${NORMAL}"
+		cat /var/run/reboot-required.pkgs
+	else
+		echo "No need to reboot."
+	fi
 }
+fi
 
 # Check if brew package is installed
 if command -v brew >& /dev/null; then
+	# bii is short for 'brew is installed?'
   echo -n ", bii"
   function bii() {
-    local BREW_LIST_FRML="/tmp/BREW_LIST_FRML.txt"
-    local BREW_LIST_CASK="/tmp/BREW_LIST_CASK.txt"
+    local BREW_LIST_FRML="${XDG_CONFIG_HOME}/homebrew/installed_list_formulae.txt"
+    local BREW_LIST_CASK="${XDG_CONFIG_HOME}/homebrew/installed_list_casks.txt"
     local EXPIRATION="86400"
     local FOUND
 
     if [[ $# != 1 ]]; then
-      echo "Usage: bii <formula|cask>"
+      echo "Usage: bii <package name>"
       return
     fi
 
     # Check if it is installed as a formula
-    if [[ ! -r ${BREW_LIST_FRML} \
-      || "$(echo "$(date +"%s") - $(stat -c %Y ${BREW_LIST_FRML})" | bc)" -ge ${EXPIRATION} ]]; then
+    if [[ ! -r ${BREW_LIST_FRML} ]] && command -v gstat >& /dev/null; then
+      if [[ "$(echo "$(date +"%s") - $(gstat -c %Y ${BREW_LIST_FRML})" | bc)" -ge ${EXPIRATION} ]]; then
         brew list --formula --versions > ${BREW_LIST_FRML}
+      fi
     fi
     grep -q $1 "${BREW_LIST_FRML}" && FOUND="Formula"
 
     # Check if it is installed as a cask
     if [[ -z "${FOUND}"  ]]; then
-      if [[ ! -r ${BREW_LIST_CASK} \
-        || "$(echo "$(date +"%s") - $(stat -c %Y ${BREW_LIST_CASK})" | bc)" -ge ${EXPIRATION} ]]; then
+      if [[ ! -r ${BREW_LIST_CASK} ]] && command -v gstat >& /dev/null; then
+        if [[ "$(echo "$(date +"%s") - $(gstat -c %Y ${BREW_LIST_CASK})" | bc)" -ge ${EXPIRATION} ]]; then
           brew list --cask --versions > ${BREW_LIST_CASK}
+        fi
       fi
       grep -q $1 "${BREW_LIST_CASK}" && FOUND="Cask"
     fi
@@ -202,5 +214,126 @@ if command -v brew >& /dev/null; then
     return 1
   }
 fi
+
+# # Convert an env to an array
+# echo -n ", _conv_env_to_array"
+#
+# # Convert an array to an env
+# echo -n ", _conv_array_to_env"
+#
+# #
+# echo -n ", _chk_path_dup"
+# function _CHK_PATH_DUP() {
+#   :
+# }
+
+# Add a string into PATH if not exist
+echo -n ", add_into_path"
+function ADD_INTO_PATH() {
+  [[ ${#} ==  0 ]] && return 1
+  local str_to_add="${1}"
+  local pos_to_add="${2:-L}"
+  local PREV_IFS="${IFS}"
+
+  # Convert the $PATH to an array $path[] (bash only)
+  # https://blog.n-z.jp/blog/2016-10-07-bash-path-to-array-again.html
+  if [[ $(chkshell) == "bash" ]]; then
+    local path
+    IFS=:
+    read -d $'\0' -r -a path <<< "$PATH:"
+    IFS=${PREV_IFS}
+    unset "path[-1]"
+  fi
+
+  # Check duplication
+  local str
+  for str in "${path[@]}"
+  do
+    if [[ ${str} == "${str_to_add}" ]]; then
+      return 3
+    fi
+  done
+
+  # Add a string to the array $path
+  case "${pos_to_add}" in
+    L ) path+=("${str_to_add}");;
+    H ) path=("${str_to_add}" "${path[@]}");;
+    [0-9]* ) return 2;;
+    * ) return 2;;
+  esac
+
+  # Convert the array $path[] to the $PATH (bash only)
+  # https://genzouw.com/entry/2023/02/05/090017/3209/
+  if [[ $(chkshell) == "bash" ]]; then
+    IFS=':'
+    export PATH="${path[*]}"
+    IFS=${PREV_IFS}
+  fi
+}
+
+# Delete a string from PATH if exists
+echo -n ", del_from_path"
+function DEL_FROM_PATH() {
+  [[ ${#} ==  0 ]] && return 1
+  local str_to_del="${1}"
+
+  local shell=$(chkshell)
+
+  # Convert the $PATH to an array $path[] (bash only)
+  if [[ ${shell} == "bash" ]]; then
+    local -a path
+    IFS=:
+    read -d $'\0' -r -a path <<< "$PATH:"
+    IFS=${PREV_IFS}
+    unset "path[-1]"
+  fi
+
+  # Add a string to the array $path
+  local str
+  local -a npath
+  for str in "${path[@]}"
+  do
+    # echo "str: ${str}"
+    if [[ ${str} == "${str_to_del}" ]]; then
+      continue
+    fi
+
+    npath+=("${str}")
+  done
+
+  if (( ${#npath[@]} == ${#path[@]} )); then
+    return 3
+  fi
+
+  # echo "${npath[@]}"
+  path=("${npath[@]}")
+
+  # Convert the array $path[] to the $PATH (bash only)
+  if [[ ${shell} == "bash" ]]; then
+    IFS=':'
+    export PATH="${npath[*]}"
+    IFS=${PREV_IFS}
+  fi
+}
+
+echo -n ", ping_ipv6_by_name"
+function PING_IPV6_BY_NAME() {
+  ping ipv6.google.com
+}
+
+echo -n ", ping_ipv6_by_addr"
+function PING_IPV6_BY_ADDR() {
+  ping 2404:6800:4004:818::200e
+}
+
+echo -n ", _terminfo"
+function _terminfo() {
+	echo "Geometry: ${COLUMNS}x${LINES}"
+	echo "TERM=${TERM}"
+	echo "TERM_PROGRAM=${TERM_PROGRAM}"
+	echo "TERM_PROGRAM_VERSION=${TERM_PROGRAM_VERSION}"
+	echo "TERMINFO=${TERMINFO}"
+	echo "TERMINFO_DIRS=${TERMINFO_DIRS}"
+}
 
 echo

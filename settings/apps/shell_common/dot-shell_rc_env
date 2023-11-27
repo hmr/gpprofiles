@@ -1,6 +1,8 @@
-# shellcheck shell=bash
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC3006,SC3010,SC3021,SC3043,SC3037 source=${GPP_HOME}
 
 # Part of GPP
+
 # dot-shell_rc_env
 # ORIGIN: Long long ago by hmr
 
@@ -16,6 +18,11 @@ echo "${PATH}" | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/
 # Add local Go installation to PATH
 if [ -d "${HOME}/go" ]; then
 	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin:${PATH}"
+fi
+
+# Add local npm installation to PATH
+if [ -d "${XDG_DATA_HOME}/npm" ]; then
+	echo "${PATH}" | grep "${XDG_DATA_HOME}/npm/bin" >& /dev/null || export PATH="${XDG_DATA_HOME}/npm/bin:${PATH}"
 fi
 
 # Add local Cargo(rust) installation to PATH
@@ -179,6 +186,14 @@ if which jenv >& /dev/null; then
   export JENV_ROOT="${XDG_CONFIG_HOME}/jenv"
 fi
 
+# Ansible
+if which ansible >& /dev/null; then
+  echo -n ", Ansible"
+	export ANSIBLE_HOME="${XDG_CONFIG_HOME}/ansible"
+	export ANSIBLE_CONFIG="${ANSIBLE_HOME}/ansible.cfg"
+	export ANSIBLE_GALAXY_CACHE_DIR="${XDG_CACHE_HOME}/ansible/galaxy_cache"
+fi
+
 # Set prompt
 echo -n ", PS1"
 if [ "$(id -g)" = "0" ]; then
@@ -196,5 +211,3 @@ echo
 if [ -r "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env_secret" ]; then
   source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env_secret
 fi
-
-# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
