@@ -229,14 +229,14 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 	echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
 fi
 
-# FPATH settings
-if [[ -d $(brew --prefix)/share/zsh-completions ]]; then
+## FPATH settings
+# zsh completions by each homebrew package
+if type brew >& /dev/null && [[ -d $(brew --prefix)/share/zsh-completions ]]; then
 	fpath+=$(brew --prefix)/share/zsh-completions
+	compinit
 fi
 
 # Show profiling result if enabled.
 if (which zprof > /dev/null 2>&1) ;then
   zprof
 fi
-
-# vim: set noet ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
