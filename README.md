@@ -1,47 +1,68 @@
-# gpprofile(General Purpose Profiles for GNU Bash)
-User profile shell scripts for Unix-like system.
+# gpprofile(General Purpose Profiles)
+Generic user settings for Unix-like system.
+
+## 
+- [] Modify system configurations.
+- - [] Make sudo work w/o authentication.
+- - [] (macOS) NFS client setting.
+- [] (macOS) Install Xcode.
+- [] (macOS) Set up Homebrew.
+- [] (macOS) Install homebrew's packages.
+- [x] Install zsh and bash start up scripts.
+- [] Generate SSH key-pair(s) and set it into authrized_keys file.
+- [] Install configuration files for various applications.
+- - alsa
+- - ansible
+- - bat
+- - cspell
+- - dircolors
+- - git
+- - homebrew
+- - htop
+- - istats-meny
+- - iterm2
+- - jenv
+- - karabiner
+- - kitty
+- - less
+- - lsd
+- - mozilla
+- - quilt
+- - readline
+- - ripgrep
+- - tmux
+- - vim
 
 ## How to use
-Clone or update(pull) this repository and run 'install.sh'
+Clone this repository and execute 'setup.sh'
 
-## After installation advices
-
-### Use newer Vim
-Vim8.0 or newer is required.
-
-#### How to install Vim8.0 or newer
-
-##### Ubuntu(<=16.04)
-With Old Ubuntu, use PPA to install vim8.1:
-```bash
-sudo add-apt-repository ppa:jonathonf/vim
-sudo apt update
-sudp apt install vim-enhanced
+```console
+$ git clone --recursive git@github.com:hmr/gpprofiles.git -b v2-dev
+.....
+.....
+$ cd gpprofiles
+$ ./setup.sh
 ```
 
-### Install Vim's plugins
+## After setup script works
+
+### Install zsh plugins
+```
+$ zplug install
+```
+
+### Install Vim plugins
 Start vim and type as below:
 ```
 :PlugUpgrade
 :PlugClean!
 :PlugInstall!
 ```
-im-plug will automagically install/update/delete plugins.
+vim-plug will automatically install plugins.
+
+### Install tmux plgins
+Start tmux then push Ctrl+Space Shift+I.
 
 ## Problems?
 https://github.com/hmr/gpprofiles/issues
-
-### For users cloned from "bitbucket.org"
-Please change upstream as described below:
-
----
-```bash
-#A: read only access
-grep "https://github.com/hmr/gpprofiles.git" .git/config >& /dev/null; [ $? -eq 1 ] && git remote set-url origin https://github.com/hmr/gpprofiles.git && git pull
-
-#B: read/write access(by ssh)
-grep "git@github.com:hmr/gpprofiles.git" .git/config >& /dev/null; [ $? -eq 1 ] && git remote set-url origin git@github.com:hmr/gpprofiles.git && git pull
-```
----
-
 
