@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2023-01-29T17:52:16+0900]
+" Last Update: [2023-11-10T15:07:10+0900]
 
 scriptencoding utf-8
 
@@ -13,7 +13,7 @@ if empty(glob($XDG_DATA_HOME.'/vim/autoload/plug.vim'))
   silent !curl -fLo ${XDG_DATA_HOME}/vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   if empty($MYVIMRC)
-    let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+    let $MYVIMRC='$XDG_CONFIG_HOME/vim/vimrc'
   endif
   augroup vimplug_g
     autocmd!
@@ -39,12 +39,13 @@ Plug 'morhetz/gruvbox'
 " Plug 'kaicataldo/material.vim'
 
 " Syntax:
-Plug 'sheerun/vim-polyglot' " Meta plugin for many languages
-Plug 'darfink/vim-plist'    " macOS plist
-" Plug 'gisphm/vim-gitignore' " gitignore
-Plug 'b4winckler/vim-objc'  " Objective-C
+Plug 'sheerun/vim-polyglot'     " Meta plugin for many languages
+Plug 'darfink/vim-plist'        " macOS plist
+" Plug 'gisphm/vim-gitignore'   " gitignore
+Plug 'b4winckler/vim-objc'      " Objective-C
+Plug 'pearofducks/ansible-vim'  " Ansible YAML
 
-" Unmanaged plugins:
+" Unmanaged_plugins:
 " My version of auto completion
 " Plug '$XDG_CONFIG_HOME/vim/unmanaged/MyAutoCompletion'
 " autodate
@@ -206,6 +207,18 @@ Plug 'chrisbra/csv.vim'
 Plug 'fuenor/mru', { 'on': ['MRU', 'MRUToggle'] }
 
 " Print function name in editing
-" Plug 'tyru/current-func-info.vim'
+Plug 'tyru/current-func-info.vim'
+
+" Snippet plugin
+" Plug 'SirVer/ultisnips'
+
+" Generic snippets
+Plug 'honza/vim-snippets'
+
+" editorconfig-vim
+Plug 'editorconfig/editorconfig-vim'
+
+" ActivityWatch Watcher for vim
+Plug 'ActivityWatch/aw-watcher-vim'
 
 call plug#end()

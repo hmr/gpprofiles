@@ -5,8 +5,10 @@
 
 scriptencoding utf-8
 
-map     [1;5A     <C-Up>
-map!    [1;5A     <C-Up>
+" map     [1;5A     <C-Up>
+" map!    [1;5A     <C-Up>
+map     [1;5A     <C-Tab>
+map!    [1;5A     <C-Tab>
 map     [1;5B     <C-Down>
 map!    [1;5B     <C-Down>
 map     [1;5C     <C-Right>
@@ -54,8 +56,13 @@ map!    d         <M-d>
 map             <M-BS>
 map!            <M-BS>
 
+" map     [1;5I     <C-Tab>
+" map     [1;5I     <C-Tab>
+" map!    [1;6I     <C-S-Tab>
+" map!    [1;6I     <C-S-Tab>
+
 " if has('osx')
-if has('unix')      " Apply for linux and macOS
+if has('unix')      " Applies to linux and macOS
   map     a         <M-a>
   map!    a         <M-a>
   map     b         <M-b>
@@ -136,7 +143,7 @@ if has('unix')      " Apply for linux and macOS
   map!    M         <M-M>
   map     N         <M-N>
   map!    N         <M-N>
-  " Enabling <M-O> will cause malfunction of cthe ursor keys.
+  " Enabling <M-O> cause malfunction of the cursor keys.
   " map     O         <M-O>
   " map!    O         <M-O>
   map     P         <M-P>

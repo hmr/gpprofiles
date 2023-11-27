@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2023-01-30T01:02:37+0900]
+" Last Update: [2023-10-01T00:05:12+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -56,6 +56,7 @@ set runtimepath+=$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
 "-----------------------------------------------------------------------------
 if has('macunix')
   set path^=/usr/local/include
+  set path^=/opt/homebrew/include
   " set path+=${HOME}/Library/Arduino15/packages/**
   " set path+=${HOME}/Arduino/libraries/**
   " set path+=/Applications/Arduino.app/Contents/Java/hardware/**
@@ -102,14 +103,14 @@ set list                        " show control characters such as tab or EOL.
 set listchars=tab:»\ ,eol:↲,trail:･,extends:⟩,precedes:⟨
 set showbreak=↪                 " string to put at the start of line wrapped. Useful values are '>' or '+++'
 set hidden                      " not to unload and to hide the buffer when abondoned
-set nopaste                      " put Vim in Paste mode which is useful for pasting some text to Vim.
+set nopaste                     " put Vim in Paste mode which is useful for pasting some text to Vim.
 set modeline                    " use modeline
-set noshowcmd                     " show command
+set noshowcmd                   " show command
 set cmdheight=2                 " height of command line
-
+set scrolloff=5                 " mergin lines of vertical scrolling
 set helplang=ja,en              " Prefer Japanse help
 
-" No need to escape regular expression meta characters when search(very magic)
+" No need to escape regular expression meta characters when search(very magic mode)
 " nnoremap /  /\v
 
 "=============================================================================
@@ -145,6 +146,12 @@ let MyAutoComplete_StartLength = 3
 " ファイルタイプcppの場合はオムニ補完を指定 (詳細は :help 'omnifunc')
 " let cptcmd_cpp = "\<C-x>\<C-o>\<C-p>"
 
+" UltiSnips settings
+let g:UltiSnipsSnippetDirectories=['ultisnips']
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-z>'
+
 "=============================================================================
 " Settings for Airline(lean & mean status/tabline for vim that's light as air )
 " [https://github.com/vim-airline/vim-airline]
@@ -167,13 +174,26 @@ let g:airline_theme='ayu_dark'
 "       \ }
 
 let g:airline_mode_map = {
+      \ '__'  : '-',
       \ 'n'  : '[N]',
+      \ 'ni' : 'N->[I]',
+      \ 'niI': 'N->[I]',
+      \ 'no' : 'Oper',
       \ 'i'  : '<I>',
+      \ 'ic' : '<IC>',
+      \ 'ix' : '<C-X>',
+      \ 'in' : 'I->[N]',
       \ 'R'  : '>R<',
-      \ 'c'  : 'COM',
+      \ 'Rv' : 'R->[v]',
       \ 'v'  : '[v]',
       \ 'V'  : '[V]',
       \ '' : 'V-B',
+      \ 's'  : '[s]',
+      \ 'S'  : '[S]',
+      \ '' : '[^S]',
+      \ 'c'  : 'Cmnd',
+      \ 't'  : 'TERM',
+      \ 'multi' : '[M]',
       \ }
 
 let g:airline_filetype_overrides = {
@@ -197,7 +217,7 @@ let g:airline_filetype_overrides = {
 " let g:airline#extensions#tabline#tab_nr_type = 1
 " let g:airline#extensions#tabline#fnamemod = ':t'
 " let g:airline#extensions#tabline#formatter = 'unique_tail'
-
+  " normal / visual / select / op. pend.
 "-+-+-+- Airline status bar settings -+-+-+-
 "let g:airline_section_a = airline#section#create(['mode', 'crypt', 'paste', 'spell', 'iminsert'])
 "let g:airline_section_b = airline#section#create(['hunks', 'branch'])
@@ -264,6 +284,7 @@ let airline#extensions#ale#close_lnum_symbol = ')'
 
 "-+-+-+- Airline with Tagbar -+-+-+-
 let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#tagbar#flags = 's'
 
 "=============================================================================
 " From How to boost your Vim productivity
@@ -333,24 +354,24 @@ cabbrev w!! w !sudo tee > /dev/null %
 "=============================================================================
 " Exit from any mode by Ctrl-C(Needless??)
 "=============================================================================
-noremap  <C-c> <ESC>
-vnoremap <C-c> <ESC>
-snoremap <C-c> <ESC>
-xnoremap <C-c> <ESC>
-onoremap <C-c> <ESC>
-inoremap <expr><C-c> pumvisible() ? "<C-e>" : "<ESC>"
-
-" Don't back 1 charactor when leaving insert mode
-augroup DoNotBack
-  autocmd!
-  autocmd InsertLeave * call MyInsertLeave()
-augroup END
-
-function! MyInsertLeave()
-  if col('.') != 1
-    exec 'normal! l'
-  endif
-endfunction
+" noremap  <C-c> <ESC>  " normal / visual / select / op. pend.
+" vnoremap <C-c> <ESC>  " visual / select
+" snoremap <C-c> <ESC>  " select
+" xnoremap <C-c> <ESC>  " visual
+" onoremap <C-c> <ESC>  " op. pend.
+inoremap <expr><C-c> pumvisible()?"<C-e>":"<ESC>" " insert
+"
+" " Don't back 1 charactor when leaving insert mode
+" augroup DoNotBack
+"   autocmd!
+"   autocmd InsertLeave * call MyInsertLeave()
+" augroup END
+"
+" function! MyInsertLeave()
+"   if col('.') != 1
+"     exec 'normal! l'
+"   endif
+" endfunction
 
 "=============================================================================
 " From 若干Emacs風味なvimのキー設定
@@ -885,6 +906,8 @@ endif
 if has('gui_running') && (has('xim') || has('multi_byte_ime'))
   "highlight Cursor guifg=NONE guibg=Green
   highlight CursorIM guifg=Black guibg=Red
+
+  highlight Cursor guifg=white
 endif
 
 "-- Change cursor shape by mode
@@ -916,10 +939,10 @@ if has('gui_macvim')
   " set guifont=MesloLGS\ NF\ Regular:h13
   " set guifont=RictyDiminished-Regular:h15
   " set guifont=PlemolJP\ Console\ Regular:h15
-  set guifont=PlemolJP\ Console\ NF\ Regular:h15
+  set guifont=PlemolJP\ Console\ NF\ Regular:h14
   " set guifontwide=Cica-Regular:h14
   " set guifontwide=PlemolJP\ Console\ Regular:h15
-  set guifontwide=PlemolJP\ Console\ NF\ Regular:h15
+  set guifontwide=PlemolJP\ Console\ NF\ Regular:h14
 
   " Font test
   " Strings:
@@ -945,8 +968,8 @@ if has('gui_macvim')
   "   😀😂🙃
 
   " MacVim now supports trasparency!
-  set transparency=15
-  set blurradius=5
+  set transparency=6
+  set blurradius=10
 
   " Supress cursor brinking [http://www.linuxpowertop.org/known.php]
   let &guicursor .= ',a:blinkon0'
@@ -996,7 +1019,7 @@ nmap <Leader>e <Plug>(easymotion-overwin-w)
 " " Move to line
 map  <Leader>l <Plug>(easymotion-bd-jk)
 nmap <Leader>l <Plug>(easymotion-overwin-line)
-" " Move to character
+" " Move to {char}{char}
 map  <Leader>k <Plug>(easymotion-bd-f2)
 nmap <Leader>k <Plug>(easymotion-overwin-f2)
 nmap s <Plug>(easymotion-sn)
@@ -1111,16 +1134,25 @@ noremap   <silent><Down>  gj
 noremap   <silent><Up>    gk
 
 "----- Ale
+" Don't use shellcheck
+" let g:ale_sh_shellcheck_executable = ''
+let g:ale_linters = {
+    \ 'sh': ['language_server'],
+    \ 'bash': ['language_server'],
+    \ }
+
 " Command line option for languagetool
 let g:ale_languagetool_options = '--autoDetect --disable "WHITESPACE_RULE,DASH_RULE[1]"'
 
 " Command line option for mdl(Markdown linter implemented by ruby)
 let g:ale_markdown_mdl_options = '--style "$XDG_CONFIG_HOME/vim/conf.d/mdl_style.rb"'
 
+"----- Mouse
 " Settings to use mouse
-set mouse=nvh                   " use mouse in normal, visual and help modes
-set ttymouse=xterm2             " code system sent when a mouse button is clicked
+set mouse=nvh     " use mouse in normal, visual and help modes
+set ttymouse=sgr  " currently well working on macOS(iTerm2+tmux) and linux(tmux)
 
+"----- Buffer
 " <Leader>n/p/b will next/prev/swap buffer
 noremap <silent> <Leader>n   :bn<cr>
 noremap <silent> <Leader>p   :bp<cr>
@@ -1136,17 +1168,43 @@ set foldcolumn=0
 "   autocmd BufWinEnter ?* silent loadview 1
 " augroup END
 
-" autodate
+"----- autodate
 let autodate_format='%Y-%m-%dT%H:%M:%S%z'
 let autodate_keyword_pre='Last Update: \['
 let autodate_keyword_post='\]'
 
-" MRU (Most recent used)
+"----- MRU (Most recent used)
 let MRU_File = '$XDG_DATA_HOME/vim/vim_mru_files'
 let MRU_Max_Entries = 1000
 
 " MBE(Mini Buffer Explorer)
 " let g:miniBufExplUseSingleClick = 1
+
+"----- Automatically clear command line result
+" https://unix.stackexchange.com/a/613645
+function! s:empty_message(timer)
+  if mode() ==# 'n'
+    echon ''
+  endif
+endfunction
+
+augroup cmd_msg_cls
+  autocmd!
+  " autocmd CursorHold * echon ''
+  " autocmd CmdlineLeave :  call timer_start(5000, funcref('s:empty_message'))
+  autocmd CursorMoved *  call timer_start(3000, funcref('s:empty_message'))
+augroup END
+
+"----- Off the input method when leave from insert mode
+" https://mitsuse.jp/2017/01/02/disable-input-source-on-insert-leave-in-vim/
+if executable('swim')
+  autocmd InsertLeave * :call system('swim use com.justsystems.inputmethod.atok33.Roman')
+endif
+
+"----- [TESTING] Check for 'modifyOtherKeys'
+" imap  <C-[> This is "C-["
+" imap  <C-{> This is "C-{"
+" imap  <C-S-[> This is "C-S-["
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
