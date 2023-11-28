@@ -2,36 +2,36 @@
 Generic user settings for Unix-like system.
 
 ## 
-- [] Modify system configurations.
-- - [] Make sudo work w/o authentication.
-- - [] (macOS) NFS client setting.
-- [] (macOS) Install Xcode.
-- [] (macOS) Set up Homebrew.
-- [] (macOS) Install homebrew's packages.
+- [ ] Modify system configurations.
+  - [ ] Make sudo work w/o authentication.
+  - [ ] (macOS) NFS client setting.
+- [ ] (macOS) Install Xcode.
+- [ ] (macOS) Set up Homebrew.
+- [ ] (macOS) Install homebrew's packages.
 - [x] Install zsh and bash start up scripts.
-- [] Generate SSH key-pair(s) and set it into authrized_keys file.
-- [] Install configuration files for various applications.
-- - alsa
-- - ansible
-- - bat
-- - cspell
-- - dircolors
-- - git
-- - homebrew
-- - htop
-- - istats-meny
-- - iterm2
-- - jenv
-- - karabiner
-- - kitty
-- - less
-- - lsd
-- - mozilla
-- - quilt
-- - readline
-- - ripgrep
-- - tmux
-- - vim
+- [ ] Generate SSH key-pair(s) and set it into authrized_keys file.
+- [ ] Install configuration files for various applications.
+  - [ ] alsa
+  - [ ] ansible
+  - [ ] bat
+  - [ ] cspell
+  - [ ] dircolors
+  - [ ] git
+  - [ ] homebrew
+  - [ ] htop
+  - [ ] istats-meny
+  - [ ] iterm2
+  - [ ] jenv
+  - [ ] karabiner
+  - [ ] kitty
+  - [ ] less
+  - [ ] lsd
+  - [ ] mozilla
+  - [ ] quilt
+  - [ ] readline
+  - [ ] ripgrep
+  - [ ] tmux
+  - [ ] vim
 
 ## How to use
 Clone this repository and execute 'setup.sh'
