@@ -54,8 +54,12 @@ elif [ -d /usr/local/opt/zplug ]; then
   export ZPLUG_HOME="/usr/local/opt/zplug"
 # APT-installed version
 elif [ -d /usr/share/zplug ]; then
-  export ZPLUG_HOME="${ZDOTDIR:-${HOME}/.config}/zplug"
+  export ZPLUG_HOME="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
+# GPP-installed version
+elif [ -d ${ZDOTDIR:-${HOME}/.config/zsh}/zplug ]; then
+  export ZPLUG_HOME="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
 fi
+
 # Per-user plugin repo directory
 if [ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]; then
   export ZPLUG_REPOS="${XDG_DATA_HOME:-${HOME}/.local}/zplug/repos"
