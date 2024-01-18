@@ -18,10 +18,10 @@ function chk_and_mkdir() {
     fi
 }
 
-chk_and_mkdir "${XDG_DATA_HOME}/vim/undo"
-chk_and_mkdir "${XDG_DATA_HOME}/vim/swap"
-chk_and_mkdir "${XDG_DATA_HOME}/vim/backup"
-chk_and_mkdir "${XDG_DATA_HOME}/vim/view"
-chk_and_mkdir "${XDG_CONFIG_HOME}/vim/after"
+chk_and_mkdir "${XDG_DATA_HOME:?}/vim/undo"
+chk_and_mkdir "${XDG_DATA_HOME:?}/vim/swap"
+chk_and_mkdir "${XDG_DATA_HOME:?}/vim/backup"
+chk_and_mkdir "${XDG_DATA_HOME:?}/vim/view"
+chk_and_mkdir "${XDG_CONFIG_HOME:?}/vim/after"
 
 # vim: ft=bash ts=2 sw=2 et fenc=utf-8 ff=unix

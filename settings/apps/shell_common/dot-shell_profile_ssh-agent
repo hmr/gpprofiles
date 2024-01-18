@@ -61,11 +61,11 @@ if [[ -e ${GPP_SSH_AGENT_FILE} ]]; then
 	else
 		echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
 	fi
-
+# TODO: Add a case SSH-AGENT_FILE not found
 fi
 
 # Sleep to avoid invoking multiple ssh-agent
-if ((TMP_AGENT_OK < 1)); then
+if [[ ${TMP_AGENT_OK} -lt 1 && -n ${TMUX_PANE} ]]; then # TODO: Add case for GNU Screen
 	TMP_SLEEP1=$((RANDOM % 5 + 1))
 	TMP_SLEEP2=$((RANDOM % 9))
 	echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
