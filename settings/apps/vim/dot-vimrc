@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2023-10-01T00:05:12+0900]
+" Last Update: [2024-01-13T22:05:32+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -354,24 +354,30 @@ cabbrev w!! w !sudo tee > /dev/null %
 "=============================================================================
 " Exit from any mode by Ctrl-C(Needless??)
 "=============================================================================
-" noremap  <C-c> <ESC>  " normal / visual / select / op. pend.
-" vnoremap <C-c> <ESC>  " visual / select
-" snoremap <C-c> <ESC>  " select
-" xnoremap <C-c> <ESC>  " visual
-" onoremap <C-c> <ESC>  " op. pend.
-inoremap <expr><C-c> pumvisible()?"<C-e>":"<ESC>" " insert
-"
-" " Don't back 1 charactor when leaving insert mode
-" augroup DoNotBack
-"   autocmd!
-"   autocmd InsertLeave * call MyInsertLeave()
-" augroup END
-"
-" function! MyInsertLeave()
-"   if col('.') != 1
-"     exec 'normal! l'
-"   endif
-" endfunction
+" normal / visual / select / op. pend.
+noremap  <C-c> <ESC>
+" visual / select
+vnoremap <C-c> <ESC>
+" select
+snoremap <C-c> <ESC>
+" visual
+xnoremap <C-c> <ESC>
+" op. pend.
+onoremap <C-c> <ESC>
+" insert
+inoremap <expr><C-c> pumvisible()?"<C-e>":"<ESC>"
+
+" Don't back 1 charactor when leaving insert mode
+augroup DoNotBack
+  autocmd!
+  autocmd InsertLeave * call MyInsertLeave()
+augroup END
+
+function! MyInsertLeave()
+  if col('.') != 1
+    exec 'normal! l'
+  endif
+endfunction
 
 "=============================================================================
 " From 若干Emacs風味なvimのキー設定
