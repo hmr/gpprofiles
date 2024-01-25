@@ -54,6 +54,8 @@ export EDITOR="vim"
 # if [ -r "${XDG_DATA_HOME}/less/lesshst" ]; then
 #   export LESSHISTFILE="${XDG_DATA_HOME}/less/lesshst"
 # fi
+LESSKEYIN="${XDG_CONFIG_HOME}/less/lesskey"
+LESSHISTFILE="${XDG_STATE_HOME:-${XDG_DATA_HOME:-${XDG_CONFIG_HOME}}}/less/lesshst"
 
 # Colorize less output
 echo -n ", LESS_TERMCAP"
