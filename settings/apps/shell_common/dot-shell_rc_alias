@@ -130,11 +130,23 @@ if which brew > /dev/null; then
   alias bI="brew install"
 fi
 
+# batcat -> bat
+if which batcat > /dev/null; then
+  echo -n ", bat"
+  alias bat='batcat'
+fi
+
 # Use bat instead of less
 if which bat > /dev/null; then
-  echo -n ", bat"
+  echo -n ", cless"
 	# 'cless' means color less
   alias cless='bat'
+fi
+
+# Colorized cat
+if which bat > /dev/null; then
+  echo -n ", ccat"
+  alias ccat="bat --paging=never --style=plain"
 fi
 
 # ffmpeg/ffplay/ffprobe
@@ -163,12 +175,6 @@ if which ssh-keygen > /dev/null; then
   alias ssh-keygen-ecdsa='ssh-keygen -t ecdsa -b 256 -C "${USER}@${HOST%%.*}[ECDSA@256]($(date +"%Y-%m-%d"))"'
   echo -n ", ssh-keygen-ed25519"
   alias ssh-keygen-ed25519='ssh-keygen -t ed25519 -C "${USER}@${HOST%%.*}[Ed25519]($(date +"%Y-%m-%d"))"'
-fi
-
-# Colorized cat
-if which bat > /dev/null; then
-  echo -n ", ccat"
-  alias ccat="bat --paging=never --style=plain"
 fi
 
 echo
