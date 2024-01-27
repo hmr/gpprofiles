@@ -110,8 +110,9 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "zsh-users/zsh-history-substring-search", defer:3
   # Gitの補完
   zplug "plugins/git",   from:oh-my-zsh, defer:3
-  # Gitのエイリアスも補完
-  zplug "peterhurford/git-aliases.zsh", defer:3
+  # Gitのブランチ名も補完
+  #zplug "peterhurford/git-aliases.zsh", defer:3
+  zplug "hmr/git-aliases.zsh", defer:3
   # Better line editor
   zplug "marlonrichert/zsh-edit"
 
