@@ -1,3 +1,4 @@
+0-ad
 activitywatch
 adobe-acrobat-reader
 aerial
@@ -15,6 +16,7 @@ coolterm
 crystalfetch
 cyberduck
 deepl
+discord
 drawio
 electerm
 firefox
@@ -44,10 +46,9 @@ ltspice
 lunar
 mactex
 maczip
-mediainfo
+meld
 microsoft-edge
 onlyoffice
-onyx
 parallels
 qlimagesize
 qlprettypatch
@@ -67,16 +68,15 @@ sqlight
 sqlitestudio
 sqlworkbenchj
 squirrelsql
+steam
 suspicious-package
 tabby
 temurin
 temurin11
 temurin17
 temurin8
-tg-pro
 transmission
 utm
-viso
 visual-studio-code
 vlc
 warp
@@ -84,5 +84,4 @@ webex
 wezterm
 windterm
 wireshark
-xquartz
 zoom
