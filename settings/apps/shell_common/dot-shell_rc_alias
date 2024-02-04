@@ -169,12 +169,24 @@ if which ip > /dev/null; then
   alias ip="ip -c"
 fi
 
+# ip6 is alias to ip -6
+if which ip > /dev/null; then
+  echo -n ", ip6"
+  alias ip6="ip -6 -c"
+fi
+
 # SSH key pair generation function
 if which ssh-keygen > /dev/null; then
   echo -n ", ssh-keygen-ecdsa"
   alias ssh-keygen-ecdsa='ssh-keygen -t ecdsa -b 256 -C "${USER}@${HOST%%.*}[ECDSA@256]($(date +"%Y-%m-%d"))"'
   echo -n ", ssh-keygen-ed25519"
   alias ssh-keygen-ed25519='ssh-keygen -t ed25519 -C "${USER}@${HOST%%.*}[Ed25519]($(date +"%Y-%m-%d"))"'
+fi
+
+# make iftop not use utf-8 ACS
+if which iftop > /dev/null; then
+  echo -n ", iftop"
+	alias iftop='NCURSES_NO_UTF8_ACS=0 sudo iftop'
 fi
 
 echo
