@@ -7,7 +7,7 @@
 
 # XDG_CONFIG_HOME
 if [ -z "${XDG_CONFIG_HOME}" ]; then
-  export XDG_CONFIG_HOME=${HOME:?}/.config
+  export XDG_CONFIG_HOME="${HOME:?}/.config"
 fi
 
 if [ -d "${XDG_CONFIG_HOME}" ]; then
@@ -19,7 +19,7 @@ fi
 
 # XDG_CACHE_HOME
 if [ -z "${XDG_CACHE_HOME}" ]; then
-  export XDG_CACHE_HOME=${HOME:?}/.cache
+  export XDG_CACHE_HOME="${HOME:?}/.cache"
 fi
 
 if [ -d "${XDG_CACHE_HOME}" ]; then
@@ -31,7 +31,7 @@ fi
 
 # XDG_DATA_HOME
 if [ -z "${XDG_DATA_HOME}" ] ; then
-  export XDG_DATA_HOME=${HOME:?}/.local/share
+  export XDG_DATA_HOME="${HOME:?}/.local/share"
 fi
 
 if [ -d "${XDG_DATA_HOME}" ]; then
@@ -43,7 +43,7 @@ fi
 
 # XDG_STATE_HOME
 if [ -z "${XDG_STATE_HOME}" ]; then
-  export XDG_STATE_HOME=${HOME:?}/.local/state
+  export XDG_STATE_HOME="${HOME:?}/.local/state"
 fi
 
 if [ -d "${XDG_STATE_HOME}" ]; then
@@ -55,7 +55,7 @@ fi
 
 # XDG_RUNTIME_DIR
 if [ -z "${XDG_RUNTIME_DIR}" ]; then
-  export XDG_RUNTIME_DIR=${HOME:?}/.run
+  export XDG_RUNTIME_DIR="${HOME:?}/.run"
 fi
 
 if [ -d "${XDG_RUNTIME_DIR}" ]; then
