@@ -3,5 +3,6 @@
 
 TARGET=(alsa ansible bash bat byobu cspell dircolors git htop less lsd  mozilla quilt readline ripgrep tmux vim zsh)
 
-. ./install_settings_apps_common.sh
+SDIR="$(cd $(dirname $0); pwd)"
+. ${SDIR}/install_settings_apps_common.sh
 
