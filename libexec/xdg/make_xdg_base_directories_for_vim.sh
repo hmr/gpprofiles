@@ -18,8 +18,8 @@ function chk_and_mkdir() {
     fi
 }
 
-if [ -z "${XDG_CONFIG_HOME}" ]; then
-  export XDG_CONFIG_HOME="${HOME:?}/.config"
+if [ -z "${XDG_DATA_HOME}" ] ; then
+  export XDG_DATA_HOME="${HOME:?}/.local/share"
 fi
 
 chk_and_mkdir "${XDG_DATA_HOME:?}/vim/undo"
