@@ -37,9 +37,33 @@
     vcs                     # git status
     # =========================[ Line #2 ]=========================
     newline                 # \n
+    marker
     time                    # https://amateur-engineer-blog.com/powerlevel10k-trasient-prompt/
     prompt_char             # prompt symbol
   )
+
+  # Marker character is U+25AC (Black Rectangle)
+  P10K_GPP_MARKER="▬"
+
+  # Color code is ANSI Escape sequence 256 colors
+  # 0:Black, 1:Red, 2:Green, 3:Yellow, 4:Blue, 5:Magenta, 6:Cyan, 7:White
+  # 8-14: Brighter version of 0-6, 15: Black
+  # 16-231: 6x6x6 color cube
+  # 232-255: greyscale
+  function prompt_marker() {
+    p10k segment -f 200 -t "${P10K_GPP_MARKER}"
+  }
+
+  # Derived from:
+  #  - https://github.com/romkatv/powerlevel10k/issues/902
+  #  - https://amateur-engineer-blog.com/powerlevel10k-trasient-prompt/
+  function p10k-on-pre-prompt() {
+    p10k display '1'=show '2/left/time'=hide '2/left/marker'=hide
+  }
+
+  function p10k-on-post-prompt() {
+    p10k display '1'=hide '2/left/time'=show '2/left/marker'=show
+  }
 
   # The list of segments shown on the right. Fill it with less important segments.
   # Right prompt on the last prompt line (where you are typing your commands) gets
@@ -1802,17 +1826,6 @@
   #   - same-dir: Trim down prompt when accepting a command line unless this is the first command
   #               typed after changing current working directory.
   typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
-
-  # Derived from:
-  #  - https://github.com/romkatv/powerlevel10k/issues/902
-  #  - https://amateur-engineer-blog.com/powerlevel10k-trasient-prompt/
-  function p10k-on-pre-prompt() {
-    p10k display '1'=show '2/left/time'=hide
-  }
-
-  function p10k-on-post-prompt() {
-    p10k display '1'=hide '2/left/time'=show
-  }
 
   # Instant prompt mode.
   #
