@@ -1,0 +1,251 @@
+#!/usr/bin/env bash
+
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
+# shellcheck shell=bash
+
+# Part of GPP
+
+# launch_tmux
+#   Launch Tmux on local or via ssh connection.
+# ORIGIN: 2020-12-18 by hmr
+
+#set -o errexit
+
+DRY_RUN=0
+
+TERM="${TERM:=xterm-256color}"
+PATH=/usr/local/bin:/usr/local/sbin:${PATH}
+SSH_BIN=$(which ssh)
+declare -a SSH_OPT=("-t")
+
+MODE="auto"
+TMUX_BIN="tmux"
+TMUX_OPT="-l"
+TMUX_CMD=""
+
+post_processing() {
+	# Logout setting
+	if [[ -r "${ZDOTDIR}/dot-zlogout" ]]; then
+		. ${ZDOTDIR}/dot-zlogout
+	fi
+}
+
+show_usage() {
+    echo "Usage:"
+    echo "launch_tmux login_info [command]"
+    echo "  login_info is ssh style like 'user@server'"
+    echo "  command is 'auto'(default), 'new' or 'reattach'."
+    echo
+}
+
+generate_sesid() {
+    TMP_SESID=""
+
+    echo "Making session id... "
+
+    if [ -r /dev/urandom ]; then
+        # urandom available
+        echo "by /dev/urandom"
+        TMP_SESID=$(dd bs=64 count=1 if=/dev/urandom 2>/dev/null | shasum -b | cut -c1-6)
+    else
+        # urandom not available -> use epoch second
+        echo "by epoch"
+        TMP_SESID=$(dc -e "16o 10i $(date +%s)p" | shasum | cut -c1-6)
+    fi
+
+    echo "${TMP_SESID}"
+}
+
+trap 'post_processing' 1 2 3 15
+
+# ==================== ENTRY POINT ====================
+echo
+echo "Starting $0..."
+echo "TERM=${TERM}"
+
+. ${HOME}/src/gpprofiles/settings/apps/shell_common/dot-shell_shellenv
+. ${HOME}/src/gpprofiles/settings/apps/shell_common/dot-shell_rc_function
+. ${HOME}/src/gpprofiles/settings/apps/shell_common/dot-shell_rc_macos
+
+# Ssh-agent setting
+# Derived from gpp's dot-profile_ssh-agent
+ZDOTDIR="${HOME}/.config/zsh"
+if [[ -r "${ZDOTDIR}/dot-zprofile_ssh-agent" ]]; then
+
+	echo "Calling dot-(z)profile_ssh-agent..."
+	echo "--------------------------------------------------------------------------------"
+	. ${ZDOTDIR}/dot-zprofile_ssh-agent
+	echo "--------------------------------------------------------------------------------"
+	SSH_OPT+=("-A")
+fi
+
+# Check number of args
+if [ $# -eq 0 ]; then
+    echo "Error: Not enough arguments"
+    show_usage
+    exit 1
+fi
+
+# Set SSH target host
+TRGT_HOST=$1
+shift
+
+# Handling other arguments
+CMD_OPT=""
+while [ $# -gt 0 ]
+do
+    OPT=$1
+    shift
+    case "${OPT}" in
+        "auto" )
+            MODE=${OPT}
+            ;;
+
+        "new" )
+            MODE=${OPT}
+            ;;
+
+        "reattach" )
+            MODE=${OPT}
+            ;;
+
+        "dryrun" )
+            DRY_RUN="1"
+            echo "Dry-run mode"
+            ;;
+
+        "debug" )
+            TMUX_OPT="${TMUX_OPT} -v"
+            echo "Debug mode. Log file like 'tmux-{server|client}-yyyyy.log' will be generated."
+						SSH_OPT+=("-v")
+            ;;
+
+					"ulb_tmux" )
+						TMUX_BIN="/usr/local/bin/${TMUX_BIN}"
+						echo "Use /usr/local/bin/tmux on remote host."
+						;;
+
+        *)
+            CMD_OPT="${CMD_OPT} ${OPT}"
+            ;;
+    esac
+done
+
+
+
+# Check SSH Agent
+if [[ "${SSH_AGENT_PID:-0}" = "0" ]]; then
+	echo "SSH Agent isn't configured."
+	#exit 1
+fi
+
+
+# Check SSH Connectivity
+# if [ "${TRGT_HOST}" != "localhost" ]; then
+#   TMP_SSH_LOG=$("${SSH_BIN}" -o PasswordAuthentication=no "${TRGT_HOST}" 2>&1)
+#   echo "${TMP_SSH_LOG}"
+#   if [[ ${TMP_SSH_LOG} =~ "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!" ]]; then
+#     echo "SSH error occured."
+#     echo "--------------------"
+#     echo "${TMP_SSH_LOG}"
+#     echo "--------------------"
+#     exit 2
+#   fi
+# fi
+
+# Tmux's Session ID processing("reattach" or "auto" mode only)
+if [ "${MODE}" = "reattach" ] || [ "${MODE}" = "auto" ]; then
+	# Get the Tmux session ID from already existing session.
+	if [ "${TRGT_HOST}" = "localhost" ]; then
+		# Local
+		echo "SESID=\$\(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)"
+		SESID=$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)
+
+		# Error check
+		case ${SESID} in
+			"server exited unexpectedly" )
+				echo "It looks some kind of error happens on the server."
+				exit 1
+			;;
+			"*bash: line 1: tmux: command not found*" )
+				echo "Tmux hasn't been installed into the target host."
+				exit 1
+				;;
+			* )
+				echo "Error check passed."
+				;;
+		esac
+	else
+		# Remote
+		echo "SESID=\$\(${SSH_BIN} ${SSH_OPT} \"${TRGT_HOST}\" \"${TMUX_BIN}\" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)"
+		SESID=$(${SSH_BIN} ${SSH_OPT} "${TRGT_HOST}" ${TMUX_BIN} ls 2> /dev/null | sort -n -r -k 2 | head -n 1)
+		echo "SESID=${SESID}"
+
+		# Error check
+		case "${SESID}" in
+			"server exited unexpectedly" )
+				echo "It looks some kind of error happens on the server."
+				exit 1
+				;;
+			bash:* ) # bash: line 1: tmux: command not found
+				echo "Tmux hasn't been installed into the target host."
+				exit 1
+				;;
+			* )
+				echo "Error check passed."
+				;;
+		esac
+		if echo "${SESID}" | grep -Pq "[^:]+?: \d+ "; then
+			SESID=$(echo "${SESID}" | cut -d ":" -f 1)
+		else
+			SESID=$(echo "${SESID}" | cut -c 1-6)
+		fi
+	fi
+
+	echo "SESID='${SESID}'"
+	case ${SESID} in
+		# Failed to get already existing session id.
+		"no ser" | "no cur" | "error " | "server" )
+		# Session ID generation
+		# SESID=$(generate_sesid)
+		# CMD_OPT="${CMD_OPT} -s ${SESID}"
+
+		if [ "${MODE}" = "auto" ]; then
+			TMUX_CMD="new-session"
+		else
+			# "reattach" mode
+			echo "Error: The session to reattach not found."
+			exit 1
+		fi
+		;;
+
+	* )
+		TMUX_CMD="attach-session"
+		if [ "${TRGT_HOST}" = "localhost" ]; then
+			CMD_OPT="${CMD_OPT} -t ${SESID}"
+		else
+			CMD_OPT="${CMD_OPT} -t '=${SESID}'"
+		fi
+
+	esac
+elif [ "${MODE}" = "new" ]; then
+	TMUX_CMD="new-session"
+else
+	echo "Error: Failed to determine mode. Choose 'auto' 'new' 'reattach'"
+fi
+
+# Connect to local or remote host and launch tmux
+case ${TRGT_HOST} in
+	localhost )
+		echo "${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}"
+		[ "${DRY_RUN}" -eq 0 ] &&
+			${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD}
+		;;
+
+	* )
+		echo "${SSH_BIN} ${SSH_OPT} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}"
+		[ "${DRY_RUN}" -eq 0 ] &&
+			${SSH_BIN} ${SSH_OPT} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}
+		;;
+esac
+
