@@ -185,11 +185,14 @@ else
 	ZKBDTYPE="$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}"
 fi
 
+echo
 if [ -r "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" ]; then
 	echo "Loading ${ZKBDTYPE}"
   source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}"
 else
-  echo; echo "${RED}Warning: Keyconfig file [${ZKBDTYPE}] not found.${NORMAL}"
+  echo "Keyconfig file [${ZKBDTYPE}] not found.${NORMAL}"
+	ZKBDTYPE="generic"
+	source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" && echo "Loading ${ZKBDTYPE} instead."
 fi
 
 # set keybinding to emacs mode
