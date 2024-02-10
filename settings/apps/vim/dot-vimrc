@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-01-13T22:05:32+0900]
+" Last Update: [2024-02-10T10:48:01+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1198,7 +1198,7 @@ augroup cmd_msg_cls
   autocmd!
   " autocmd CursorHold * echon ''
   " autocmd CmdlineLeave :  call timer_start(5000, funcref('s:empty_message'))
-  autocmd CursorMoved *  call timer_start(3000, funcref('s:empty_message'))
+  autocmd CursorMoved *  call timer_start(10000, funcref('s:empty_message'))
 augroup END
 
 "----- Off the input method when leave from insert mode
@@ -1211,6 +1211,58 @@ endif
 " imap  <C-[> This is "C-["
 " imap  <C-{> This is "C-{"
 " imap  <C-S-[> This is "C-S-["
+
+"----- [TESTING] Change background automatically
+" Function to set Vim background color based on OS and desktop environment
+function! SetVimBackground()
+  " For macOS
+  if has('macunix')
+    let l:theme = system("defaults read -g AppleInterfaceStyle 2>/dev/null")
+    if l:theme =~? 'dark'
+      set background=dark
+    else
+      set background=light
+    endif
+
+  " For Gnome (Linux)
+  elseif system('echo $XDG_CURRENT_DESKTOP') =~? 'gnome'
+    let l:theme = system("gsettings get org.gnome.desktop.interface gtk-theme")
+    if l:theme =~? 'dark'
+      set background=dark
+    else
+      set background=light
+    endif
+
+  " For KDE (Linux)
+  elseif system('echo $XDG_CURRENT_DESKTOP') =~? 'kde'
+    let l:theme = system("kreadconfig5 --file kdeglobals --group General --key ColorScheme")
+    if l:theme =~? 'dark'
+      set background=dark
+    else
+      set background=light
+    endif
+
+  " For Windows
+  elseif has('win32') || has('win64')
+    let l:theme = system('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v AppsUseLightTheme')
+    if l:theme =~ '0x0'
+      set background=dark
+    else
+      set background=light
+    endif
+  endif
+endfunction
+
+" Set background color when Vim starts
+call SetVimBackground()
+
+" Periodic background color updates
+function! UpdateBackground(timer)
+  call SetVimBackground()
+endfunction
+
+" Set timer to update background every 5 minutes (300000 milliseconds)
+let s:background_timer = timer_start(10000, 'UpdateBackground', {'repeat': -1})
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
