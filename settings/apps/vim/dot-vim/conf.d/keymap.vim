@@ -5,10 +5,10 @@
 
 scriptencoding utf-8
 
-" map     [1;5A     <C-Up>
-" map!    [1;5A     <C-Up>
-map     [1;5A     <C-Tab>
-map!    [1;5A     <C-Tab>
+map     [1;5A     <C-Up>
+map!    [1;5A     <C-Up>
+" map     [1;5A     <C-Tab>
+" map!    [1;5A     <C-Tab>
 map     [1;5B     <C-Down>
 map!    [1;5B     <C-Down>
 map     [1;5C     <C-Right>
