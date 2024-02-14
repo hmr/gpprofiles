@@ -69,18 +69,19 @@ if [ -d "${XDG_CACHE_HOME:-${HOME}/.cache}" ]; then
   export ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zplug/cache"
 fi
 
-# enhancd settings
-export ENHANCD_DIR=${ZDOTDIR:-~}/enhancd
-export ENHANCD_FILTER=fzf-tmux:fzf
-export ENHANCD_DISABLE_DOT=1
-export ENHANCD_DISABLE_HOME=1
-export ENHANCD_HOOK_AFTER_CD="pwd; ls"
-export ENHANCD_HYPHEN_NUM=20
+# # enhancd settings
+# export ENHANCD_DIR=${ZDOTDIR:-~}/enhancd
+# export ENHANCD_FILTER=fzf-tmux:fzf
+# export ENHANCD_DISABLE_DOT=1
+# export ENHANCD_DISABLE_HOME=1
+# export ENHANCD_HOOK_AFTER_CD="pwd; ls"
+# export ENHANCD_HYPHEN_NUM=20
 
 # fzf settings
 export FZF_DEFAULT_OPTS="--height 40% --border --multi --ansi"
 if type rg >& /dev/null; then
-	export FZF_DEFAULT_COMMAND="rg --files --follow"
+	# export FZF_DEFAULT_COMMAND="rg --files --follow 2>/dev/null"
+	export FZF_DEFAULT_COMMAND="rg --files --no-messages"
 	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
 elif type fd >& /dev/null; then
@@ -121,11 +122,11 @@ if [ -n "${ZPLUG_HOME}" ]; then
   zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2
   ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
   #zplug "junegunn/fzf", use:shell/completion.zsh
-  # fzf でよく使う関数の詰め合わせ
+  ## fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
-  # ディレクトリ移動を高速化（fzf であいまい検索）
-  zplug "b4b4r07/enhancd", use:init.sh, defer:2
-  # git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
+  ## ディレクトリ移動を高速化（fzf であいまい検索）
+  # zplug "b4b4r07/enhancd", use:init.sh, defer:2
+  ## git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
   #zplug "motemen/ghq", as:command, from:gh-r
 
   #zplug "modules/prompt", from:prezto
