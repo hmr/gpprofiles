@@ -137,8 +137,33 @@
     },
 
     {
-      "description": "[GPP] Ctrl+K to search the web in the browser",
-      "manipulators": [ {
+      "description": "[GPP] Ctrl+F/K/R/T for Web browsers",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": ["any"] }
+          },
+          "to": [ {
+              "key_code": "f",
+              "modifiers": [ "left_command" ]
+            } ],
+          "conditions": [ {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.mozilla\\.firefox$",
+                "^org\\.mozilla\\.nightly$",
+                "^com\\.microsoft\\.Edge",
+                "^com\\.google\\.Chrome$",
+                "^org\\.chromium\\.Chromium$",
+                "^com\\.apple\\.Safari$"
+              ] }
+          ]
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "k",
@@ -157,9 +182,59 @@
                 "^org\\.mozilla\\.nightly$",
                 "^com\\.microsoft\\.Edge",
                 "^com\\.google\\.Chrome$",
+                "^org\\.chromium\\.Chromium$",
                 "^com\\.apple\\.Safari$"
               ] }
-          ] }
+          ]
+        },
+         {
+          "type": "basic",
+          "from": {
+            "key_code": "r",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": ["any"] }
+          },
+          "to": [ {
+              "key_code": "r",
+              "modifiers": [ "left_command" ]
+            } ],
+          "conditions": [ {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.mozilla\\.firefox$",
+                "^org\\.mozilla\\.nightly$",
+                "^com\\.microsoft\\.Edge",
+                "^com\\.google\\.Chrome$",
+                "^org\\.chromium\\.Chromium$",
+                "^com\\.apple\\.Safari$"
+              ] }
+          ]
+        },
+         {
+          "type": "basic",
+          "from": {
+            "key_code": "t",
+            "modifiers": {
+              "mandatory": [ "control" ],
+              "optional": ["any"] }
+          },
+          "to": [ {
+              "key_code": "t",
+              "modifiers": [ "left_command" ]
+            } ],
+          "conditions": [ {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^org\\.mozilla\\.firefox$",
+                "^org\\.mozilla\\.nightly$",
+                "^com\\.microsoft\\.Edge",
+                "^com\\.google\\.Chrome$",
+                "^org\\.chromium\\.Chromium$",
+                "^com\\.apple\\.Safari$"
+              ] }
+          ]
+        }
       ]
     },
 
@@ -207,6 +282,73 @@
             "type": "frontmost_application_if",
             "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] } ]
         } ]
+    },
+
+    {
+      "description": "[GPP] Command+E Opens Finder",
+      "manipulators": [
+          {
+              "conditions": [
+                  {
+                      "bundle_identifiers": [
+                          "^com\\.microsoft\\.rdc$",
+                          "^com\\.microsoft\\.rdc\\.mac$",
+                          "^com\\.microsoft\\.rdc\\.macos$",
+                          "^com\\.microsoft\\.rdc\\.osx\\.beta$",
+                          "^net\\.sf\\.cord$",
+                          "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                          "^com\\.itap-mobile\\.qmote$",
+                          "^com\\.nulana\\.remotixmac$",
+                          "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                          "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+                          "^com\\.teamviewer\\.TeamViewer$",
+                          "^com\\.vmware\\.horizon$",
+                          "^com\\.2X\\.Client\\.Mac$",
+                          "^com\\.vmware\\.fusion$",
+                          "^com\\.vmware\\.horizon$",
+                          "^com\\.vmware\\.view$",
+                          "^com\\.parallels\\.desktop$",
+                          "^com\\.parallels\\.vm$",
+                          "^com\\.parallels\\.desktop\\.console$",
+                          "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                          "^com\\.citrix\\.XenAppViewer$",
+                          "^com\\.vmware\\.proxyApp\\.",
+                          "^com\\.parallels\\.winapp\\."
+                      ],
+                      "type": "frontmost_application_unless"
+                  }
+              ],
+              "from": {
+                  "key_code": "e",
+                  "modifiers": {
+                      "mandatory": [
+                          "command"
+                      ]
+                  }
+              },
+              "to": [
+                  {
+                      "shell_command": "open -a 'Finder.app'"
+                  }
+              ],
+              "type": "basic"
+          }
+      ]
+    },
+
+    {
+      "description": "[GPP] Start <System Preferences> by ⌥⌘,",
+      "manipulators": [ {
+          "type": "basic",
+          "from": {
+            "key_code": "comma",
+            "modifiers": {"mandatory": ["command", "option"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'System Preferences'" }
+          ]
+        }
+      ]
     },
 
     {
