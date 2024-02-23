@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-24T03:32:45+0900]
+" Last Update: [2024-02-24T03:42:25+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1198,7 +1198,7 @@ endfunction
 augroup cmd_msg_cls
   autocmd!
   " autocmd CursorHold * echon ''
-  autocmd CmdlineLeave :  call timer_start(5000, funcref('s:empty_message'))
+  autocmd CmdlineLeave :  call timer_start(15000, funcref('s:empty_message'))
   " autocmd CursorMoved *  call timer_start(10000, funcref('s:empty_message'))
 augroup END
 
