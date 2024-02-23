@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2023-11-10T15:07:10+0900]
+" Last Update: [2024-02-24T03:32:00+0900]
 
 scriptencoding utf-8
 
@@ -220,5 +220,8 @@ Plug 'editorconfig/editorconfig-vim'
 
 " ActivityWatch Watcher for vim
 Plug 'ActivityWatch/aw-watcher-vim'
+
+" Automatically set setcellwidths()
+Plug 'rbtnn/vim-ambiwidth'
 
 call plug#end()

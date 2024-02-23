@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-24T03:29:01+0900]
+" Last Update: [2024-02-24T03:32:45+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -92,7 +92,8 @@ set noshowmode                  " not to show current mode at bottommost row
 set title                       " allow vim change terminal's title
 set virtualedit=block           " allow free cursor in visual block mode
 set whichwrap=b,s,[,],<,>       " allow these keys move next or previous line(see help)
-set ambiwidth=double            " a magic to deal with full width characters well
+" set ambiwidth=double            " a magic to deal with full width characters well
+set ambiwidth=single            " Thnks to vim-ambiwidth, it works fine with single width
 set wildmenu                    " use command line completion
 set wildmode=longest,full       " completion mode(see help)
 set noerrorbells                " no beep nor screen flush for error messages
