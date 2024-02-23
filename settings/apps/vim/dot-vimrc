@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-23T20:10:39+0900]
+" Last Update: [2024-02-24T03:29:01+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1211,18 +1211,6 @@ endif
 " imap  <C-[> This is "C-["
 " imap  <C-{> This is "C-{"
 " imap  <C-S-[> This is "C-S-["
-
-"----- [TESTING] Change background automatically
-" " Set background color when Vim starts
-" call autochg_bg#SetVimBackground()
-"
-" " Periodic background color updates
-" function! UpdateBackground(timer)
-"   call autochg_bg#SetVimBackground()
-" endfunction
-"
-" " Set timer to update background every 1 minutes (600000 milliseconds)
-" let s:background_timer = timer_start(60000, 'UpdateBackground', {'repeat': -1})
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
