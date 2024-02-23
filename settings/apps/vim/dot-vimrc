@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-23T20:08:55+0900]
+" Last Update: [2024-02-23T20:10:39+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1197,8 +1197,8 @@ endfunction
 augroup cmd_msg_cls
   autocmd!
   " autocmd CursorHold * echon ''
-  " autocmd CmdlineLeave :  call timer_start(5000, funcref('s:empty_message'))
-  autocmd CursorMoved *  call timer_start(10000, funcref('s:empty_message'))
+  autocmd CmdlineLeave :  call timer_start(5000, funcref('s:empty_message'))
+  " autocmd CursorMoved *  call timer_start(10000, funcref('s:empty_message'))
 augroup END
 
 "----- Off the input method when leave from insert mode
