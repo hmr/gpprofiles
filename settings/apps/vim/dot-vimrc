@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-25T17:04:38+0900]
+" Last Update: [2024-02-26T03:34:40+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1167,13 +1167,21 @@ noremap <silent> <Leader>b   :b#<cr>
 
 " Folding(:help fold.txt)
 set foldmethod=syntax " manual / indent / marker / expr / syntax
-set foldlevel=9999
+set foldlevel=9999    " Don't close folding at start
 set foldcolumn=0
-" augroup FoldingAutoCommand
-"   autocmd!
-"   autocmd BufWinLeave ?* mkview 1
-"   autocmd BufWinEnter ?* silent loadview 1
-" augroup END
+augroup FoldingAutoCommand
+  autocmd!
+  " https://vim-jp.org/vim-users-jp/2009/10/08/Hack-84.html
+  " Save fold settings.
+  autocmd BufWritePost * if expand('%') != '' && &buftype !~ 'nofile' | mkview | endif
+  autocmd BufRead * if expand('%') != '' && &buftype !~ 'nofile' | silent loadview | endif
+  " Don't save options.
+  set viewoptions-=options
+
+  autocmd FileType vim  setlocal foldmethod=indent
+  autocmd FileType yaml setlocal foldmethod=indent
+  autocmd FileType json setlocal foldmethod=syntax
+augroup END
 
 "----- autodate
 let autodate_format='%Y-%m-%dT%H:%M:%S%z'
