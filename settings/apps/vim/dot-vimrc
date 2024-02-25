@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-24T03:42:25+0900]
+" Last Update: [2024-02-25T17:04:38+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1212,6 +1212,10 @@ endif
 " imap  <C-[> This is "C-["
 " imap  <C-{> This is "C-{"
 " imap  <C-S-[> This is "C-S-["
+
+"----- [TESTING] vim-autochange-bg
+let g:autochg_bg_enable_on_vim_startup = 1
+let g:autochg_bg_force_geoip = 1
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map

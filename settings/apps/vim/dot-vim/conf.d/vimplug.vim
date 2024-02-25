@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2024-02-24T03:32:00+0900]
+" Last Update: [2024-02-25T20:55:08+0900]
 
 scriptencoding utf-8
 
@@ -223,5 +223,8 @@ Plug 'ActivityWatch/aw-watcher-vim'
 
 " Automatically set setcellwidths()
 Plug 'rbtnn/vim-ambiwidth'
+
+" Automatically change background light or dark
+Plug 'hmr/vim-autochange-bg'
 
 call plug#end()
