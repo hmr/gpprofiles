@@ -200,3 +200,8 @@ if which tig > /dev/null; then
 fi
 
 echo
+# grc
+if which grc > /dev/null && which vmstat > /dev/null; then
+	echo -n ", vmstat"
+	alias vmstat='grc vmstat'
+fi
