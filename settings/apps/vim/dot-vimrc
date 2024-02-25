@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-26T03:34:40+0900]
+" Last Update: [2024-02-26T03:48:30+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -973,6 +973,8 @@ if has('gui_macvim')
   "      
   " Emoji:
   "   😀😂🙃
+  " East Asian Ambiguous Characters and single width characters
+  "   ★a☆b
 
   " MacVim now supports trasparency!
   set transparency=6
@@ -1166,7 +1168,7 @@ noremap <silent> <Leader>p   :bp<cr>
 noremap <silent> <Leader>b   :b#<cr>
 
 " Folding(:help fold.txt)
-set foldmethod=syntax " manual / indent / marker / expr / syntax
+set foldmethod=manual " manual / indent / marker / expr / syntax
 set foldlevel=9999    " Don't close folding at start
 set foldcolumn=0
 augroup FoldingAutoCommand
