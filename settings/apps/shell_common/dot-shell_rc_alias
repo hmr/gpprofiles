@@ -189,4 +189,14 @@ if which iftop > /dev/null; then
 	alias iftop='NCURSES_NO_UTF8_ACS=0 sudo iftop'
 fi
 
+# tig
+if which tig > /dev/null; then
+  echo -n ", tig"
+	alias tl="tig log"
+	alias tref="tig reflog"
+	alias tb="tig blame"
+	alias tg="tig grep"
+	alias ts="tig status"
+fi
+
 echo
