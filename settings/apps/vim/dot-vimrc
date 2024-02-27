@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-26T03:48:30+0900]
+" Last Update: [2024-02-28T03:33:11+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1225,8 +1225,12 @@ endif
 
 "----- [TESTING] vim-autochange-bg
 let g:autochg_bg_enable_on_vim_startup = 1
-let g:autochg_bg_force_geoip = 1
 
+"----- [Load personal settings not managed by GPP]
+let personal_filepath = 'conf.d/personal.vim'
+if !empty(findfile(expand(personal_filepath), &runtimepath))
+  execute 'runtime' personal_filepath
+endif
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
