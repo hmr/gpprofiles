@@ -7,3 +7,6 @@
 [submodule "settings/apps/kitty/kitty-themes"]
 	path = settings/apps/kitty/kitty-themes
 	url = https://github.com/kovidgoyal/kitty-themes.git
+[submodule "settings/apps/zsh/zplug"]
+	path = settings/apps/zsh/zplug
+	url = https://github.com/zplug/zplug.git
