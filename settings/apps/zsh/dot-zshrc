@@ -46,20 +46,26 @@ if [[ -r "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" 
 fi
 
 ### Zplug settings
-# Own-install version
+# Where is zplug installed?
+## Own-install version
 if   [ -d "${XDG_CONFIG_HOME}/zplug" ]; then
-  export ZPLUG_HOME="${XDG_CONFIG_HOME}/zplug"
-# Homebrew-installed version
+  export ZPLUG_ROOT="${XDG_CONFIG_HOME}/zplug"
+## Homebrew-installed version(x86)
 elif [ -d /usr/local/opt/zplug ]; then
-  export ZPLUG_HOME="/usr/local/opt/zplug"
-# APT-installed version
+  export ZPLUG_ROOT="/usr/local/opt/zplug"
+## Homebrew-installed version(Apple Silicon)
+elif [ -d /opt/homebrew/opt/zplug ]; then
+  export ZPLUG_ROOT="/opt/homebrew/opt/zplug"
+## APT-installed version
 elif [ -d /usr/share/zplug ]; then
-  export ZPLUG_HOME="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
-# GPP-installed version
+  export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
+## GPP-installed version
 elif [ -d ${ZDOTDIR:-${HOME}/.config/zsh}/zplug ]; then
-  export ZPLUG_HOME="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
+  export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
 fi
 
+# per-user contents directory
+export ZPLUG_HOME="${XDG_DATA_HOME:-${HOME}/.local}/zplug"
 # Per-user plugin repo directory
 if [ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]; then
   export ZPLUG_REPOS="${XDG_DATA_HOME:-${HOME}/.local}/zplug/repos"
@@ -96,8 +102,8 @@ else
 fi
 
 # Load Zplug
-if [ -n "${ZPLUG_HOME}" ]; then
-  source $ZPLUG_HOME/init.zsh
+if [ -n "${ZPLUG_ROOT}" ]; then
+  source $ZPLUG_ROOT/init.zsh
   zplug "zsh-users/zsh-completions"
   # autoload -Uz compinit && compinit
   zplug "zsh-users/zsh-autosuggestions", defer:2
@@ -105,8 +111,9 @@ if [ -n "${ZPLUG_HOME}" ]; then
 	# export ZSH_256COLOR_DEBUG=1
   # zplug "chrissicool/zsh-256color", defer:2
   # コマンドを種類毎に色づけ
-  #zplug "zsh-users/zsh-syntax-highlighting", defer:3
-  zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
+	# TODO: select plug-ins based on CPU performance
+	# zplug "zsh-users/zsh-syntax-highlighting", defer:3
+	zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search", defer:3
   # Gitの補完
