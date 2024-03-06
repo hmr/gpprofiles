@@ -24,7 +24,6 @@ bash-snippets
 bashdb
 bat
 bench
-berkeley-db
 berkeley-db@5
 binwalk
 bitwarden-cli
@@ -57,7 +56,6 @@ et
 faac
 faad2
 fb303
-fbthrift
 fdk-aac
 ffmpeg
 figlet
@@ -82,6 +80,7 @@ gettext
 gflags
 ghostscript
 giflib
+git
 glib
 glib-networking
 global
@@ -148,9 +147,7 @@ libepoxy
 libevent
 libgcrypt
 libgit2
-libgit2@1.6
 libgpg-error
-libice
 libidn
 libidn2
 libimagequant
@@ -171,7 +168,6 @@ libreplaygain
 librist
 libsamplerate
 libshout
-libsm
 libsndfile
 libsodium
 libsoup
@@ -211,6 +207,7 @@ lzo
 m4
 make
 mbedtls
+midnight-commander
 minicom
 minizip
 mpdecimal
@@ -258,29 +255,23 @@ py3cairo
 pycparser
 pygments
 pygobject3
-python-attrs
+python-argcomplete
 python-brotli
 python-certifi
 python-click
 python-cryptography
 python-dateutil
-python-distlib
-python-filelock
-python-idna
 python-jinja
 python-lxml
 python-magic
 python-markupsafe
 python-mutagen
 python-packaging
-python-pathspec
-python-platformdirs
 python-psutil
 python-pyparsing
 python-pytz
 python-setuptools
 python-tabulate
-python-typing-extensions
 python@3.11
 python@3.12
 pyyaml
@@ -291,6 +282,7 @@ ripgrep
 rtmpdump
 rubberband
 ruby
+s-lang
 s3cmd
 screen
 sdl2
@@ -317,7 +309,9 @@ tcping
 telnet
 tesseract
 theora
+tig
 tmux
+tmux-hmr@3.3a
 toilet
 trzsz
 twoping
@@ -348,6 +342,8 @@ xvid
 xxhash
 xz
 yamllint
+yarn
+yarn-completion
 yt-dlp
 zenity
 zeromq
