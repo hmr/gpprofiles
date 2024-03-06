@@ -25,20 +25,25 @@ awk -v cols="$cols" -v rows="$rows" 'BEGIN{
 }'
 
 echo "# text decorations"
-printf '\e[1m bold \e[22m\n'
-printf '\e[2m dim \e[22m\n'
-printf '\e[3m italic \e[23m\n'
-printf '\e[4m underline \e[24m\n'
-printf '\e[4:1m this is also underline \e[24m\n'
-printf '\e[21m double underline \e[24m\n'
-printf '\e[4:2m this is also double underline \e[24m\n'
-printf '\e[4:3m curly underline \e[24m\n'
-printf '\e[58;5;10;4m colored underline \e[59;24m\n'
-printf '\e[5m blink \e[25m\n'
-printf '\e[7m reverse \e[27m\n'
-printf '\e[8m invisible \e[28m <- invisible (but copy-pasteable)\n'
-printf '\e[9m strikethrough \e[29m\n'
-printf '\e[53m overline \e[55m\n'
+printf '\e[1mBold or increased intensity\e[22m (SGR1)\n'
+printf '\e[2mFaint, decreased intensity, or dim\e[22m (SGR2)\n'
+printf '\e[3mitalic\e[23m (SGR3)\n'
+printf '\e[4munderline\e[24m (SGR4)\n'
+printf '\e[4:1mthis is also underline\e[24m (SGR4:1)\n'
+printf '\e[21mdouble underline\e[24m (SGR21)\n'
+printf '\e[4:2mdouble underline\e[24m (SGR4:2)\n'
+printf '\e[4:3mcurly underline\e[24m (SGR4:3)\n'
+printf '\e[4:4mdotted underline\e[24m (SGR4:4)\n'
+printf '\e[4:5mdashed underline\e[24m (SGR4:5)\n'
+printf '\e[58;5;10;4mcolored underline\e[59;24m (SGR58;5;10;4)\n'
+printf '\e[5mblink\e[25m (SGR5)\n'
+printf '\e[6mrapid blink\e[25m (SGR6)\n'
+printf '\e[7mreverse\e[27m (SGR7)\n'
+printf '\e[8minvisible\e[28m <- invisible (but copy-pasteable)(SGR8)\n'
+printf '\e[9mstrikethrough\e[29m (SGR9)\n'
+printf '\e[53moverline\e[55m (SGR53)\n'
+printf '\e[73mSuperscript\e[75m (SGR73)\n'
+printf '\e[74mSubscript\e[75m (SGR74)\n'
 echo
 
 echo "# Japanese character"
@@ -58,6 +63,7 @@ echo
 
 echo "# East Asia Ambiguous characters"
 echo -e "1234567890\n◎a★b"
+echo "☆a★B"
 printf "\xe3\x81\x82\xe3\x81\x84\xe3\x81\x86\xe3\x81\x88\xe3\x81\x8a\n"
 printf "\xe2\x98\x86\xe2\x98\x86\xe2\x98\x86\xe2\x98\x86\xe2\x98\x86\n"
 echo
