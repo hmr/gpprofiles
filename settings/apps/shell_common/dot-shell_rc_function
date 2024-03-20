@@ -336,4 +336,25 @@ function _terminfo() {
 	echo "TERMINFO_DIRS=${TERMINFO_DIRS}"
 }
 
+echo -n", _chksysspd"
+function _chksysspd() {
+	local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
+	if [[ $(_chksystem) == "darwin" ]]; then
+		# macOS
+		if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
+			SYSSPD="10"
+		elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
+			SYSSPD="4"
+		else
+			SYSSPD="1"
+		fi
+	elif [[ $(_chksystem) == "linux" ]]; then
+		SYSSPD="2"
+	elif [[ $(_chksystem) == "windows" ]]; then
+		:
+	fi
+
+	echo "${SYSSPD}"
+}
+
 echo

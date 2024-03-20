@@ -102,6 +102,10 @@ else
 fi
 
 # Load Zplug
+function zplug-check-combo() {
+	zplug install
+	zplug update
+}
 if [ -n "${ZPLUG_ROOT}" ]; then
   source $ZPLUG_ROOT/init.zsh
   zplug "zsh-users/zsh-completions"
@@ -112,8 +116,11 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # zplug "chrissicool/zsh-256color", defer:2
   # コマンドを種類毎に色づけ
 	# TODO: select plug-ins based on CPU performance
-	# zplug "zsh-users/zsh-syntax-highlighting", defer:3
-	zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
+	if [[ $(_chksysspd) -le 5 ]]; then
+		zplug "zsh-users/zsh-syntax-highlighting", defer:3
+	else
+		zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
+	fi
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search", defer:3
   # Gitの補完
