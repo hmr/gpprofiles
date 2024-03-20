@@ -111,7 +111,7 @@ case "${RESULT}" in
 			TEMP_PS="$(ps -p "${SSH_AGENT_PID}" | tail -n 1)"
 			if echo "${TEMP_PS}" | grep -sq "CMD"; then
 				echo "    pid ${SSH_AGENT_PID} isn't exist."
-			elif echo "${TEMP_PS} | "grep "ssh-agent"; then
+			elif echo "${TEMP_PS}" | grep -sq "ssh-agent"; then
 				echo "    ssh-agent is running but not configured for use."
 			else
 				echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
@@ -137,7 +137,7 @@ case "${RESULT}" in
 			echo "        - - - - - - - -"
 		fi
 		echo "      Starting new ssh-agent..."
-		case $(ssh -V 2>&1 | grep -oP 'OpenSSH_\d+') in
+		case $(ssh -V 2>&1 | grep ${GREP_OPT} 'OpenSSH_\d+') in
 			"OpenSSH_6" )
 				echo -n "        OpenSSH V6 found: "
 				${GPP_SSH_AGENT_BIN} -s > "${GPP_SSH_AGENT_FILE}"
