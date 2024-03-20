@@ -13,6 +13,7 @@
 
 DRY_RUN=0
 
+GPP_HOME="${GPP_HOME:=${HOME}/gpprofiles}"
 TERM="${TERM:=xterm-256color}"
 PATH=/usr/local/bin:/usr/local/sbin:${PATH}
 SSH_BIN=$(which ssh)
@@ -62,10 +63,16 @@ trap 'post_processing' 1 2 3 15
 echo
 echo "Starting $0..."
 echo "TERM=${TERM}"
+echo "GPP_HOME=${GPP_HOME}"
 
-. ${HOME}/src/gpprofiles/settings/apps/shell_common/dot-shell_shellenv
-. ${HOME}/src/gpprofiles/settings/apps/shell_common/dot-shell_rc_function
-. ${HOME}/src/gpprofiles/settings/apps/shell_common/dot-shell_rc_macos
+if [[ -z ${GPP_HOME} ]]; then
+	echo "\$GPP_HOME isn't set."
+	exit 1
+fi
+
+. ${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv
+. ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function
+. ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos
 
 # Ssh-agent setting
 # Derived from gpp's dot-profile_ssh-agent
