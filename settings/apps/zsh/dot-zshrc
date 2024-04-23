@@ -255,7 +255,7 @@ fi
 # zsh completions by each homebrew package
 if type brew >& /dev/null && [[ -d $(brew --prefix)/share/zsh-completions ]]; then
 	fpath+=$(brew --prefix)/share/zsh-completions
-	compinit
+	compinit -C
 fi
 
 # Show profiling result if enabled.
