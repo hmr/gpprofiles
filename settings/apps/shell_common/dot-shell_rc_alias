@@ -199,9 +199,23 @@ if which tig > /dev/null; then
 	alias ts="tig status"
 fi
 
-echo
 # grc
 if which grc > /dev/null && which vmstat > /dev/null; then
 	echo -n ", vmstat"
 	alias vmstat='grc vmstat'
 fi
+
+# checkip
+if which curl > /dev/null; then
+	echo -n ", checkip, checkip6"
+	alias checkip='echo $(curl -s -4 https://domains.google.com/checkip)'
+	alias checkip6='echo $(curl -s -6 -H "Host:domains.google.com" --insecure "https://[2404:6800:4004:824::200e]/checkip")'
+fi
+
+echo -m ", getipinfo"
+alias getipinfo='curl -s "https://ipinfo.io/json" | jq -r'
+
+echo -n ", getdaytime"
+alias getdaytime='curl -s "https://api.sunrise-sunset.org/json?$(curl -s ipinfo.io | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "https://ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
+
+echo
