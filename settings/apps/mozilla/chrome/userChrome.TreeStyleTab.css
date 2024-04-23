@@ -36,3 +36,28 @@
  * End of configurations for Tree Tab Extension
  * -----------------------------------------------------------------------------*/
 
+/* Hide window title bar */
+/*
+#titlebar {
+  display: none !important;
+}
+*/
+
+:root[tabsintitlebar] #titlebar {
+  height: 0px !important;
+  margin-bottom: 22px !important; /* Height of toolbar */
+}
+
+:root[tabsintitlebar] #titlebar-content {
+  display: none !important;
+}
+
+:root[tabsintitlebar] #TabsToolbar {
+  padding-left: 105px !important; /* Position of macOS's */
+  padding-top: 40px !important;   /* Close/Minimize/Maximize button */
+}
+
+:root[tabsintitlebar] #nav-bar {
+  margin-top: -22px !important; /* ナビゲーションバーの位置を調整 */
+}
+
