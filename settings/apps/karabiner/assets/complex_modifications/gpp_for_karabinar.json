@@ -328,7 +328,7 @@
               },
               "to": [
                   {
-                      "shell_command": "open -a 'Finder.app'"
+                      "shell_command": "osascript -e 'tell application \"Finder\"' -e 'if (count of windows) is 0 then' -e 'make new Finder window to folder ((path to home folder) as text)' -e 'else' -e 'set frontmost to true' -e 'end if' -e 'activate' -e 'end tell'"
                   }
               ],
               "type": "basic"
