@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-02-28T03:33:11+0900]
+" Last Update: [2024-04-25T22:38:48+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1031,14 +1031,20 @@ nmap <Leader>l <Plug>(easymotion-overwin-line)
 " " Move to {char}{char}
 map  <Leader>k <Plug>(easymotion-bd-f2)
 nmap <Leader>k <Plug>(easymotion-overwin-f2)
-nmap s <Plug>(easymotion-sn)
-xmap s <Plug>(easymotion-sn)
-omap z <Plug>(easymotion-sn)
+
+nmap s <Plug>(easymotion-sl)
+xmap s <Plug>(easymotion-sl)
+omap z <Plug>(easymotion-sl)
+
+nmap <Leader>s <Plug>(easymotion-sn)
+xmap <Leader>s <Plug>(easymotion-sn)
+omap <Leader>z <Plug>(easymotion-sn)
 
 " Disable default mappings
 let g:EasyMotion_do_mapping = 0
 " Characters to use as label
-let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTASDGZXCVBJF'
+" let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTASDGZXCVBJF'
+let g:EasyMotion_keys = 'ASDFGQWERTZXCVBHJKL;IO'
 " Show target key with upper case to improve readability
 let g:EasyMotion_use_upper = 1
 " Jump to first match with enter & space
@@ -1048,7 +1054,6 @@ let g:EasyMotion_space_jump_first = 1
 let g:EasyMotion_smartcase = 1
 " keep cursor column with `JK` motions
 let g:EasyMotion_startofline = 0
-
 
 "=============================================================================
 " Misc Settings
