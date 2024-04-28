@@ -32,7 +32,7 @@ fi
 
 # Add local installation to PATH
 if [ -d "${HOME}/.local/bin" ]; then
-  print "${PATH}" | grep "${HOME}/.local/bin" >& /dev/null || export PATH="${HOME}/.local/bin:${PATH}"
+  echo "${PATH}" | grep "${HOME}/.local/bin" >& /dev/null || export PATH="${HOME}/.local/bin:${PATH}"
 fi
 
 # Readline
