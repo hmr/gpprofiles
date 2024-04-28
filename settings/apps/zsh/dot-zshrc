@@ -101,11 +101,37 @@ else
 	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
 fi
 
+# Helper function
+function _chksysspd() {
+	local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
+	SYSSPD=1
+
+	case "${OSTYPE}" in
+		darwin* )
+			if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
+				SYSSPD="10"
+			elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
+				SYSSPD="4"
+			else
+				SYSSPD="1"
+			fi;;
+		linux*)
+			SYSSPD="2";;
+		* )
+			SYSSPD="5";;
+	esac
+
+	echo "${SYSSPD}"
+}
+
 # Load Zplug
 function zplug-check-combo() {
+	zplug list
 	zplug install
 	zplug update
+	zplug load
 }
+
 if [ -n "${ZPLUG_ROOT}" ]; then
   source $ZPLUG_ROOT/init.zsh
   zplug "zsh-users/zsh-completions"
