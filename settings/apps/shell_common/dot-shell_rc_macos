@@ -134,6 +134,14 @@ fi
 
 echo
 
+# add Homebrew's directory to BASH_LOADABLES_PATH if the shell is bash
+case "$(chkshell)" in
+  bash )
+		if [[ ${BASH} =~ "homebrew" ]]; then
+			BASH_LOADABLES_PATH="${BASH_LOADABLES_PATH}:${HOMEBREW_PREFIX}/lib/bash"
+		fi
+esac
+
 # TODO: This section will be deleted in the near future.
 # # Use HomeBrew binaries instead of macOS default.
 # TEMP_TGT="coreutils"
