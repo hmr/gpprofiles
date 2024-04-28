@@ -18,17 +18,20 @@ case "$(chkshell)" in
       . "/usr/local/etc/profile.d/bash_completion.sh"
     fi
     # Set bash shell options
-    TEMP_BASH_OPT="cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend "
+		TEMP_BASH_OPT=(cdable_vars autocd cdspell checkhash checkjobs direxpand dirspell globstar lithist histappend)
     echo -n "bash shopts, "
     # echo "    ${TEMP_BASH_OPT}"
-    shopt -s "${TEMP_BASH_OPT}"
+    shopt -s "${TEMP_BASH_OPT[@]}"
     ;;
 esac
 
 # dircolors
 if ! which dircolors >& /dev/null; then
+	# Workaround for Homebrew
   if [ -x "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
     _TMP_DIRCOLORS_BIN="/usr/local/opt/coreutils/libexec/gnubin/dircolors"
+  elif [ -x "/opt/homebrew/opt/coreutils/libexec/gnubin/dircolors" ]; then
+    _TMP_DIRCOLORS_BIN="/opt/homebrew/opt/coreutils/libexec/gnubin/dircolors"
   fi
 else
   _TMP_DIRCOLORS_BIN="$(which dircolors)"
