@@ -11,73 +11,107 @@
 # ORIGIN: 2024-03-29
 
 
+function decho () {
+	if (( DEBUG > 0 )); then
+		echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" > /dev/stderr
+	fi
+}
+
 function check_sidechange() {
+	decho "Entering function ${FUNCNAME[0]}..."
 
 	if defaults read -g AppleInterfaceStyle 2>&1 | grep -qi "dark" >& /dev/null; then
+		# Dark side
+		decho "System theme is dark mode."
 		if [[ ${MODE} != "dark" ]]; then
 			# Light -> Dark
+			decho "Changed to dark side!"
 			echo "1"
 			return
 		fi
 	else
+		# Light side
+		decho "System theme is light mode."
 		if [[ ${MODE} != "light" ]]; then
 			# Dark -> Light
+			decho "Changed to light side!"
 			echo "2"
 			return
 		fi
 	fi
+
+	# side not changed
+	decho "Side isn't changed."
 	echo "0"
 	return
 }
 
+function main() {
+	decho "Entering function ${FUNCNAME[0]}..."
 
-# echo "Starting jedid..." > /dev/stderr
-# echo "Initial MODE=${MODE}" > /dev/stderr
-while true; do
-	# echo "MODE=${MODE}" > /dev/stderr
+	while true; do
+		decho "MODE is ${MODE:-NOT SET}."
+		case "$(check_sidechange)" in
+			0 )
+				decho "Nothing to do."
+				;;
 
-	WHICH_SIDE=""
-	WHICH_SIDE="$(check_sidechange)"
-	# Changed to Dark
-	if (( WHICH_SIDE==1 )); then
-		# echo "Sidechanged: Light->Dark" > /dev/stderr
+			1 )
+				## lsd
+				decho "Setting lsd dark..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
+				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
+					ln -sf themes/default.yaml colors.yaml
+				fi
 
-		## lsd
-		CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
-		if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
-			ln -sf themes/default.yaml colors.yaml
-		fi
+				## bat
+				decho "Setting bat dark..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf config-dark config
+				fi
 
-		## bat
-		CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
-		if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-			ln -sf config-dark config
-		fi
+				# set mode
+				MODE="dark"
+				;;
 
-		# set mode
-		MODE="dark"
+			2 )
+				## lsd
+				decho "Setting lsd light..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
+				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
+					ln -sf themes/default-light.yaml colors.yaml
+				fi
 
-	# Changed to Light
-elif (( WHICH_SIDE==2 )); then
-		# echo "Sidechanged: Dark->Light" > /dev/stderr
+				## bat
+				decho "Setting bat light..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
+				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
+					ln -sf config-light config
+				fi
 
-		## lsd
-		CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
-		if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
-			ln -sf themes/default-light.yaml colors.yaml
-		fi
+				# set mode
+				MODE="light"
+				;;
+		esac
 
-		## bat
-		CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
-		if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
-			ln -sf config-light config
-		fi
+		# stop working
+		sleep 15
+	done
+}
 
-		# set mode
-		MODE="light"
-	fi
+DEBUG=1
+decho "Starting Jedid..."
 
-	# stop working
-	sleep 15
-done
+function trap_exit() {
+	decho "Quitting..."
+}
+trap trap_exit SIGINT
+
+if [[ -z ${XDG_CONFIG_HOME} ]]; then
+	decho "Warning: XDG_CONFIG_HOME isn't set. Setting now..."
+	XDG_CONFIG_HOME="${HOME}/.config"
+fi
+decho "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
+main
 
