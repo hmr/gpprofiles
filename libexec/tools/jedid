@@ -52,10 +52,13 @@ function main() {
 	while true; do
 		decho "MODE is ${MODE:-NOT SET}."
 		case "$(check_sidechange)" in
+
+			# Nothing to do
 			0 )
 				decho "Nothing to do."
 				;;
 
+			# Light -> Dark
 			1 )
 				## lsd
 				decho "Setting lsd dark..."
@@ -71,10 +74,18 @@ function main() {
 					ln -sf config-dark config
 				fi
 
+				## man
+				decho "Setting man dark..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/man"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf man.conf.dark man.conf
+				fi
+
 				# set mode
 				MODE="dark"
 				;;
 
+			# Dark -> Light
 			2 )
 				## lsd
 				decho "Setting lsd light..."
@@ -88,6 +99,13 @@ function main() {
 				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
 				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
 					ln -sf config-light config
+				fi
+
+				## man
+				decho "Setting man light..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/man"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf man.conf.light man.conf
 				fi
 
 				# set mode
