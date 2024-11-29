@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-04-25T22:38:48+0900]
+" Last Update: [2024-11-30T04:52:41+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1254,7 +1254,7 @@ augroup END
 "----- Turn off the input method when leave from insert mode
 " https://mitsuse.jp/2017/01/02/disable-input-source-on-insert-leave-in-vim/
 if executable('swim')
-  autocmd InsertLeave * :call system('swim use com.justsystems.inputmethod.atok33.Roman')
+  autocmd InsertLeave * :call system('swim use com.justsystems.inputmethod.atok34.Roman')
 endif
 
 "----- [TESTING] Check for 'modifyOtherKeys'
