@@ -1245,6 +1245,10 @@ onoremap a" 2i"
 onoremap a' 2i'
 onoremap a` 2i`
 
+"----- [TESTING] Increment or decrement number
+noremap <M-a> <C-a>
+noremap <M-x> <C-x>
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
