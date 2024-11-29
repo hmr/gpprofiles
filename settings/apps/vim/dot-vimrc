@@ -1143,10 +1143,6 @@ map     <C-[>       :pop<cr>
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>
 
-" Pop up the stack
-map <Leader>[   :pop<cr>
-map <C-[>       :pop<cr>
-
 "----- Arrow key: move screen line
 noremap   <silent><Down>  gj
 noremap   <silent><Up>    gk
