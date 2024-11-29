@@ -93,8 +93,8 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 " A simple, easy-to-use Vim alignment plugin
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
 
-" Maintained version of CtrlP
-" Plug 'ctrlpvim/ctrlp.vim'
+" Active fork of kien/ctrlp.vim — Fuzzy file, buffer, mru, tag, etc finder.
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Vim plugin which manipulate gists in Vim.
 Plug 'lambdalisue/vim-gista'
