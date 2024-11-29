@@ -1031,9 +1031,9 @@ nmap <Leader>l <Plug>(easymotion-overwin-line)
 map  <Leader>k <Plug>(easymotion-bd-f2)
 nmap <Leader>k <Plug>(easymotion-overwin-f2)
 
-nmap s <Plug>(easymotion-sl)
-xmap s <Plug>(easymotion-sl)
-omap z <Plug>(easymotion-sl)
+nmap s <Plug>(easymotion-sln)
+xmap s <Plug>(easymotion-sln)
+omap z <Plug>(easymotion-sln)
 
 nmap <Leader>s <Plug>(easymotion-sn)
 xmap <Leader>s <Plug>(easymotion-sn)
