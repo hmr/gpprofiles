@@ -87,7 +87,7 @@ Plug 'jiangmiao/auto-pairs'
 " So to called Zen mode for vim
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
-" fzf for vim
+" fzf (A command-line fuzzy finde) for vim
 " Plug 'junegunn/fzf.vim'
 
 " A simple, easy-to-use Vim alignment plugin
