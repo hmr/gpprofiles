@@ -1148,6 +1148,12 @@ noremap   <silent><Down>  gj
 noremap   <silent><Up>    gk
 
 "----- Ale
+nmap <silent><Leader>aj  :ALENextWrap<cr>
+nmap <silent><Leader>ak  :ALEPreviousWrap<cr>
+
+" Enable completion without Deplate
+let g:ale_completion_enabled=1
+
 " Don't use shellcheck
 " let g:ale_sh_shellcheck_executable = ''
 let g:ale_linters = {
@@ -1160,6 +1166,31 @@ let g:ale_languagetool_options = '--autoDetect --disable "WHITESPACE_RULE,DASH_R
 
 " Command line option for mdl(Markdown linter implemented by ruby)
 let g:ale_markdown_mdl_options = '--style "$XDG_CONFIG_HOME/vim/conf.d/mdl_style.rb"'
+
+" Map ALE command if the buffer uses LSP
+function ALELSPMappings()
+  let l:lsp_found=0
+  for l:linter in ale#linter#Get(&filetype) | if !empty(l:linter.lsp) | let l:lsp_found=1 | endif | endfor
+  if (l:lsp_found)
+    nnoremap <buffer> <C-]> :ALEGoToDefinition<cr>
+    nnoremap <buffer> gy :ALEGoToTypeDefinition<cr>
+    nnoremap gd :ALEGoToDefinition<cr>
+
+    nnoremap <buffer> <C-^> :ALEFindReferences<cr>
+    nnoremap gr :ALEFindReferences<cr>
+    nnoremap <buffer> K :ALEDocumentation<cr>
+    nnoremap K :ALEHover<cr>
+    nnoremap <buffer> gh :ALEHover<cr>
+    setlocal omnifunc=ale#completion#OmniFunc
+  else
+    silent! unmap <buffer> <C-]>
+    silent! unmap <buffer> <C-^>
+  endif
+endfunction
+augroup AleKeymapConfig
+  autocmd!
+  autocmd BufRead,FileType * call ALELSPMappings()
+augroup END
 
 "----- Mouse
 " Settings to use mouse
