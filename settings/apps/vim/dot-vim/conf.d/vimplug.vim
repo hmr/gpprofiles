@@ -227,6 +227,9 @@ Plug 'rbtnn/vim-ambiwidth'
 " Automatically change background light or dark
 Plug 'hmr/vim-autochange-bg'
 
+" Toggle zoom in / out individual windows (splits) like tmux
+Plug 'dhruvasagar/vim-zoom' " C-w m
+
 " Vim/Neovim version of dmacro.el, which makes a key macro on-the-fly.
 Plug 'tani/dmacro.vim'
 
