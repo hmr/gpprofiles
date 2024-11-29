@@ -1249,6 +1249,14 @@ onoremap a` 2i`
 noremap <M-a> <C-a>
 noremap <M-x> <C-x>
 
+"----- [TESTING] Increment or decrement indent
+inoremap <S-M-t> <C-t>
+inoremap <S-M-d> <C-d>
+
+"----- [TESTING] dmacro [https://github.com/tani/dmacro.vim]
+inoremap <C-y> <Plug>(dmacro-play-macro)
+nnoremap <C-y> <Plug>(dmacro-play-macro)
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------

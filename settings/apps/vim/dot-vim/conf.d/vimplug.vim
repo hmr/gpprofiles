@@ -227,4 +227,7 @@ Plug 'rbtnn/vim-ambiwidth'
 " Automatically change background light or dark
 Plug 'hmr/vim-autochange-bg'
 
+" Vim/Neovim version of dmacro.el, which makes a key macro on-the-fly.
+Plug 'tani/dmacro.vim'
+
 call plug#end()
