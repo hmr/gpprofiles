@@ -804,6 +804,9 @@ endif
 
 if &t_Co > 2 || has('gui_running')  " Only for color environment
 
+  " Maximum wait time for screen rendering (mainly syntax highlighting)
+  set redrawtime=0 " TODO: It should be variable by processing speed
+
   " Reset and enable syntax highlighting(for w/o reset use ':syntax enable')
   syntax on
 
