@@ -1123,17 +1123,22 @@ let g:AutoPairsShortcutBackInsert = '<M-B>'
 " Experimental settings
 "=============================================================================
 "----- tag search settings for both ctags and cscope
-" noremap <Leader>j   g]
-" noremap <Leader>J   <C-w>g]
-" noremap <Leader>T   :pop<CR>
+noremap <Leader>j   g]
+noremap <Leader>J   <C-w>g]
+" Pop up the stack
+noremap <Leader>T   :pop<CR>
+map     <Leader>[   :pop<cr>
+map     <C-[>       :pop<cr>
 
-map <Leader>g   :Gtags
+" gtags (GNU Global)
+" map <Leader>g   :Gtags
 " Show definition in the file.
-map <Leader>h   :Gtags -f %<CR>
+" map <Leader>h   :Gtags -f %<CR>
 " Jump to definition or reference of under-cursor keyword
-map <Leader>j   :GtagsCursor<CR>
-map <C-]>       :GtagsCursor<CR>
-map g]          :GtagsCursor<CR>
+" map <Leader>j   :GtagsCursor<CR>
+" map <C-]>       :GtagsCursor<CR>
+" map g]          :GtagsCursor<CR>
+
 " Move line at Quickfix
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>
