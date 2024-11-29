@@ -1,0 +1,6 @@
+This is settings for Fast-Syntax-Highlighting which is feature-rich syntax highlighter plugin for zsh.
+https://github.com/zdharma-continuum/fast-syntax-highlighting
+
+Files in this directory:
+*.ini: Color scheme to load by `fast-theme`
+
