@@ -734,7 +734,7 @@ augroup vimrc_nerdtree
 augroup END
 
 "=============================================================================
-" Settings for NERD Commenter
+" Settings for NERD Commenter (https://github.com/preservim/nerdcommenter)
 "=============================================================================
 " Create default mappings
 let g:NERDCreateDefaultMappings = 1
@@ -762,7 +762,7 @@ let g:NERDToggleCheckAllLines = 1
 "nnoremap <silent> <leader>c{ V{:call NERDComment('x', 'toggle')<CR>
 
 "=============================================================================
-" quickhl.vim(Quickly highlight multiple word) [https://github.com/t9md/vim-quickhl]
+" vim-quickhl(Quickly highlight multiple word) [https://github.com/t9md/vim-quickhl]
 "=============================================================================
 nmap <Leader>m <Plug>(quickhl-manual-this)
 xmap <Leader>m <Plug>(quickhl-manual-this)
@@ -884,6 +884,8 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
     set colorcolumn=100
   endif
 
+  " ----- Customize colorscheme
+  "  -- For molokai
   if g:colors_name ==# 'molokai'
     if has('termguicolors')
       highlight Comment   guifg=#95917E
@@ -903,6 +905,7 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
     endif
   endif
 
+  "  -- For Sublime Molokai
   if g:colors_name ==# 'sublimemonokai'
     highlight SignColumn guibg=#383a3e
   endif
@@ -1217,7 +1220,7 @@ augroup cmd_msg_cls
   " autocmd CursorMoved *  call timer_start(10000, funcref('s:empty_message'))
 augroup END
 
-"----- Off the input method when leave from insert mode
+"----- Turn off the input method when leave from insert mode
 " https://mitsuse.jp/2017/01/02/disable-input-source-on-insert-leave-in-vim/
 if executable('swim')
   autocmd InsertLeave * :call system('swim use com.justsystems.inputmethod.atok33.Roman')
