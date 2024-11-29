@@ -766,15 +766,11 @@ let g:NERDToggleCheckAllLines = 1
 "=============================================================================
 nmap <Leader>m <Plug>(quickhl-manual-this)
 xmap <Leader>m <Plug>(quickhl-manual-this)
-nmap <Leader>r <Plug>(quickhl-manual-reset)
-xmap <Leader>r <Plug>(quickhl-manual-reset)
-nmap <Leader>c <Plug>(quickhl-manual-clear)
-vmap <Leader>c <Plug>(quickhl-manual-clear)
-"nmap <Space>w <Plug>(quickhl-manual-this-whole-word)
-"xmap <Space>w <Plug>(quickhl-manual-this-whole-word)
-"nmap <Space>j <Plug>(quickhl-cword-toggle)
-"nmap <Space>] <Plug>(quickhl-tag-toggle)
-"map H <Plug>(operator-quickhl-manual-this-motion)
+nmap <Leader>M <Plug>(quickhl-manual-reset)
+xmap <Leader>M <Plug>(quickhl-manual-reset)
+nmap <Leader>; <Plug>(quickhl-cword-toggle)
+nmap <Leader>: <Plug>(quickhl-tag-toggle)
+" map H <Plug>(operator-quickhl-manual-this-motion)
 
 "=============================================================================
 " Settings for cscope [:help if_cscop]
