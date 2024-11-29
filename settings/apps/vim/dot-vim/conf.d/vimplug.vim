@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2024-02-25T20:55:08+0900]
+" Last Update: [2024-11-26T10:05:37+0900]
 
 scriptencoding utf-8
 
@@ -26,7 +26,21 @@ endif
 "=============================================================================
 call plug#begin($XDG_DATA_HOME.'/vim/plugged')
 
+" ----------------------------------------------------------------------------
+" Unmanaged_plugins:
+" ----------------------------------------------------------------------------
+" My version of auto completion
+" Plug '$XDG_CONFIG_HOME/vim/unmanaged/MyAutoCompletion'
+" autodate
+Plug '$XDG_CONFIG_HOME/vim/unmanaged/autodate'
+" cmdex
+Plug '$XDG_CONFIG_HOME/vim/unmanaged/cmdex'
+" GNU Global
+" Plug '$XDG_CONFIG_HOME/vim/unmanaged/gtags'
+
+" ----------------------------------------------------------------------------
 " Color Schemes:
+" ----------------------------------------------------------------------------
 " Plug 'altercation/vim-colors-solarized'
 " Plug 'tomasr/molokai'
 " Plug 'crusoexia/vim-monokai'
@@ -38,24 +52,18 @@ Plug 'morhetz/gruvbox'
 " Plug 'joshdick/onedark.vim'
 " Plug 'kaicataldo/material.vim'
 
+" ----------------------------------------------------------------------------
 " Syntax:
+" ----------------------------------------------------------------------------
 Plug 'sheerun/vim-polyglot'     " Meta plugin for many languages
 Plug 'darfink/vim-plist'        " macOS plist
 " Plug 'gisphm/vim-gitignore'   " gitignore
 Plug 'b4winckler/vim-objc'      " Objective-C
 Plug 'pearofducks/ansible-vim'  " Ansible YAML
 
-" Unmanaged_plugins:
-" My version of auto completion
-" Plug '$XDG_CONFIG_HOME/vim/unmanaged/MyAutoCompletion'
-" autodate
-Plug '$XDG_CONFIG_HOME/vim/unmanaged/autodate'
-" cmdex
-Plug '$XDG_CONFIG_HOME/vim/unmanaged/cmdex'
-" GNU Global
-Plug '$XDG_CONFIG_HOME/vim/unmanaged/gtags'
-
-" Misc:
+" ----------------------------------------------------------------------------
+" Managed Plugins:
+" ----------------------------------------------------------------------------
 " A Vim plugin which shows a git diff in the sign column.
 Plug 'airblade/vim-gitgutter'
 
