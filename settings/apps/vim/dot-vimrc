@@ -1235,6 +1235,16 @@ let personal_filepath = 'conf.d/personal.vim'
 if !empty(findfile(expand(personal_filepath), &runtimepath))
   execute 'runtime' personal_filepath
 endif
+
+"----- [TESTING] Convert a' to 2i' (text object) not to select surrounding space
+" https://zenn.dev/vim_jp/articles/2024-06-05-vim-middle-class-features
+xnoremap a" 2i"
+xnoremap a' 2i'
+xnoremap a` 2i`
+onoremap a" 2i"
+onoremap a' 2i'
+onoremap a` 2i`
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
