@@ -3,7 +3,7 @@
   "rules": [
     {
       "description": "[GPP] Single Left Command(⌘) to 英数 key (if not on RDP/VM console)",
-      "manipulators": [ {
+      "manipulators": [{
           "type": "basic",
           "from": {
             "key_code": "left_command",
@@ -12,356 +12,340 @@
           "parameters": {
             "basic.to_if_held_down_threshold_milliseconds": 200
           },
-          "to": [ {
+          "to": [{
               "key_code": "left_command",
               "lazy": true
-            } ],
-          "to_if_held_down": [ { "key_code": "left_command" } ],
-          "to_if_alone": [ { "key_code": "japanese_eisuu" } ],
-          "conditions": [ {
+            }],
+          "to_if_held_down": [{ "key_code": "left_command" }],
+          "to_if_alone": [{ "key_code": "japanese_eisuu" }],
+          "conditions": [{
             "type": "frontmost_application_unless",
             "bundle_identifiers": [
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.apple\\.ScreenSharing$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.itap-mobile\\.qmote$",
               "^com\\.microsoft\\.rdc$",
               "^com\\.microsoft\\.rdc\\.",
-              "^net\\.sf\\.cord$",
-              "^com\\.thinomenon\\.RemoteDesktopConnection$",
-              "^com\\.itap-mobile\\.qmote$",
               "^com\\.nulana\\.remotixmac$",
               "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.winapp\\.",
               "^com\\.p5sys\\.jump\\.mac\\.viewer$",
               "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
               "^com\\.teamviewer\\.TeamViewer$",
-              "^com\\.vmware\\.horizon$",
-              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.utmapp\\.UTM$",
               "^com\\.vmware\\.fusion$",
               "^com\\.vmware\\.horizon$",
-              "^com\\.vmware\\.view$",
-              "^com\\.parallels\\.desktop$",
-              "^com\\.parallels\\.vm$",
-              "^com\\.parallels\\.desktop\\.console$",
-              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-              "^com\\.citrix\\.XenAppViewer$",
               "^com\\.vmware\\.proxyApp\\.",
-              "^com\\.parallels\\.winapp\\.",
-              "^com\\.utmapp\\.UTM$"
+              "^com\\.vmware\\.view$",
+              "^net\\.sf\\.cord$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
             ]
-          } ]
-      } ]
+          }]
+      }]
     },
 
     {
       "description": "[GPP] Single Right Command(⌘) to かな key (if not on RDP/VM console)",
-      "manipulators": [ {
+      "manipulators": [{
           "type": "basic",
           "from": {
             "key_code": "right_command",
-            "modifiers": { "optional": [ "any" ] }
+            "modifiers": { "optional": [ "any" ]}
           },
           "parameters": {
             "basic.to_if_held_down_threshold_milliseconds": 200
           },
-          "to": [ {
+          "to": [{
               "key_code": "right_command",
               "lazy": true
-            } ],
-          "to_if_held_down": [ { "key_code": "right_command" } ],
-          "to_if_alone": [ { "key_code": "japanese_kana" } ],
-          "conditions": [ {
+            }],
+          "to_if_held_down": [{ "key_code": "right_command" }],
+          "to_if_alone": [{ "key_code": "japanese_kana" }],
+          "conditions": [{
             "type": "frontmost_application_unless",
             "bundle_identifiers": [
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.apple\\.ScreenSharing$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.itap-mobile\\.qmote$",
               "^com\\.microsoft\\.rdc$",
               "^com\\.microsoft\\.rdc\\.",
-              "^net\\.sf\\.cord$",
-              "^com\\.thinomenon\\.RemoteDesktopConnection$",
-              "^com\\.itap-mobile\\.qmote$",
               "^com\\.nulana\\.remotixmac$",
               "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.winapp\\.",
               "^com\\.p5sys\\.jump\\.mac\\.viewer$",
               "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
               "^com\\.teamviewer\\.TeamViewer$",
-              "^com\\.vmware\\.horizon$",
-              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.utmapp\\.UTM$",
               "^com\\.vmware\\.fusion$",
               "^com\\.vmware\\.horizon$",
-              "^com\\.vmware\\.view$",
-              "^com\\.parallels\\.desktop$",
-              "^com\\.parallels\\.vm$",
-              "^com\\.parallels\\.desktop\\.console$",
-              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-              "^com\\.citrix\\.XenAppViewer$",
               "^com\\.vmware\\.proxyApp\\.",
-              "^com\\.parallels\\.winapp\\.",
-              "^com\\.utmapp\\.UTM$"
+              "^com\\.vmware\\.view$",
+              "^net\\.sf\\.cord$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
             ]
-          } ]
-      } ]
+          }]
+      }]
     },
 
     {
       "description": "[GPP] Single Left Option(⌥) to 英数 mode",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "left_option",
+          "modifiers": { "optional": [ "any" ] }
+        },
+        "parameters": {
+          "basic.to_if_held_down_threshold_milliseconds": 100
+        },
+        "to": [{
             "key_code": "left_option",
-            "modifiers": { "optional": [ "any" ] }
-          },
-          "parameters": {
-            "basic.to_if_held_down_threshold_milliseconds": 100
-          },
-          "to": [ {
-              "key_code": "left_option",
-              "lazy": true
-            } ],
-          "to_if_held_down": [ { "key_code": "left_option" } ],
-          "to_if_alone": [ { "key_code": "japanese_eisuu" } ]
-        } ]
+            "lazy": true
+          }],
+        "to_if_held_down": [{ "key_code": "left_option" }],
+        "to_if_alone": [{ "key_code": "japanese_eisuu" }]
+    }]
     },
 
     {
       "description": "[GPP] Single Right Option(⌥) to かな mode",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "right_option",
+          "modifiers": { "optional": [ "any" ] }
+        },
+        "parameters": { "basic.to_if_held_down_threshold_milliseconds": 100 },
+        "to": [ {
             "key_code": "right_option",
-            "modifiers": { "optional": [ "any" ] }
-          },
-          "parameters": { "basic.to_if_held_down_threshold_milliseconds": 100 },
-          "to": [ {
-              "key_code": "right_option",
-              "lazy": true
-            } ],
-          "to_if_held_down": [ { "key_code": "right_option" } ],
-          "to_if_alone": [ { "key_code": "japanese_kana" } ]
-        } ]
+            "lazy": true
+          } ],
+        "to_if_held_down": [ { "key_code": "right_option" } ],
+        "to_if_alone": [ { "key_code": "japanese_kana" } ]
+      }]
     },
 
     {
       "description": "[GPP] Ctrl+F/K/R/T for Web browsers",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "f",
+          "modifiers": {
+            "mandatory": [ "control" ],
+            "optional": ["any"] }
+        },
+        "to": [{
             "key_code": "f",
-            "modifiers": {
-              "mandatory": [ "control" ],
-              "optional": ["any"] }
-          },
-          "to": [ {
-              "key_code": "f",
-              "modifiers": [ "left_command" ]
-            } ],
-          "conditions": [ {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$",
-                "^org\\.mozilla\\.nightly$",
-                "^com\\.microsoft\\.Edge",
-                "^com\\.google\\.Chrome$",
-                "^org\\.chromium\\.Chromium$",
-                "^com\\.apple\\.Safari$"
-              ] }
-          ]
+            "modifiers": [ "left_command" ]
+        }],
+        "conditions": [{
+          "type": "frontmost_application_if",
+          "bundle_identifiers": [
+            "^org\\.mozilla\\.firefox$",
+            "^org\\.mozilla\\.nightly$",
+            "^com\\.microsoft\\.Edge",
+            "^com\\.google\\.Chrome$",
+            "^org\\.chromium\\.Chromium$",
+            "^com\\.apple\\.Safari$"
+      ]}]},
+      {
+        "type": "basic",
+        "from": {
+          "key_code": "k",
+          "modifiers": {
+            "mandatory": [ "control" ],
+            "optional": ["any"] }
         },
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "k",
-            "modifiers": {
-              "mandatory": [ "control" ],
-              "optional": ["any"] }
-          },
-          "to": [ {
-              "key_code": "k",
-              "modifiers": [ "left_command" ]
-            } ],
-          "conditions": [ {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$",
-                "^org\\.mozilla\\.nightly$",
-                "^com\\.microsoft\\.Edge",
-                "^com\\.google\\.Chrome$",
-                "^org\\.chromium\\.Chromium$",
-                "^com\\.apple\\.Safari$"
-              ] }
-          ]
+        "to": [{
+          "key_code": "k",
+          "modifiers": [ "left_command" ]
+        }],
+        "conditions": [ {
+          "type": "frontmost_application_if",
+          "bundle_identifiers": [
+            "^org\\.mozilla\\.firefox$",
+            "^org\\.mozilla\\.nightly$",
+            "^com\\.microsoft\\.Edge",
+            "^com\\.google\\.Chrome$",
+            "^org\\.chromium\\.Chromium$",
+            "^com\\.apple\\.Safari$"
+      ]}]},
+      {
+        "type": "basic",
+        "from": {
+          "key_code": "r",
+          "modifiers": {
+            "mandatory": [ "control" ],
+            "optional": ["any"] }
         },
-         {
-          "type": "basic",
-          "from": {
-            "key_code": "r",
-            "modifiers": {
-              "mandatory": [ "control" ],
-              "optional": ["any"] }
-          },
-          "to": [ {
-              "key_code": "r",
-              "modifiers": [ "left_command" ]
-            } ],
-          "conditions": [ {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$",
-                "^org\\.mozilla\\.nightly$",
-                "^com\\.microsoft\\.Edge",
-                "^com\\.google\\.Chrome$",
-                "^org\\.chromium\\.Chromium$",
-                "^com\\.apple\\.Safari$"
-              ] }
-          ]
-        },
-         {
-          "type": "basic",
-          "from": {
-            "key_code": "t",
-            "modifiers": {
-              "mandatory": [ "control" ],
-              "optional": ["any"] }
-          },
-          "to": [ {
-              "key_code": "t",
-              "modifiers": [ "left_command" ]
-            } ],
-          "conditions": [ {
-              "type": "frontmost_application_if",
-              "bundle_identifiers": [
-                "^org\\.mozilla\\.firefox$",
-                "^org\\.mozilla\\.nightly$",
-                "^com\\.microsoft\\.Edge",
-                "^com\\.google\\.Chrome$",
-                "^org\\.chromium\\.Chromium$",
-                "^com\\.apple\\.Safari$"
-              ] }
-          ]
-        }
-      ]
+        "to": [{
+          "key_code": "r",
+          "modifiers": [ "left_command" ]
+        }],
+      "conditions": [{
+          "type": "frontmost_application_if",
+          "bundle_identifiers": [
+            "^org\\.mozilla\\.firefox$",
+            "^org\\.mozilla\\.nightly$",
+            "^com\\.microsoft\\.Edge",
+            "^com\\.google\\.Chrome$",
+            "^org\\.chromium\\.Chromium$",
+            "^com\\.apple\\.Safari$"
+      ]}]},
+      {
+      "type": "basic",
+      "from": {
+        "key_code": "t",
+        "modifiers": {
+          "mandatory": [ "control" ],
+          "optional": ["any"] }
+      },
+      "to": [{
+        "key_code": "t",
+        "modifiers": [ "left_command" ]
+        }],
+      "conditions": [ {
+        "type": "frontmost_application_if",
+        "bundle_identifiers": [
+          "^org\\.mozilla\\.firefox$",
+          "^org\\.mozilla\\.nightly$",
+          "^com\\.microsoft\\.Edge",
+          "^com\\.google\\.Chrome$",
+          "^org\\.chromium\\.Chromium$",
+          "^com\\.apple\\.Safari$"
+      ]}]}]
     },
 
     {
       "description": "[GPP] ⌘D to ⌥D on iTerm2 (word deletion)",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "d",
+          "modifiers": { "mandatory": [ "command" ]}
+        },
+        "to": [ {
             "key_code": "d",
-            "modifiers": { "mandatory": [ "command" ] }
-          },
-          "to": [ {
-              "key_code": "d",
-              "modifiers": [ "left_option" ]
-            } ],
-          "conditions": [ {
-            "type": "frontmost_application_if",
-            "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] } ]
-        } ]
+            "modifiers": [ "left_option" ]
+          } ],
+        "conditions": [{
+          "type": "frontmost_application_if",
+          "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ]}]
+        }]
     },
 
     {
       "description": "[GPP] (OBSOLETE) Ignore Command(⌘)+R(reset terminal) on iTerm2",
-      "manipulators": [ {
+      "manipulators": [{
           "type": "basic",
           "from": {
             "key_code": "r",
-            "modifiers": { "mandatory": [ "command" ] }
+            "modifiers": { "mandatory": [ "command" ]}
           },
-          "conditions": [ {
+          "conditions": [{
             "type": "frontmost_application_if",
-            "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] } ]
-        } ]
+            "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ]}]
+        }]
     },
 
     {
       "description": "[GPP] (OBSOLETE) Ignore Command(⌘)+K on iTerm2 (clear buffer)",
-      "manipulators": [ {
+      "manipulators": [{
           "type": "basic",
           "from": {
             "key_code": "k",
             "modifiers": { "mandatory": [ "command" ] }
           },
-          "conditions": [ {
+          "conditions": [{
             "type": "frontmost_application_if",
-            "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] } ]
-        } ]
+            "bundle_identifiers": [ "^com\\.googlecode\\.iterm2" ] }]
+        }]
     },
 
     {
       "description": "[GPP] Command+E Opens Finder",
-      "manipulators": [
-          {
-              "conditions": [
-                  {
-                      "bundle_identifiers": [
-                          "^com\\.microsoft\\.rdc$",
-                          "^com\\.microsoft\\.rdc\\.mac$",
-                          "^com\\.microsoft\\.rdc\\.macos$",
-                          "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                          "^net\\.sf\\.cord$",
-                          "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                          "^com\\.itap-mobile\\.qmote$",
-                          "^com\\.nulana\\.remotixmac$",
-                          "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                          "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                          "^com\\.teamviewer\\.TeamViewer$",
-                          "^com\\.vmware\\.horizon$",
-                          "^com\\.2X\\.Client\\.Mac$",
-                          "^com\\.vmware\\.fusion$",
-                          "^com\\.vmware\\.horizon$",
-                          "^com\\.vmware\\.view$",
-                          "^com\\.parallels\\.desktop$",
-                          "^com\\.parallels\\.vm$",
-                          "^com\\.parallels\\.desktop\\.console$",
-                          "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                          "^com\\.citrix\\.XenAppViewer$",
-                          "^com\\.vmware\\.proxyApp\\.",
-                          "^com\\.parallels\\.winapp\\."
-                      ],
-                      "type": "frontmost_application_unless"
-                  }
-              ],
-              "from": {
-                  "key_code": "e",
-                  "modifiers": {
-                      "mandatory": [
-                          "command"
-                      ]
-                  }
-              },
-              "to": [
-                  {
-                      "shell_command": "osascript -e 'tell application \"Finder\"' -e 'if (count of windows) is 0 then' -e 'make new Finder window to folder ((path to home folder) as text)' -e 'else' -e 'set frontmost to true' -e 'end if' -e 'activate' -e 'end tell'"
-                  }
-              ],
-              "type": "basic"
-          }
-      ]
+      "manipulators": [{
+        "from": {
+          "key_code": "e",
+          "modifiers": {"mandatory": ["command"]}},
+        "to": [{
+            "shell_command": "osascript -e 'tell application \"Finder\"' -e 'if (count of windows) is 0 then' -e 'make new Finder window to folder ((path to home folder) as text)' -e 'else' -e 'set frontmost to true' -e 'end if' -e 'activate' -e 'end tell'"
+          }],
+        "type": "basic",
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [
+            "^com\\.2X\\.Client\\.Mac$",
+            "^com\\.apple\\.ScreenSharing$",
+            "^com\\.citrix\\.XenAppViewer$",
+            "^com\\.itap-mobile\\.qmote$",
+            "^com\\.microsoft\\.rdc$",
+            "^com\\.microsoft\\.rdc\\.",
+            "^com\\.nulana\\.remotixmac$",
+            "^com\\.nulana\\.remotixmacwild$",
+            "^com\\.parallels\\.desktop$",
+            "^com\\.parallels\\.desktop\\.console$",
+            "^com\\.parallels\\.vm$",
+            "^com\\.parallels\\.winapp\\.",
+            "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+            "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+            "^com\\.teamviewer\\.TeamViewer$",
+            "^com\\.thinomenon\\.RemoteDesktopConnection$",
+            "^com\\.utmapp\\.UTM$",
+            "^com\\.vmware\\.fusion$",
+            "^com\\.vmware\\.horizon$",
+            "^com\\.vmware\\.proxyApp\\.",
+            "^com\\.vmware\\.view$",
+            "^net\\.sf\\.cord$",
+            "^org\\.virtualbox\\.app\\.VirtualBoxVM$"
+          ]}]
+      }]
     },
 
     {
       "description": "[GPP] Start <System Preferences> by ⌥⌘,",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "comma",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [
-            { "shell_command": "open -a 'System Preferences'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "comma",
+          "modifiers": {"mandatory": ["command", "option"]}
+        },
+        "to": [
+          {"shell_command": "open -a 'System Preferences'"}
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Calculator> by ⌥⌘C",
       "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "c",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [
-            { "shell_command": "open -a 'Calculator'" }
-          ]
+        "type": "basic",
+        "from": {
+          "key_code": "c",
+          "modifiers": {"mandatory": ["command", "option"] }
+        },
+        "to": [
+          { "shell_command": "open -a 'Calculator'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
         }
       ]
     },
@@ -375,562 +359,509 @@
             "modifiers": {"mandatory": ["command", "option"] }
           },
           "to": [ {
-            "shell_command": "open -a 'Discord Canary'" } ]
+            "shell_command": "open -a 'Discord Canary'" } ],
+          "conditions": [{
+            "type": "frontmost_application_unless",
+            "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+          }]
       } ]
     },
 
     {
       "description": "[GPP] Start <DeepL> by ⌥⌘D",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "d",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [ {
-            "shell_command": "open -a 'DeepL'" } ]
-      } ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "d",
+          "modifiers": {"mandatory": ["command", "option"] }
+        },
+        "to": [ {
+          "shell_command": "open -a 'DeepL'" } ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Firefox> by ⌥⌘F",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "f",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [ {
-            "shell_command": "open -a 'Firefox'" } ]
-        } ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "f",
+          "modifiers": {"mandatory": ["command", "option"] }
+        },
+        "to": [ {
+          "shell_command": "open -a 'Firefox'" } ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Google Chrome> by ⌥⌘G",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "g",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [
-            { "shell_command": "open -a 'Google Chrome'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "g",
+          "modifiers": {"mandatory": ["command", "option"] }
+        },
+        "to": [
+          { "shell_command": "open -a 'Google Chrome'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Chromium> by ⌥⌘G",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "g",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [
-            { "shell_command": "open -a 'Chromium'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "g",
+          "modifiers": {"mandatory": ["command", "option"] }
+        },
+        "to": [
+          { "shell_command": "open -a 'Chromium'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <LINE> by ⌥⌘L",
       "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "l",
-            "modifiers": {"mandatory": ["command", "option"] }
-          },
-          "to": [ {
-            "shell_command": "open -a 'LINE'" } ]
-        } ]
+        "type": "basic",
+        "from": {
+          "key_code": "l",
+          "modifiers": {"mandatory": ["command", "option"] }
+        },
+        "to": [ {
+          "shell_command": "open -a 'LINE'" } ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <RtM> by ⌥⌘R",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "r",
-            "modifiers": {"mandatory": ["command", "option"]}
-          },
-          "to": [
-            { "shell_command": "open -a 'Remember The Milk'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "r",
+          "modifiers": {"mandatory": ["command", "option"]}
+        },
+        "to": [
+          { "shell_command": "open -a 'Remember The Milk'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Spotyify> by ⌥⌘S",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "s",
-            "modifiers": {"mandatory": ["command", "option"]}
-          },
-          "to": [
-            { "shell_command": "open -a 'Spotify'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "s",
+          "modifiers": {"mandatory": ["command", "option"]}
+        },
+        "to": [
+          { "shell_command": "open -a 'Spotify'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Slack> by ⌥⇧⌘S",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "s",
-            "modifiers": {"mandatory": ["command", "option", "shift"]}
-          },
-          "to": [
-            { "shell_command": "open -a 'Slack'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "s",
+          "modifiers": {"mandatory": ["command", "option", "shift"]}
+        },
+        "to": [
+          { "shell_command": "open -a 'Slack'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <iTerm2> by ⌥⌘T",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "t",
-            "modifiers": {"mandatory": ["command", "option"]}
-          },
-          "to": [
-            { "shell_command": "open -a 'iTerm'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "t",
+          "modifiers": {"mandatory": ["command", "option"]}
+        },
+        "to": [
+          { "shell_command": "open -a 'iTerm'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <VSCode> by ⌥⌘V",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "v",
-            "modifiers": {"mandatory": ["command", "option"]}
-          },
-          "to": [
-            { "shell_command": "open -a 'Visual Studio Code'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "v",
+          "modifiers": {"mandatory": ["command", "option"]}
+        },
+        "to": [
+          { "shell_command": "open -a 'Visual Studio Code'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Start <Spark Desktop> by ⌥⌘M",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "key_code": "m",
-            "modifiers": {"mandatory": ["command", "option"]}
-          },
-          "to": [
-            { "shell_command": "open -a 'Spark Desktop'" }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "m",
+          "modifiers": {"mandatory": ["command", "option"]}
+        },
+        "to": [
+          { "shell_command": "open -a 'Spark Desktop'" }
+        ],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] ⌥ + Enter to ⌘ + Enter",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "return_or_enter",
-            "modifiers": {"mandatory": ["option"] }
-          },
-          "to": [
-            {
-              "key_code": "return_or_enter",
-              "modifiers": [ "left_command" ]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "return_or_enter",
+          "modifiers": {"mandatory": ["option"] }
+        },
+        "to": [{
+          "key_code": "return_or_enter",
+          "modifiers": [ "left_command" ]
+        }],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] ⌥ + C to ⌘ + C",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "c",
-            "modifiers": {"mandatory": ["option"] }
-          },
-          "to": [
-            {
-              "key_code": "c",
-              "modifiers": [ "left_command" ]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "c",
+          "modifiers": {"mandatory": ["option"] }
+        },
+        "to": [{
+          "key_code": "c",
+          "modifiers": [ "left_command" ]
+        }],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] ⌥ + X to ⌘ + X",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "x",
-            "modifiers": {"mandatory": ["option"] }
-          },
-          "to": [
-            {
-              "key_code": "x",
-              "modifiers": [ "left_command" ]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "x",
+          "modifiers": {"mandatory": ["option"] }
+        },
+        "to": [{
+          "key_code": "x",
+          "modifiers": [ "left_command" ]
+        }],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] ⌥ + V to ⌘ + V",
-      "manipulators": [ {
-          "type": "basic",
-          "from": {
-            "key_code": "v",
-            "modifiers": {"mandatory": ["option"] }
-          },
-          "to": [
-            {
-              "key_code": "v",
-              "modifiers": [ "left_command" ]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "key_code": "v",
+          "modifiers": {"mandatory": ["option"] }
+        },
+        "to": [{
+          "key_code": "v",
+          "modifiers": [ "left_command" ]
+        }],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] Enable PC-Style Copy/Paste/Cut on RDP/VM/Terminal/*Vim (⌃X/C/V → ⌘X/C/V)",
-      "manipulators": [
-        {
+      "manipulators": [{
           "type": "basic",
           "from": {
             "key_code": "c",
             "modifiers": {
-              "mandatory": [
-                "control"
-              ],
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "c",
-              "modifiers": [
-                "left_command"
-              ]
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_unless",
-              "bundle_identifiers": [
-                "^com\\.microsoft\\.rdc$",
-                "^com\\.microsoft\\.rdc\\.",
-                "^net\\.sf\\.cord$",
-                "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                "^com\\.itap-mobile\\.qmote$",
-                "^com\\.nulana\\.remotixmac$",
-                "^com\\.nulana\\.remotixmacwild$",
-                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
-                "^com\\.teamviewer\\.TeamViewer$",
-                "^com\\.vmware\\.horizon$",
-                "^com\\.2X\\.Client\\.Mac$",
-                "^com\\.vmware\\.fusion$",
-                "^com\\.vmware\\.horizon$",
-                "^com\\.vmware\\.view$",
-                "^com\\.parallels\\.desktop$",
-                "^com\\.parallels\\.vm$",
-                "^com\\.parallels\\.desktop\\.console$",
-                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                "^com\\.citrix\\.XenAppViewer$",
-                "^com\\.vmware\\.proxyApp\\.",
-                "^com\\.parallels\\.winapp\\.",
-                "^com\\.utmapp\\.UTM$",
-                "^com\\.apple\\.Terminal$",
-                "^com\\.googlecode\\.iterm2$",
-                "^co\\.zeit\\.hyperterm$",
-                "^co\\.zeit\\.hyper$",
-                "^io\\.alacritty$",
-                "^net\\.kovidgoyal\\.kitty$",
-                "^org\\.vim\\.MacVim$",
-                "^com\\.qvacua\\.VimR$"
-              ]
-            }
-          ]
-        },
+              "mandatory": [ "control" ],
+              "optional": [ "any" ]}},
+          "to": [{
+            "key_code": "c",
+            "modifiers": [ "left_command" ]}],
+          "conditions": [{
+            "type": "frontmost_application_unless",
+            "bundle_identifiers": [
+              "^co\\.zeit\\.hyper$",
+              "^co\\.zeit\\.hyperterm$",
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.apple\\.ScreenSharing$",
+              "^com\\.apple\\.Terminal$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.googlecode\\.iterm2$",
+              "^com\\.itap-mobile\\.qmote$",
+              "^com\\.microsoft\\.rdc$",
+              "^com\\.microsoft\\.rdc\\.",
+              "^com\\.nulana\\.remotixmac$",
+              "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.winapp\\.",
+              "^com\\.qvacua\\.VimR$",
+              "^com\\.teamviewer\\.TeamViewer$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.utmapp\\.UTM$",
+              "^com\\.vmware\\.fusion$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.vmware\\.proxyApp\\.",
+              "^com\\.vmware\\.view$",
+              "^io\\.alacritty$",
+              "^net\\.kovidgoyal\\.kitty$",
+              "^net\\.sf\\.cord$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+              "^org\\.vim\\.MacVim$"
+        ]}]},
         {
           "type": "basic",
           "from": {
             "key_code": "v",
             "modifiers": {
-              "mandatory": [
-                "control"
-              ],
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
+              "mandatory": [ "control" ],
+              "optional": [ "any" ]}},
+          "to": [{
               "key_code": "v",
-              "modifiers": [
-                "left_command"
-              ]
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_unless",
-              "bundle_identifiers": [
-                "^com\\.microsoft\\.rdc$",
-                "^com\\.microsoft\\.rdc\\.",
-                "^net\\.sf\\.cord$",
-                "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                "^com\\.itap-mobile\\.qmote$",
-                "^com\\.nulana\\.remotixmac$",
-                "^com\\.nulana\\.remotixmacwild$",
-                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
-                "^com\\.teamviewer\\.TeamViewer$",
-                "^com\\.vmware\\.horizon$",
-                "^com\\.2X\\.Client\\.Mac$",
-                "^com\\.vmware\\.fusion$",
-                "^com\\.vmware\\.horizon$",
-                "^com\\.vmware\\.view$",
-                "^com\\.parallels\\.desktop$",
-                "^com\\.parallels\\.vm$",
-                "^com\\.parallels\\.desktop\\.console$",
-                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                "^com\\.citrix\\.XenAppViewer$",
-                "^com\\.vmware\\.proxyApp\\.",
-                "^com\\.parallels\\.winapp\\.",
-                "^com\\.utmapp\\.UTM$",
-                "^com\\.apple\\.Terminal$",
-                "^com\\.googlecode\\.iterm2$",
-                "^co\\.zeit\\.hyperterm$",
-                "^co\\.zeit\\.hyper$",
-                "^io\\.alacritty$",
-                "^net\\.kovidgoyal\\.kitty$",
-                "^org\\.vim\\.MacVim$",
-                "^com\\.qvacua\\.VimR$"
-              ]
-            }
-          ]
-        },
+              "modifiers": [ "left_command" ]}],
+          "conditions": [{
+            "type": "frontmost_application_unless",
+            "bundle_identifiers": [
+              "^co\\.zeit\\.hyper$",
+              "^co\\.zeit\\.hyperterm$",
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.apple\\.ScreenSharing$",
+              "^com\\.apple\\.Terminal$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.googlecode\\.iterm2$",
+              "^com\\.itap-mobile\\.qmote$",
+              "^com\\.microsoft\\.rdc$",
+              "^com\\.microsoft\\.rdc\\.",
+              "^com\\.nulana\\.remotixmac$",
+              "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.winapp\\.",
+              "^com\\.qvacua\\.VimR$",
+              "^com\\.teamviewer\\.TeamViewer$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.utmapp\\.UTM$",
+              "^com\\.vmware\\.fusion$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.vmware\\.proxyApp\\.",
+              "^com\\.vmware\\.view$",
+              "^io\\.alacritty$",
+              "^net\\.kovidgoyal\\.kitty$",
+              "^net\\.sf\\.cord$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+              "^org\\.vim\\.MacVim$"
+        ]}]},
         {
           "type": "basic",
           "from": {
             "key_code": "x",
             "modifiers": {
-              "mandatory": [
-                "control"
-              ],
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
+              "mandatory": [ "control" ],
+              "optional": [ "any" ]}},
+          "to": [{
               "key_code": "x",
-              "modifiers": [
-                "left_command"
-              ]
-            }
-          ],
-          "conditions": [
-            {
-              "type": "frontmost_application_unless",
-              "bundle_identifiers": [
-                "^com\\.microsoft\\.rdc$",
-                "^com\\.microsoft\\.rdc\\.",
-                "^net\\.sf\\.cord$",
-                "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                "^com\\.itap-mobile\\.qmote$",
-                "^com\\.nulana\\.remotixmac$",
-                "^com\\.nulana\\.remotixmacwild$",
-                "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
-                "^com\\.teamviewer\\.TeamViewer$",
-                "^com\\.vmware\\.horizon$",
-                "^com\\.2X\\.Client\\.Mac$",
-                "^com\\.vmware\\.fusion$",
-                "^com\\.vmware\\.horizon$",
-                "^com\\.vmware\\.view$",
-                "^com\\.parallels\\.desktop$",
-                "^com\\.parallels\\.vm$",
-                "^com\\.parallels\\.desktop\\.console$",
-                "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                "^com\\.citrix\\.XenAppViewer$",
-                "^com\\.vmware\\.proxyApp\\.",
-                "^com\\.parallels\\.winapp\\.",
-                "^com\\.utmapp\\.UTM$",
-                "^com\\.apple\\.Terminal$",
-                "^com\\.googlecode\\.iterm2$",
-                "^co\\.zeit\\.hyperterm$",
-                "^co\\.zeit\\.hyper$",
-                "^io\\.alacritty$",
-                "^net\\.kovidgoyal\\.kitty$",
-                "^org\\.vim\\.MacVim$",
-                "^com\\.qvacua\\.VimR$"
-              ]
-            }
-          ]
-        }
-      ]
-    },
+              "modifiers": [ "left_command" ]}],
+          "conditions": [{
+            "type": "frontmost_application_unless",
+            "bundle_identifiers": [
+              "^co\\.zeit\\.hyper$",
+              "^co\\.zeit\\.hyperterm$",
+              "^com\\.2X\\.Client\\.Mac$",
+              "^com\\.apple\\.ScreenSharing$",
+              "^com\\.apple\\.Terminal$",
+              "^com\\.citrix\\.XenAppViewer$",
+              "^com\\.googlecode\\.iterm2$",
+              "^com\\.itap-mobile\\.qmote$",
+              "^com\\.microsoft\\.rdc$",
+              "^com\\.microsoft\\.rdc\\.",
+              "^com\\.nulana\\.remotixmac$",
+              "^com\\.nulana\\.remotixmacwild$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+              "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+              "^com\\.parallels\\.desktop$",
+              "^com\\.parallels\\.desktop\\.console$",
+              "^com\\.parallels\\.vm$",
+              "^com\\.parallels\\.winapp\\.",
+              "^com\\.qvacua\\.VimR$",
+              "^com\\.teamviewer\\.TeamViewer$",
+              "^com\\.thinomenon\\.RemoteDesktopConnection$",
+              "^com\\.utmapp\\.UTM$",
+              "^com\\.vmware\\.fusion$",
+              "^com\\.vmware\\.horizon$",
+              "^com\\.vmware\\.proxyApp\\.",
+              "^com\\.vmware\\.view$",
+              "^io\\.alacritty$",
+              "^net\\.kovidgoyal\\.kitty$",
+              "^net\\.sf\\.cord$",
+              "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+              "^org\\.vim\\.MacVim$"
+    ]}]}]},
 
     {
       "description": "[GPP] Mouse button 5 to Lookup dictionary (⌃⌘D)",
-      "manipulators": [
-        {
-          "type": "basic",
-          "from": {
-            "pointing_button": "button5",
-            "modifiers": {
-              "optional": [
-                "caps_lock"
-              ]
-            }
-          },
-          "to": [
-            {
-            "key_code": "d",
-            "modifiers": ["control", "command"]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "type": "basic",
+        "from": {
+          "pointing_button": "button5",
+          "modifiers": { "optional": [ "caps_lock" ]}},
+        "to": [{
+          "key_code": "d",
+          "modifiers": ["control", "command"]}],
+        "conditions": [{
+          "type": "frontmost_application_unless",
+          "bundle_identifiers": [ "^com\\.apple\\.ScreenSharing$" ]
+        }]
+      }]
     },
 
     {
       "description": "[GPP] CapsLock -> Control / Escape (unless Apple Internal Keyboard)",
-      "manipulators": [
-        {
-          "description": "CapsLock -> Esc(click) | Control(hold)",
-          "type": "basic",
-          "from": {
-            "key_code": "caps_lock",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "right_control",
-              "lazy": true
-            }
-          ],
-          "to_if_alone": [
-            {
-              "key_code": "escape"
-            }
-          ],
-          "conditions": [
-            {
-              "description": "Apply if it isn't Apple Internal Keyboard / Trackpad",
-              "type": "device_unless",
-              "identifiers": [
-                {
-                  "description": "Apple Internal Keyboard (MacBook Pro Retina / JIS)",
-                  "vendor_id": 1452,
-                  "product_id": 612,
-                  "is_keyboard": true
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "description": "CapsLock -> Esc(click) | Control(hold)",
+        "type": "basic",
+        "from": {
+          "key_code": "caps_lock",
+          "modifiers": { "optional": [ "any" ]}},
+        "to": [{
+          "key_code": "right_control",
+          "lazy": true
+          }],
+        "to_if_alone": [{ "key_code": "escape" }],
+        "conditions": [{
+          "description": "Apply if it isn't Apple Internal Keyboard / Trackpad",
+          "type": "device_unless",
+          "identifiers": [{
+            "description": "Apple Internal Keyboard (MacBook Pro Retina / JIS)",
+            "vendor_id": 1452,
+            "product_id": 612,
+            "is_keyboard": true
+        }]}]
+      }]
     },
 
     {
       "description": "[GPP] CapsLock -> Hyper / Escape (unless Apple Internal Keyboard)",
-      "manipulators": [
-        {
-          "description": "CapsLock -> Esc(click) | Hyper(hold)",
-          "type": "basic",
-          "from": {
-            "key_code": "caps_lock",
-            "modifiers": {
-              "optional": [
-                "any"
-              ]
-            }
-          },
-          "to": [
-            {
-              "key_code": "right_shift",
-              "lazy": true,
-              "modifiers": [
-                "right_command",
-                "right_control",
-                "right_option"
-              ]
-            }
-          ],
-          "to_if_alone": [
-            {
-              "key_code": "escape"
-            }
-          ],
-          "conditions": [
-            {
-              "description": "Apply if it isn't Apple Internal Keyboard / Trackpad",
-              "type": "device_unless",
-              "identifiers": [
-                {
-                  "description": "Apple Internal Keyboard (MacBook Pro Retina / JIS)",
-                  "vendor_id": 1452,
-                  "product_id": 612,
-                  "is_keyboard": true
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      "manipulators": [{
+        "description": "CapsLock -> Esc(click) | Hyper(hold)",
+        "type": "basic",
+        "from": {
+          "key_code": "caps_lock",
+          "modifiers": { "optional": [ "any" ]}},
+        "to": [{
+          "key_code": "right_shift",
+          "lazy": true,
+          "modifiers": [
+            "right_command",
+            "right_control",
+            "right_option"
+          ]}],
+        "to_if_alone": [{
+          "key_code": "escape"
+        }],
+        "conditions": [{
+          "description": "Apply if it isn't Apple Internal Keyboard / Trackpad",
+          "type": "device_unless",
+          "identifiers": [{
+            "description": "Apple Internal Keyboard (MacBook Pro Retina / JIS)",
+            "vendor_id": 1452,
+            "product_id": 612,
+            "is_keyboard": true
+        }]}]
+      }]
     },
 
     {
       "description": "[GPP] ⌘C to ⌃C on RDP/VM console (not to call up Cortana/Teams on Windows 10/11)",
-      "manipulators": [ {
+      "manipulators": [{
           "type": "basic",
           "from": {
             "key_code": "c",
             "modifiers": {"mandatory": ["command"] }
           },
-          "to": [
-            {
+          "to": [{
               "key_code": "c",
               "modifiers": [ "control" ]
-            }
-          ],
-          "conditions": [ {
+          }],
+          "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
               "^com\\.microsoft\\.rdc$",
@@ -956,11 +887,8 @@
               "^com\\.vmware\\.proxyApp\\.",
               "^com\\.parallels\\.winapp\\.",
               "^com\\.utmapp\\.UTM$"
-            ]
-          } ]
-      } ]
+          ]}]
+      }]
     }
-
-
   ]
 }
