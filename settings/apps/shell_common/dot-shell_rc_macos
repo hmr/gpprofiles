@@ -245,9 +245,6 @@ echo -n "    "
 echo -n "chwp"
 alias chwp="osascript -e 'tell application \"System Events\" to set picture of every desktop to \"\"'"
 
-echo -n ", whichwp"
-alias whichwp='idx=0; for file in $(sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "select * from data" | tail -2); do echo -n Display $((++idx)):; realpath ~/Pictures/Wallpaper_Mixed_All/${file}; done'
-
 # echo -n ", setipv6route"
 # alias setipv6route='echo "Checking IPv6 routing... "; ping6 -c 3 ipv6.google.com >& /dev/null && echo "IPv6 routing seems to be OK!" || (echo "IPv6 ping fails. Trying to configure IPv6 default root." && netstat -nr -f inet6 | grep default; sudo route -n delete -inet6 default fe80::6ab:18ff:fe98:22d3%en0; sudo route -n delete -inet6 default fe80::6ab:18ff:fe98:22d3%en1; sudo route -n add -inet6 default fe80::6ab:18ff:fe98:22d3%en1; netstat -nr -f inet6 | grep default; ping6 -c 3 ipv6.google.com)'
 
@@ -376,4 +373,26 @@ function setipv6route() {
   echo "  Ohhhhh... There's no more way... Giving up. (sigh)"
   return 2
 }
+
+echo -n ", whichwp"
+function whichwp() {
+	local folder="$(osascript -e 'tell application "System Events" to get picture of current desktop')"
+	local vers="$(sw_vers -productVersion | awk -F '.' '{printf "%d%02d%02d", $1, $2, $3}')"
+	if (( vers >= 140000 )); then
+		echo "Wallpaper will be any of the following:"
+		lsof -p $(pgrep -f WallpaperImageExtension) \
+			| grep "${folder}" \
+			| awk '{ $1=$2=$3=$4=$5=$6=$7=$8=""; sub(/^[[:space:]]+/, ""); print "\""$0"\""}'
+	else
+		local idx=0
+		local file
+		for file in $(sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "select * from data" | tail -2)
+		do
+			echo -n Display $((++idx)):
+			# realpath ~/Pictures/Wallpaper_Mixed_All/${file}
+			echo "${folder}/${file}"
+		done
+	fi
+}
+
 echo
