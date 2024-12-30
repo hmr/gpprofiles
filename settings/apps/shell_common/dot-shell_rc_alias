@@ -208,8 +208,8 @@ fi
 # checkip
 if which curl > /dev/null; then
 	echo -n ", checkip, checkip6"
-	alias checkip='echo $(curl -s -4 https://domains.google.com/checkip)'
-	alias checkip6='echo $(curl -s -6 -H "Host:domains.google.com" --insecure "https://[2404:6800:4004:824::200e]/checkip")'
+	alias checkip='echo $(curl -s -4 "https://ifconfig.me")'
+	alias checkip6='echo $(curl -s -6 --insecure -H "Host: ifconfig.me" "https://[2600:1901:0:b2bd::]")'
 fi
 
 echo -m ", getipinfo"
