@@ -229,6 +229,12 @@ if [ ! "${RUNEWIDTH_EASTASIAN}" ]; then
   export RUNEWIDTH_EASTASIAN=0
 fi
 
+# Vulkan
+echo -n ", Vulkan"
+if [[ -e /opt/homebrew/etc/vulkan/icd.d/MoltenVK_icd.json ]]; then
+  export VK_ICD_FILENAMES=/opt/homebrew/etc/vulkan/icd.d/MoltenVK_icd.json
+fi
+
 # TERMINFO_DIRS for iTerm2
 # if [[ -n "${ITERM_PROFILE}" && -d /Applications/iTerm.app/Contents/Resources/terminfo ]]; then
 #   echo -n ", TERMINFO_DIRS(for iTerm2)"
