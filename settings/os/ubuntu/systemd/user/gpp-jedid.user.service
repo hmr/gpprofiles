@@ -1,0 +1,19 @@
+[Unit]
+Description=gpp-jedid: manage color settings for CLI application.
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/gpprofiles/gpprofiles
+ExecStart=/usr/bin/bash -c 'echo "GPP_HOME=$GPP_HOME" && $GPP_HOME/libexec/tools/jedid'
+StandardOutput=null
+StandardError=null
+# For debug
+# StandardOutput=append:/tmp/gpp-jedid.stdout.log
+# StandardError=append:/tmp/gpp-jedid.stderr.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
+
