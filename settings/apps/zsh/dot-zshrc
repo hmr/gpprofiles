@@ -159,7 +159,7 @@ if [ -n "${ZPLUG_ROOT}" ]; then
 
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
-  zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2
+  zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2, at:0.44.1
   ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
   #zplug "junegunn/fzf", use:shell/completion.zsh
   ## fzf でよく使う関数の詰め合わせ
