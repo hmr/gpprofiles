@@ -4,13 +4,22 @@ After=network.target
 
 [Service]
 Type=simple
+Environment="PATH=%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
 EnvironmentFile=%h/.config/gpprofiles/gpprofiles
 ExecStart=/usr/bin/bash -c 'echo "GPP_HOME=$GPP_HOME" && $GPP_HOME/libexec/tools/jedid'
-StandardOutput=null
-StandardError=null
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gpp-jedid
+# To show log: journalctl -f --user --identifier=gpp-jedid
+
+# StandardOutput=null
+# StandardError=null
+
 # For debug
 # StandardOutput=append:/tmp/gpp-jedid.stdout.log
 # StandardError=append:/tmp/gpp-jedid.stderr.log
+
 Restart=always
 RestartSec=10
 

@@ -3,42 +3,96 @@
 # shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 #
 # Jedid
-# Detects macOS auto appearance change and set some CLI applications' color setting
+# Detects macOS auto appearance change and set some CLI applications' color setting.
+# For systems other than macOS, get daytime information from webservice.
 
 # Part of GPP
 
 # AUTHOR: hmr
 # ORIGIN: 2024-03-29
 
+declare -g DEBUG MODE NEXTCHECK SUNRISE SUNSET NOW
 
+DEBUG=1
+SYSLOG=1
+
+# Debug echo
 function decho () {
+	local PREFIX
+	if (( ! SYSLOG )); then
+		PREFIX="[$(date +'%Y-%m-%d %H:%M:%S')]"
+	fi
 	if (( DEBUG > 0 )); then
-		echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" > /dev/stderr
+		echo "${PREFIX} $*" >&2
 	fi
 }
 
-function check_sidechange() {
-	decho "Entering function ${FUNCNAME[0]}..."
+# Get sunrise and sunset time by web services
+function getdaytime () {
+	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
-	if defaults read -g AppleInterfaceStyle 2>&1 | grep -qi "dark" >& /dev/null; then
-		# Dark side
-		decho "System theme is dark mode."
-		if [[ ${MODE} != "dark" ]]; then
-			# Light -> Dark
-			decho "Changed to dark side!"
-			echo "1"
-			return
-		fi
-	else
-		# Light side
-		decho "System theme is light mode."
-		if [[ ${MODE} != "light" ]]; then
-			# Dark -> Light
-			decho "Changed to light side!"
-			echo "2"
-			return
-		fi
-	fi
+	local JSON=$(curl -s "https://api.sunrise-sunset.org/json?$(curl -s 'https://ipinfo.io/json' | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "https://ipinfo.io/json" | jq -r ".timezone")")
+
+	NEXTCHECK=$(date -d 'tomorrow 00:00:00' +%s)
+	SUNRISE=$(date -d "$(echo "${JSON}" | jq -r '.results.sunrise')" +%s)
+	SUNSET=$(date -d "$(echo "${JSON}" | jq -r '.results.sunset')" +%s)
+	decho "[New] NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
+}
+
+function check_sidechange() {
+	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
+
+	case "${OSTYPE}" in
+		# macOS
+		darwin* )
+			decho "darwin detected."
+			if defaults read -g AppleInterfaceStyle 2>&1 | grep -qi "dark" >& /dev/null; then
+				# Dark side
+				decho "System theme is dark mode."
+				if [[ ${MODE} != "dark" ]]; then
+					# Light -> Dark
+					decho "Changed to dark side!"
+					echo "1"
+					return
+				fi
+			else
+				# Light side
+				decho "System theme is light mode."
+				if [[ ${MODE} != "light" ]]; then
+					# Dark -> Light
+					decho "Changed to light side!"
+					echo "2"
+					return
+				fi
+			fi
+			;;
+
+		# Other Unix-like system
+		* )
+			decho "other unix system detected."
+			NOW=$(date +%s)
+			decho "NOW=${NOW} NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
+			if [[ ${NOW} -ge ${SUNRISE} && ${NOW} -le ${SUNSET} ]]; then
+				# Light side
+				decho "System theme is light mode."
+				if [[ ${MODE} != "light" ]]; then
+					# Dark -> Light
+					decho "Changed to light side!"
+					echo "2"
+					return
+				fi
+			else
+				# Dark side
+				decho "System theme is dark mode."
+				if [[ ${MODE} != "dark" ]]; then
+					# Light -> Dark
+					decho "Changed to dark side!"
+					echo "1"
+					return
+				fi
+			fi
+			;;
+	esac
 
 	# side not changed
 	decho "Side isn't changed."
@@ -47,13 +101,19 @@ function check_sidechange() {
 }
 
 function main() {
-	decho "Entering function ${FUNCNAME[0]}..."
+	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
 	while true; do
 		decho "MODE is ${MODE:-NOT SET}."
+
+		# Get daytime info if the system isn't macOS
+		if [[ ! ${OSTYPE} =~ darwin ]]; then
+			[[ -z ${NEXTCHECK} || ${NOW} -gt ${NEXTCHECK} ]] && getdaytime
+		fi
+
 		case "$(check_sidechange)" in
 
-			# Nothing to do
+			# Side not changed: nothing to do
 			0 )
 				decho "Nothing to do."
 				;;
@@ -118,8 +178,8 @@ function main() {
 	done
 }
 
-DEBUG=1
-decho "Starting Jedid..."
+decho "------------------------------------------------------------"
+decho "Starting Jedid on pid#${BASHPID}..."
 
 function trap_exit() {
 	decho "Quitting..."
@@ -131,5 +191,6 @@ if [[ -z ${XDG_CONFIG_HOME} ]]; then
 	XDG_CONFIG_HOME="${HOME}/.config"
 fi
 decho "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
+decho "PATH=${PATH}"
 main
 
