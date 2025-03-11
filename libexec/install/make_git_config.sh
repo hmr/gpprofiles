@@ -6,9 +6,9 @@ SDIR="$(cd $(dirname $0)/../..; pwd)"
 TMPL="${HOME:?}/.config/git/dot-gitconfig.tmpl"
 OUTPUT="${HOME:?}/.config/git/config"
 
-REALNAME="$(getent passwd ${USER} | cut -d: -f 5 | tr -d ",+$")"
 MAILADDR="${USER}@${HOSTNAME-:$HOST}"
-
+REALNAME="$(getent passwd "${USER}" | cut -d: -f 5 | tr -d ",+$")"
+[[ -z ${REALNAME} ]] && REALNAME=${MAILADDR}
 
 if [[ ! -r ${TMPL} ]]; then
     echo "Template ${TMPL} not found."
