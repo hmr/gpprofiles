@@ -94,7 +94,7 @@ function check_sidechange() {
 	esac
 
 	# side not changed
-	decho "Side isn't changed."
+	decho "The side hasn't changed."
 	echo "0"
 	return
 }
