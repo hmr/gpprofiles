@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2024-11-26T10:05:37+0900]
+" Last Update: [2025-03-06T17:29:35+0900]
 
 scriptencoding utf-8
 
@@ -204,7 +204,10 @@ Plug 'hmr/vim-rootignore' "was once 'octref/RootIgnore'
 " Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
 " CSV handling plugin
-Plug 'chrisbra/csv.vim'
+" Plug 'chrisbra/csv.vim'
+
+" 🌈Rainbow CSV - Vim plugin: Highlight columns in CSV and TSV files and run queries in SQL-like language 
+Plug 'mechatroner/rainbow_csv'
 
 " Elegant buffer explorer - takes very little screen space
 " Plug 'fholgado/minibufexpl.vim'
