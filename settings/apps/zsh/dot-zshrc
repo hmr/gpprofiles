@@ -116,7 +116,23 @@ function _chksysspd() {
 				SYSSPD="1"
 			fi;;
 		linux*)
-			SYSSPD="2";;
+			case "$(uname -m)" in
+				aarch64)
+					local TMP_CPUINFO
+					TMP_CPUINFO=$(cat /proc/cpuinfo)
+					if [[ ${TMP_CPUINFO} =~ "Raspberry Pi 5" ]]; then
+						SYSSPD="7"
+					elif [[ ${TMP_CPUINFO} =~ "Raspberry Pi 4" ]]; then
+						SYSSPD="3"
+					else
+						SYSSPD="2"
+					fi
+					:
+					;;
+				*)
+					SYSSPD="2";;
+			esac
+			;;
 		* )
 			SYSSPD="5";;
 	esac
@@ -175,7 +191,7 @@ if [ -n "${ZPLUG_ROOT}" ]; then
 
   # Install plugins if there are plugins that have not been installed
   echo "  In order to shorten the startup time, 'zplug check' won't be executed."
-  echo "  Please run '${YELLOW}zplug-check-combo${NORMAL}' manually if necessary."
+  echo "  Please run '${YELLOW}zplug check-combo${NORMAL}' manually if necessary."
   # if ! zplug check --verbose; then
   #   # if ! zplug check; then
   #   printf "Install? [y/N]: "
