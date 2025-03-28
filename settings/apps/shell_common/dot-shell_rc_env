@@ -126,13 +126,19 @@ else
   export WEECHAT_HOME=${HOME}/.weechat
 fi
 
-# Cargo(buildsystem of Rust)
+# Cargo (package manager and buildsystem of Rust)
 if [ -d "${XDG_DATA_HOME}/cargo" ]; then
   echo -n ", CARGO_HOME"
   export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 fi
 
-# Gradle
+# Rustup (Installer and toolchain manager of Rust)
+if [ -d "${XDG_DATA_HOME}/rustup" ]; then
+  echo -n ", RUSTUP_HOME"
+  export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+fi
+
+# Gradle (yet another buildtool based on groovy)
 if [ -d "${XDG_DATA_HOME}/gradle" ]; then
   echo -n ", GRADLE_USER_HOME"
   export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
