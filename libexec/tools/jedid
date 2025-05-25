@@ -169,24 +169,31 @@ function main() {
 			# Light -> Dark
 			1 )
 				## lsd
-				echo "Setting lsd dark..." >&2
+				decho "Setting lsd for dark mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
 				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
 					ln -sf themes/default.yaml colors.yaml
 				fi
 
 				## bat
-				echo "Setting bat dark..." >&2
+				decho "Setting bat for dark mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
 				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
 					ln -sf config-dark config
 				fi
 
 				## man
-				echo "Setting man dark..." >&2
+				decho "Setting man for dark mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/man"
 				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
 					ln -sf man.conf.dark man.conf
+				fi
+
+				## kitty
+				decho "Setting man for dark mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf kitty.dark.conf kitty.conf
 				fi
 
 				# set mode
@@ -196,24 +203,31 @@ function main() {
 			# Dark -> Light
 			2 )
 				## lsd
-				echo "Setting lsd light..." >&2
+				decho "Setting lsd for light mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
 				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
 					ln -sf themes/default-light.yaml colors.yaml
 				fi
 
 				## bat
-				echo "Setting bat light..." >&2
+				decho "Setting bat for light mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
 				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
 					ln -sf config-light config
 				fi
 
 				## man
-				echo "Setting man light..." >&2
+				decho "Setting man for light mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/man"
 				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
 					ln -sf man.conf.light man.conf
+				fi
+
+				## man
+				decho "Setting kitty for light mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf kitty.light.conf kitty.conf
 				fi
 
 				# set mode
