@@ -25,6 +25,21 @@ else
 	GREP_OPT="-Po"
 fi
 
+function add_key_to_agent {
+	if [ -n "${GPP_SSH_AGENT_PRIV_KEYS}" ]; then
+		echo "  Adding private key to agent... "
+		for PRIV_KEY_FILE in ${GPP_SSH_AGENT_PRIV_KEYS}
+		do
+			${GPP_SSH_ADD_BIN} "${HOME}/.ssh/${PRIV_KEY_FILE}"
+			#if [ $? -eq 0 ]; then
+			# echo "${PRIV_KEY_FILE} "
+			#fi
+		done
+	else
+		echo "  Skipping to add private key(GPP_SSH_AGENT_PRIV_KEYS isn't set)."
+	fi
+}
+
 ###
 ### Check GPP installation
 ###
@@ -48,20 +63,28 @@ else
 	exit 1
 fi
 
-# Check for ssh-agent
+###
+### Check for the existence of ssh-agent
+###
 echo "  Searching running ssh-agent..."
 if [[ -e ${GPP_SSH_AGENT_FILE} ]]; then
 	TMP_PID=$(grep -o "SSH_AGENT_PID.*" "${GPP_SSH_AGENT_FILE}" | grep ${GREP_OPT} "\d+")
 	TMP_PS=$(ps -p "${TMP_PID}" | tail -n 1)
 	if echo "${TMP_PS}" | grep -sq "CMD"; then
-		echo "    ssh-agent pid ${SSH_AGENT_PID} isn't exist."
+		echo "    ssh-agent pid ${TMP_PID} isn't exist."
 	elif echo "${TMP_PS}" | grep -sq "ssh-agent"; then
 		echo "    ssh-agent found. Setting to use it."
 		TMP_AGENT_OK=1
+		### Try to load ssh-agent configuration
+		echo "    Loading the configuration file: "
+		. "${GPP_SSH_AGENT_FILE}"
 	else
-		echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
+		echo "    pid ${TMP_PID} isn't exist or not ssh-agent."
 	fi
 # TODO: Add a case SSH-AGENT_FILE not found
+else
+	echo    "    Not found."
+	GPP_SSH_AGENT_FILE_NOT_FOUND=1
 fi
 
 # Sleep to avoid invoking multiple ssh-agent
@@ -73,45 +96,41 @@ if [[ ${TMP_AGENT_OK} -lt 1 && -n ${TMUX_PANE} ]]; then # TODO: Add case for GNU
 fi
 
 ###
-### Try to load ssh-agent configuration
+### Check ssh-agent type
 ###
-echo "  Checking ssh-agent configuration file(${GPP_SSH_AGENT_FILE})..."
-if [ -f "${GPP_SSH_AGENT_FILE}" ]; then
-	echo -n "    Found. Loading the configuration file: "
-	source "${GPP_SSH_AGENT_FILE}"
-else
-	echo    "    Not found."
-	GPP_SSH_AGENT_FILE_NOT_FOUND=1
-fi
-
-###
-### Check ssh-agent status
-###
-echo "  Checking ssh-agent running on this host..."
+echo "  Checking the type of ssh-agent running on this host..."
 if [[ ${SSH_AUTH_SOCK} =~ com.apple.launchd ]]; then
-	echo "Seems to be a macOS's Launchd socket. Starting new one."
+	echo "    Seems to be a macOS version of ssh-agent. Starting openssh version."
 	SSH_AUTH_SOCK=
 fi
 
-${GPP_SSH_ADD_BIN} -l > /dev/null 2>&1
+echo "  Testing if it is configured to use ssh-agent running on this host..."
+TMP_SSH_AGENT_RES="$(${GPP_SSH_ADD_BIN} -l 2>&1)"
 RESULT=$?
+if [[ ${TMP_SSH_AGENT_RES} =~ The\ agent\ has\ no\ identities. ]]; then
+	add_key_to_agent
+	RESULT=0
+fi
+
 case "${RESULT}" in
 	0 )
+		# ssh-add exited successfully
 		echo -n "    ssh-agent"
 		if [ -n "${GPP_SSH_AGENT_FILE_NOT_FOUND}" ]; then
 			echo -n " inherited from upstream to this host"
 		else
-			echo -n " already existed on this host"
+			echo -n " already running on this host"
 		fi
-		echo " is running normally."
+		echo " is working properly."
 		;;
 
 	1 | 2 )
+		# ssh-add exited abnormally
 		if [[ -n "${SSH_AGENT_PID}" ]]; then
 			TEMP_PS="$(ps -p "${SSH_AGENT_PID}" | tail -n 1)"
 			if echo "${TEMP_PS}" | grep -sq "CMD"; then
-				echo "    pid ${SSH_AGENT_PID} isn't exist."
-			elif echo "${TEMP_PS}" | grep -sq "ssh-agent"; then
+				echo "    ssh-agent pid ${SSH_AGENT_PID} isn't exist."
+			elif ! echo "${TEMP_PS}" | grep -sq "ssh-agent"; then
 				echo "    ssh-agent is running but not configured for use."
 			else
 				echo "    pid ${SSH_AGENT_PID} isn't exist or not ssh-agent."
@@ -125,8 +144,7 @@ case "${RESULT}" in
 		fi
 
 		if [ -n "${PS_AGENT}" ]; then
-			echo "    Please consider using one of them."
-			echo "      ssh-agent processes running on this host."
+			echo "    Please consider using one of these ssh-agent running on this host."
 			echo "        - - - - - - - -"
 			while read -r TMP_LINE; do
 				echo "        ${TMP_LINE}"
@@ -147,21 +165,10 @@ case "${RESULT}" in
 				${GPP_SSH_AGENT_BIN} -E sha1 > "${GPP_SSH_AGENT_FILE}"
 				;;
 		esac
-		source "${GPP_SSH_AGENT_FILE}"
+		sleep 0.5
+		. "${GPP_SSH_AGENT_FILE}"
 		rm -f "${GPP_SSH_AGENT_NUM_FILE}"
-
-		if [ -n "${GPP_SSH_AGENT_PRIV_KEYS}" ]; then
-			echo "      Adding private key to agent... "
-			for PRIV_KEY_FILE in ${GPP_SSH_AGENT_PRIV_KEYS}
-			do
-				${GPP_SSH_ADD_BIN} "${HOME}/.ssh/${PRIV_KEY_FILE}"
-				#if [ $? -eq 0 ]; then
-				# echo "${PRIV_KEY_FILE} "
-				#fi
-			done
-		else
-			echo "      Skipping to add private key(GPP_SSH_AGENT_PRIV_KEYS isn't set)."
-		fi
+		add_key_to_agent
 		;;
 
 	* )

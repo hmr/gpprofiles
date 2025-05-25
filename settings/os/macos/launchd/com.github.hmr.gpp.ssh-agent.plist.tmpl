@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.github.hmr.gpp.ssh-agent</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/zsh</string>
+		<string>-c</string>
+		<string>
+			eval "$(ssh-agent -s | tee ~/.ssh/.ssh-agent)";
+			echo -n 0 &gt; ~/.ssh/.ssh-agent-num;
+		</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>Sockets</key>
+	<dict>
+		<key>Listeners</key>
+		<dict>
+			<key>SecureSocketWithKey</key>
+			<string>SSH_AUTH_SOCK</string>
+		</dict>
+	</dict>
+	<key>StandardErrorPath</key>
+	<string>/tmp/ssh-agent-launcher.err</string>
+	<key>StandardOutPath</key>
+	<string>/tmp/ssh-agent-launcher.log</string>
+</dict>
+</plist>
