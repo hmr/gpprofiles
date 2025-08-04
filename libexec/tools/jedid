@@ -27,15 +27,62 @@ function decho () {
 	fi
 }
 
+# Check environment
+function check_environment() {
+	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
+
+	if which curl >& /dev/null; then
+		CURL_BIN="curl"
+	else
+		echo "curl isn't found."
+		exit 1
+	fi
+
+	if which jq >& /dev/null; then
+		JQ_BIN="jq"
+	else
+		echo "jq isn't found."
+		exit 1
+	fi
+
+	if which gsed >& /dev/null; then
+		GSED_BIN="gsed"
+	elif which sed >& /dev/null; then
+		if sed --version >& /dev/null; then
+			GSED_BIN="sed"
+		else
+			echo "The installed sed isn't GNU's."
+			exit 1
+		fi
+	else
+		echo "The sed isn't found."
+		exit 1
+	fi
+
+	if which gdate >& /dev/null; then
+		GDATE_BIN="gdate"
+	elif which date >& /dev/null; then
+		if date --version >& /dev/null; then
+			GDATE_BIN="date"
+		else
+			echo "The installed "date" isn't GNU's."
+			exit 1
+		fi
+	else
+		echo "The date command isn't found."
+		exit 1
+	fi
+}
+
 # Get sunrise and sunset time by web services
 function getdaytime () {
 	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
-	local JSON=$(curl -s "https://api.sunrise-sunset.org/json?$(curl -s 'https://ipinfo.io/json' | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "https://ipinfo.io/json" | jq -r ".timezone")")
+	local JSON=$(${CURL_BIN} -s "https://api.sunrise-sunset.org/json?$(${CURL_BIN} -s 'https://ipinfo.io/json' | ${JQ_BIN} -r ".loc" | ${GSED_BIN} -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(${CURL_BIN} -s "https://ipinfo.io/json" | jq -r ".timezone")")
 
-	NEXTCHECK=$(date -d 'tomorrow 00:00:00' +%s)
-	SUNRISE=$(date -d "$(echo "${JSON}" | jq -r '.results.sunrise')" +%s)
-	SUNSET=$(date -d "$(echo "${JSON}" | jq -r '.results.sunset')" +%s)
+	NEXTCHECK=$(${GDATE_BIN} -d 'tomorrow 00:00:00' +%s)
+	SUNRISE=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunrise')" +%s)
+	SUNSET=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunset')" +%s)
 	echo "[Daytime] NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}" >&2
 }
 
@@ -107,7 +154,7 @@ function main() {
 
 		# Get daytime info if the system isn't macOS
 		if [[ ! ${OSTYPE} =~ darwin ]]; then
-			NOW=$(date +%s)
+			NOW=$(${GDATE_BIN} +%s)
 			decho "Remaining time to update daytime info: $((NEXTCHECK - NOW)) secs"
 			[[ -z ${NEXTCHECK} || ${NOW} -gt ${NEXTCHECK} ]] && getdaytime
 		fi
@@ -193,5 +240,6 @@ if [[ -z ${XDG_CONFIG_HOME} ]]; then
 fi
 decho "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
 decho "PATH=${PATH}"
+check_environment
 main
 
