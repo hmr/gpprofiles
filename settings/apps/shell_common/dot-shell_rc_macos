@@ -20,10 +20,23 @@ function CHECK_PATH () {
 # Add path to GNU software installed by Homebrew
 function HB_ADD_PATH_GNU () {
   (( $# < 1 )) && return 1
-  local HB_TARGET="/usr/local/opt/${1}/libexec/gnubin"
+  local HB_TARGET
+  if [[ -d /opt/homebrew/opt ]]; then
+    HB_TARGET="/opt/homebrew/opt/${1}/libexec/gnubin"
+  elif [[ -d /usr/local/opt ]]; then
+    HB_TARGET="/usr/local/opt/${1}/libexec/gnubin"
+  fi
+
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-    export PATH="${HB_TARGET}:${PATH}"
+		case ${2:-L} in
+			H)
+				ADD_INTO_PATH "${HB_TARGET}" "H"
+				;;
+			*)
+				ADD_INTO_PATH "${HB_TARGET}"
+				;;
+		esac
     return 0
   else
     return 2
@@ -33,10 +46,23 @@ function HB_ADD_PATH_GNU () {
 # Add path to software installed by Homebrew
 function HB_ADD_PATH () {
   (( $# < 1 )) && return 1
-  local HB_TARGET="/usr/local/opt/$1/bin"
+  local HB_TARGET
+  if [[ -d /opt/homebrew/opt ]]; then
+    HB_TARGET="/opt/homebrew/opt/${1}/bin"
+  elif [[ -d /usr/local/opt ]]; then
+    HB_TARGET="/usr/local/opt/$1/bin"
+  fi
+
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-    export PATH="${HB_TARGET}:${PATH}"
+		case ${2:-L} in
+			H)
+				ADD_INTO_PATH "${HB_TARGET}" "H"
+				;;
+			*)
+				ADD_INTO_PATH "${HB_TARGET}"
+				;;
+		esac
     return 0
   else
     return 2
@@ -46,10 +72,23 @@ function HB_ADD_PATH () {
 # Add path to libexec installed by Homebrew
 function HB_ADD_PATH_LIBEXEC () {
   (( $# < 1 )) && return 1
-  local HB_TARGET="/usr/local/opt/$0/libexec"
+  local HB_TARGET
+  if [[ -d /opt/homebrew/opt ]]; then
+    HB_TARGET="/opt/homebrew/opt/${1}/libexec"
+  elif [[ -d /usr/local/opt ]]; then
+    HB_TARGET="/usr/local/opt/$1/libexec"
+  fi
+
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-    export PATH="${HB_TARGET}:${PATH}"
+		case ${2:-L} in
+			H)
+				ADD_INTO_PATH "${HB_TARGET}" "H"
+				;;
+			*)
+				ADD_INTO_PATH "${HB_TARGET}"
+				;;
+		esac
     return 0
   else
     return 2
@@ -112,7 +151,6 @@ if [ -x /opt/homebrew/bin/brew ]; then
 else
   echo "  Homebrew not found."
 fi
-echo
 
 # PATH
 echo "  Setting PATH..."
@@ -120,7 +158,8 @@ echo "  Setting PATH..."
 # Android Debug Bridge(adb)
 echo -n "    Android Studio"
 export ANDROID_HOME=${HOME}/Library/Android/sdk
-export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+ADD_INTO_PATH "${ANDROID_HOME}/tools"
+ADD_INTO_PATH "${ANDROID_HOME}/platform-tools"
 
 # CUDA
 if [ -d /Developer/NVIDIA/CUDA-10.2/bin ]; then
@@ -132,7 +171,7 @@ fi
 # echo -n ", Rubygems"
 # export PATH=${PATH}:/usr/local/lib/ruby/gems/3.2.0/bin
 
-echo
+# echo
 
 # add Homebrew's directory to BASH_LOADABLES_PATH if the shell is bash
 case "$(chkshell)" in
@@ -161,31 +200,36 @@ esac
 # HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="grep"
-HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="gnu-sed"
-HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="gnu-tar"
-HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="gnu-time"
-HB_ADD_PATH_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
 
-TEMP_TGT="curl-openssl"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+TEMP_TGT="curl"
+HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="imagemagick@6"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="sqlite"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH H ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="bc"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="ruby"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}" || echo -n ", skipped ${TEMP_TGT}"
+export BUNDLE_USER_CONFIG="${XDG_CONFIG_HOME}/bundle"
+export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}/bundle"
+export BUNDLE_USER_PLUGIN="${XDG_DATA_HOME}/bundle"
+export GEM_HOME="${XDG_DATA_HOME}/gem"
+export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 
 TEMP_TGT="bzip2"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
@@ -193,8 +237,8 @@ HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 TEMP_TGT="zip"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-TEMP_TGT="openssl"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+# TEMP_TGT="openssl"
+# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
 TEMP_TGT="file"
 HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
@@ -244,7 +288,6 @@ fi
 echo
 
 # Aliases
-echo
 echo "  Setting aliases for macOS..."
 echo -n "    "
 
@@ -266,8 +309,7 @@ fi
 echo
 
 # Functions
-echo
-echo "  Setting finctions for macOS..."
+echo "  Setting functions for macOS..."
 echo -n "    "
 
 echo -n "_gpp_wait_for_secs"

@@ -64,6 +64,8 @@ alias l='ls'                                  # MS-DOS Style
 alias lla='ls -lA'                            # long list, all
 alias lh='ls -lrth'                           # Human friendly, reverse order by time
 alias lha='ls -lrthA'                         # Human friendly, reverse order by time, all
+alias lhs='ls -lrSh'                           # Reverse order by size
+alias lhsa='ls -lrSha'                         # Reverse order by size, all files
 if which lsd >& /dev/null; then
   echo -n " (uses lsd)"
   alias ls='lsd -v'

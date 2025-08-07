@@ -11,14 +11,14 @@ echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_function${NORMAL}"
 echo -n "  Setting functions:"
 
 # shows url for SPICE which is KVM's remote connection system
-echo -n " spiceurl"
+echo -n " spiceurl()"
 function spiceurl {
   if [[ -z $1 ]]; then return; fi
   echo "spice://$(hostname):$(ps ax | grep "$1" | grep -oP '\-spice port=\d+' | grep -oP '\d+')"
 }
 
 # shows running VM and SPICE connection url
-echo -n ", spicelist"
+echo -n ", spicelist()"
 function spicelist {
   for VMNAME in `ps ax | grep qemu-system-x86_64 | grep -v grep | awk '{print $8}'`
   do
@@ -27,7 +27,7 @@ function spicelist {
 }
 
 # shows system type
-echo -n ", _chksystem"
+echo -n ", _chksystem()"
 function _chksystem {
   case "${OSTYPE}" in
 
@@ -42,7 +42,7 @@ function _chksystem {
 }
 
 # shows linux distribution type
-echo -n ", _chkdist"
+echo -n ", _chkdist()"
 function _chkdist {
   local _TMP_DIST
   if   [ -e /etc/fedora-release ]; then _TMP_DIST="fedora"
@@ -67,7 +67,7 @@ function _chkdist {
 }
 
 # shows current shell(bash or zsh)
-echo -n ", chkshell"
+echo -n ", chkshell()"
 function chkshell {
   if [[ -n ${ZSH_VERSION} ]]; then
     echo "zsh"
@@ -81,7 +81,7 @@ function chkshell {
 #  fi
 }
 
-echo -n ", chkshell_internal"
+echo -n ", chkshell_internal()"
 function chkshell_internal {
   chkshell
 #  _PID=$$;
@@ -95,7 +95,7 @@ function chkshell_internal {
 }
 
 # ESP32 development environment
-echo -n ", esp_idf"
+echo -n ", esp_idf()"
 function esp_idf {
   if [ $# -eq 1 ]; then
     IDF_PATH=$1
@@ -119,7 +119,7 @@ function esp_idf {
 case "$(chkshell)" in
   bash | zsh )
     if type fzf >& /dev/null; then
-      echo -n ", gadd"
+			echo -n ", gadd()"
       function gadd() {
         local selected
         if type unbuffer >& /dev/null; then
@@ -141,7 +141,7 @@ esac
 
 # System update combo for debian/ubuntu
 if [[ $(_chkdist) == "ubuntu" || $(_chkdist) == "debian" ]]; then
-	echo -n ", ubuntu-update"
+	echo -n ", ubuntu-update()"
 	function ubuntu-update() {
 	echo "${MAGENTA}===== Updating system =====${NORMAL}"
 	sudo apt update \
@@ -172,10 +172,12 @@ if [[ $(_chkdist) == "ubuntu" || $(_chkdist) == "debian" ]]; then
 }
 fi
 
+# TODO: Fix the partial match problem(`bii gdb` will show gdbm too)
+# TODO: Show package version?
 # Check if brew package is installed
 if command -v brew >& /dev/null; then
 	# bii is short for 'brew is installed?'
-  echo -n ", bii"
+	echo -n ", bii()"
   function bii() {
     local BREW_LIST_FRML="${XDG_CONFIG_HOME}/homebrew/installed_list_formulae.txt"
     local BREW_LIST_CASK="${XDG_CONFIG_HOME}/homebrew/installed_list_casks.txt"
@@ -227,8 +229,32 @@ fi
 #   :
 # }
 
+# Show PATH entries line by line
+echo -n ", SHOW_PATH()"
+function SHOW_PATH () {
+  local PREV_IFS="${IFS}"
+	local tmp_path
+
+  # Convert the $PATH to an array $path[] (bash only)
+  # https://blog.n-z.jp/blog/2016-10-07-bash-path-to-array-again.html
+  if [[ ${SHELL} =~ bash ]]; then
+    local path
+    IFS=:
+    read -d $'\0' -r -a path <<< "$PATH:"
+    IFS=${PREV_IFS}
+    unset "path[-1]"
+  fi
+
+	echo
+	echo "====================================================================="
+	for tmp_path in "${path[@]}"; do
+		echo "${tmp_path}"
+	done
+	echo "---------------------------------------------------------------------"
+}
+
 # Add a string into PATH if not exist
-echo -n ", add_into_path"
+echo -n ", ADD_INTO_PATH()"
 function ADD_INTO_PATH() {
   [[ ${#} ==  0 ]] && return 1
   local str_to_add="${1}"
@@ -272,7 +298,7 @@ function ADD_INTO_PATH() {
 }
 
 # Delete a string from PATH if exists
-echo -n ", del_from_path"
+echo -n ", DEL_FROM_PATH()"
 function DEL_FROM_PATH() {
   [[ ${#} ==  0 ]] && return 1
   local str_to_del="${1}"
@@ -316,17 +342,17 @@ function DEL_FROM_PATH() {
   fi
 }
 
-echo -n ", ping_ipv6_by_name"
+echo -n ", PING_IPV6_BY_NAME()"
 function PING_IPV6_BY_NAME() {
   ping ipv6.google.com
 }
 
-echo -n ", ping_ipv6_by_addr"
+echo -n ", PING_IPV6_BY_ADDR()"
 function PING_IPV6_BY_ADDR() {
   ping 2404:6800:4004:818::200e
 }
 
-echo -n ", _terminfo"
+echo -n ", _terminfo()"
 function _terminfo() {
 	echo "Geometry: ${COLUMNS}x${LINES}"
 	echo "TERM=${TERM}"
@@ -334,6 +360,27 @@ function _terminfo() {
 	echo "TERM_PROGRAM_VERSION=${TERM_PROGRAM_VERSION}"
 	echo "TERMINFO=${TERMINFO}"
 	echo "TERMINFO_DIRS=${TERMINFO_DIRS}"
+}
+
+echo -n ", _chksysspd()"
+function _chksysspd() {
+	local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
+	if [[ $(_chksystem) == "darwin" ]]; then
+		# macOS
+		if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
+			SYSSPD="10"
+		elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
+			SYSSPD="4"
+		else
+			SYSSPD="1"
+		fi
+	elif [[ $(_chksystem) == "linux" ]]; then
+		SYSSPD="2"
+	elif [[ $(_chksystem) == "windows" ]]; then
+		:
+	fi
+
+	echo "${SYSSPD}"
 }
 
 echo
