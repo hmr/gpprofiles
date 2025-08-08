@@ -1,0 +1,20 @@
+# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
+
+# Part of GPP
+#
+# homebrew/environment
+# ORIGIN: 2023-11-23 by hmr
+
+# Force to use Homebrew version of curl
+export HOMEBREW_FORCE_BREWED_CURL=1
+# Not to update automatically
+export HOMEBREW_AUTO_UPDATE=1
+# Use bat when brew cat
+export HOMEBREW_BAT=1
+# Parallel compile
+HOMEBREW_MAKE_JOBS=$(/usr/sbin/sysctl -n hw.perflevel0.logicalcpu)
+	[[ -z ${HOMEBREW_MAKE_JOBS} ]] && HOMEBREW_MAKE_JOBS=4
+	export HOMEBREW_MAKE_JOBS
+# export HOMEBREW_NO_INSTALL_FROM_API=1
+	export HOMEBREW_BOOTSNAP=1
