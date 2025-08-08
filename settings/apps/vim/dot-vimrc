@@ -1024,23 +1024,25 @@ endif
 " "Settings for vim-easymotion
 " "=============================================================================
 " map  <Leader>e <Plug>(easymotion-prefix)
-" " Move to word
+" Jump to word
 map  <Leader>e <Plug>(easymotion-bd-w)
 nmap <Leader>e <Plug>(easymotion-overwin-w)
-" " Move to line
+" Jump to line
 map  <Leader>l <Plug>(easymotion-bd-jk)
 nmap <Leader>l <Plug>(easymotion-overwin-line)
-" " Move to {char}{char}
+" Jump to {char}{char}
 map  <Leader>k <Plug>(easymotion-bd-f2)
 nmap <Leader>k <Plug>(easymotion-overwin-f2)
 
-nmap s <Plug>(easymotion-sln)
-xmap s <Plug>(easymotion-sln)
-omap z <Plug>(easymotion-sln)
+" Jump within the screen
+nmap s <Plug>(easymotion-sn)
+xmap s <Plug>(easymotion-sn)
+omap z <Plug>(easymotion-sn)
 
-nmap <Leader>s <Plug>(easymotion-sn)
-xmap <Leader>s <Plug>(easymotion-sn)
-omap <Leader>z <Plug>(easymotion-sn)
+" Jump within the line
+nmap <Leader>s <Plug>(easymotion-sln)
+xmap <Leader>s <Plug>(easymotion-sln)
+omap <Leader>z <Plug>(easymotion-sln)
 
 " Disable default mappings
 let g:EasyMotion_do_mapping = 0
