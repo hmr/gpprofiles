@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2024-11-30T04:52:41+0900]
+" Last Update: [2025-08-09T01:55:43+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -518,6 +518,17 @@ noremap! <silent> <M-Left>  <C-r>=MyMoveWord_i('B')<CR>
 "=============================================================================
 " Made by [hmr]
 "=============================================================================
+" hjkl to ijkl @ normal, visual, select, operator, command
+" TODO: Distinguish between C-i and Tab key.
+" noremap    i  <Up>
+" noremap    j  <Left>
+" noremap    k  <Down>
+" noremap    l  <Right>
+" inoremap   <C-i>  <Up>
+" inoremap   <C-j>  <Left>
+" inoremap   <C-k>  <Down>
+" inoremap   <C-l>  <Right>
+
 " ノーマルモードでaキーを押した場合、カーソルが行末にあればa、それ以外はiとして動作する
 function! AppendOrInsert()
   if col('.') == col('$') - 1
