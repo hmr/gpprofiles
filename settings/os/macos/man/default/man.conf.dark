@@ -51,7 +51,7 @@ MANPATH	/Library/Apple/usr/share/man
 # WHATISPAGER:
 #
 # MANPAGER	/usr/bin/less -s
-MANPAGER	less -n --mouse --wheel-lines=5
+MANPAGER	less -n --mouse --wheel-lines=5 -Dd172 -Du153
 # WHATISPAGER	/usr/bin/more -E
 #
 # The output width can also be adjusted to either the literal value "tty" or a
