@@ -13,8 +13,8 @@
 
 declare -g DEBUG MODE NEXTCHECK SUNRISE SUNSET NOW
 
-DEBUG=0
-SYSLOG=1
+DEBUG=1
+SYSLOG=0
 
 # Debug echo
 function decho () {
@@ -34,14 +34,14 @@ function check_environment() {
 	if which curl >& /dev/null; then
 		CURL_BIN="curl"
 	else
-		echo "curl isn't found."
+		decho "Exit because the curl isn't found."
 		exit 1
 	fi
 
 	if which jq >& /dev/null; then
 		JQ_BIN="jq"
 	else
-		echo "jq isn't found."
+		decho "Exit because the jq isn't found."
 		exit 1
 	fi
 
@@ -51,11 +51,11 @@ function check_environment() {
 		if sed --version >& /dev/null; then
 			GSED_BIN="sed"
 		else
-			echo "The installed sed isn't GNU's."
+			decho "Exit because the installed sed isn't GNU's."
 			exit 1
 		fi
 	else
-		echo "The sed isn't found."
+		echo "Exit because the sed isn't found."
 		exit 1
 	fi
 
@@ -65,11 +65,11 @@ function check_environment() {
 		if date --version >& /dev/null; then
 			GDATE_BIN="date"
 		else
-			echo "The installed "date" isn't GNU's."
+			decho "Exit because the installed "date" isn't GNU's."
 			exit 1
 		fi
 	else
-		echo "The date command isn't found."
+		decho "Exit because the date command isn't found."
 		exit 1
 	fi
 }
@@ -83,7 +83,7 @@ function getdaytime () {
 	NEXTCHECK=$(${GDATE_BIN} -d 'tomorrow 00:00:00' +%s)
 	SUNRISE=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunrise')" +%s)
 	SUNSET=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunset')" +%s)
-	echo "[Daytime] NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}" >&2
+	decho "[Daytime] NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
 }
 
 function check_sidechange() {
@@ -98,7 +98,7 @@ function check_sidechange() {
 				decho "System theme is dark mode."
 				if [[ ${MODE} != "dark" ]]; then
 					# Light -> Dark
-					echo "Changed to dark side!" >&2
+					decho "Changed to dark side!"
 					echo "1"
 					return
 				fi
@@ -107,7 +107,7 @@ function check_sidechange() {
 				decho "System theme is light mode."
 				if [[ ${MODE} != "light" ]]; then
 					# Dark -> Light
-					echo "Changed to light side!" >&2
+					decho "Changed to light side!"
 					echo "2"
 					return
 				fi
@@ -123,7 +123,7 @@ function check_sidechange() {
 				decho "System theme is light mode."
 				if [[ ${MODE} != "light" ]]; then
 					# Dark -> Light
-					echo "Changed to light side!" >&2
+					decho "Changed to light side!"
 					echo "2"
 					return
 				fi
@@ -132,7 +132,7 @@ function check_sidechange() {
 				decho "System theme is dark mode."
 				if [[ ${MODE} != "dark" ]]; then
 					# Light -> Dark
-					echo "Changed to dark side!" >&2
+					decho "Changed to dark side!"
 					echo "1"
 					return
 				fi
@@ -243,6 +243,11 @@ function main() {
 decho "------------------------------------------------------------"
 decho "Starting Jedid on pid#${BASHPID}..."
 
+if (( BASH_VERSINFO < 4 )); then
+	decho "Exit because the GNU bash version 4.2 or later is required."
+	exit 1
+fi
+
 function trap_exit() {
 	decho "Quitting..."
 }
@@ -254,6 +259,10 @@ if [[ -z ${XDG_CONFIG_HOME} ]]; then
 fi
 decho "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
 decho "PATH=${PATH}"
+decho "SHELL=${SHELL}"
+decho "Arg 0=${0}"
+[[ -n ${BASH_VERSION} ]]   && decho "BASH_VERSION=${BASH_VERSION}"
+[[ -n ${ZSH_PATCHLEVEL} ]] && decho "ZSH_PATCHLEVEL=${ZSH_PATCHLEVEL}"
 check_environment
 main
 
