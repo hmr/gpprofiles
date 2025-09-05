@@ -1,68 +1,42 @@
-# gpprofile(General Purpose Profiles)
-Generic user settings for Unix-like system.
+# Gpprofile(General Purpose Profiles)
 
-## 
-- [ ] Modify system configurations.
-  - [ ] Make sudo work w/o authentication.
-  - [ ] (macOS) NFS client setting.
-- [ ] (macOS) Install Xcode.
-- [ ] (macOS) Set up Homebrew.
-- [ ] (macOS) Install homebrew's packages.
-- [x] Install zsh and bash start up scripts.
-- [ ] Generate SSH key-pair(s) and set it into authrized_keys file.
-- [ ] Install configuration files for various applications.
-  - [ ] alsa
-  - [ ] ansible
-  - [ ] bat
-  - [ ] cspell
-  - [ ] dircolors
-  - [ ] git
-  - [ ] homebrew
-  - [ ] htop
-  - [ ] istats-meny
-  - [ ] iterm2
-  - [ ] jenv
-  - [ ] karabiner
-  - [ ] kitty
-  - [ ] less
-  - [ ] lsd
-  - [ ] mozilla
-  - [ ] quilt
-  - [ ] readline
-  - [ ] ripgrep
-  - [ ] tmux
-  - [ ] vim
+もともとこのプロジェクトは私的な設定ファイルの集合で、つまりはよくあるDotfilesでした。
 
-## How to use
-Clone this repository and execute 'setup.sh'
+現在では一歩進め、快適なコンピューティング環境を短時間でセットアップすることが可能な仕組みを目指しています。
 
-```console
-$ git clone --recursive git@github.com:hmr/gpprofiles.git -b v2-dev
-.....
-.....
-$ cd gpprofiles
-$ ./setup.sh
-```
+ターゲットはmacOSとUbuntu Linuxですが、それほど特殊なことをしているわけではないので、その他のLinuxやUnix類はもちろん、WindowsのWSLやCygwinまで適用可能ではないかなと思っています。
 
-## After setup script works
+------------------
 
-### Install zsh plugins
-```
-$ zplug install
-```
+## 特徴
 
-### Install Vim plugins
-Start vim and type as below:
-```
-:PlugUpgrade
-:PlugClean!
-:PlugInstall!
-```
-vim-plug will automatically install plugins.
+### 積極的[XDG Base Directory](https://wiki.archlinux.jp/index.php/XDG_Base_Directory)主義
 
-### Install tmux plgins
-Start tmux then push Ctrl+Space Shift+I.
+ホームディレクトリがドットファイルだらけになっていませんか？
 
-## Problems?
-https://github.com/hmr/gpprofiles/issues
+- シンプルなホームディレクトリ環境を保つため、gppでは積極的に[XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/)にドットファイル群を追い出しています。
+- XDG Base Directoryに直接的に対応していないソフトウェア(例えばVim)も、各種の技を駆使してむりやり移動。
+- 対応していないソフトウェアはなるべく使わない。
 
+### CLI推進！
+
+zsh環境を便利にするエイリアス＆関数群。
+
+### ないものは作る。気が利くヘルパープログラムたち
+
+#### jedid
+
+近年のOSのGUIは昼と夜によってテーマが切り替わるようになっています。それに呼応してCLIでも表示色の設定を切り替えるデーモンです。
+
+- [macOS] GUIを監視し、切り替わったことを検知してCLIも切り替えます。
+- [Linux] IPアドレスから緯度経度を割り出し、当日の日の出/日の入りの時刻に合わせてCLIの表示色を切り替えます。
+
+#### netlocd
+
+Wi-FiのBSSIDの変化を監視し、macOSのネットワーク環境(というOSの機能)を切り替えるデーモンです。現在macOS 14 Sonomaと15 Sequoiaに対応。macOS 13以前は検証環境がないです…
+
+## 今後の予定
+
+- 収録対象のソフトウェアを増やす
+- 収録済のソフトウェアもよりよいものに入れ替える
+- Ansibleやcloud-initを使用し、実機も仮想環境も簡単にセットアップできるようにする。
