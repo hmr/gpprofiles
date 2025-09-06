@@ -2,7 +2,7 @@
 
 （下の方に日本語あります）
 
-Originally, this project was simply a bunch of personal configuration files—also known as dotfiles.
+This project was originally just a bunch of personal configuration files—also known as dotfiles.
 
 Now, we've taken it a step further by aiming to create a system that lets you quickly set up a comfortable computing environment.
 
@@ -12,19 +12,19 @@ While our primary targets are macOS and Ubuntu Linux, we're not doing anything o
 
 ## Features
 
-### Proactive [XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/) Approach
+### Proactive [XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/) Approach!
 
 Is your home directory overflowing with dotfiles?
 
 - To maintain a simple home directory environment, GPP actively pushes dot files into the XDG Base Directory.
-- Using various techniques, GPP forcibly moves dotfiles out of software that is not explicitly compatible with the XDG Base Directory (e.g., Vim). - Avoid using software that is incompatible with the XDG Base Directory (e.g., Vim).
+- Using various techniques, GPP forcibly moves dotfiles out of software that is not explicitly compatible with the XDG Base Directory (e.g., Vim).
 - Avoid using XDG Base Directory incompatible software (whenever possible).
 
 ### Promote CLI!
 
 Aliases & functions to make your zsh environment more convenient.
 
-### Pretty cool helper programs.
+### Pretty cool helper programs
 
 #### jedid
 
