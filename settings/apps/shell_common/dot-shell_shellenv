@@ -47,6 +47,9 @@ export TERMINFO="/usr/share/terminfo"
 # return when non-interactive shell
 [[ "$-" != *i* ]] && return
 
+# PAGER
+export PAGER=less
+
 # Terminal Colors
 # Color names are come from https://www.ditig.com/256-colors-cheat-sheet
 if which tput >& /dev/null; then
