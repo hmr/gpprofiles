@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2025-08-09T01:55:43+0900]
+" Last Update: [2025-09-19T20:50:06+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -11,6 +11,15 @@ scriptencoding utf-8
 "-----------------------------------------------------------------------------
 " XDG Base Dirctory conformance
 "-----------------------------------------------------------------------------
+
+" Last resort
+if !exists("$XDG_DATA_HOME")
+  let $XDG_DATA_HOME=expand("~/.local/share")
+endif
+if !exists("$XDG_CONFIG_HOME")
+  let $XDG_CONFIG_HOME=expand("~/.config")
+endif
+
 if has('persistent_undo')
   set undodir=$XDG_DATA_HOME/vim/undo | call mkdir(&undodir,   'p')
   set undofile
