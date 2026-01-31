@@ -353,8 +353,15 @@ function _gpp_ping6_to() {
   fi
 }
 
+echo -n ", _gpp_determine_ipv6_if()"
+function _gpp_determine_ipv6_if() {
+	local WIFIIF=$(networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}')
+
+}
+
 echo -n ", setipv6route"
 function setipv6route() {
+	#FIXME: Eliminate hardcoding!
   local router_addr="fe80::6ab:18ff:fe98:22d3"
 
   echo "Pinging dns.google to check IPv6 routing... ";
@@ -367,21 +374,16 @@ function setipv6route() {
   local IFACE
   while read IFACE; do
     case "${IFACE}" in
-      "en0" )
-        echo "    Deleting default route (en0)."
-        sudo route -n delete -inet6 default "${router_addr}"%en0 >& /dev/null;
-        ;;
-
-      "en1" )
-        echo "    Deleting default route (en1)."
-        sudo route -n delete -inet6 default "${router_addr}"%en1 >& /dev/null;
+      "en*" )
+        echo "    Deleting default route (${IFACE})."
+        sudo route -n delete -inet6 default "${router_addr}%${IFACE}" >& /dev/null;
         ;;
 
       * )
         echo "    Can't handle interface ${IFACE}."
         ;;
     esac
-  done <<< "$(netstat -nr -f inet6 | grep "default" | grep -E "en0|en1" | awk '{print $4}')"
+  done <<< "$(netstat -nr -f inet6 | grep "default" | grep -E "en[0-9]+" | awk '{print $4}')"
 
   echo "    Adding IPv6 Default Route (en1)."
   sudo route -n add -inet6 default "${router_addr}"%en1 >& /dev/null;
