@@ -1,0 +1,873 @@
+// =============================================================================
+// Part of GPP
+// Karabiner-Elements Complex Modifications Configuration
+// =============================================================================
+//
+// This Jsonnet file generates Karabiner-Elements complex modifications.
+// To generate JSON: jsonnet gpp_for_karabinar.jsonnet -o gpp_for_karabinar.json
+//
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Bundle Identifier Groups
+// -----------------------------------------------------------------------------
+// These are commonly used application groups for condition matching.
+// Karabiner uses regex patterns to match bundle identifiers.
+
+/* *****************************************************************************
+ * In Remote-Desktop-like applications, keystrokes should be sent to the remote.
+ * Therefore, these programs are specified as "unless" condition.
+ *******************************************************************************/
+
+// macOS Screen Sharing
+local macosScreenSharing = [
+  '^com\\.apple\\.ScreenSharing$',
+  '^com\\.apple\\.universalcontrol$',
+];
+
+// VNC Clients
+local vncClients = [
+  '^com\\.realvnc\\.vncviewer$',
+  '^com\\.tigervnc\\.tigervnc$',
+  '^com\\.apple\\.RemoteDesktop$',
+];
+
+// Windows RDP clients (subset without macOS Screen Sharing)
+local winRdpClients = [
+  '^com\\.2X\\.Client\\.Mac$',
+  '^com\\.citrix\\.receiver\\.icaviewer',
+  '^com\\.itap-mobile\\.qmote$',
+  '^com\\.microsoft\\.rdc$',
+  '^com\\.microsoft\\.rdc\\.',
+  '^com\\.nulana\\.remotixmac$',
+  '^com\\.nulana\\.remotixmacwild$',
+  '^com\\.OpenText\\.Exceed-TurboX-Client$',
+  '^com\\.p5sys\\.jump\\.mac\\.viewer$',
+  '^com\\.p5sys\\.jump\\.mac\\.viewer\\.',
+  '^com\\.teamviewer\\.TeamViewer$',
+  '^com\\.thinomenon\\.RemoteDesktopConnection$',
+  '^net\\.sf\\.cord$',
+];
+
+// Virtual Machine Monitors
+local vmMonitors = [
+  '^com\\.parallels\\.desktop$',
+  '^com\\.parallels\\.desktop\\.console$',
+  '^com\\.parallels\\.vm$',
+  '^com\\.parallels\\.winapp\\.',
+  '^com\\.utmapp\\.UTM$',
+  '^com\\.vmware\\.fusion$',
+  '^com\\.vmware\\.horizon$',
+  '^com\\.vmware\\.proxyApp\\.',
+  '^com\\.vmware\\.view$',
+  '^org\\.virtualbox\\.app\\.VirtualBoxVM$',
+];
+
+// Terminal emulators
+local terminals = [
+  '^co\\.zeit\\.hyperterm$',
+  '^co\\.zeit\\.hyper$',
+  '^com\\.apple\\.Terminal$',
+  '^com\\.googlecode\\.iterm2$',
+  '^com\\.mitchellh\\.ghostty$',
+  '^io\\.alacritty$',
+  '^net\\.kovidgoyal\\.kitty$',
+  '^org\\.alacritty$',
+  '^com\\.mitchellh\\.ghostty$',
+];
+
+// Web browsers
+local webBrowsers = [
+  '^org\\.mozilla\\.firefox$',
+  '^org\\.mozilla\\.firefoxdeveloperedition$',
+  '^org\\.mozilla\\.nightly$',
+  '^com\\.microsoft\\.Edge',
+  '^com\\.microsoft\\.edgemac',
+  '^com\\.google\\.Chrome$',
+  '^com\\.brave\\.Browser$',
+  '^com\\.apple\\.Safari$',
+];
+
+// Generic development applications
+local developmentApp = [
+  '^cz\\.or\\.repo\\.git-gui$',
+  '^com\\.jetbrains\\.',
+  '^com\\.qvacua\\.VimR$',
+  '^org\\.gnu\\.Emacs$',
+  '^org\\.gnu\\.AquamacsEmacs$',
+  '^org\\.gnu\\.Aquamacs$',
+  '^org\\.pqrs\\.unknownapp\\.conkeror$',
+  '^org\\.vim\\.MacVim$',
+];
+
+// AI chat applications (ChatGPT and Claude desktop apps)
+local chatGptAndClaude = [
+  '^com\\.openai\\.chat',
+  '^com\\.anthropic\\.claudefordesktop',
+];
+
+// Google Gemini and Google AI Studio (Chrome apps)
+local googleGemini = [
+  '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',  // Gemini
+];
+local googleAiStudio = [
+  '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',  // AI Studio
+];
+
+// -----------------------------------------------------------------------------
+// Combined Bundle Identifier Groups
+// -----------------------------------------------------------------------------
+
+// RDP + VM (for key mappings that should pass through to remote systems)
+local allRdpVm = macosScreenSharing + vncClients + winRdpClients + vmMonitors;
+
+// RDP + VM + Terminals +  Development Apps (for PC-style shortcuts)
+local allRdpVmTermDev = macosScreenSharing + vncClients + winRdpClients + vmMonitors + terminals + developmentApp;
+
+// RDP + VM + Terminals + Development Apps + Web Browsers
+local allRdpVmTermDevBrowser = macosScreenSharing + vncClients + winRdpClients + vmMonitors + terminals + developmentApp + webBrowsers;
+
+// Windows RDP + VM (for Cortana/Teams workaround)
+local winRdpVm = winRdpClients + vmMonitors;
+
+// -----------------------------------------------------------------------------
+// Helper Functions for Creating Manipulators
+// -----------------------------------------------------------------------------
+
+local keyToKey(fromKey, fromMods, toKey, toMods, condType='', bundleIds=[]) = {
+  /** Create a basic key-to-key manipulator */
+  type: 'basic',
+  from: {
+    key_code: fromKey,
+    [if fromMods != null then 'modifiers']: fromMods,
+  },
+  to: [{
+    key_code: toKey,
+    [if toMods != null && std.length(toMods) > 0 then 'modifiers']: toMods,
+  }],
+  [if condType != '' then 'conditions']: [{
+    type: condType,
+    bundle_identifiers: bundleIds,
+  }],
+};
+
+local modifierToIme(modKey, imeKey, holdDownMs=200, condType='', bundleIds=[]) = {
+  /** Create a manipulator for modifier key → IME toggle (single tap → IME, hold → modifier) */
+  type: 'basic',
+  from: {
+    key_code: modKey,
+    modifiers: { optional: ['any'] },
+  },
+  parameters: {
+    'basic.to_if_held_down_threshold_milliseconds': holdDownMs,
+  },
+  to: [{
+    key_code: modKey,
+    // lazy: true,
+  }],
+  to_if_held_down: [{ key_code: modKey }],
+  to_if_alone: [{ key_code: imeKey }],
+  [if condType != '' then 'conditions']: [{
+    type: condType,
+    bundle_identifiers: bundleIds,
+  }],
+};
+
+local keyToShell(fromKey, fromMods, shellCmd, condType='frontmost_application_unless', bundleIds=macosScreenSharing) = {
+  /** Create a shell command manipulator */
+  type: 'basic',
+  from: {
+    key_code: fromKey,
+    [if fromMods != null then 'modifiers']: fromMods,
+  },
+  to: [{ shell_command: shellCmd }],
+  [if condType != '' then 'conditions']: [{
+    type: condType,
+    bundle_identifiers: bundleIds,
+  }],
+};
+
+// Create an app launcher manipulator (⌥⌘ + key → open app)
+local appLauncher(key, appName, extraMods=[]) = {
+  /** Launch app with ⌥⌘ + key unless on macOS Screen Sharing */
+  type: 'basic',
+  from: {
+    key_code: key,
+    modifiers: { mandatory: ['command', 'option'] + extraMods },
+  },
+  to: [{ shell_command: "open -a '%s'" % appName }],
+  conditions: [{
+    type: 'frontmost_application_unless',
+    bundle_identifiers: macosScreenSharing,
+  }],
+};
+
+local keyToNothing(fromKey, fromMods, condType, bundleIds) = {
+  /** Create a "key does nothing" manipulator (for disabling shortcuts) */
+  type: 'basic',
+  from: {
+    key_code: fromKey,
+    modifiers: fromMods,
+  },
+  conditions: [{
+    type: condType,
+    bundle_identifiers: bundleIds,
+  }],
+};
+
+local rule(description, manipulators) = {
+  /** Create a rule object */
+  description: description,
+  manipulators: manipulators,
+};
+
+// -----------------------------------------------------------------------------
+// Rules Definition
+// -----------------------------------------------------------------------------
+
+{
+  title: '[GPP] General Puropose Profiles',
+  rules: [
+    // =========================================================================
+    // IME Switching Rules
+    // =========================================================================
+
+    // Single tap Left Command → 英数, hold → Command (not on RDP/VM)
+    rule('[GPP] Single Left Command(⌘) to 英数 key NOT on RDC/VM', [
+      modifierToIme('left_command',
+                    'japanese_eisuu',
+                    200,
+                    'frontmost_application_unless',
+                    allRdpVm),
+    ]),
+
+    // Single tap Right Command → かな, hold → Command (not on RDP/VM)
+    rule('[GPP] Single Right Command(⌘) to かな key NOT on RDC/VM', [
+      modifierToIme('right_command',
+                    'japanese_kana',
+                    200,
+                    'frontmost_application_unless',
+                    allRdpVm),
+    ]),
+
+    // Single tap Left Option → 英数, hold → Option (no restrictions)
+    rule('[GPP] Single Left Option(⌥) to 英数 mode (w/o restrictions)', [
+      modifierToIme('left_option', 'japanese_eisuu', 100),
+    ]),
+
+    // Single tap Right Option → かな, hold → Option (no restrictions)
+    rule('[GPP] Single Right Option(⌥) to かな mode (w/o restrictions)', [
+      modifierToIme('right_option', 'japanese_kana', 100),
+    ]),
+
+    // =========================================================================
+    // Web Browser Shortcuts
+    // =========================================================================
+
+    // Ctrl+F/K/R/T → Cmd+F/K/R/T on web browsers (PC-style shortcuts)
+    rule('[GPP] Ctrl+F/K/R/T on the Web browsers', [
+      keyToKey('f',
+               { mandatory: ['control'] },
+               'f',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('k',
+               { mandatory: ['control'] },
+               'k',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('r',
+               { mandatory: ['control'] },
+               'r',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('t',
+               { mandatory: ['control'] },
+               't',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+    ]),
+
+    // Alt+Left/Right → Cmd+Left/Right on browsers (Back/Forward)
+    rule('[GPP][Browser][PC-Style] Back/Forward (Alt+Left Arrow/Alt+Right Arrow)', [
+      keyToKey('left_arrow',
+               { mandatory: ['option'] },
+               'left_arrow',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('right_arrow',
+               { mandatory: ['option'] },
+               'right_arrow',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+    ]),
+
+    // =========================================================================
+    // AI Chat Application Customizations
+    // =========================================================================
+
+    // Enter → Shift+Enter, Cmd+Enter → Enter on ChatGPT and Claude
+    // (Swap newline and send behaviors)
+    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on <ChatGPT> and <Claude Desktop>', [
+      {
+        type: 'basic',
+        from: { key_code: 'return_or_enter' },
+        to: [{ key_code: 'return_or_enter', modifiers: ['left_shift'] }],
+        conditions: [{
+          type: 'frontmost_application_if',
+          bundle_identifiers: chatGptAndClaude,
+        }],
+      },
+      {
+        type: 'basic',
+        from: {
+          key_code: 'return_or_enter',
+          modifiers: { mandatory: ['command'] },
+        },
+        to: [{ key_code: 'return_or_enter' }],
+        conditions: [{
+          type: 'frontmost_application_if',
+          bundle_identifiers: chatGptAndClaude,
+        }],
+      },
+    ]),
+
+    // Cmd+N → Shift+Cmd+O on Google Gemini
+    rule('[GPP] Convert ⌘N to ⇧⌘O on <Google Gemini>', [
+      keyToKey('n',
+               { mandatory: ['command'] },
+               'o',
+               ['left_command', 'left_shift'],
+               'frontmost_application_if',
+               googleGemini),
+    ]),
+
+    // =========================================================================
+    // iTerm2 Customizations
+    // =========================================================================
+
+    // Cmd+D → Option+D on iTerm2 (word deletion instead of split pane)
+    rule('[GPP][iTerm2] ⌘D to ⌥D (word deletion)', [
+      keyToKey('d',
+               { mandatory: ['command'] },
+               'd',
+               ['left_option'],
+               'frontmost_application_if',
+               ['^com\\.googlecode\\.iterm2']),
+    ]),
+
+    // Disable Cmd+R on iTerm2 (prevent accidental terminal reset)
+    rule('[GPP][iTerm2] (OBSOLETE) Ignore ⌘R(reset terminal)', [
+      keyToNothing('r',
+                   { mandatory: ['command'] },
+                   'frontmost_application_if',
+                   ['^com\\.googlecode\\.iterm2']),
+    ]),
+
+    // Disable Cmd+K on iTerm2 (prevent accidental buffer clear)
+    rule('[GPP][iTerm2] (OBSOLETE) Ignore ⌘K (clear buffer)', [
+      keyToNothing('k',
+                   { mandatory: ['command'] },
+                   'frontmost_application_if',
+                   ['^com\\.googlecode\\.iterm2']),
+    ]),
+
+    // =========================================================================
+    // Application Launchers
+    // =========================================================================
+
+    // Cmd+E → Open Finder (not on RDP/VM)
+    rule('[GPP] ⌘E Opens <Finder> (if not on RDC/VM)', [
+      {
+        type: 'basic',
+        from: {
+          key_code: 'e',
+          modifiers: { mandatory: ['command'] },
+        },
+        to: [{
+          shell_command: "osascript -e 'tell application \"Finder\"' -e 'if (count of windows) is 0 then' -e 'make new Finder window to folder ((path to home folder) as text)' -e 'else' -e 'set frontmost to true' -e 'end if' -e 'activate' -e 'end tell'",
+        }],
+        conditions: [{
+          type: 'frontmost_application_unless',
+          bundle_identifiers: allRdpVm,
+        }],
+      },
+    ]),
+
+    // Option+Cmd+, → System Preferences
+    rule('[GPP] Start <System Preferences> by ⌥⌘,', [
+      keyToShell('comma',
+                 { mandatory: ['command', 'option'] },
+                 "open -a 'System Preferences'"),
+    ]),
+
+    // Option+Cmd+C → ChatGPT
+    rule('[GPP] Start <ChatGPT> by ⌥⌘C', [
+      appLauncher('c', 'ChatGPT'),
+    ]),
+
+    // Ctrl+Option+Cmd+C → Claude
+    rule('[GPP] Start <Claude> by ⌘⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['command', 'control', 'option'] },
+                 "open -a 'Claude'"),
+    ]),
+
+    // Ctrl+Cmd+C → Calculator
+    rule('[GPP] Start <Calculator> by ⌃⌘C', [
+      keyToShell('c',
+                 { mandatory: ['command', 'control'] },
+                 "open -a 'Calculator'"),
+    ]),
+
+    // Ctrl+Option+C → Gemini
+    rule('[GPP] Start <Gemini> by ⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['control', 'option'] },
+                 "open -a 'Google Gemini'"),
+    ]),
+
+    // Option+Cmd+D → Discord Canary
+    rule('[GPP] Start <Discord> by ⌥⌘D', [
+      appLauncher('d', 'Discord Canary'),
+    ]),
+
+    // Option+Cmd+D → DeepL (duplicate shortcut - only one will work)
+    rule('[GPP] Start <DeepL> by ⌥⌘D', [
+      appLauncher('d', 'DeepL'),
+    ]),
+
+    // Option+Cmd+F → Firefox
+    rule('[GPP] Start <Firefox> by ⌥⌘F', [
+      appLauncher('f', 'Firefox'),
+    ]),
+
+    // Option+Cmd+G → Google Chrome
+    rule('[GPP] Start <Google Chrome> by ⌥⌘G', [
+      appLauncher('g', 'Google Chrome'),
+    ]),
+
+    // Option+Cmd+G → Chromium (duplicate shortcut)
+    rule('[GPP] Start <Chromium> by ⌥⌘G', [
+      appLauncher('g', 'Chromium'),
+    ]),
+
+    // Option+Cmd+L → LINE
+    rule('[GPP] Start <LINE> by ⌥⌘L', [
+      appLauncher('l', 'LINE'),
+    ]),
+
+    // Option+Cmd+R → Remember The Milk
+    rule('[GPP] Start <RtM> by ⌥⌘R', [
+      appLauncher('r', 'Remember The Milk'),
+    ]),
+
+    // Option+Cmd+S → Spotify
+    rule('[GPP] Start <Spotyify> by ⌥⌘S', [
+      appLauncher('s', 'Spotify'),
+    ]),
+
+    // Option+Shift+Cmd+S → Slack
+    rule('[GPP] Start <Slack> by ⌥⇧⌘S', [
+      keyToShell('s',
+                 { mandatory: ['command', 'option', 'shift'] },
+                 "open -a 'Slack'"),
+    ]),
+
+    // Option+Cmd+T → iTerm
+    rule('[GPP] Start <iTerm2> by ⌥⌘T', [
+      appLauncher('t', 'iTerm'),
+    ]),
+
+    // Option+Cmd+V → Visual Studio Code
+    rule('[GPP] Start <VSCode> by ⌥⌘V', [
+      appLauncher('v', 'Visual Studio Code'),
+    ]),
+
+    // Option+Cmd+M → Spark Desktop
+    rule('[GPP] Start <Spark Desktop> by ⌥⌘M', [
+      appLauncher('m', 'Spark Desktop'),
+    ]),
+
+    // =========================================================================
+    // Option Key Remappings
+    // =========================================================================
+
+    // Option+Enter → Cmd+Enter
+    rule('[GPP] ⌥ + Enter to ⌘ + Enter', [
+      keyToKey('return_or_enter',
+               { mandatory: ['option'] },
+               'return_or_enter',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
+    ]),
+
+    // Option+C → Cmd+C
+    rule('[GPP] ⌥ + C to ⌘ + C', [
+      keyToKey('c',
+               { mandatory: ['option'] },
+               'c',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
+    ]),
+
+    // Option+X → Cmd+X
+    rule('[GPP] ⌥ + X to ⌘ + X', [
+      keyToKey('x',
+               { mandatory: ['option'] },
+               'x',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
+    ]),
+
+    // Option+V → Cmd+V
+    rule('[GPP] ⌥ + V to ⌘ + V', [
+      keyToKey('v',
+               { mandatory: ['option'] },
+               'v',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
+    ]),
+
+    // =========================================================================
+    // PC-Style Copy/Paste/Cut
+    // =========================================================================
+
+    // Ctrl+C/V/X → Cmd+C/V/X (not on RDP/VM/Terminal/Dev/etc.)
+    rule('[GPP] Enable PC-Style Copy/Paste/Cut(⌃X/C/V → ⌘X/C/V)  NOT on RDC/VM/Term/Dev', [
+      keyToKey('c',
+               { mandatory: ['control'] },
+               'c',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('v',
+               { mandatory: ['control'] },
+               'v',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('x',
+               { mandatory: ['control'] },
+               'x',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // =========================================================================
+    // Mouse Button Mapping
+    // =========================================================================
+
+    // Mouse button 5 → Dictionary lookup (Ctrl+Cmd+D)
+    rule('[GPP] (OBSOLETE?) Mouse button 5 to Lookup dictionary (⌃⌘D)', [
+      {
+        type: 'basic',
+        from: {
+          pointing_button: 'button5',
+          modifiers: { optional: ['caps_lock'] },
+        },
+        to: [{
+          key_code: 'd',
+          modifiers: ['control', 'command'],
+        }],
+        conditions: [{
+          type: 'frontmost_application_unless',
+          bundle_identifiers: macosScreenSharing,
+        }],
+      },
+    ]),
+
+    // =========================================================================
+    // CapsLock Remapping
+    // =========================================================================
+
+    // CapsLock → Control (hold) / Escape (tap) - unless Apple Internal Keyboard
+    rule('[GPP] CapsLock -> Control / Escape (unless Apple Internal Keyboard)', [
+      {
+        description: 'CapsLock -> Esc(click) | Control(hold)',
+        type: 'basic',
+        from: {
+          key_code: 'caps_lock',
+          modifiers: { optional: ['any'] },
+        },
+        to: [{
+          key_code: 'right_control',
+          lazy: true,
+        }],
+        to_if_alone: [{ key_code: 'escape' }],
+        conditions: [{
+          description: "Apply if it isn't Apple Internal Keyboard / Trackpad",
+          type: 'device_unless',
+          identifiers: [{
+            description: 'Apple Internal Keyboard (MacBook Pro Retina / JIS)',
+            vendor_id: 1452,
+            product_id: 612,
+            is_keyboard: true,
+          }],
+        }],
+      },
+    ]),
+
+    // CapsLock → Hyper (hold) / Escape (tap) - unless Apple Internal Keyboard
+    rule('[GPP] CapsLock -> Hyper / Escape (unless Apple Internal Keyboard)', [
+      {
+        description: 'CapsLock -> Esc(click) | Hyper(hold)',
+        type: 'basic',
+        from: {
+          key_code: 'caps_lock',
+          modifiers: { optional: ['any'] },
+        },
+        to: [{
+          key_code: 'right_shift',
+          lazy: true,
+          modifiers: ['right_command', 'right_control', 'right_option'],
+        }],
+        to_if_alone: [{ key_code: 'escape' }],
+        conditions: [{
+          description: "Apply if it isn't Apple Internal Keyboard / Trackpad",
+          type: 'device_unless',
+          identifiers: [{
+            description: 'Apple Internal Keyboard (MacBook Pro Retina / JIS)',
+            vendor_id: 1452,
+            product_id: 612,
+            is_keyboard: true,
+          }],
+        }],
+      },
+    ]),
+
+    // =========================================================================
+    // Windows RDP/VM Specific
+    // =========================================================================
+
+    // Cmd+C → Ctrl+C on Windows RDP/VM (to avoid Cortana/Teams shortcut)
+    rule('[GPP] ⌘C to ⌃C on RDP/VM console (avoid Cortana/Teams on Windows 10/11)', [
+      keyToKey('c',
+               { mandatory: ['command'] },
+               'c',
+               ['control'],
+               'frontmost_application_if',
+               winRdpVm),
+    ]),
+
+    // =========================================================================
+    // Finder Specific
+    // =========================================================================
+
+    // F2 → Enter on Finder (PC-style rename)
+    rule('[GPP][Finder][PC-Style] Use F2 as Rename', [
+      keyToKey('f2',
+               null,
+               'return_or_enter',
+               [],
+               'frontmost_application_if',
+               ['^com.apple.finder']),
+    ]),
+
+    // Delete key → Cmd+Delete on Finder (move to trash)
+    rule('[GPP][Finder][PC-Style] Del key to move into Trash on Finder', [
+      keyToKey('delete_forward',
+               null,
+               'delete_or_backspace',
+               ['left_command'],
+               'frontmost_application_if',
+               ['^com.apple.finder']),
+    ]),
+
+    // =========================================================================
+    // PC-Style Shortcuts
+    // =========================================================================
+
+    // Shift+Insert → Cmd+V (paste for JIS keyboard)
+    rule('[GPP][PC-Style] Shift+Insert to paste (for JIS keyboard)', [
+      keyToKey('insert',
+               { mandatory: ['shift'] },
+               'v',
+               ['left_command']),
+    ]),
+
+    // Ctrl+Arrow keys → Option/Cmd+Arrow keys (not on RDP/VM/Term/Dev)
+    rule('[GPP][PC-Style] Control+Up/Down/Left/Right to Opt+Up/Down/Left/Right NOT on RDC/VM/Term/Dev', [
+      keyToKey('left_arrow',
+               { mandatory: ['control'] },
+               'left_arrow',
+               ['left_option'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('right_arrow',
+               { mandatory: ['control'] },
+               'right_arrow',
+               ['left_option'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('up_arrow',
+               { mandatory: ['control'] },
+               'up_arrow',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('down_arrow',
+               { mandatory: ['control'] },
+               'down_arrow',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Ctrl+Z → Cmd+Z (Undo)
+    rule('[GPP][PC-Style] Undo (⌃z → ⌘z) NOT on RDC/VM/Term/Dev', [
+      keyToKey('z',
+               { mandatory: ['control'] },
+               'z',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Ctrl+Y → Shift+Cmd+Z (Redo)
+    rule('[GPP][PC-Style] Redo(^y → ⇧⌘z) NOT on RDC/VM/Term/Dev', [
+      keyToKey('y',
+               { mandatory: ['control'] },
+               'z',
+               ['left_command', 'left_shift'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Home/End key mappings with complex conditions
+    rule('[GPP][PC-Style] Home/End with complex conditions', [
+      // Home → Cmd+Left (line start) - not on RDP/VM/Terminal/Browser
+      keyToKey('home',
+               { optional: ['shift'] },
+               'left_arrow',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDevBrowser),
+      // Home → Ctrl+A (line start) - on browsers only
+      keyToKey('home',
+               { optional: ['shift'] },
+               'a',
+               ['left_control'],
+               'frontmost_application_if',
+               webBrowsers),
+      // Ctrl+Home → Cmd+Up (document start)
+      keyToKey('home',
+               { mandatory: ['control'], optional: ['shift'] },
+               'up_arrow',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDevBrowser),
+      // End → Cmd+Right (line end) - not on RDP/VM/Terminal/Browser
+      keyToKey('end',
+               { optional: ['shift'] },
+               'right_arrow',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDevBrowser),
+      // End → Ctrl+E (line end) - on browsers only
+      keyToKey('end',
+               { optional: ['shift'] },
+               'e',
+               ['left_control'],
+               'frontmost_application_if',
+               webBrowsers),
+      // Ctrl+End → Cmd+Down (document end)
+      keyToKey('end',
+               { mandatory: ['control'], optional: ['shift'] },
+               'down_arrow',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDevBrowser),
+    ]),
+
+    // Ctrl+R / F5 → Cmd+R (Reload)
+    rule('[GPP][PC-Style] Reload(F5, Ctrl+R) NOT on RDC/VM/Term/Dev)', [
+      keyToKey('r',
+               { mandatory: ['control'], optional: ['shift'] },
+               'r',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('f5',
+               { optional: ['any'] },
+               'r',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Ctrl+T → Cmd+T (New Tab)
+    rule('[GPP][PC-Style] New Tab (⌃t) ', [
+      keyToKey('t',
+               { mandatory: ['control'], optional: ['shift'] },
+               't',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Ctrl+F/G → Cmd+F/G (Find)
+    rule('[GPP][PC-Style] Find (⌃f / ⌃g)', [
+      // Find
+      keyToKey('f',
+               { mandatory: ['control'] },
+               'f',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      // Find Next
+      keyToKey('g',
+               { mandatory: ['control'], optional: ['shift'] },
+               'g',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Ctrl+Shift+Esc → Open Activity Monitor (like Windows Task Manager)
+    rule('[GPP][PC-Style] Control+Shift+Esc Opens Activity Monitor NOT on RDC/VM', [
+      keyToShell('escape',
+                 { mandatory: ['control', 'shift'] },
+                 "open -a 'Activity Monitor.app'",
+                 bundleIds=allRdpVm),
+    ]),
+
+    // Ctrl+Backspace → Option+Backspace (delete word)
+    rule('[GPP][PC-Style] Control+Delete/Backspace (⌃⌫ → ⌥⌫) (not on RDC/VM/Term/Dev/Browser)', [
+      keyToKey('delete_or_backspace',
+               { mandatory: ['control'] },
+               'delete_or_backspace',
+               ['option'],
+               'frontmost_application_unless',
+               allRdpVmTermDevBrowser),
+    ]),
+
+    // =========================================================================
+    // Keypad Customization
+    // =========================================================================
+
+    // Keypad period → 00 (double zero)
+    rule('[GPP] Converet Period on Keypad → 00', [
+      {
+        type: 'basic',
+        from: { key_code: 'keypad_period' },
+        to: [
+          { key_code: 'keypad_0' },
+          { key_code: 'keypad_0' },
+        ],
+      },
+    ]),
+
+  ],
+}
