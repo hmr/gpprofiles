@@ -344,6 +344,31 @@
     },
 
     {
+      "description": "[GPP] Convert ⌘N to ⇧⌘O on <Google Gemini>",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "n",
+            "modifiers": { "mandatory": ["command"] }
+          },
+          "to": [
+            {
+              "key_code": "o",
+              "modifiers": ["left_command", "left_shift"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": ["com.google.Chrome.app.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf"]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
       "description": "[GPP] ⌘D to ⌥D on iTerm2 (word deletion)",
       "manipulators": [
         {
