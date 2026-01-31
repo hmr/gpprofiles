@@ -118,17 +118,17 @@ local googleAiStudio = [
 // Combined Bundle Identifier Groups
 // -----------------------------------------------------------------------------
 
+// Windows RDP + VM (for Cortana/Teams workaround)
+local winRdpVm = winRdpClients + vmMonitors;
+
 // RDP + VM (for key mappings that should pass through to remote systems)
 local allRdpVm = macosScreenSharing + vncClients + winRdpClients + vmMonitors;
 
 // RDP + VM + Terminals +  Development Apps (for PC-style shortcuts)
-local allRdpVmTermDev = macosScreenSharing + vncClients + winRdpClients + vmMonitors + terminals + developmentApp;
+local allRdpVmTermDev = allRdpVm + terminals + developmentApp;
 
 // RDP + VM + Terminals + Development Apps + Web Browsers
-local allRdpVmTermDevBrowser = macosScreenSharing + vncClients + winRdpClients + vmMonitors + terminals + developmentApp + webBrowsers;
-
-// Windows RDP + VM (for Cortana/Teams workaround)
-local winRdpVm = winRdpClients + vmMonitors;
+local allRdpVmTermDevBrowser = allRdpVmTermDev + webBrowsers;
 
 // -----------------------------------------------------------------------------
 // Helper Functions for Creating Manipulators
@@ -232,6 +232,10 @@ local rule(description, manipulators) = {
     // IME Switching Rules
     // =========================================================================
 
+    // Separator rule for better visual grouping
+    rule('--------------------------------------------------------------------------------',
+         [{type: 'basic', from: { },},]),
+
     // Single tap Left Command → 英数, hold → Command (not on RDP/VM)
     rule('[GPP] Single Left Command(⌘) to 英数 key NOT on RDC/VM', [
       modifierToIme('left_command',
@@ -258,54 +262,6 @@ local rule(description, manipulators) = {
     // Single tap Right Option → かな, hold → Option (no restrictions)
     rule('[GPP] Single Right Option(⌥) to かな mode (w/o restrictions)', [
       modifierToIme('right_option', 'japanese_kana', 100),
-    ]),
-
-    // =========================================================================
-    // Web Browser Shortcuts
-    // =========================================================================
-
-    // Ctrl+F/K/R/T → Cmd+F/K/R/T on web browsers (PC-style shortcuts)
-    rule('[GPP] Ctrl+F/K/R/T on the Web browsers', [
-      keyToKey('f',
-               { mandatory: ['control'] },
-               'f',
-               ['left_command'],
-               'frontmost_application_if',
-               webBrowsers),
-      keyToKey('k',
-               { mandatory: ['control'] },
-               'k',
-               ['left_command'],
-               'frontmost_application_if',
-               webBrowsers),
-      keyToKey('r',
-               { mandatory: ['control'] },
-               'r',
-               ['left_command'],
-               'frontmost_application_if',
-               webBrowsers),
-      keyToKey('t',
-               { mandatory: ['control'] },
-               't',
-               ['left_command'],
-               'frontmost_application_if',
-               webBrowsers),
-    ]),
-
-    // Alt+Left/Right → Cmd+Left/Right on browsers (Back/Forward)
-    rule('[GPP][Browser][PC-Style] Back/Forward (Alt+Left Arrow/Alt+Right Arrow)', [
-      keyToKey('left_arrow',
-               { mandatory: ['option'] },
-               'left_arrow',
-               ['left_command'],
-               'frontmost_application_if',
-               webBrowsers),
-      keyToKey('right_arrow',
-               { mandatory: ['option'] },
-               'right_arrow',
-               ['left_command'],
-               'frontmost_application_if',
-               webBrowsers),
     ]),
 
     // =========================================================================
@@ -383,7 +339,7 @@ local rule(description, manipulators) = {
     // =========================================================================
 
     // Cmd+E → Open Finder (not on RDP/VM)
-    rule('[GPP] ⌘E Opens <Finder> (if not on RDC/VM)', [
+    rule('[GPP] Opens <Finder> by ⌘E (if not on RDC/VM)', [
       {
         type: 'basic',
         from: {
@@ -427,7 +383,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Ctrl+Option+C → Gemini
-    rule('[GPP] Start <Gemini> by ⌃⌥C', [
+    rule('[GPP] Start <Google Gemini> by ⌃⌥C', [
       keyToShell('c',
                  { mandatory: ['control', 'option'] },
                  "open -a 'Google Gemini'"),
@@ -500,7 +456,7 @@ local rule(description, manipulators) = {
     // =========================================================================
 
     // Option+Enter → Cmd+Enter
-    rule('[GPP] ⌥ + Enter to ⌘ + Enter', [
+    rule('[GPP] ⌥⏎ to ⌘⏎', [
       keyToKey('return_or_enter',
                { mandatory: ['option'] },
                'return_or_enter',
@@ -510,7 +466,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Option+C → Cmd+C
-    rule('[GPP] ⌥ + C to ⌘ + C', [
+    rule('[GPP] ⌥C to ⌘C', [
       keyToKey('c',
                { mandatory: ['option'] },
                'c',
@@ -520,7 +476,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Option+X → Cmd+X
-    rule('[GPP] ⌥ + X to ⌘ + X', [
+    rule('[GPP] ⌥X to ⌘X', [
       keyToKey('x',
                { mandatory: ['option'] },
                'x',
@@ -530,39 +486,13 @@ local rule(description, manipulators) = {
     ]),
 
     // Option+V → Cmd+V
-    rule('[GPP] ⌥ + V to ⌘ + V', [
+    rule('[GPP] ⌥V to ⌘V', [
       keyToKey('v',
                { mandatory: ['option'] },
                'v',
                ['left_command'],
                'frontmost_application_unless',
                macosScreenSharing),
-    ]),
-
-    // =========================================================================
-    // PC-Style Copy/Paste/Cut
-    // =========================================================================
-
-    // Ctrl+C/V/X → Cmd+C/V/X (not on RDP/VM/Terminal/Dev/etc.)
-    rule('[GPP] Enable PC-Style Copy/Paste/Cut(⌃X/C/V → ⌘X/C/V)  NOT on RDC/VM/Term/Dev', [
-      keyToKey('c',
-               { mandatory: ['control'] },
-               'c',
-               ['left_command'],
-               'frontmost_application_unless',
-               allRdpVmTermDev),
-      keyToKey('v',
-               { mandatory: ['control'] },
-               'v',
-               ['left_command'],
-               'frontmost_application_unless',
-               allRdpVmTermDev),
-      keyToKey('x',
-               { mandatory: ['control'] },
-               'x',
-               ['left_command'],
-               'frontmost_application_unless',
-               allRdpVmTermDev),
     ]),
 
     // =========================================================================
@@ -666,7 +596,7 @@ local rule(description, manipulators) = {
     // =========================================================================
 
     // F2 → Enter on Finder (PC-style rename)
-    rule('[GPP][Finder][PC-Style] Use F2 as Rename', [
+    rule('[GPP][PC-Style][Finder] Use F2 as Rename', [
       keyToKey('f2',
                null,
                'return_or_enter',
@@ -676,7 +606,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Delete key → Cmd+Delete on Finder (move to trash)
-    rule('[GPP][Finder][PC-Style] Del key to move into Trash on Finder', [
+    rule('[GPP][PC-Style][Finder] Del key to move into Trash on Finder', [
       keyToKey('delete_forward',
                null,
                'delete_or_backspace',
@@ -689,16 +619,52 @@ local rule(description, manipulators) = {
     // PC-Style Shortcuts
     // =========================================================================
 
-    // Shift+Insert → Cmd+V (paste for JIS keyboard)
-    rule('[GPP][PC-Style] Shift+Insert to paste (for JIS keyboard)', [
-      keyToKey('insert',
-               { mandatory: ['shift'] },
-               'v',
-               ['left_command']),
+    // Ctrl+F/K/R/T → Cmd+F/K/R/T on Browsers
+    rule('[GPP][PC-Style][Browser] ⌃F/K/R/T', [
+      keyToKey('f',
+               { mandatory: ['control'] },
+               'f',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('k',
+               { mandatory: ['control'] },
+               'k',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('r',
+               { mandatory: ['control'] },
+               'r',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('t',
+               { mandatory: ['control'] },
+               't',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
     ]),
 
-    // Ctrl+Arrow keys → Option/Cmd+Arrow keys (not on RDP/VM/Term/Dev)
-    rule('[GPP][PC-Style] Control+Up/Down/Left/Right to Opt+Up/Down/Left/Right NOT on RDC/VM/Term/Dev', [
+    // Alt+Left/Right → Cmd+Left/Right on Browsers (Back/Forward)
+    rule('[GPP][PC-Style][Browser] Back/Forward (⌥←/→)', [
+      keyToKey('left_arrow',
+               { mandatory: ['option'] },
+               'left_arrow',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+      keyToKey('right_arrow',
+               { mandatory: ['option'] },
+               'right_arrow',
+               ['left_command'],
+               'frontmost_application_if',
+               webBrowsers),
+    ]),
+
+    // Ctrl+Left/Right → Option+Arrow keys (word move) (not on RDP/VM/Term/Dev)
+    rule('[GPP][PC-Style] ⌃←/→ to ⌥←/→ (word move) NOT on RDC/VM/Term/Dev', [
       keyToKey('left_arrow',
                { mandatory: ['control'] },
                'left_arrow',
@@ -711,6 +677,10 @@ local rule(description, manipulators) = {
                ['left_option'],
                'frontmost_application_unless',
                allRdpVmTermDev),
+    ]),
+
+    // Ctrl+Up/Down → Cmd+Up/Down (Top/Bottom of document) (not on RDP/VM/Term/Dev)
+    rule('[GPP][PC-Style] ⌃↑/↓ to ⌘↑/↓ (top/bottom of document) NOT on RDC/VM/Term/Dev', [
       keyToKey('up_arrow',
                { mandatory: ['control'] },
                'up_arrow',
@@ -725,10 +695,50 @@ local rule(description, manipulators) = {
                allRdpVmTermDev),
     ]),
 
-    // Ctrl+Z → Cmd+Z (Undo)
-    rule('[GPP][PC-Style] Undo (⌃z → ⌘z) NOT on RDC/VM/Term/Dev', [
-      keyToKey('z',
+    // Ctrl+T → Cmd+T (New Tab)
+    rule('[GPP][PC-Style] New Tab (⌃t) NOT on RDC/VM/Term/Dev)', [
+      keyToKey('t',
+               { mandatory: ['control'], optional: ['shift'] },
+               't',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Ctrl+C/V/X → Cmd+C/V/X (not on RDP/VM/Terminal/Dev/etc.)
+    rule('[GPP][PC-Style] Enable PC-Style Copy/Paste/Cut(⌃X/C/V → ⌘X/C/V) NOT on RDC/VM/Term/Dev', [
+      keyToKey('c',
                { mandatory: ['control'] },
+               'c',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('v',
+               { mandatory: ['control'] },
+               'v',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+      keyToKey('x',
+               { mandatory: ['control'] },
+               'x',
+               ['left_command'],
+               'frontmost_application_unless',
+               allRdpVmTermDev),
+    ]),
+
+    // Shift+Insert → Cmd+V (paste for JIS keyboard)
+    rule('[GPP][PC-Style] Shift+Insert to paste (for JIS keyboard)', [
+      keyToKey('insert',
+               { mandatory: ['shift'] },
+               'v',
+               ['left_command']),
+    ]),
+
+    // Ctrl+[Shift]+Z → Cmd+[Shift]+Z (Undo)
+    rule('[GPP][PC-Style] Undo (⌃Z → ⌘Z) NOT on RDC/VM/Term/Dev', [
+      keyToKey('z',
+               { mandatory: ['control'], optional: ['shift'] },
                'z',
                ['left_command'],
                'frontmost_application_unless',
@@ -792,7 +802,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Ctrl+R / F5 → Cmd+R (Reload)
-    rule('[GPP][PC-Style] Reload(F5, Ctrl+R) NOT on RDC/VM/Term/Dev)', [
+    rule('[GPP][PC-Style] Reload(F5, ⌃R) NOT on RDC/VM/Term/Dev)', [
       keyToKey('r',
                { mandatory: ['control'], optional: ['shift'] },
                'r',
@@ -807,18 +817,8 @@ local rule(description, manipulators) = {
                allRdpVmTermDev),
     ]),
 
-    // Ctrl+T → Cmd+T (New Tab)
-    rule('[GPP][PC-Style] New Tab (⌃t) ', [
-      keyToKey('t',
-               { mandatory: ['control'], optional: ['shift'] },
-               't',
-               ['left_command'],
-               'frontmost_application_unless',
-               allRdpVmTermDev),
-    ]),
-
     // Ctrl+F/G → Cmd+F/G (Find)
-    rule('[GPP][PC-Style] Find (⌃f / ⌃g)', [
+    rule('[GPP][PC-Style] Find (⌃f/g → ⌘f/g) NOT on RDC/VM/Term/Dev)', [
       // Find
       keyToKey('f',
                { mandatory: ['control'] },
@@ -836,7 +836,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Ctrl+Shift+Esc → Open Activity Monitor (like Windows Task Manager)
-    rule('[GPP][PC-Style] Control+Shift+Esc Opens Activity Monitor NOT on RDC/VM', [
+    rule('[GPP][PC-Style] ⌃⇧Esc Opens Activity Monitor NOT on RDC/VM', [
       keyToShell('escape',
                  { mandatory: ['control', 'shift'] },
                  "open -a 'Activity Monitor.app'",
@@ -844,7 +844,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Ctrl+Backspace → Option+Backspace (delete word)
-    rule('[GPP][PC-Style] Control+Delete/Backspace (⌃⌫ → ⌥⌫) (not on RDC/VM/Term/Dev/Browser)', [
+    rule('[GPP][PC-Style] ⌃Del/Bs (⌃⌫ → ⌥⌫) (delete word) NOT on RDC/VM/Term/Dev/Browser', [
       keyToKey('delete_or_backspace',
                { mandatory: ['control'] },
                'delete_or_backspace',
