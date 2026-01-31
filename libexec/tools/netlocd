@@ -2,17 +2,17 @@
 # vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
 # shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 
-# netloc-switchd: switch macOS network location by SSID/BSSID.
+# netlocd: switch macOS network location by SSID/BSSID.
 # Requirements:
 #   - bash >= 4.0
 #   - macOS with `networksetup`, `ipconfig`, `scselect`
 # Behavior:
-#   - Poll SSID/BSSID via `ipconfig getsummary en1 | egrep "SSID|BSSID" | sed ...`
+#   - Poll SSID/BSSID via `ipconfig getsummary en1`
 #   - Ignore BSSID "<redacted>" and any SSID/BSSID mapped to _IGNORE_ in config.
 #   - Prefer BSSID match over SSID match.
 #   - Unmatched goes to "Automatic".
 #   - Suppress switching if ~/.supress_auto_location_switch exists.
-#   - Config file (optional): $GPP_HOME/settings/personal/netloc/netloc-switchd.map
+#   - Config file (optional): $GPP_HOME/settings/personal/gpp/netlocd.conf
 #     Format:
 #       <BSSID> = <Location>
 #       <SSID>  = <Location>
@@ -28,12 +28,17 @@ fi
 
 # ---- constants ----
 : "${GPP_HOME:=${HOME}}"  # Allow GPP_HOME to be unset; default to HOME
-CONFIG_FILE="${GPP_HOME}/settings/personal/netloc/netloc-switchd.map"
+CONFIG_FILE="${GPP_HOME}/settings/personal/gpp/netlocd.conf"
 SUPPRESS_FILE="${HOME}/.supress_auto_location_switch"
-WIFI_DEV="en1"
+WIFI_DEV="$(eval networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}')"
 DEFAULT_LOCATION="Automatic"
 POLL_INTERVAL_SEC=5
-CHECK_SSID_COMMAND="ipconfig getsummary ${WIFI_DEV} | egrep 'SSID|BSSID' | sed -e 's/^ *//' -e 's/ : /:/'"
+CHECK_SSID_COMMANDS=(\
+	"ipconfig getsummary ${WIFI_DEV} | grep -E 'SSID|BSSID' | sed -e 's/^ *//' -e 's/ : /:/'" \
+	"ioreg -d 1 -f -r -c 'AirPort_BrcmNIC_Interface' | grep -E 'IO80211SSID|IO80211BSSID' | sed -e 's/[ \|\"]//g' -e 's/IO80211//g' -e 's/=/:/g'" \
+	"${GPP_HOME}/libexec/tools/GetBSSID.app/Contents/MacOS/GetBSSID" \
+)
+CHECK_SSID_COMMAND=""
 
 # ---- state ----
 declare -A MAP_SSID=()        # SSID -> Location
@@ -42,6 +47,7 @@ declare -a IGNORE_SSIDS=()    # SSIDs to ignore
 declare -a IGNORE_BSSIDS=("<redacted>")  # BSSIDs to ignore (pre-seeded)
 PREV_SSID=""
 PREV_BSSID=""
+FIRST_RUN=1  # Flag to force location switch on startup
 
 # ---- helpers ----
 TS() { printf '%(%F %T)T' -1; }
@@ -61,14 +67,17 @@ GET_WIFI_SUMMARY() {
   local line ssid="" bssid=""
   # shellcheck disable=SC2016
   while IFS= read -r line; do
+		# LOG "LINE: ${line}"
     case "$line" in
       SSID:*)  ssid="${line#SSID:}";;
       BSSID:*) bssid="${line#BSSID:}";;
     esac
-  done < <(${CHECK_SSID_COMMAND})
+  done < <(eval "${CHECK_SSID_COMMAND}")
+	# LOG "SSID=$ssid"
+	# LOG "BSSID=$bssid"
   # Trim spaces
-  ssid="${ssid#"${ssid%%[![:space:]]*}"}"; ssid="${ssid%"${ssid##*[![:space:]]}"}"
-  bssid="${bssid#"${bssid%%[![:space:]]*}"}"; bssid="${bssid%"${bssid##*[![:space:]]}"}"
+  # ssid="${ssid#"${ssid%%[![:space:]]*}"}"; ssid="${ssid%"${ssid##*[![:space:]]}"}"
+  # bssid="${bssid#"${bssid%%[![:space:]]*}"}"; bssid="${bssid%"${bssid##*[![:space:]]}"}"
   printf '%s\t%s\n' "${ssid}" "${bssid}"
 }
 
@@ -78,20 +87,28 @@ CURRENT_LOCATION() {
 }
 
 # Switch location if different and not suppressed
+# Arg1: Location to switch
 SWITCH_LOCATION() {
   local target="$1"
   if [[ -f "${SUPPRESS_FILE}" ]]; then
     LOG "Suppressed by ${SUPPRESS_FILE}; would switch to '${target}' but skipping."
     return 0
   fi
+
+	if [[ -z ${target} ]]; then
+		LOG "The SSID or BSSID is configured to be ignored."
+		return 0
+	fi
+
   local cur
   cur="$(CURRENT_LOCATION)"
   if [[ "${cur}" == "${target}" ]]; then
     LOG "Already at location '${target}'. No switch."
     return 0
   fi
+
   LOG "Switching location: '${cur}' -> '${target}'"
-  if ! networksetup -switchtolocation "${target}"; then
+  if ! networksetup -switchtolocation "${target}" >& /dev/null; then
     ERR "Failed to switch to '${target}'"
     return 1
   fi
@@ -139,6 +156,9 @@ LOAD_CONFIG() {
     fi
   done < "${CONFIG_FILE}"
 
+	# LOG "SSID to ignore: ${IGNORE_SSIDS[*]}"
+	# LOG "BSSID to ignore: ${IGNORE_BSSIDS[*]}"
+
   if (( errors > 0 )); then
     ERR "Found ${errors} syntax error(s) in ${CONFIG_FILE}. Faulty lines were ignored."
   fi
@@ -150,10 +170,12 @@ DECIDE_LOCATION() {
   # If BSSID is ignored
   if IN_ARRAY "${bssid}" "${IGNORE_BSSIDS[@]}"; then
     bssid=""
+		return 0
   fi
   # If SSID is ignored
   if IN_ARRAY "${ssid}" "${IGNORE_SSIDS[@]}"; then
     ssid=""
+		return 0
   fi
   # Prefer BSSID match
   if [[ -n "${bssid}" && -n "${MAP_BSSID[${bssid}]:-}" ]]; then
@@ -169,12 +191,54 @@ DECIDE_LOCATION() {
   printf '%s\n' "${DEFAULT_LOCATION}"
 }
 
+DETERMINE_COMMAND() {
+	local line=""
+	local ssid=""
+	local cmd=""
+	local i=0
+
+	for cmd in "${CHECK_SSID_COMMANDS[@]}"; do
+		LOG "Trying to find SSID/BSSID [Method #${i}]"
+		while IFS= read -r line; do
+			case "$line" in
+				SSID:*)  ssid="${line#SSID:}";;
+			esac
+		done < <(eval "${cmd}")
+
+		if [[ -n ${ssid} && ${ssid} != "<redacted>" ]]; then
+			LOG "SSID found: ${ssid}"
+			LOG "Command: ${cmd}"
+			CHECK_SSID_COMMAND="${cmd}"
+			return;
+		fi
+		((i++))
+	done
+
+	ERR "SSID/BSSID detection command not found."
+	exit 1
+}
+
 # Trap to allow clean messages
 ON_TERM() { LOG "Received termination signal. Exiting."; exit 0; }
 trap ON_TERM INT TERM
 
-LOG "Starting netloc-switchd for device ${WIFI_DEV}"
-LOAD_CONFIG
+##############################################################
+# Entry Point
+##############################################################
+LOG "Starting netlocd for device ${WIFI_DEV}"
+LOG "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
+LOG "PATH=${PATH}"
+LOG "SHELL=${SHELL}"
+LOG "Arg 0=${0}"
+# [[ -n ${BASH_VERSION} ]]   && LOG "BASH_VERSION=${BASH_VERSION}"
+# [[ -n ${ZSH_PATCHLEVEL} ]] && LOG "ZSH_PATCHLEVEL=${ZSH_PATCHLEVEL}"
+LOG "WIFI_DEV=${WIFI_DEV}"
+if [[ -z ${WIFI_DEV} ]]; then
+	ERR "Can't determine Wi-Fi device."
+	exit 1
+fi
+
+DETERMINE_COMMAND
 
 while :; do
   # Reload config every cycle (cheap and keeps behavior dynamic)
@@ -187,8 +251,21 @@ while :; do
     continue
   fi
 
-  if [[ "${cur_ssid}" != "${PREV_SSID}" || "${cur_bssid}" != "${PREV_BSSID}" ]]; then
+	[[ -z ${PREV_SSID} ]] && PREV_SSID="${cur_ssid}"
+	[[ -z ${PREV_BSSID} ]] && PREV_BSSID="${cur_bssid}"
+
+  # Force location switch on first run, or when SSID/BSSID changes
+  should_switch=0
+  if (( FIRST_RUN )); then
+    LOG "Initial run: SSID='${cur_ssid}' BSSID='${cur_bssid}'"
+    FIRST_RUN=0
+    should_switch=1
+  elif [[ "${cur_ssid}" != "${PREV_SSID}" || "${cur_bssid}" != "${PREV_BSSID}" ]]; then
     LOG "Change detected: SSID='${PREV_SSID}'->'${cur_ssid}' BSSID='${PREV_BSSID}'->'${cur_bssid}'"
+    should_switch=1
+  fi
+
+  if (( should_switch )); then
     SWITCH_LOCATION "$(DECIDE_LOCATION "${cur_ssid}" "${cur_bssid}")" || true
     PREV_SSID="${cur_ssid}"
     PREV_BSSID="${cur_bssid}"
