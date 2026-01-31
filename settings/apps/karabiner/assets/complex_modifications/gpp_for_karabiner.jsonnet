@@ -226,7 +226,7 @@ local rule(description, manipulators) = {
 // -----------------------------------------------------------------------------
 
 {
-  title: '[GPP] General Puropose Profiles (auto generated from jsonnet)',
+  title: '[GPP] General Purpose Profiles (auto generated from jsonnet)',
   rules: [
     // =========================================================================
     // IME Switching Rules
@@ -425,7 +425,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Option+Cmd+S → Spotify
-    rule('[GPP] Start <Spotyify> by ⌥⌘S', [
+    rule('[GPP] Start <Spotify> by ⌥⌘S', [
       appLauncher('s', 'Spotify'),
     ]),
 
@@ -858,7 +858,7 @@ local rule(description, manipulators) = {
     // =========================================================================
 
     // Keypad period → 00 (double zero)
-    rule('[GPP] Converet Period on Keypad → 00', [
+    rule('[GPP] Convert Period on Keypad → 00', [
       {
         type: 'basic',
         from: { key_code: 'keypad_period' },
