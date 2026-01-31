@@ -226,7 +226,7 @@ local rule(description, manipulators) = {
 // -----------------------------------------------------------------------------
 
 {
-  title: '[GPP] General Puropose Profiles',
+  title: '[GPP] General Puropose Profiles (auto generated from jsonnet)',
   rules: [
     // =========================================================================
     // IME Switching Rules
