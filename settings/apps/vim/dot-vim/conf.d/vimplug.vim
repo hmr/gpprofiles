@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2025-03-06T17:29:35+0900]
+" Last Update: [2026-02-02T17:58:38+0900]
 
 scriptencoding utf-8
 
@@ -243,5 +243,20 @@ Plug 'dhruvasagar/vim-zoom' " C-w m
 
 " Vim/Neovim version of dmacro.el, which makes a key macro on-the-fly.
 Plug 'tani/dmacro.vim'
+
+" GitHub Copilot for Vim and Neovim
+Plug 'github/copilot.vim'
+
+" .xcconfig syntax highlighting
+Plug 'keith/xcconfig.vim'
+
+" Zig language support
+Plug 'https://codeberg.org/ziglang/zig.vim'
+
+" Jsonnet syntax highlighting
+Plug 'google/vim-jsonnet'
+
+" Zsh syntax highlighting
+Plug 'chrisbra/vim-zsh'
 
 call plug#end()
