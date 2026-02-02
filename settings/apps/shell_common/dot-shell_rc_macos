@@ -425,22 +425,23 @@ function setipv6route() {
 }
 
 echo -n ", whichwp"
-function whichwp() {
-	local folder="$(osascript -e 'tell application "System Events" to get picture of current desktop')"
+function whichwp () {
+	local num_of_screens="$(osascript -e 'tell application "System Events" to count (every desktop)')"
+	local folder_of_wp="$(osascript -e 'tell application "System Events" to get picture of current desktop')"
+	local db_wp="${HOME}/Library/Application\ Support/Dock/desktoppicture.db"
 	local vers="$(sw_vers -productVersion | awk -F '.' '{printf "%d%02d%02d", $1, $2, $3}')"
 	if (( vers >= 140000 )); then
 		echo "Wallpaper will be any of the following:"
 		lsof -p $(pgrep -f WallpaperImageExtension) \
-			| grep "${folder}" \
+			| grep "${folder_of_wp}" \
 			| awk '{ $1=$2=$3=$4=$5=$6=$7=$8=""; sub(/^[[:space:]]+/, ""); print "\""$0"\""}'
 	else
 		local idx=0
 		local file
-		for file in $(sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "select * from data" | tail -2)
+		for file in $(sqlite3 "${db_wp}" "select * from data" | tail "-${num_of_screens}")
 		do
 			echo -n Display $((++idx)):
-			# realpath ~/Pictures/Wallpaper_Mixed_All/${file}
-			echo "${folder}/${file}"
+			echo "${folder_of_wp}/${file}"
 		done
 	fi
 }
