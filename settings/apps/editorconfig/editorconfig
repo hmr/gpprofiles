@@ -1,0 +1,119 @@
+# Part of GPP
+# EditorConfig for GPP
+#
+# ORIGIN: 2024-12-01
+# Last Update: [2024-12-03T15:03:43+0900]
+
+# Derived from https://github.com/tee-talog/dotfiles/blob/main/.editorconfig
+
+### Properties (https://spec.editorconfig.org/#file-format)
+# indent_style = {tab | space}
+# indent_size = integer
+# tab_width = integer
+# end_of_line = {lf | crlf | cr}
+# charset = {utf-8 | utf-16be | utf16le | utf-8-bom | ...}
+# spelling_language = {en-US | ja-JP | ...}
+# trim_trailing_whitespace = {true | false}
+# insert_final_newline = {true | false}
+# max_line_length = {integer | off}
+
+
+root = true
+
+####################
+## Base settings
+####################
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = tab
+trim_trailing_whitespace = false
+
+####################
+## VimL and shell script
+####################
+[*.{vim,sh,bash,zsh]
+[{.vimrc,dot-vimrc}]
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = true
+
+
+####################
+## Markdown
+####################
+[*.md]
+indent_size = 4
+indent_style = space
+trim_trailing_whitespace = false
+
+####################
+## Property Languages
+####################
+[*.properties]
+trim_trailing_whitespace = false
+
+[*.yaml]
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = false
+
+[*.json]
+indent_size = 2
+indent_style = space
+
+####################
+## Java (includes AltJava)
+####################
+[*.{java,groovy,scala,kt}]
+trim_trailing_whitespace = true
+
+[*.scala]
+indent_size = 2
+indent_style = space
+
+####################
+## JavaScript (includes AltJS)
+####################
+[*.{js,jsx,ts,tsx,vue}]
+trim_trailing_whitespace = true
+
+[*.vue]
+indent_size = 2
+indent_style = space
+
+####################
+## Python
+####################
+[*.py]
+inent_size = 4
+indent_style = space
+
+####################
+## ShellScript
+####################
+[*.{sh,bash,zsh}]
+indent_size = 2
+indent_style = space
+
+####################
+## HTML
+####################
+[*.{html,htm,jsp,ejs}]
+indent_size = 4
+indent_style = space
+
+####################
+## dotfiles
+####################
+[.*]
+indent_size = 2
+indent_style = space
+
+####################
+## css
+####################
+[*.{css,scss,sass,styl}]
+indent_size = 2
+indent_style = space
