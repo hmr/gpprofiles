@@ -25,18 +25,18 @@ echo "Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 # 😩😂😅😝
 # Compile rc files
 for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle; do
-	if [ ! -f ${_SELF}.zwc -o ${_SELF} -nt ${_SELF}.zwc ]; then
+	if [[ ! -f ${_SELF}.zwc || ${_SELF} -nt ${_SELF}.zwc ]]; then
 		echo "  Compiling ${_SELF}"
-		zcompile ${_SELF}
+		zcompile "${_SELF}"
 	fi
 	unset _SELF
 done
 
 # System-wide zshrc
-[ -r /usr/local/etc/zshrc ] && source /usr/local/etc/zshrc
+[[ -r /usr/local/etc/zshrc ]] && source /usr/local/etc/zshrc
 
 # Zsh options
-source ${ZDOTDIR:-${HOME}}/dot-zshrc_setopt
+source "${ZDOTDIR:-${HOME}}/dot-zshrc_setopt"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -48,30 +48,30 @@ fi
 ### Zplug settings
 # Where is zplug installed?
 ## Own-install version
-if   [ -d "${XDG_CONFIG_HOME}/zplug" ]; then
+if   [[ -d ${XDG_CONFIG_HOME}/zplug ]]; then
   export ZPLUG_ROOT="${XDG_CONFIG_HOME}/zplug"
 ## Homebrew-installed version(x86)
-elif [ -d /usr/local/opt/zplug ]; then
+elif [[ -d /usr/local/opt/zplug ]]; then
   export ZPLUG_ROOT="/usr/local/opt/zplug"
 ## Homebrew-installed version(Apple Silicon)
-elif [ -d /opt/homebrew/opt/zplug ]; then
+elif [[ -d /opt/homebrew/opt/zplug ]]; then
   export ZPLUG_ROOT="/opt/homebrew/opt/zplug"
 ## APT-installed version
-elif [ -d /usr/share/zplug ]; then
+elif [[ -d /usr/share/zplug ]]; then
   export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
 ## GPP-installed version
-elif [ -d ${ZDOTDIR:-${HOME}/.config/zsh}/zplug ]; then
+elif [[ -d ${ZDOTDIR:-${HOME}/.config/zsh}/zplug ]]; then
   export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
 fi
 
 # per-user contents directory
 export ZPLUG_HOME="${XDG_DATA_HOME:-${HOME}/.local}/zplug"
 # Per-user plugin repo directory
-if [ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]; then
+if [[ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]]; then
   export ZPLUG_REPOS="${XDG_DATA_HOME:-${HOME}/.local}/zplug/repos"
 fi
 # Per-user cache directory
-if [ -d "${XDG_CACHE_HOME:-${HOME}/.cache}" ]; then
+if [[ -d "${XDG_CACHE_HOME:-${HOME}/.cache}" ]]; then
   export ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zplug/cache"
 fi
 
@@ -83,22 +83,46 @@ fi
 # export ENHANCD_HOOK_AFTER_CD="pwd; ls"
 # export ENHANCD_HYPHEN_NUM=20
 
-# fzf settings
-export FZF_DEFAULT_OPTS="--height 40% --border --multi --ansi"
+# ==================== fzf settings ====================
+export FZF_TMUX="1"
+
+# Center pop-up style
+# export FZF_TMUX_OPTS="-p 60%,65% ${FZF_TMUX_OPTS_COMMON}"
+
+# In-pane divided style
+# export FZF_TMUX_OPTS="-d 40%"
+
+export FZF_DEFAULT_OPTS="--ansi --border --separator= --multi --color=border:bright-magenta --color=gutter:bright-black --color=pointer:red --color=marker:bright-yellow --color=current-bg:yellow"
+
+# ---------- Ctrl-R
+# Derived from https://riq0h.jp/2023/11/26/204717/
+# export FZF_DEFAULT_OPTS="--ansi --no-separator --no-scrollbar --border \
+# --color=bg+:#1c1e26,bg:#1c1e26,spinner:#ee64ac,hl:#e95678 \
+# --color=fg:#d5d8da,header:#e95678,info:#e95678,pointer:#ee64ac \
+# --color=marker:#ee64ac,fg+:#d5d8da,prompt:#e95678,hl+:#e95678"
+
+# Pop-up at the center of window
+export FZF_CTRL_R_TMUX_OPTS="-d 60%"
+export FZF_CTRL_R_OPTS="--height 60% --preview 'echo {}' --preview-window=border-sharp,down:3:hidden:wrap --bind '?:toggle-preview'"
+
+# ---------- Ctrl-T
 if type rg >& /dev/null; then
 	# export FZF_DEFAULT_COMMAND="rg --files --follow 2>/dev/null"
-	export FZF_DEFAULT_COMMAND="rg --files --no-messages"
-	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
-elif type fd >& /dev/null; then
-	export FZF_DEFAULT_COMMAND="fd --type f"
-	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
-else
-	echo "fzf is used with super-slow 'find' now because neither 'ripgrep' nor 'fd' is installed. Consider installing one of them."
-	export FZF_DEFAULT_COMMAND="find * --type f"
-	export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-	export FZF_ALT_C_COMMAND="${FZF_DEFAULT_COMMAND}"
+	# export FZF_DEFAULT_COMMAND="rg --files --no-messages"
+	# export FZF_DEFAULT_COMMAND="rg --files --hidden 2> /dev/null --follow --glob '!.git/*'"
+	export FZF_CTRL_T_COMMAND="rg --max-depth=6 --files --hidden 2> /dev/null --follow --glob '!.git/*' | sort"
+	export FZF_CTRL_T_TMUX_OPTS="-p 70%,65%"
+	export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=plain --line-range :100 {}' --preview-window=border-sharp,right:60%"
+fi
+
+# ---------- Alt-C
+if type fd >& /dev/null; then
+	export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git | sort"
+	# export FZF_ALT_C_COMMAND="fd --type d | sort"
+	if type eza >& /dev/null; then
+		export FZF_ALT_C_TMUX_OPTS="-p 50%,50%"
+		export FZF_ALT_C_OPTS="--preview 'eza {} -h -T -F --no-user --no-time --no-filesize --no-permissions --long | head -200' --preview-window=border-sharp,hidden:right:60% --bind '?:toggle-preview'"
+	fi
 fi
 
 # Helper function
@@ -149,44 +173,57 @@ function zplug-check-combo() {
 }
 
 if [ -n "${ZPLUG_ROOT}" ]; then
-  source $ZPLUG_ROOT/init.zsh
+  source "$ZPLUG_ROOT/init.zsh"
+
   zplug "zsh-users/zsh-completions"
   # autoload -Uz compinit && compinit
-  zplug "zsh-users/zsh-autosuggestions", defer:2
+  zplug "zsh-users/zsh-autosuggestions"
+
   # enhances the terminal environment with 256 colors
-	# export ZSH_256COLOR_DEBUG=1
-  # zplug "chrissicool/zsh-256color", defer:2
+  # export ZSH_256COLOR_DEBUG=1
+  # zplug "chrissicool/zsh-256color"
+
   # コマンドを種類毎に色づけ
 	# TODO: select plug-ins based on CPU performance
 	if [[ $(_chksysspd) -le 5 ]]; then
-		# zplug "zsh-users/zsh-syntax-highlighting", defer:3
-		zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
+		# zplug "zsh-users/zsh-syntax-highlighting"
+		zplug "zdharma-continuum/fast-syntax-highlighting"
 	else
-		zplug "zdharma-continuum/fast-syntax-highlighting", defer:3
+		zplug "zdharma-continuum/fast-syntax-highlighting"
 	fi
   # ヒストリの補完強化
-  zplug "zsh-users/zsh-history-substring-search", defer:3
+  zplug "zsh-users/zsh-history-substring-search"
+
   # Gitの補完
-  zplug "plugins/git",   from:oh-my-zsh, defer:3
+  zplug "plugins/git",   from:oh-my-zsh
+
   # Gitのブランチ名も補完
-  #zplug "peterhurford/git-aliases.zsh", defer:3
-  zplug "hmr/git-aliases.zsh", defer:3
+  #zplug "peterhurford/git-aliases.zsh"
+  zplug "hmr/git-aliases.zsh"
+
   # Better line editor
   zplug "marlonrichert/zsh-edit"
 
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
-  zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2, at:0.44.1
+	# zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2, at:0.44.1
+	# zplug "junegunn/fzf", as:plugin, use:"shell/*.zsh"
+	zplug "/Users/hmr/src/fzf-hmr", from:local, as:plugin, use:"shell/*.zsh"
+
   ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
   #zplug "junegunn/fzf", use:shell/completion.zsh
+
   ## fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
+
   ## ディレクトリ移動を高速化（fzf であいまい検索）
-  # zplug "b4b4r07/enhancd", use:init.sh, defer:2
+  # zplug "b4b4r07/enhancd", use:init.sh
+
   ## git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
   #zplug "motemen/ghq", as:command, from:gh-r
 
   #zplug "modules/prompt", from:prezto
+
   # Powerlevel 10000(Theme)
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
@@ -202,8 +239,8 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # fi
 
   # Then, source plugins and add commands to $PATH
-	# zplug load --verbose
-	zplug load
+  # zplug load --verbose
+  zplug load
   if [[ $? -eq 0 ]]; then
     echo "  zplug successfully loaded."
   else
@@ -290,7 +327,7 @@ bindkey "${key[C-M-Right]}" do-nothing
 # .zshrc
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-	. "$(code --locate-shell-integration-path zsh)"
+	source "$(code --locate-shell-integration-path zsh)"
 	echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
 fi
 
