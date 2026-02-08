@@ -4,10 +4,8 @@
 # Part of GPP
 
 # dot-shell_shellenv
-# Login: Yes / Interactive: Yes / Non-interactive: Yes
-# - This file is read first when zsh invoked as login, interactive or non-interactive(shell script).
-# - This file should contain variables which is available to other programs like 'PATH', 'EDITOR',
-#   'PAGER', 'ZDOTDIR', etc.
+# This file is imported from dot-shell_rc_gpp.
+# This file contains basic variables like XDG Base Directory, TERMINFO_DIRS, Text decoration, etc.
 
 # ORIGIN: 2020-06-30 by hmr
 

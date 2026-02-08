@@ -4,7 +4,8 @@
 # Part of GPP
 
 # dot-shell_rc_gpp
-
+# This file is imported from dot-zshrc(.zshrc) / .bashrc
+# This file imports gpp files.
 # ORIGIN: 2020-06-28 02:32 by hmr
 
 echo "Processing ${UNDERLINE}${GREEN}dot-shell_rc_gpp${NORMAL}"
