@@ -6,6 +6,13 @@
 
 # install_settings_apps_common.sh
 
+function is_retina() {
+	if system_profiler SPDisplaysDataType | grep -qE "Resolution:.+Retina$"; then
+		return 0
+	else
+		return 1
+	fi
+}
 
 # Install the settings in the argument
 if [[ -z $TARGET ]]; then
@@ -71,6 +78,16 @@ for APP in "${TARGET[@]:?}"; do
 			ln -s "${GPP_HOME}/settings/apps/vim/dot-vim" "${XDG_CONFIG_HOME}/vim"
 		else
 			ln -s "${GPP_HOME}/settings/apps/${APP}" "${XDG_CONFIG_HOME}"
+		fi
+
+		# App specific post processing
+		if [[ ${APP} = "ghostty" ]]; then
+			TMP_BASE_DIR="${XDG_CONFIG_HOME}/ghostty"
+			if is_retina; then
+				ln -s "${TMP_BASE_DIR}/config.retina" "${TMP_BASE_DIR}/config"
+			else
+				ln -s "${TMP_BASE_DIR}/config.generic" "${TMP_BASE_DIR}/config"
+			fi
 		fi
 	fi
 done
