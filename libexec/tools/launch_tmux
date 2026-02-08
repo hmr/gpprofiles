@@ -13,7 +13,7 @@
 
 DRY_RUN=0
 
-GPP_HOME="${GPP_HOME:=${HOME}/gpprofiles}"
+# GPP_HOME="${GPP_HOME:=${HOME}/gpprofiles}"
 TERM="${TERM:=xterm-256color}"
 PATH=/usr/local/bin:/usr/local/sbin:${PATH}
 SSH_BIN=$(which ssh)
@@ -27,7 +27,7 @@ TMUX_CMD=""
 post_processing() {
 	# Logout setting
 	if [[ -r "${ZDOTDIR}/dot-zlogout" ]]; then
-		. ${ZDOTDIR}/dot-zlogout
+		source ${ZDOTDIR}/dot-zlogout
 	fi
 }
 
@@ -44,7 +44,7 @@ generate_sesid() {
 
     echo "Making session id... "
 
-    if [ -r /dev/urandom ]; then
+    if [[ -r /dev/urandom ]]; then
         # urandom available
         echo "by /dev/urandom"
         TMP_SESID=$(dd bs=64 count=1 if=/dev/urandom 2>/dev/null | shasum -b | cut -c1-6)
@@ -63,16 +63,18 @@ trap 'post_processing' 1 2 3 15
 echo
 echo "Starting $0..."
 echo "TERM=${TERM}"
+echo "BASH=${BASH}"
 echo "GPP_HOME=${GPP_HOME}"
+echo "PATH=${PATH}"
 
 if [[ -z ${GPP_HOME} ]]; then
 	echo "\$GPP_HOME isn't set."
 	exit 1
 fi
 
-. ${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv
-. ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function
-. ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos
+source ${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv
+#source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function
+#source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos
 
 # Ssh-agent setting
 # Derived from gpp's dot-profile_ssh-agent
@@ -81,13 +83,13 @@ if [[ -r "${ZDOTDIR}/dot-zprofile_ssh-agent" ]]; then
 
 	echo "Calling dot-(z)profile_ssh-agent..."
 	echo "--------------------------------------------------------------------------------"
-	. ${ZDOTDIR}/dot-zprofile_ssh-agent
+	source ${ZDOTDIR}/dot-zprofile_ssh-agent
 	echo "--------------------------------------------------------------------------------"
 	SSH_OPT+=("-A")
 fi
 
 # Check number of args
-if [ $# -eq 0 ]; then
+if (( $# == 0 )); then
     echo "Error: Not enough arguments"
     show_usage
     exit 1
@@ -99,7 +101,7 @@ shift
 
 # Handling other arguments
 CMD_OPT=""
-while [ $# -gt 0 ]
+while (( $# > 0 ))
 do
     OPT=$1
     shift
@@ -141,7 +143,7 @@ done
 
 
 # Check SSH Agent
-if [[ "${SSH_AGENT_PID:-0}" = "0" ]]; then
+if (( ${SSH_AGENT_PID:-0} == 0 )); then
 	echo "SSH Agent isn't configured."
 	#exit 1
 fi
@@ -161,9 +163,10 @@ fi
 # fi
 
 # Tmux's Session ID processing("reattach" or "auto" mode only)
-if [ "${MODE}" = "reattach" ] || [ "${MODE}" = "auto" ]; then
+if [[ $MODE == reattach || $MODE == auto ]]; then
+	echo "MODE: ${MODE}"
 	# Get the Tmux session ID from already existing session.
-	if [ "${TRGT_HOST}" = "localhost" ]; then
+	if [[ $TRGT_HOST == localhost ]]; then
 		# Local
 		echo "SESID=\$\(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)"
 		SESID=$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)
@@ -217,7 +220,7 @@ if [ "${MODE}" = "reattach" ] || [ "${MODE}" = "auto" ]; then
 		# SESID=$(generate_sesid)
 		# CMD_OPT="${CMD_OPT} -s ${SESID}"
 
-		if [ "${MODE}" = "auto" ]; then
+		if [[ $MODE == auto ]]; then
 			TMUX_CMD="new-session"
 		else
 			# "reattach" mode
@@ -228,14 +231,14 @@ if [ "${MODE}" = "reattach" ] || [ "${MODE}" = "auto" ]; then
 
 	* )
 		TMUX_CMD="attach-session"
-		if [ "${TRGT_HOST}" = "localhost" ]; then
+		if [[ $TRGT_HOST == localhost ]]; then
 			CMD_OPT="${CMD_OPT} -t ${SESID}"
 		else
 			CMD_OPT="${CMD_OPT} -t '=${SESID}'"
 		fi
 
 	esac
-elif [ "${MODE}" = "new" ]; then
+elif [[ $MODE == new ]]; then
 	TMUX_CMD="new-session"
 else
 	echo "Error: Failed to determine mode. Choose 'auto' 'new' 'reattach'"
@@ -245,14 +248,13 @@ fi
 case ${TRGT_HOST} in
 	localhost )
 		echo "${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}"
-		[ "${DRY_RUN}" -eq 0 ] &&
-			${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD}
+	(( DRY_RUN == 0 )) &&
+		${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD}
 		;;
 
 	* )
 		echo "${SSH_BIN} ${SSH_OPT} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}"
-		[ "${DRY_RUN}" -eq 0 ] &&
+		(( DRY_RUN == 0 )) &&
 			${SSH_BIN} ${SSH_OPT} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}
 		;;
 esac
-
