@@ -103,15 +103,20 @@ local developmentApp = [
 // AI chat applications (ChatGPT and Claude desktop apps)
 local chatGptAndClaude = [
   '^com\\.openai\\.chat',
-  '^com\\.anthropic\\.claudefordesktop',
+  '^com\\.anthropic\\.claudefordesktop$',
+  // Add your ChatGPT Chrome app ID below
+  '^com\\.google\\.Chrome\\.app\\.cadlkienfkclaiaibeoongdcgmdikeeg$',
 ];
 
 // Google Gemini and Google AI Studio (Chrome apps)
 local googleGemini = [
-  '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',  // Gemini
+  // Add your Google Gemini Chrome app ID below
+  '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',
+  '^com\\.google\\.Chrome\\.app\\.gdfaincndogidkdcdkhapmbffkckdkhn$',
 ];
 local googleAiStudio = [
-  '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',  // AI Studio
+  // Add your Google AI Studio Chrome app ID below
+  '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',
 ];
 
 // -----------------------------------------------------------------------------
@@ -439,6 +444,11 @@ local rule(description, manipulators) = {
     // Option+Cmd+T → iTerm
     rule('[GPP] Start <iTerm2> by ⌥⌘T', [
       appLauncher('t', 'iTerm'),
+    ]),
+
+    // Option+Cmd+T → Ghostty
+    rule('[GPP] Start <Ghostty> by ⌥⌘T', [
+      appLauncher('t', 'Ghostty'),
     ]),
 
     // Option+Cmd+V → Visual Studio Code
