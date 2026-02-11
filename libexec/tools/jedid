@@ -189,12 +189,13 @@ function main() {
 					ln -sf man.conf.dark man.conf
 				fi
 
-				## kitty
-				decho "Setting man for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf kitty.dark.conf kitty.conf
-				fi
+				# kitty implemnted automatic theme switching at 0.38.0...
+				# ## kitty
+				# decho "Setting man for dark mode..."
+				# CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
+				# if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+				#     ln -sf kitty.dark.conf kitty.conf
+				# fi
 
 				# set mode
 				MODE="dark"
@@ -223,12 +224,13 @@ function main() {
 					ln -sf man.conf.light man.conf
 				fi
 
-				## man
-				decho "Setting kitty for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf kitty.light.conf kitty.conf
-				fi
+				# kitty implemnted automatic theme switching at 0.38.0...
+				# ## kitty
+				# decho "Setting kitty for light mode..."
+				# CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
+				# if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+				#     ln -sf kitty.light.conf kitty.conf
+				# fi
 
 				# set mode
 				MODE="light"
