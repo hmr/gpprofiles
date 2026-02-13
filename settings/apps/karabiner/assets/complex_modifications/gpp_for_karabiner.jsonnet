@@ -750,7 +750,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Ctrl+[Shift]+Z → Cmd+[Shift]+Z (Undo)
-    rule('[GPP][PC-Style] Undo (⌃Z → ⌘Z) NOT on RDC/VM/Term/Dev', [
+    rule('[GPP][PC-Style] Undo (⌃z → ⌘z) NOT on RDC/VM/Term/Dev', [
       keyToKey('z',
                { mandatory: ['control'], optional: ['shift'] },
                'z',
