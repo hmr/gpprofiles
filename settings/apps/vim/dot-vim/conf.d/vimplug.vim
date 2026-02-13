@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2026-02-02T17:58:38+0900]
+" Last Update: [2026-02-12T19:40:32+0900]
 
 scriptencoding utf-8
 
@@ -55,11 +55,18 @@ Plug 'morhetz/gruvbox'
 " ----------------------------------------------------------------------------
 " Syntax:
 " ----------------------------------------------------------------------------
+" Settings for vim-polyglot
+" Disable some languages to reduce startup time
+let g:polyglot_disabled = ['markdown', 'zsh']
 Plug 'sheerun/vim-polyglot'     " Meta plugin for many languages
 Plug 'darfink/vim-plist'        " macOS plist
 " Plug 'gisphm/vim-gitignore'   " gitignore
 Plug 'b4winckler/vim-objc'      " Objective-C
 Plug 'pearofducks/ansible-vim'  " Ansible YAML
+Plug 'keith/xcconfig.vim'       " Apple Xcode .xcconfig files
+Plug 'https://codeberg.org/ziglang/zig.vim' " Zig language support
+Plug 'google/vim-jsonnet'       " Jsonnet syntax highlighting
+Plug 'chrisbra/vim-zsh'         " Zsh syntax highlighting
 
 " ----------------------------------------------------------------------------
 " Managed Plugins:
@@ -192,7 +199,7 @@ Plug 'vim-jp/vimdoc-ja'
 " Plug 'vim-scripts/gitignore'
 
 " Set 'wildignore' from git repo root or home folder
-Plug 'hmr/vim-rootignore' "was once 'octref/RootIgnore'
+Plug 'octref/rootignore'
 
 " Syntax checking hacks for vim
 " Plug 'vim-syntastic/syntastic'
@@ -246,17 +253,5 @@ Plug 'tani/dmacro.vim'
 
 " GitHub Copilot for Vim and Neovim
 Plug 'github/copilot.vim'
-
-" .xcconfig syntax highlighting
-Plug 'keith/xcconfig.vim'
-
-" Zig language support
-Plug 'https://codeberg.org/ziglang/zig.vim'
-
-" Jsonnet syntax highlighting
-Plug 'google/vim-jsonnet'
-
-" Zsh syntax highlighting
-Plug 'chrisbra/vim-zsh'
 
 call plug#end()

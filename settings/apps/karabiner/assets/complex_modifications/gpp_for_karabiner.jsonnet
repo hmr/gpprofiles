@@ -71,9 +71,13 @@ local terminals = [
   '^com\\.googlecode\\.iterm2$',
   '^com\\.mitchellh\\.ghostty$',
   '^io\\.alacritty$',
-  '^net\\.kovidgoyal\\.kitty$',
   '^org\\.alacritty$',
-  '^com\\.mitchellh\\.ghostty$',
+  '^net\\.kovidgoyal\\.kitty$',
+  '^com\\.raphaelamorim\\.rio$',
+  '^com\\.github\\.wez\\.wezterm$',
+  '^dev\\.warp\\.Warp',
+  '^org\\.the-meiers\\.coolterm$',
+  '^KingToolbox\\.WindTerm$',
 ];
 
 // Web browsers
