@@ -446,4 +446,9 @@ function whichwp () {
 	fi
 }
 
+echo -n ", safe_rm(${GPP_HOME})"
+if [[ -n ${GPP_HOME} && -x ${GPP_HOME}/libexec/tools/safe-rm.sh ]]; then
+	alias rm="${GPP_HOME}/libexec/tools/safe-rm.sh"
+fi
+
 echo
