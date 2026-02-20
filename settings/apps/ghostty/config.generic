@@ -52,21 +52,21 @@
 initial-command = ~/launch_tmux localhost auto
 shell-integration-features = ssh-env
 
-theme = light:Gruvbox Light,dark:Gruvbox Dark Hard
+theme = light:Gruvbox Light,dark:Gruvbox Dark
 font-family = Cica
 font-size = 14
 font-thicken = true
 font-thicken-strength = 1
 alpha-blending = native
 
-background-opacity = 0.7
+# background-opacity = 0.7
 background-blur = 10
 
 cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
 
-title = " "
+title = "Ghostty"
 #macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = transparent
 #macos-window-buttons = hidden

@@ -1,0 +1,7 @@
+{
+  "autoupdate:channel": "latest",
+  "telemetry:enabled": false,
+  "app:confirmquit": true,
+  "term:fontfamily": "Cica",
+  "term:fontsize": 14
+}
