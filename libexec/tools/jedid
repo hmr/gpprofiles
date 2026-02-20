@@ -189,13 +189,30 @@ function main() {
 					ln -sf man.conf.dark man.conf
 				fi
 
-				# kitty implemnted automatic theme switching at 0.38.0...
-				# ## kitty
-				# decho "Setting man for dark mode..."
-				# CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
-				# if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-				#     ln -sf kitty.dark.conf kitty.conf
-				# fi
+				# WezTerm
+				TARGET="wezterm"
+				decho "Setting ${TARGET} for dark mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf wezterm.dark.lua wezterm.lua
+				fi
+
+				# Hyper
+				TARGET="hyper"
+				decho "Setting ${TARGET} for dark mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					cp hyper.dark.js .hyper.js
+				fi
+
+				# Alacritty
+				TARGET="alacritty"
+				decho "Setting ${TARGET} for dark mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf themes/gruvbox_dark.toml theme.toml
+					touch alacritty.toml
+				fi
 
 				# set mode
 				MODE="dark"
@@ -224,13 +241,30 @@ function main() {
 					ln -sf man.conf.light man.conf
 				fi
 
-				# kitty implemnted automatic theme switching at 0.38.0...
-				# ## kitty
-				# decho "Setting kitty for light mode..."
-				# CONFIG_DIR="${XDG_CONFIG_HOME}/kitty"
-				# if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-				#     ln -sf kitty.light.conf kitty.conf
-				# fi
+				# WezTerm
+				TARGET="wezterm"
+				decho "Setting ${TARGET} for light mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf wezterm.light.lua wezterm.lua
+				fi
+
+				# Hyper
+				TARGET="hyper"
+				decho "Setting ${TARGET} for light mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					cp hyper.light.js .hyper.js
+				fi
+
+				# Alacritty
+				TARGET="alacritty"
+				decho "Setting ${TARGET} for light mode..."
+				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					ln -sf themes/gruvbox_light.toml theme.toml
+					touch alacritty.toml
+				fi
 
 				# set mode
 				MODE="light"
