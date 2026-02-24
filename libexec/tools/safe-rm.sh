@@ -100,6 +100,8 @@ fi
 #   defaults to the system trash directory
 SAFE_RM_TRASH=${SAFE_RM_TRASH:="$DEFAULT_TRASH"}
 
+# Whether to play macOS trash sound when moving items into Trash (MacOS only)
+SAFE_RM_SOUND=${SAFE_RM_SOUND:=1}
 
 if [[ "$OS_TYPE" == "MacOS" ]]; then
   if command -v osascript &> /dev/null; then
@@ -135,6 +137,9 @@ else
   fi
 fi
 
+
+# Accumulator for AppleScript batch deletion (one Finder call = one sound)
+APPLESCRIPT_BATCH_TARGETS=()
 
 SAFE_RM_PROTECTED_RULES="${SAFE_RM_CONFIG_ROOT}/.gitignore"
 
@@ -490,7 +495,20 @@ do_trash(){
   fi
 
   if [[ -n $SAFE_RM_USE_APPLESCRIPT ]]; then
-    applescript_trash "$target"
+    # Symlinks must bypass AppleScript (alias resolution issue).
+    # They are handled immediately via mac_trash.
+    if [[ -L "$target" ]]; then
+      debug "$LINENO: target is symlink; bypass AppleScript, use mac_trash"
+      [[ "$OPT_VERBOSE" == 1 ]] && list_files "$target"
+      mac_trash "$target"
+    else
+      # Queue non-symlink targets for batch Finder deletion (single sound).
+      [[ "$OPT_VERBOSE" == 1 ]] && list_files "$target"
+      local abs_path
+      abs_path=$(cd "$(dirname "$target")" && pwd)/$(basename "$target")
+      APPLESCRIPT_BATCH_TARGETS+=("$abs_path")
+      debug "$LINENO: queued for batch: $abs_path (total ${#APPLESCRIPT_BATCH_TARGETS[@]})"
+    fi
   elif [[ "$OS_TYPE" == "MacOS" ]]; then
     mac_trash "$target"
   else
@@ -539,6 +557,15 @@ applescript_trash(){
   [[ "$OPT_VERBOSE" == 1 ]] && list_files "$target"
 
   debug "$LINENO: osascript delete $target"
+
+  # If the target is a symlink, coercing to AppleScript 'alias' may resolve it
+  # and Finder could delete the link target instead of the symlink itself.
+  # To be safe, bypass AppleScript and move the symlink into ~/.Trash directly.
+  if [[ -L "$target" ]]; then
+    debug "$LINENO: target is symlink; bypass AppleScript"
+    mac_trash "$target"
+    return $?
+  fi
 
   osascript -e "tell application \"Finder\" to delete (POSIX file \"$target\" as alias)" &> /dev/null
 
@@ -599,6 +626,55 @@ check_target_to_move(){
     fi
   fi
 }
+applescript_trash_batch(){
+  # Batch-delete multiple non-symlink targets in one Finder call to get a single sound.
+  # Args: absolute POSIX paths
+  if [[ $# -eq 0 ]]; then
+    return 0
+  fi
+
+  local script='tell application "Finder" to delete {'
+  local first=1
+  local p=
+
+  for p in "$@"; do
+    # Escape backslashes and double quotes for AppleScript string literal.
+    local esc=${p//\\/\\\\}
+    esc=${esc//\"/\\\"}
+
+    if [[ $first -eq 1 ]]; then
+      first=0
+    else
+      script+=", "
+    fi
+
+    script+="(POSIX file \"${esc}\" as alias)"
+  done
+
+  script+='}'
+
+  debug "$LINENO: osascript batch delete $# item(s)"
+  osascript -e "$script" &> /dev/null
+
+  return 0
+}
+
+play_trash_sound(){
+  [[ "$OS_TYPE" != "MacOS" ]] && return 0
+  [[ "$SAFE_RM_SOUND" == 0 ]] && return 0
+  command -v afplay &> /dev/null || return 0
+
+  local snd="/System/Library/Components/CoreAudio.component/Contents/SharedSupport/SystemSounds/dock/drag to trash.aif"
+
+  if [[ -r "$snd" ]]; then
+    afplay "$snd" >/dev/null 2>&1 &
+  else
+    afplay /System/Library/Sounds/Pop.aiff >/dev/null 2>&1 &
+  fi
+  SAFE_RM_SOUND=0
+
+  return 0
+}
 
 # trash a file or dir directly
 mac_trash(){
@@ -627,11 +703,12 @@ mac_trash(){
 
   debug "$LINENO: mv $move to $trash_path"
   mv "$move" "$trash_path"
+  local rc=$?
 
   [[ "$_traveled" == 1 ]] && cd $__DIRNAME &> /dev/null
 
   # default status
-  return 0
+  return $rc
 }
 
 
@@ -777,5 +854,24 @@ for file in "${FILE_NAME[@]}"; do
     EXIT_CODE=1
   fi
 done
+
+# Flush queued AppleScript batch targets in a single Finder call.
+# Finder's "delete" command plays its own trash sound, so we skip
+# play_trash_sound when the batch path is taken.
+APPLESCRIPT_BATCH_USED=
+if [[ ${#APPLESCRIPT_BATCH_TARGETS[@]} -gt 0 ]]; then
+  debug "$LINENO: flushing ${#APPLESCRIPT_BATCH_TARGETS[@]} queued item(s) via AppleScript batch"
+  applescript_trash_batch "${APPLESCRIPT_BATCH_TARGETS[@]}"
+  if [[ $? -ne 0 ]]; then
+    EXIT_CODE=1
+  fi
+  APPLESCRIPT_BATCH_USED=1
+fi
+
+# Play trash sound once after all deletions — but only when Finder
+# did NOT handle the deletion (Finder already played its own sound).
+if [[ -z $APPLESCRIPT_BATCH_USED ]] && [[ -z $EXIT_CODE ]]; then
+  play_trash_sound
+fi
 
 do_exit $LINENO
