@@ -65,19 +65,22 @@ local vmMonitors = [
 
 // Terminal emulators
 local terminals = [
-  '^co\\.zeit\\.hyperterm$',
-  '^co\\.zeit\\.hyper$',
-  '^com\\.apple\\.Terminal$',
-  '^com\\.googlecode\\.iterm2$',
-  '^com\\.mitchellh\\.ghostty$',
-  '^io\\.alacritty$',
-  '^org\\.alacritty$',
-  '^net\\.kovidgoyal\\.kitty$',
-  '^com\\.raphaelamorim\\.rio$',
-  '^com\\.github\\.wez\\.wezterm$',
-  '^dev\\.warp\\.Warp',
-  '^org\\.the-meiers\\.coolterm$',
-  '^KingToolbox\\.WindTerm$',
+  '^org\\.alacritty$',                  // Alacritty [https://alacritty.org/]
+  '^com\\.apple\\.Terminal$',           // Apple Terminal
+  '^dev\\.archipelago$',                // Archipelago [https://github.com/npezza93/archipelago/]
+  '^org\\.contourterminal\\.Contour$',  // Contour Terminal [https://contour-terminal.org/]
+  '^org\\.the-meiers\\.coolterm$',      // CoolTerm [https://freeware.the-meiers.org/]]
+  '^org\\.electerm\\.electerm$',        // Electerm [https://electerm.html5beta.com/]
+  '^com\\.mitchellh\\.ghostty$',        // Ghostty [https://ghostty.org/docs]
+  '^co\\.zeit\\.hyper$',                // Hyper [https://hyper.is/]
+  '^com\\.googlecode\\.iterm2$',        // iTerm2 [https://iterm2.com/]
+  '^net\\.kovidgoyal\\.kitty$',         // Kitty  [https://sw.kovidgoyal.net/kitty/]
+  '^com\\.raphaelamorim\\.rio$',        // Rio Terminal [https://rioterm.com/]
+  '^org\\.tabby$',                      // Tabby [https://tabby.sh/]
+  '^app\\.termora$',                    // Termora [https://www.termora.app/]
+  '^dev\\.warp\\.Warp',                 // Warp Terminal [https://www.warp.dev/]
+  '^com\\.github\\.wez\\.wezterm$',     // WezTerm [https://wezterm.org/]
+  '^KingToolbox\\.WindTerm$',           // WindTerm [https://kingtoolbox.github.io/]
 ];
 
 // Web browsers
@@ -610,7 +613,7 @@ local rule(description, manipulators) = {
     // =========================================================================
 
     // F2 → Enter on Finder (PC-style rename)
-    rule('[GPP][PC-Style][Finder] Use F2 as Rename', [
+    rule('[GPP][PC-Style][on Finder] Use F2 as Rename', [
       keyToKey('f2',
                null,
                'return_or_enter',
@@ -620,7 +623,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Delete key → Cmd+Delete on Finder (move to trash)
-    rule('[GPP][PC-Style][Finder] Del key to move into Trash on Finder', [
+    rule('[GPP][PC-Style][on Finder] Del key to move into Trash on Finder', [
       keyToKey('delete_forward',
                null,
                'delete_or_backspace',
@@ -634,7 +637,7 @@ local rule(description, manipulators) = {
     // =========================================================================
 
     // Ctrl+F/K/R/T → Cmd+F/K/R/T on Browsers
-    rule('[GPP][PC-Style][Browser] ⌃F/K/R/T', [
+    rule('[GPP][PC-Style][on Browser] ⌃F/K/R/T', [
       keyToKey('f',
                { mandatory: ['control'] },
                'f',
@@ -662,7 +665,7 @@ local rule(description, manipulators) = {
     ]),
 
     // Alt+Left/Right → Cmd+Left/Right on Browsers (Back/Forward)
-    rule('[GPP][PC-Style][Browser] Back/Forward (⌥←/→)', [
+    rule('[GPP][PC-Style][on Browser] Back/Forward (⌥←/→)', [
       keyToKey('left_arrow',
                { mandatory: ['option'] },
                'left_arrow',
