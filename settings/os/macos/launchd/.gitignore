@@ -1,2 +1,2 @@
 *.plist
-launchd-setenv-all
+launchd_setenv
