@@ -32,6 +32,12 @@ for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTD
 	unset _SELF
 done
 
+# Ghostty zsh integration
+if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+  echo "  Loading ghostty zsh integration"
+  source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
+fi
+
 # System-wide zshrc
 [[ -r /usr/local/etc/zshrc ]] && source /usr/local/etc/zshrc
 
