@@ -22,6 +22,12 @@ case "$(chkshell)" in
     echo -n "bash shopts, "
     # echo "    ${TEMP_BASH_OPT}"
     shopt -s "${TEMP_BASH_OPT[@]}"
+
+    # Ghostty shell integration for Bash. This must be at the top of your bashrc!
+    if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
+        echo -n "Ghostty bash integration, "
+        builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
+    fi
     ;;
 esac
 
