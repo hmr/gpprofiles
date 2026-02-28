@@ -1,0 +1,93 @@
+#! /usr/bin/env bash
+
+# Set IPv6 Default route
+# 
+# Part of GPP
+
+function _gpp_wait_for_secs() {
+  local secs
+  [[ $# -lt 1 ]] && return 1
+  secs=${1}
+  [[ ${secs} =~ ^[0-9]+$ ]] || return 2
+
+  echo -n "Wait for ${secs} secs "
+  local c
+  for ((c=1; c <= secs; c++)) {
+    sleep 1
+    if (( c % 5 == 0 )); then
+      printf "%2d" "$c"
+    else
+      echo -n "."
+    fi
+  }
+  echo
+}
+
+function _gpp_ping6_to() {
+  local tgt pingbin pingopt
+
+  [[ $# -lt 1 ]] && tgt="dns.google" || tgt="${1}"
+
+  if which fping >& /dev/null; then
+    pingbin="fping"
+    pingopt="-6 -p 1000 -t 1000 -i 1000 -r 0 -q"
+  else
+    pingbin="ping6"
+    pingopt="-i 1 -c 1"
+  fi
+
+  if eval "${pingbin}" "${pingopt}" "${tgt}"; then
+    return
+  else
+    return 1
+  fi
+}
+
+router_addr="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 1)"
+
+echo "Pinging dns.google to check IPv6 routing... ";
+if _gpp_ping6_to; then
+	echo "  IPv6 routing seems to be OK!"
+	exit 0
+fi
+
+echo "  IPv6 ping fails. Trying to configure IPv6 default root."
+iface="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 2)"
+
+echo "    Adding IPv6 Default Route (${iface})."
+sudo route -n add -inet6 default "${router_addr}%${iface}" >& /dev/null
+sleep 1
+route6="$(netstat -nr -f inet6 | grep default | grep UGScg | awk '{print $4}')"
+if [[ ${route6} != "${iface}" ]]; then
+	echo "  Weird. No default route found..."
+	exit 1
+fi
+
+for ((cnt=0; cnt < 2; cnt++)) {
+	_gpp_wait_for_secs 10
+	echo "  OK! Let's ping to dns.google..."
+	if _gpp_ping6_to; then
+		echo "    It seems to be OK. Doesn't it?"
+		exit 0
+	fi
+}
+
+echo "  Hmmmm... looks like it's still not working."
+echo "  OK. Trying to disconnect the Wi-Fi. Then reconnect."
+sudo ifconfig en1 down
+sleep 5
+sudo ifconfig en1 up
+echo "    Done. Wait for something that is needed to work well "
+
+for ((cnt=0; cnt < 3; cnt++)) {
+	_gpp_wait_for_secs 10
+	echo "  OK! Let's ping to dns.google..."
+	if _gpp_ping6_to; then
+		echo "    It seems to be OK. Doesn't it?"
+		exit 0
+	fi
+}
+
+echo "  Ohhhhh... There's no more way... Giving up. (sigh)"
+return 2
+
