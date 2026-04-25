@@ -60,6 +60,8 @@ font-size = 14
 # font-thicken-strength = 1
 alpha-blending = native
 
+adjust-underline-position = 4
+
 background-opacity = 0.925
 background-blur = 10
 
@@ -67,20 +69,25 @@ cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
 
+window-height = 80
+window-width = 133
 title = "Ghostty"
 # macos-titlebar-style = transparent
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = hidden
 macos-non-native-fullscreen = visible-menu
+window-step-resize = true
 window-padding-x = 5,5
 
 macos-option-as-alt = true
 
 wait-after-command = true
+mouse-scroll-multiplier = 1
+
 app-notifications = true
 auto-update = check
-# auto-update-channel = stable
-auto-update-channel = tip
+auto-update-channel = stable
+# auto-update-channel = tip
 
 # Should be set keybinds?
 # key = action

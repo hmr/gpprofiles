@@ -56,9 +56,11 @@ theme = light:Gruvbox Light,dark:Gruvbox Dark
 font-family = Cica
 font-size = 14
 # It is recommended to set font-thicken to false on Retina displays.
-font-thicken = true
+# font-thicken = true
 font-thicken-strength = 1
 alpha-blending = native
+
+adjust-underline-position = -10
 
 background-opacity = 0.925
 background-blur = 10
