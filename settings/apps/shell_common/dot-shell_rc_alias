@@ -207,17 +207,17 @@ if which grc > /dev/null && which vmstat > /dev/null; then
 	alias vmstat='grc vmstat'
 fi
 
-# checkip
+# checkip and other commands that call web APIs
 if which curl > /dev/null; then
 	echo -n ", checkip, checkip6"
-	alias checkip='echo $(curl -s -4 "https://ifconfig.me")'
-	alias checkip6='echo $(curl -s -6 --insecure -H "Host: ifconfig.me" "https://[2600:1901:0:b2bd::]")'
+	alias checkip='echo $(curl -s -4 "https://ifconfig.me/ip")'
+	alias checkip6='echo $(curl -s -6 --insecure -H "Host: ifconfig.me" "https://[2600:1901:0:b2bd::]/ip")'
+
+	echo -m ", getipinfo"
+	alias getipinfo='curl -s "https://ipinfo.io/json" | jq -r'
+
+	echo -n ", getdaytime"
+	alias getdaytime='curl -s "http://api.sunrise-sunset.org/json?$(curl -s "ipinfo.io/json" | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
 fi
-
-echo -m ", getipinfo"
-alias getipinfo='curl -s "https://ipinfo.io/json" | jq -r'
-
-echo -n ", getdaytime"
-alias getdaytime='curl -s "https://api.sunrise-sunset.org/json?$(curl -s ipinfo.io | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "https://ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
 
 echo

@@ -352,8 +352,7 @@ function _gpp_ping6_to() {
 
 echo -n ", _gpp_determine_ipv6_if()"
 function _gpp_determine_ipv6_if() {
-	local WIFIIF=$(networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}')
-
+	networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}'
 }
 
 echo -n ", setipv6route"
