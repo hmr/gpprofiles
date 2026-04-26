@@ -254,6 +254,7 @@ function main() {
 				decho "Setting ${TARGET} for light mode..."
 				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
 				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+					# Hyper doesn't notice the change of symbolic link, so we copy the file.
 					cp hyper.light.js .hyper.js
 				fi
 
