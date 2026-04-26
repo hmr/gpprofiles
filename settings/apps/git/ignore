@@ -104,3 +104,5 @@ authorized_keys
 known_hosts
 known_hosts.old
 
+
+**/.claude/settings.local.json
