@@ -107,28 +107,34 @@ local developmentApp = [
   '^org\\.vim\\.MacVim$',
 ];
 
-// AI chat applications (ChatGPT, Claude desktop apps, Google Gemini)
-local cGptApp = [
+/* AI chat applications (ChatGPT, Claude desktop apps, Google Gemini) */
+// ChatGPT Desktop App
+local chatGptApp = [
   '^com\\.openai\\.chat',
 ];
-local cGptChromeApp = [
+// Chat GPT Chrome App
+local chatGptChromeApp = [
   // Add your ChatGPT Chrome app ID below
   '^com\\.google\\.Chrome\\.app\\.cadlkienfkclaiaibeoongdcgmdikeeg$',  //ChatGPT(e3Neo)
 ];
+// Claude Desktop App
 local claudeApp = [
   '^com\\.anthropic\\.claudefordesktop$',
 ];
 
-// Google Gemini and Google AI Studio
+// Google Gemini Desktop App
 local geminiApp = [
+  '^com\\.google\\.GeminiMacOS$',
 ];
 
+// Google Gemini Chrome App
 local geminiChromeApp = [
   // Add your Google Gemini Chrome app ID below
   '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',  //Gemini(E4)
   '^com\\.google\\.Chrome\\.app\\.gdfaincndogidkdcdkhapmbffkckdkhn$',  //Gemini(e3Neo)
 ];
 
+// Google AI Studio Chrome App
 local gAIStudioChromeApp = [
   // Add your Google AI Studio Chrome app ID below
   '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',
@@ -241,6 +247,11 @@ local rule(description, manipulators) = {
   manipulators: manipulators,
 };
 
+local genSeparator(title) =
+  local base = '----- [' + title + '] ';
+  rule(std.substr(base + std.repeat('-', 100), 0, 100),
+       [{ type: 'basic', from: {} }]);
+
 // -----------------------------------------------------------------------------
 // Rules Definition
 // -----------------------------------------------------------------------------
@@ -248,13 +259,13 @@ local rule(description, manipulators) = {
 {
   title: '[GPP] General Purpose Profiles (auto generated from jsonnet)',
   rules: [
+    // Separator rule for better visual grouping
+    rule(std.substr(std.repeat('-', 100), 0, 100), [{ type: 'basic', from: {} }]),
+
     // =========================================================================
     // IME Switching Rules
     // =========================================================================
-
-    // Separator rule for better visual grouping
-    rule('--------------------------------------------------------------------------------',
-         [{ type: 'basic', from: {} }]),
+    genSeparator('IME Switching Rules'),
 
     // Single tap Left Command → 英数, hold → Command (not on RDP/VM)
     rule('[GPP] Single Left Command(⌘) to 英数 key NOT on RDC/VM', [
@@ -285,19 +296,20 @@ local rule(description, manipulators) = {
     ]),
 
     // =========================================================================
-    // AI Chat Application Customizations
+    // AI Chat App Customizations
     // =========================================================================
+    genSeparator('AI Chat App Customizations'),
 
-    // Enter → Shift+Enter, Cmd+Enter → Enter on ChatGPT and Claude
+    // Enter → Shift+Enter, Cmd+Enter → Enter on ChatGPT, Claude and Gemini
     // (Swap newline and send behaviors)
-    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on <ChatGPT>, <Claude Desktop> and <Google Gemini>', [
+    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on All AI Chat Apps', [
       {
         type: 'basic',
         from: { key_code: 'return_or_enter' },
         to: [{ key_code: 'return_or_enter', modifiers: ['left_shift'] }],
         conditions: [{
           type: 'frontmost_application_if',
-          bundle_identifiers: cGptApp + cGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp,
+          bundle_identifiers: chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp,
         }],
       },
       {
@@ -309,24 +321,25 @@ local rule(description, manipulators) = {
         to: [{ key_code: 'return_or_enter' }],
         conditions: [{
           type: 'frontmost_application_if',
-          bundle_identifiers: cGptApp + cGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp,
+          bundle_identifiers: chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp,
         }],
       },
     ]),
 
-    // Cmd+N → Shift+Cmd+O on Google Gemini
-    rule('[GPP] Convert ⌘N to ⇧⌘O on <ChatGPT>, <Claude Desktop> and <Google Gemini>', [
+    // Cmd+N → Shift+Cmd+O on ChatGPT, Claude Desktop, Gemini Chrome App
+    rule('[GPP] Convert ⌘N to ⇧⌘O on All AI Chat Apps except <Gemini Desktop>', [
       keyToKey('n',
                { mandatory: ['command'] },
                'o',
                ['left_command', 'left_shift'],
                'frontmost_application_if',
-               cGptApp + cGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp),
+               chatGptApp + chatGptChromeApp + claudeApp + geminiChromeApp + gAIStudioChromeApp),
     ]),
 
     // =========================================================================
     // iTerm2 Customizations
     // =========================================================================
+    genSeparator('iTerm2 Customizations'),
 
     // Cmd+D → Option+D on iTerm2 (word deletion instead of split pane)
     rule('[GPP][iTerm2] ⌘D to ⌥D (word deletion)', [
@@ -357,6 +370,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // Application Launchers
     // =========================================================================
+    genSeparator('Application Launchers'),
 
     // Cmd+E → Open Finder (not on RDP/VM)
     rule('[GPP] Opens <Finder> by ⌘E (if not on RDC/VM)', [
@@ -383,16 +397,30 @@ local rule(description, manipulators) = {
                  "open -a 'System Preferences'"),
     ]),
 
-    // Option+Cmd+C → ChatGPT
-    rule('[GPP] Start <ChatGPT> by ⌥⌘C', [
+    // Option+Cmd+C → ChatGPT Desktop or ChatGPT Chrome App (duplicate shortcut - only one will work)
+    rule('[GPP] Start <ChatGPT Desktop> or <ChatGPT Chrome App> by ⌥⌘C', [
       appLauncher('c', 'ChatGPT'),
     ]),
 
-    // Ctrl+Option+Cmd+C → Claude
-    rule('[GPP] Start <Claude> by ⌘⌃⌥C', [
+    // Ctrl+Option+Cmd+C → Claude Desktop
+    rule('[GPP] Start <Claude Desktop> by ⌘⌃⌥C', [
       keyToShell('c',
                  { mandatory: ['command', 'control', 'option'] },
                  "open -a 'Claude'"),
+    ]),
+
+    // Ctrl+Option+C → Gemini Desktop
+    rule('[GPP] Start <Google Gemini Desktop> by ⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['control', 'option'] },
+                 "open -a 'Gemini'"),
+    ]),
+
+    // Ctrl+Option+C → Gemini Chrome App
+    rule('[GPP] Start <Google Gemini Chrome App> by ⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['control', 'option'] },
+                 "open -a 'Google Gemini'"),
     ]),
 
     // Ctrl+Cmd+C → Calculator
@@ -400,13 +428,6 @@ local rule(description, manipulators) = {
       keyToShell('c',
                  { mandatory: ['command', 'control'] },
                  "open -a 'Calculator'"),
-    ]),
-
-    // Ctrl+Option+C → Gemini
-    rule('[GPP] Start <Google Gemini> by ⌃⌥C', [
-      keyToShell('c',
-                 { mandatory: ['control', 'option'] },
-                 "open -a 'Google Gemini'"),
     ]),
 
     // Option+Cmd+D → Discord Canary
@@ -479,6 +500,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // Option Key Remappings
     // =========================================================================
+    genSeparator('Option Key Remappings'),
 
     // Option+Enter → Cmd+Enter
     rule('[GPP] ⌥⏎ to ⌘⏎', [
@@ -523,6 +545,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // Mouse Button Mapping
     // =========================================================================
+    genSeparator('Mouse Button Mapping'),
 
     // Mouse button 5 → Dictionary lookup (Ctrl+Cmd+D)
     rule('[GPP] (OBSOLETE?) Mouse button 5 to Lookup dictionary (⌃⌘D)', [
@@ -546,6 +569,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // CapsLock Remapping
     // =========================================================================
+    genSeparator('CapsLock Remapping'),
 
     // CapsLock → Control (hold) / Escape (tap) - unless Apple Internal Keyboard
     rule('[GPP] CapsLock -> Control / Escape (unless Apple Internal Keyboard)', [
@@ -605,6 +629,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // Windows RDP/VM Specific
     // =========================================================================
+    genSeparator('Windows RDP/VM Specific'),
 
     // Cmd+C → Ctrl+C on Windows RDP/VM (to avoid Cortana/Teams shortcut)
     rule('[GPP] ⌘C to ⌃C on RDP/VM console (avoid Cortana/Teams on Windows 10/11)', [
@@ -619,6 +644,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // Finder Specific
     // =========================================================================
+    genSeparator('Finder Specific'),
 
     // F2 → Enter on Finder (PC-style rename)
     rule('[GPP][PC-Style][on Finder] Use F2 as Rename', [
@@ -643,6 +669,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // PC-Style Shortcuts
     // =========================================================================
+    genSeparator('PC-Style Shortcuts'),
 
     // Ctrl+F/K/R/T → Cmd+F/K/R/T on Browsers
     rule('[GPP][PC-Style][on Browser] ⌃F/K/R/T', [
@@ -881,6 +908,7 @@ local rule(description, manipulators) = {
     // =========================================================================
     // Keypad Customization
     // =========================================================================
+    genSeparator('Keypad Customizations'),
 
     // Keypad period → 00 (double zero)
     rule('[GPP] Convert Period on Keypad → 00', [
