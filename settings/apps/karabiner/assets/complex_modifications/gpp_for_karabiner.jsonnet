@@ -65,22 +65,22 @@ local vmMonitors = [
 
 // Terminal emulators
 local terminals = [
-  '^org\\.alacritty$',  // Alacritty [https://alacritty.org/]
-  '^com\\.apple\\.Terminal$',  // Apple Terminal
-  '^dev\\.archipelago$',  // Archipelago [https://github.com/npezza93/archipelago/]
+  '^org\\.alacritty$',                  // Alacritty [https://alacritty.org/]
+  '^com\\.apple\\.Terminal$',           // Apple Terminal
+  '^dev\\.archipelago$',                // Archipelago [https://github.com/npezza93/archipelago/]
   '^org\\.contourterminal\\.Contour$',  // Contour Terminal [https://contour-terminal.org/]
-  '^org\\.the-meiers\\.coolterm$',  // CoolTerm [https://freeware.the-meiers.org/]]
-  '^org\\.electerm\\.electerm$',  // Electerm [https://electerm.html5beta.com/]
-  '^com\\.mitchellh\\.ghostty$',  // Ghostty [https://ghostty.org/docs]
-  '^co\\.zeit\\.hyper$',  // Hyper [https://hyper.is/]
-  '^com\\.googlecode\\.iterm2$',  // iTerm2 [https://iterm2.com/]
-  '^net\\.kovidgoyal\\.kitty$',  // Kitty  [https://sw.kovidgoyal.net/kitty/]
-  '^com\\.raphaelamorim\\.rio$',  // Rio Terminal [https://rioterm.com/]
-  '^org\\.tabby$',  // Tabby [https://tabby.sh/]
-  '^app\\.termora$',  // Termora [https://www.termora.app/]
-  '^dev\\.warp\\.Warp',  // Warp Terminal [https://www.warp.dev/]
-  '^com\\.github\\.wez\\.wezterm$',  // WezTerm [https://wezterm.org/]
-  '^KingToolbox\\.WindTerm$',  // WindTerm [https://kingtoolbox.github.io/]
+  '^org\\.the-meiers\\.coolterm$',      // CoolTerm [https://freeware.the-meiers.org/]]
+  '^org\\.electerm\\.electerm$',        // Electerm [https://electerm.html5beta.com/]
+  '^com\\.mitchellh\\.ghostty$',        // Ghostty [https://ghostty.org/docs]
+  '^co\\.zeit\\.hyper$',                // Hyper [https://hyper.is/]
+  '^com\\.googlecode\\.iterm2$',        // iTerm2 [https://iterm2.com/]
+  '^net\\.kovidgoyal\\.kitty$',         // Kitty  [https://sw.kovidgoyal.net/kitty/]
+  '^com\\.raphaelamorim\\.rio$',        // Rio Terminal [https://rioterm.com/]
+  '^org\\.tabby$',                      // Tabby [https://tabby.sh/]
+  '^app\\.termora$',                    // Termora [https://www.termora.app/]
+  '^dev\\.warp\\.Warp',                 // Warp Terminal [https://www.warp.dev/]
+  '^com\\.github\\.wez\\.wezterm$',     // WezTerm [https://wezterm.org/]
+  '^KingToolbox\\.WindTerm$',           // WindTerm [https://kingtoolbox.github.io/]
 ];
 
 // Web browsers
@@ -327,13 +327,13 @@ local genSeparator(title) =
     ]),
 
     // Cmd+N → Shift+Cmd+O on ChatGPT, Claude Desktop, Gemini Chrome App
-    rule('[GPP] Convert ⌘N to ⇧⌘O on All AI Chat Apps except <Gemini Desktop>', [
+    rule('[GPP] Convert ⌘N to ⇧⌘O on Chrome AI Apps', [
       keyToKey('n',
                { mandatory: ['command'] },
                'o',
                ['left_command', 'left_shift'],
                'frontmost_application_if',
-               chatGptApp + chatGptChromeApp + claudeApp + geminiChromeApp + gAIStudioChromeApp),
+               chatGptChromeApp + geminiChromeApp + gAIStudioChromeApp),
     ]),
 
     // =========================================================================
