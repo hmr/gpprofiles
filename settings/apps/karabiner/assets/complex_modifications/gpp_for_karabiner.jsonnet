@@ -107,16 +107,31 @@ local developmentApp = [
   '^org\\.vim\\.MacVim$',
 ];
 
+// Windows RDP + VM (for Cortana/Teams workaround)
+local winRdpVm = winRdpClients + vmMonitors;
+
+// RDP + VM (for key mappings that should pass through to remote systems)
+local allRdpVm = macosScreenSharing + vncClients + winRdpClients + vmMonitors;
+
+// RDP + VM + Terminals +  Development Apps (for PC-style shortcuts)
+local allRdpVmTermDev = allRdpVm + terminals + developmentApp;
+
+// RDP + VM + Terminals + Development Apps + Web Browsers
+local allRdpVmTermDevBrowser = allRdpVmTermDev + webBrowsers;
+
 /* AI chat applications (ChatGPT, Claude desktop apps, Google Gemini) */
 // ChatGPT Desktop App
 local chatGptApp = [
-  '^com\\.openai\\.chat',
+  '^com\\.openai\\.chat$',
+  '^com\\.openai\\.codex$',
 ];
+
 // Chat GPT Chrome App
 local chatGptChromeApp = [
   // Add your ChatGPT Chrome app ID below
   '^com\\.google\\.Chrome\\.app\\.cadlkienfkclaiaibeoongdcgmdikeeg$',  //ChatGPT(e3Neo)
 ];
+
 // Claude Desktop App
 local claudeApp = [
   '^com\\.anthropic\\.claudefordesktop$',
@@ -140,21 +155,12 @@ local gAIStudioChromeApp = [
   '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',
 ];
 
-// -----------------------------------------------------------------------------
-// Combined Bundle Identifier Groups
-// -----------------------------------------------------------------------------
+local tweakEnterApps =
+  chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp;
 
-// Windows RDP + VM (for Cortana/Teams workaround)
-local winRdpVm = winRdpClients + vmMonitors;
 
-// RDP + VM (for key mappings that should pass through to remote systems)
-local allRdpVm = macosScreenSharing + vncClients + winRdpClients + vmMonitors;
-
-// RDP + VM + Terminals +  Development Apps (for PC-style shortcuts)
-local allRdpVmTermDev = allRdpVm + terminals + developmentApp;
-
-// RDP + VM + Terminals + Development Apps + Web Browsers
-local allRdpVmTermDevBrowser = allRdpVmTermDev + webBrowsers;
+local tweakCommandNApps =
+  chatGptChromeApp + geminiChromeApp + gAIStudioChromeApp;
 
 // -----------------------------------------------------------------------------
 // Helper Functions for Creating Manipulators
@@ -309,7 +315,7 @@ local genSeparator(title) =
         to: [{ key_code: 'return_or_enter', modifiers: ['left_shift'] }],
         conditions: [{
           type: 'frontmost_application_if',
-          bundle_identifiers: chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp,
+          bundle_identifiers: tweakEnterApps
         }],
       },
       {
@@ -321,7 +327,7 @@ local genSeparator(title) =
         to: [{ key_code: 'return_or_enter' }],
         conditions: [{
           type: 'frontmost_application_if',
-          bundle_identifiers: chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp,
+          bundle_identifiers: tweakEnterApps,
         }],
       },
     ]),
@@ -333,7 +339,7 @@ local genSeparator(title) =
                'o',
                ['left_command', 'left_shift'],
                'frontmost_application_if',
-               chatGptChromeApp + geminiChromeApp + gAIStudioChromeApp),
+               tweakCommandNApps),
     ]),
 
     // =========================================================================
