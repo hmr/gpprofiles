@@ -14,6 +14,50 @@
 // These are commonly used application groups for condition matching.
 // Karabiner uses regex patterns to match bundle identifiers.
 
+/* AI chat applications (ChatGPT, Claude desktop apps, Google Gemini) */
+// ChatGPT Desktop App
+local chatGptApp = [
+  '^com\\.openai\\.chat$',
+  '^com\\.openai\\.codex$',
+];
+
+// Chat GPT Chrome App
+local chatGptChromeApp = [
+  // Add your ChatGPT Chrome app ID below
+  '^com\\.google\\.Chrome\\.app\\.cadlkienfkclaiaibeoongdcgmdikeeg$',  //ChatGPT(e3Neo)
+];
+
+// Claude Desktop App
+local claudeApp = [
+  '^com\\.anthropic\\.claudefordesktop$',
+];
+
+// Google Gemini Desktop App
+local geminiApp = [
+  '^com\\.google\\.GeminiMacOS$',
+];
+
+// Google Gemini Chrome App
+local geminiChromeApp = [
+  // Add your Google Gemini Chrome app ID below
+  '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',  //Gemini(E4)
+  '^com\\.google\\.Chrome\\.app\\.gdfaincndogidkdcdkhapmbffkckdkhn$',  //Gemini(e3Neo)
+];
+
+// Google AI Studio Chrome App
+local gAIStudioChromeApp = [
+  // Add your Google AI Studio Chrome app ID below
+  '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',
+];
+
+// Applications to tweak Enter behavior (Shift+Enter vs Cmd+Enter) - mainly for AI chat apps
+local tweakEnterApps =
+  chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp;
+
+// Applications to tweak Cmd+N behavior (Shift+Cmd+O) - mainly for Chrome AI apps
+local tweakCommandNApps =
+  chatGptChromeApp + geminiChromeApp + gAIStudioChromeApp;
+
 /* *****************************************************************************
  * In Remote-Desktop-like applications, keystrokes should be sent to the remote.
  * Therefore, these programs are specified as "unless" condition.
@@ -97,15 +141,9 @@ local webBrowsers = [
 
 // Generic development applications
 local developmentApp = [
-  '^cz\\.or\\.repo\\.git-gui$',
-  '^com\\.jetbrains\\.',
-  '^com\\.qvacua\\.VimR$',
-  '^org\\.gnu\\.Emacs$',
-  '^org\\.gnu\\.AquamacsEmacs$',
-  '^org\\.gnu\\.Aquamacs$',
-  '^org\\.pqrs\\.unknownapp\\.conkeror$',
-  '^org\\.vim\\.MacVim$',
-];
+  '^com\\.microsoft\\.VSCode$',
+  '^com\\.microsoft\\.VSCodeInsiders$',
+ ];
 
 // Windows RDP + VM (for Cortana/Teams workaround)
 local winRdpVm = winRdpClients + vmMonitors;
@@ -113,54 +151,11 @@ local winRdpVm = winRdpClients + vmMonitors;
 // RDP + VM (for key mappings that should pass through to remote systems)
 local allRdpVm = macosScreenSharing + vncClients + winRdpClients + vmMonitors;
 
-// RDP + VM + Terminals +  Development Apps (for PC-style shortcuts)
-local allRdpVmTermDev = allRdpVm + terminals + developmentApp;
+// [PC-Style] RDP + VM + Terminals +  Developper app (includes AI Chat app)
+local allRdpVmTermDev = allRdpVm + terminals + developmentApp + tweakEnterApps;
 
 // RDP + VM + Terminals + Development Apps + Web Browsers
 local allRdpVmTermDevBrowser = allRdpVmTermDev + webBrowsers;
-
-/* AI chat applications (ChatGPT, Claude desktop apps, Google Gemini) */
-// ChatGPT Desktop App
-local chatGptApp = [
-  '^com\\.openai\\.chat$',
-  '^com\\.openai\\.codex$',
-];
-
-// Chat GPT Chrome App
-local chatGptChromeApp = [
-  // Add your ChatGPT Chrome app ID below
-  '^com\\.google\\.Chrome\\.app\\.cadlkienfkclaiaibeoongdcgmdikeeg$',  //ChatGPT(e3Neo)
-];
-
-// Claude Desktop App
-local claudeApp = [
-  '^com\\.anthropic\\.claudefordesktop$',
-];
-
-// Google Gemini Desktop App
-local geminiApp = [
-  '^com\\.google\\.GeminiMacOS$',
-];
-
-// Google Gemini Chrome App
-local geminiChromeApp = [
-  // Add your Google Gemini Chrome app ID below
-  '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',  //Gemini(E4)
-  '^com\\.google\\.Chrome\\.app\\.gdfaincndogidkdcdkhapmbffkckdkhn$',  //Gemini(e3Neo)
-];
-
-// Google AI Studio Chrome App
-local gAIStudioChromeApp = [
-  // Add your Google AI Studio Chrome app ID below
-  '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',
-];
-
-local tweakEnterApps =
-  chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp;
-
-
-local tweakCommandNApps =
-  chatGptChromeApp + geminiChromeApp + gAIStudioChromeApp;
 
 // -----------------------------------------------------------------------------
 // Helper Functions for Creating Manipulators
@@ -856,7 +851,7 @@ local genSeparator(title) =
                'down_arrow',
                ['left_command'],
                'frontmost_application_unless',
-               allRdpVmTermDevBrowser),
+               allRdpVmTermDev),
     ]),
 
     // Ctrl+R / F5 → Cmd+R (Reload)
