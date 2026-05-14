@@ -303,6 +303,147 @@ local genSeparator(title) =
     ]),
 
     // =========================================================================
+    // Option Key Remappings
+    // =========================================================================
+    genSeparator('Option Key Remappings'),
+
+    // Option+Enter → Cmd+Enter (not on RDP/VM)
+    rule('[GPP] ⌥⏎ to ⌘⏎ NOT on RDC/VM', [
+      keyToKey('return_or_enter', { mandatory: ['option'] },
+               'return_or_enter', ['left_command'],
+               'frontmost_application_unless', macosScreenSharing),
+    ]),
+
+    // Option+C → Cmd+C (not on RDP/VM)
+    rule('[GPP] ⌥C to ⌘C', [
+      keyToKey('c', { mandatory: ['option'] },
+               'c', ['left_command'],
+               'frontmost_application_unless', macosScreenSharing),
+    ]),
+
+    // Option+X → Cmd+X (not on RDP/VM)
+    rule('[GPP] ⌥X to ⌘X NOT on RDC/VM', [
+      keyToKey('x', { mandatory: ['option'] },
+               'x', ['left_command'],
+               'frontmost_application_unless', macosScreenSharing),
+    ]),
+
+    // Option+V → Cmd+V (not on RDP/VM)
+    rule('[GPP] ⌥V to ⌘V NOT on RDC/VM', [
+      keyToKey('v', { mandatory: ['option'] },
+               'v', ['left_command'],
+               'frontmost_application_unless', macosScreenSharing),
+    ]),
+
+    // Option+D → Cmd+Delete (forward delete word)
+    rule('[GPP] ⌥d to ⌘⌦ (forward delete word) NOT on RDC/VM', [
+      keyToKey('d', { mandatory: ['option'] },
+               'delete_forward', ['left_command'],
+               'frontmost_application_unless', macosScreenSharing),
+    ]),
+
+    // =========================================================================
+    // CapsLock Remapping
+    // =========================================================================
+    genSeparator('CapsLock Remapping'),
+
+    // CapsLock → Control (hold) / Escape (tap) - unless Apple Internal Keyboard
+    rule('[GPP] Caps -> Ctrl (hold) / Escape (tap) (unless Apple Internal Keyboard)', [
+      {
+        description: 'CapsLock -> Esc(click) | Control(hold)',
+        type: 'basic',
+        from: {
+          key_code: 'caps_lock',
+          modifiers: { optional: ['any'] },
+        },
+        to: [{
+          key_code: 'right_control',
+          lazy: true,
+        }],
+        to_if_alone: [{ key_code: 'escape' }],
+        conditions: [{
+          description: "Apply if it isn't Apple Internal Keyboard / Trackpad",
+          type: 'device_unless',
+          identifiers: [{
+            description: 'Apple Internal Keyboard (MacBook Pro Retina / JIS)',
+            vendor_id: 1452,
+            product_id: 612,
+            is_keyboard: true,
+          }],
+        }],
+      },
+    ]),
+
+    // CapsLock → Hyper (hold) / Escape (tap) - unless Apple Internal Keyboard
+    rule('[GPP] Caps -> Hyper (hold) / Escape (tap) (unless Apple Internal Keyboard)', [
+      {
+        description: 'CapsLock -> Esc(click) | Hyper(hold)',
+        type: 'basic',
+        from: {
+          key_code: 'caps_lock',
+          modifiers: { optional: ['any'] },
+        },
+        to: [{
+          key_code: 'right_shift',
+          lazy: true,
+          modifiers: ['right_command', 'right_control', 'right_option'],
+        }],
+        to_if_alone: [{ key_code: 'escape' }],
+        conditions: [{
+          description: "Apply if it isn't Apple Internal Keyboard / Trackpad",
+          type: 'device_unless',
+          identifiers: [{
+            description: 'Apple Internal Keyboard (MacBook Pro Retina / JIS)',
+            vendor_id: 1452,
+            product_id: 612,
+            is_keyboard: true,
+          }],
+        }],
+      },
+    ]),
+
+    // =========================================================================
+    // Mouse Button Mapping
+    // =========================================================================
+    genSeparator('Mouse Button Mapping'),
+
+    // Mouse button 5 → Dictionary lookup (Ctrl+Cmd+D)
+    rule('[GPP] (OBSOLETE?) Mouse button 5 to Lookup dictionary (⌃⌘D)', [
+      {
+        type: 'basic',
+        from: {
+          pointing_button: 'button5',
+          modifiers: { optional: ['caps_lock'] },
+        },
+        to: [{
+          key_code: 'd',
+          modifiers: ['control', 'command'],
+        }],
+        conditions: [{
+          type: 'frontmost_application_unless',
+          bundle_identifiers: macosScreenSharing,
+        }],
+      },
+    ]),
+
+    // =========================================================================
+    // Keypad Key Customizations
+    // =========================================================================
+    genSeparator('Keypad Key Customizations'),
+
+    // Keypad period → 00 (double zero)
+    rule('[GPP] Convert Period on Keypad → 00', [
+      {
+        type: 'basic',
+        from: { key_code: 'keypad_period' },
+        to: [
+          { key_code: 'keypad_0' },
+          { key_code: 'keypad_0' },
+        ],
+      },
+    ]),
+
+    // =========================================================================
     // AI Chat App Customizations
     // =========================================================================
     genSeparator('AI Chat App Customizations'),
@@ -375,265 +516,6 @@ local genSeparator(title) =
     ]),
 
     // =========================================================================
-    // Application Launchers
-    // =========================================================================
-    genSeparator('Application Launchers'),
-
-    // Cmd+E → Open Finder (not on RDP/VM)
-    rule('[GPP] Opens <Finder> by ⌘E (if not on RDC/VM)', [
-      {
-        type: 'basic',
-        from: {
-          key_code: 'e',
-          modifiers: { mandatory: ['command'] },
-        },
-        to: [{
-          shell_command: "osascript -e 'tell application \"Finder\"' -e 'if (count of windows) is 0 then' -e 'make new Finder window to folder ((path to home folder) as text)' -e 'else' -e 'set frontmost to true' -e 'end if' -e 'activate' -e 'end tell'",
-        }],
-        conditions: [{
-          type: 'frontmost_application_unless',
-          bundle_identifiers: allRdpVm,
-        }],
-      },
-    ]),
-
-    // Option+Cmd+, → System Preferences
-    rule('[GPP] Start <System Preferences> by ⌥⌘,', [
-      keyToShell('comma',
-                 { mandatory: ['command', 'option'] },
-                 "open -a 'System Preferences'"),
-    ]),
-
-    // Option+Cmd+C → ChatGPT Desktop or ChatGPT Chrome App (duplicate shortcut - only one will work)
-    rule('[GPP] Start <ChatGPT Desktop> or <ChatGPT Chrome App> by ⌥⌘C', [
-      appLauncher('c', 'ChatGPT'),
-    ]),
-
-    // Ctrl+Option+Cmd+C → Claude Desktop
-    rule('[GPP] Start <Claude Desktop> by ⌘⌃⌥C', [
-      keyToShell('c',
-                 { mandatory: ['command', 'control', 'option'] },
-                 "open -a 'Claude'"),
-    ]),
-
-    // Ctrl+Option+C → Gemini Desktop
-    rule('[GPP] Start <Google Gemini Desktop> by ⌃⌥C', [
-      keyToShell('c',
-                 { mandatory: ['control', 'option'] },
-                 "open -a 'Gemini'"),
-    ]),
-
-    // Ctrl+Option+C → Gemini Chrome App
-    rule('[GPP] Start <Google Gemini Chrome App> by ⌃⌥C', [
-      keyToShell('c',
-                 { mandatory: ['control', 'option'] },
-                 "open -a 'Google Gemini'"),
-    ]),
-
-    // Ctrl+Cmd+C → Calculator
-    rule('[GPP] Start <Calculator> by ⌃⌘C', [
-      keyToShell('c',
-                 { mandatory: ['command', 'control'] },
-                 "open -a 'Calculator'"),
-    ]),
-
-    // Option+Cmd+D → Discord Canary
-    rule('[GPP] Start <Discord> by ⌥⌘D', [
-      appLauncher('d', 'Discord Canary'),
-    ]),
-
-    // Option+Cmd+D → DeepL (duplicate shortcut - only one will work)
-    rule('[GPP] Start <DeepL> by ⌥⌘D', [
-      appLauncher('d', 'DeepL'),
-    ]),
-
-    // Option+Cmd+F → Firefox
-    rule('[GPP] Start <Firefox> by ⌥⌘F', [
-      appLauncher('f', 'Firefox'),
-    ]),
-
-    // Option+Cmd+G → Google Chrome
-    rule('[GPP] Start <Google Chrome> by ⌥⌘G', [
-      appLauncher('g', 'Google Chrome'),
-    ]),
-
-    // Option+Cmd+G → Chromium (duplicate shortcut)
-    rule('[GPP] Start <Chromium> by ⌥⌘G', [
-      appLauncher('g', 'Chromium'),
-    ]),
-
-    // Option+Cmd+L → LINE
-    rule('[GPP] Start <LINE> by ⌥⌘L', [
-      appLauncher('l', 'LINE'),
-    ]),
-
-    // Option+Cmd+R → Remember The Milk
-    rule('[GPP] Start <RtM> by ⌥⌘R', [
-      appLauncher('r', 'Remember The Milk'),
-    ]),
-
-    // Option+Cmd+S → Spotify
-    rule('[GPP] Start <Spotify> by ⌥⌘S', [
-      appLauncher('s', 'Spotify'),
-    ]),
-
-    // Option+Shift+Cmd+S → Slack
-    rule('[GPP] Start <Slack> by ⌥⇧⌘S', [
-      keyToShell('s',
-                 { mandatory: ['command', 'option', 'shift'] },
-                 "open -a 'Slack'"),
-    ]),
-
-    // Option+Cmd+T → iTerm
-    rule('[GPP] Start <iTerm2> by ⌥⌘T', [
-      appLauncher('t', 'iTerm'),
-    ]),
-
-    // Option+Cmd+T → Ghostty
-    rule('[GPP] Start <Ghostty> by ⌥⌘T', [
-      appLauncher('t', 'Ghostty'),
-    ]),
-
-    // Option+Cmd+V → Visual Studio Code
-    rule('[GPP] Start <VSCode> by ⌥⌘V', [
-      appLauncher('v', 'Visual Studio Code'),
-    ]),
-
-    // Option+Cmd+M → Spark Desktop
-    rule('[GPP] Start <Spark Desktop> by ⌥⌘M', [
-      appLauncher('m', 'Spark Desktop'),
-    ]),
-
-    // =========================================================================
-    // Option Key Remappings
-    // =========================================================================
-    genSeparator('Option Key Remappings'),
-
-    // Option+Enter → Cmd+Enter
-    rule('[GPP] ⌥⏎ to ⌘⏎', [
-      keyToKey('return_or_enter',
-               { mandatory: ['option'] },
-               'return_or_enter',
-               ['left_command'],
-               'frontmost_application_unless',
-               macosScreenSharing),
-    ]),
-
-    // Option+C → Cmd+C
-    rule('[GPP] ⌥C to ⌘C', [
-      keyToKey('c',
-               { mandatory: ['option'] },
-               'c',
-               ['left_command'],
-               'frontmost_application_unless',
-               macosScreenSharing),
-    ]),
-
-    // Option+X → Cmd+X
-    rule('[GPP] ⌥X to ⌘X', [
-      keyToKey('x',
-               { mandatory: ['option'] },
-               'x',
-               ['left_command'],
-               'frontmost_application_unless',
-               macosScreenSharing),
-    ]),
-
-    // Option+V → Cmd+V
-    rule('[GPP] ⌥V to ⌘V', [
-      keyToKey('v',
-               { mandatory: ['option'] },
-               'v',
-               ['left_command'],
-               'frontmost_application_unless',
-               macosScreenSharing),
-    ]),
-
-    // =========================================================================
-    // Mouse Button Mapping
-    // =========================================================================
-    genSeparator('Mouse Button Mapping'),
-
-    // Mouse button 5 → Dictionary lookup (Ctrl+Cmd+D)
-    rule('[GPP] (OBSOLETE?) Mouse button 5 to Lookup dictionary (⌃⌘D)', [
-      {
-        type: 'basic',
-        from: {
-          pointing_button: 'button5',
-          modifiers: { optional: ['caps_lock'] },
-        },
-        to: [{
-          key_code: 'd',
-          modifiers: ['control', 'command'],
-        }],
-        conditions: [{
-          type: 'frontmost_application_unless',
-          bundle_identifiers: macosScreenSharing,
-        }],
-      },
-    ]),
-
-    // =========================================================================
-    // CapsLock Remapping
-    // =========================================================================
-    genSeparator('CapsLock Remapping'),
-
-    // CapsLock → Control (hold) / Escape (tap) - unless Apple Internal Keyboard
-    rule('[GPP] CapsLock -> Control / Escape (unless Apple Internal Keyboard)', [
-      {
-        description: 'CapsLock -> Esc(click) | Control(hold)',
-        type: 'basic',
-        from: {
-          key_code: 'caps_lock',
-          modifiers: { optional: ['any'] },
-        },
-        to: [{
-          key_code: 'right_control',
-          lazy: true,
-        }],
-        to_if_alone: [{ key_code: 'escape' }],
-        conditions: [{
-          description: "Apply if it isn't Apple Internal Keyboard / Trackpad",
-          type: 'device_unless',
-          identifiers: [{
-            description: 'Apple Internal Keyboard (MacBook Pro Retina / JIS)',
-            vendor_id: 1452,
-            product_id: 612,
-            is_keyboard: true,
-          }],
-        }],
-      },
-    ]),
-
-    // CapsLock → Hyper (hold) / Escape (tap) - unless Apple Internal Keyboard
-    rule('[GPP] CapsLock -> Hyper / Escape (unless Apple Internal Keyboard)', [
-      {
-        description: 'CapsLock -> Esc(click) | Hyper(hold)',
-        type: 'basic',
-        from: {
-          key_code: 'caps_lock',
-          modifiers: { optional: ['any'] },
-        },
-        to: [{
-          key_code: 'right_shift',
-          lazy: true,
-          modifiers: ['right_command', 'right_control', 'right_option'],
-        }],
-        to_if_alone: [{ key_code: 'escape' }],
-        conditions: [{
-          description: "Apply if it isn't Apple Internal Keyboard / Trackpad",
-          type: 'device_unless',
-          identifiers: [{
-            description: 'Apple Internal Keyboard (MacBook Pro Retina / JIS)',
-            vendor_id: 1452,
-            product_id: 612,
-            is_keyboard: true,
-          }],
-        }],
-      },
-    ]),
-
-    // =========================================================================
     // Windows RDP/VM Specific
     // =========================================================================
     genSeparator('Windows RDP/VM Specific'),
@@ -676,7 +558,7 @@ local genSeparator(title) =
     // =========================================================================
     // PC-Style Shortcuts
     // =========================================================================
-    genSeparator('PC-Style Shortcuts'),
+    genSeparator('PC-Style Shortcuts (For Browsers)'),
 
     // Ctrl+F/K/R/T → Cmd+F/K/R/T on Browsers
     rule('[GPP][PC-Style][on Browser] ⌃F/K/R/T', [
@@ -913,20 +795,133 @@ local genSeparator(title) =
     ]),
 
     // =========================================================================
-    // Keypad Customization
+    // Application Launchers
     // =========================================================================
-    genSeparator('Keypad Customizations'),
+    genSeparator('Application Launchers'),
 
-    // Keypad period → 00 (double zero)
-    rule('[GPP] Convert Period on Keypad → 00', [
+    // Cmd+E → Open Finder (not on RDP/VM)
+    rule('[GPP] Opens <Finder> by ⌘E (if not on RDC/VM)', [
       {
         type: 'basic',
-        from: { key_code: 'keypad_period' },
-        to: [
-          { key_code: 'keypad_0' },
-          { key_code: 'keypad_0' },
-        ],
+        from: {
+          key_code: 'e',
+          modifiers: { mandatory: ['command'] },
+        },
+        to: [{
+          shell_command: "osascript -e 'tell application \"Finder\"' -e 'if (count of windows) is 0 then' -e 'make new Finder window to folder ((path to home folder) as text)' -e 'else' -e 'set frontmost to true' -e 'end if' -e 'activate' -e 'end tell'",
+        }],
+        conditions: [{
+          type: 'frontmost_application_unless',
+          bundle_identifiers: allRdpVm,
+        }],
       },
+    ]),
+
+    // Option+Cmd+, → System Preferences
+    rule('[GPP] Start <System Preferences> by ⌥⌘,', [
+      keyToShell('comma',
+                 { mandatory: ['command', 'option'] },
+                 "open -a 'System Preferences'"),
+    ]),
+
+    // Option+Cmd+C → ChatGPT Desktop or ChatGPT Chrome App (duplicate shortcut - only one will work)
+    rule('[GPP] Start <ChatGPT Desktop> or <ChatGPT Chrome App> by ⌥⌘C', [
+      appLauncher('c', 'ChatGPT'),
+    ]),
+
+    // Ctrl+Option+Cmd+C → Claude Desktop
+    rule('[GPP] Start <Claude Desktop> by ⌘⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['command', 'control', 'option'] },
+                 "open -a 'Claude'"),
+    ]),
+
+    // Ctrl+Option+C → Gemini Desktop
+    rule('[GPP] Start <Google Gemini Desktop> by ⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['control', 'option'] },
+                 "open -a 'Gemini'"),
+    ]),
+
+    // Ctrl+Option+C → Gemini Chrome App
+    rule('[GPP] Start <Google Gemini Chrome App> by ⌃⌥C', [
+      keyToShell('c',
+                 { mandatory: ['control', 'option'] },
+                 "open -a 'Google Gemini'"),
+    ]),
+
+    // Ctrl+Cmd+C → Calculator
+    rule('[GPP] Start <Calculator> by ⌃⌘C', [
+      keyToShell('c',
+                 { mandatory: ['command', 'control'] },
+                 "open -a 'Calculator'"),
+    ]),
+
+    // Option+Cmd+D → Discord Canary
+    rule('[GPP] Start <Discord> by ⌥⌘D', [
+      appLauncher('d', 'Discord Canary'),
+    ]),
+
+    // Option+Cmd+D → DeepL (duplicate shortcut - only one will work)
+    rule('[GPP] Start <DeepL> by ⌥⌘D', [
+      appLauncher('d', 'DeepL'),
+    ]),
+
+    // Option+Cmd+F → Firefox
+    rule('[GPP] Start <Firefox> by ⌥⌘F', [
+      appLauncher('f', 'Firefox'),
+    ]),
+
+    // Option+Cmd+G → Google Chrome
+    rule('[GPP] Start <Google Chrome> by ⌥⌘G', [
+      appLauncher('g', 'Google Chrome'),
+    ]),
+
+    // Option+Cmd+G → Chromium (duplicate shortcut)
+    rule('[GPP] Start <Chromium> by ⌥⌘G', [
+      appLauncher('g', 'Chromium'),
+    ]),
+
+    // Option+Cmd+L → LINE
+    rule('[GPP] Start <LINE> by ⌥⌘L', [
+      appLauncher('l', 'LINE'),
+    ]),
+
+    // Option+Cmd+R → Remember The Milk
+    rule('[GPP] Start <RtM> by ⌥⌘R', [
+      appLauncher('r', 'Remember The Milk'),
+    ]),
+
+    // Option+Cmd+S → Spotify
+    rule('[GPP] Start <Spotify> by ⌥⌘S', [
+      appLauncher('s', 'Spotify'),
+    ]),
+
+    // Option+Shift+Cmd+S → Slack
+    rule('[GPP] Start <Slack> by ⌥⇧⌘S', [
+      keyToShell('s',
+                 { mandatory: ['command', 'option', 'shift'] },
+                 "open -a 'Slack'"),
+    ]),
+
+    // Option+Cmd+T → iTerm
+    rule('[GPP] Start <iTerm2> by ⌥⌘T', [
+      appLauncher('t', 'iTerm'),
+    ]),
+
+    // Option+Cmd+T → Ghostty
+    rule('[GPP] Start <Ghostty> by ⌥⌘T', [
+      appLauncher('t', 'Ghostty'),
+    ]),
+
+    // Option+Cmd+V → Visual Studio Code
+    rule('[GPP] Start <VSCode> by ⌥⌘V', [
+      appLauncher('v', 'Visual Studio Code'),
+    ]),
+
+    // Option+Cmd+M → Spark Desktop
+    rule('[GPP] Start <Spark Desktop> by ⌥⌘M', [
+      appLauncher('m', 'Spark Desktop'),
     ]),
 
   ],
