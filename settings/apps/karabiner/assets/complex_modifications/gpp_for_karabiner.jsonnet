@@ -129,6 +129,7 @@ local terminals = [
 
 // Web browsers
 local webBrowsers = [
+  "^org\\.pqrs\\.unknownapp\\.conkeror$",
   '^org\\.mozilla\\.firefox$',
   '^org\\.mozilla\\.firefoxdeveloperedition$',
   '^org\\.mozilla\\.nightly$',
@@ -143,6 +144,11 @@ local webBrowsers = [
 local developmentApp = [
   '^com\\.microsoft\\.VSCode$',
   '^com\\.microsoft\\.VSCodeInsiders$',
+  "^com\\.jetbrains\\.",
+  "^org\\.eclipse\\.platform\\.ide$",
+  "^org\\.gnu\\.Emacs$",
+  "^com\\.qvacua\\.VimR$",              // VimR (GUI for Neovim)
+  "^org\\.vim\\.MacVim$"                // MacVim (GUI for Vim)
  ];
 
 // Windows RDP + VM (for Cortana/Teams workaround)
