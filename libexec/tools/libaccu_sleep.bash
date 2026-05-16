@@ -8,7 +8,9 @@
 # License: GPL3
 
 # Requirements:
-#   - Bash 5 or later (uses EPOCHREALTIME)
+#   - Bash 5 or later is recommended.
+#   - When EPOCHREALTIME is unavailable, ACCU_SLEEP falls back
+#     to plain sleep without accumulated scheduling.
 #
 # Usage:
 #   source ./libaccu_sleep.bash
@@ -24,6 +26,9 @@
 #   ACCU_SLEEP_TTY=/dev/tty
 #
 # Notes:
+#   - Accumulated scheduling uses EPOCHREALTIME.
+#   - When EPOCHREALTIME is unavailable, a warning is printed
+#       when this file is sourced.
 #   - To monitor key inputs during timer operation,
 #       define a hook function named ACCU_SLEEP_ON_KEY(). 
 #     - This function receives the input as its only argument,
@@ -40,12 +45,23 @@ ACCU_SLEEP_TTY=${ACCU_SLEEP_TTY:-/dev/tty}
 ACCU_SLEEP_NEXT_US=
 ACCU_SLEEP_ORIGINAL_STTY=
 ACCU_SLEEP_TTY_READY=0
+ACCU_SLEEP_HAS_EPOCHREALTIME=1
+
+if [[ -z ${EPOCHREALTIME-} ]]; then
+    ACCU_SLEEP_HAS_EPOCHREALTIME=0
+    printf 'libaccu_sleep.bash: warning: EPOCHREALTIME is unavailable; falling back to sleep without accumulated scheduling\n' >&2
+fi
 
 
 # Output the current wall-clock time as microseconds since the Unix epoch.
 # Arguments: none.
 function ACCU_SLEEP_NOW_US() {
     local t sec usec
+
+    if (( ACCU_SLEEP_HAS_EPOCHREALTIME == 0 )); then
+        printf 'ACCU_SLEEP_NOW_US: EPOCHREALTIME is unavailable\n' >&2
+        return 1
+    fi
 
     t=$EPOCHREALTIME
     sec=${t%.*}
@@ -159,6 +175,11 @@ function ACCU_SLEEP() {
         printf 'ACCU_SLEEP: interval must be an integer number of microseconds: %s\n' \
             "$interval_us" >&2
         return 2
+    fi
+
+    if (( ACCU_SLEEP_HAS_EPOCHREALTIME == 0 )); then
+        sleep "$(ACCU_SLEEP_FORMAT_US "$interval_us")"
+        return $?
     fi
 
     if [[ -z ${ACCU_SLEEP_NEXT_US-} ]]; then
