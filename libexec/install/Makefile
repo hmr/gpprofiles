@@ -1,6 +1,8 @@
 # Makefile for managing launchd plist files
 # Directory: /Users/hmr/src/gpprofiles/libexec/install
 
+# Part of GPP
+
 SHELL := /bin/bash
 
 # Service definitions
@@ -48,10 +50,10 @@ help:
 	@echo "  <service>            - Generate plist from template"
 	@echo "  <service>-install    - Install plist to ~/Library/LaunchAgents"
 	@echo "  <service>-uninstall  - Bootout (if running) and remove plist"
-	@echo "  <service>-bootstrap  - Bootstrap service via launchctl"
-	@echo "  <service>-kickstart  - Kickstart service via launchctl"
+	@echo "  <service>-bootstrap  - Bootstrap(=start) service via launchctl"
+	@echo "  <service>-kickstart  - Kickstart(=restart) service via launchctl"
 	@echo "  <service>-print      - Print service info via launchctl"
-	@echo "  <service>-bootout    - Bootout service via launchctl"
+	@echo "  <service>-bootout    - Bootout(=stop) service via launchctl"
 	@echo ""
 	@echo "Batch actions (apply to all services):"
 	@echo "  all                  - Generate all plists from templates"
@@ -96,7 +98,7 @@ $(1)-bootstrap:
 
 # Kickstart service
 $(1)-kickstart:
-	launchctl kickstart $(call launchd_id,$(1))
+	launchctl kickstart -k $(call launchd_id,$(1))
 
 # Print service info
 $(1)-print:
