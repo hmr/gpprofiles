@@ -16,11 +16,20 @@ declare -g DEBUG MODE NEXTCHECK SUNRISE SUNSET NOW
 DEBUG=1
 SYSLOG=0
 
+INTERVAL=$((1000000 * 3)) # 3 sec
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/libaccu_sleep.bash" || exit 10
+
 # Debug echo
 function decho () {
 	local PREFIX
 	if (( ! SYSLOG )); then
-		PREFIX="[$(date +'%Y-%m-%d %H:%M:%S')]"
+		if which gdate >& /dev/null; then
+			PREFIX="[$(gdate +'%Y-%m-%d %H:%M:%S.%N')]"
+		else
+			PREFIX="[$(date +'%Y-%m-%d %H:%M:%S')]"
+		fi
 	fi
 	if (( DEBUG > 0 )); then
 		echo "${PREFIX} $*" >&2
@@ -273,7 +282,7 @@ function main() {
 		esac
 
 		# stop working
-		sleep 15
+		ACCU_SLEEP ${INTERVAL}
 	done
 }
 
@@ -294,6 +303,8 @@ if [[ -z ${XDG_CONFIG_HOME} ]]; then
 	decho "Warning: XDG_CONFIG_HOME isn't set. Setting now..."
 	XDG_CONFIG_HOME="${HOME}/.config"
 fi
+decho "PWD=$(pwd)"
+decho "SCRIPT_DIR=${SCRIPT_DIR}"
 decho "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
 decho "PATH=${PATH}"
 decho "SHELL=${SHELL}"
