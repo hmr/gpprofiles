@@ -1,16 +1,15 @@
 # Ghostty configuration file (common)
 # Part of GPP
 
-initial-command = ~/launch_tmux localhost auto
 shell-integration = detect
-shell-integration-features = ssh-env, no-title
+shell-integration-features = ssh-env, no-title, no-cursor
 
 theme = light:Gruvbox Light,dark:Gruvbox Dark
 font-family = Cica
 font-size = 14
 alpha-blending = native
 
-background-opacity = 0.925
+background-opacity = 0.9
 background-blur = 10
 
 cursor-style = block
@@ -43,6 +42,8 @@ auto-update-channel = stable
 
 keybind = super+arrow_left=csi:1;4D
 keybind = super+arrow_right=csi:1;4C
+keybind = alt+arrow_left=csi:1;3D
+keybind = alt+arrow_right=csi:1;3C
 
 # Include local settings if exists
 config-file = ?config.local
