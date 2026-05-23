@@ -8,6 +8,8 @@
 //
 // =============================================================================
 
+local GPP_HOME = std.extVar('GPP_HOME');
+
 // -----------------------------------------------------------------------------
 // Bundle Identifier Groups
 // -----------------------------------------------------------------------------
@@ -912,6 +914,24 @@ local genSeparator(title) =
     // Option+Cmd+T → Ghostty
     rule('[GPP] Start <Ghostty> by ⌥⌘T', [
       appLauncher('t', 'Ghostty'),
+    ]),
+
+    // Option+Cmd+T → Ghostty
+    rule('[GPP] Start <Ghostty> by ⌥⌘T (AppleScript)', [
+      {
+        type: 'basic',
+        from: {
+          key_code: 't',
+          modifiers: { mandatory: ['command', 'option'] },
+        },
+        to: [{
+          shell_command: "osascript " + GPP_HOME + "/settings/apps/ghostty/tools/ghostty_launch_in_tab.applescript",
+        }],
+        conditions: [{
+          type: 'frontmost_application_unless',
+          bundle_identifiers: allRdpVm,
+        }],
+      },
     ]),
 
     // Option+Cmd+V → Visual Studio Code
