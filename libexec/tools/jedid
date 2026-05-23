@@ -223,6 +223,12 @@ function main() {
 					touch alacritty.toml
 				fi
 
+				# Zsh-appearance-control
+				TARGET="zac"
+				decho "Setting ${TARGET} for dark mode..."
+				# "$USER/.local/share/zplug/bin/appearance-dispatch" 1
+				$XDG_DATA_HOME/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch 1
+
 				# set mode
 				MODE="dark"
 				;;
@@ -275,6 +281,12 @@ function main() {
 					ln -sf themes/gruvbox_light.toml theme.toml
 					touch alacritty.toml
 				fi
+
+				# Zsh-appearance-control
+				TARGET="zac"
+				decho "Setting ${TARGET} for light mode..."
+				# "$USER/.local/share/zplug/bin/appearance-dispatch" 0
+				$XDG_DATA_HOME/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch 0
 
 				# set mode
 				MODE="light"
