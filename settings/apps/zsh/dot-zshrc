@@ -44,6 +44,12 @@ fi
 # Zsh options
 source "${ZDOTDIR:-${HOME}}/dot-zshrc_setopt"
 
+# Read GPProfiles settings
+source "${ZDOTDIR:-${HOME}}/dot-zshrc_gpp" # gpprofile
+
+# Zsh completion settings
+source "${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -72,6 +78,15 @@ fi
 
 # per-user contents directory
 export ZPLUG_HOME="${XDG_DATA_HOME:-${HOME}/.local}/zplug"
+#shellcheck disable=SC1036,SC1072,SC1073
+TMP_VAR="$(echo $ZPLUG_HOME/job.lock(Nmm+0))"
+if [[ -e ${TMP_VAR} ]]; then
+	echo "Lockfile found!!"
+	rm "$ZPLUG_HOME/job.lock" # clean up lockfile older than 1 min
+else
+	echo "Lockfile not exist"
+fi
+unset TMP_VAR
 # Per-user plugin repo directory
 if [[ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]]; then
   export ZPLUG_REPOS="${XDG_DATA_HOME:-${HOME}/.local}/zplug/repos"
@@ -88,6 +103,37 @@ fi
 # export ENHANCD_DISABLE_HOME=1
 # export ENHANCD_HOOK_AFTER_CD="pwd; ls"
 # export ENHANCD_HYPHEN_NUM=20
+
+# =================== z-a-c settings ===================
+# ZAC's hook function (ZAC_IMMEDIATE_CALLBACK_FNC / ZAC_DEFERRED_CALLBACK_FNC)
+function ZAC_CALLBACK() {
+	local is_dark=$1
+	local func_name="ZAC_CALLBACK"
+	# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE] Entering $func_name()" \
+		# >> "$GPP_LOG_DIR/$func_name.log"
+
+	if (( is_dark )); then
+		# Dark mode
+		# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]    Changing to dark mode"\
+			# >> "$GPP_LOG_DIR/$func_name.log"
+		# Change f-sy-h color scheme
+		fast-theme -q XDG:base16-dark-overlay
+			# || echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]  $func_name() failed." \
+			# >> "$GPP_LOG_DIR/$func_name.log"
+	else
+		# Light mode
+		# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]    Changing to light mode" \
+			# >> "$GPP_LOG_DIR/$func_name.log"
+		# Change f-sy-h color scheme
+		fast-theme -q -R && fast-theme -q XDG:base16-light
+			# || echo "[$(date +'%H:%M:%S')] $func_name() failed." >> "$GPP_LOG_DIR/$func_name.log"
+	fi
+	# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]  Exiting $func_name()" \
+		# >> "$GPP_LOG_DIR/$func_name.log"
+}
+
+export ZAC_DEFERRED_CALLBACK_FNC=ZAC_CALLBACK
+# export ZAC_IMMEDIATE_CALLBACK_FNC=ZAC_CALLBACK
 
 # ==================== fzf settings ====================
 export FZF_TMUX="1"
@@ -189,14 +235,6 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # export ZSH_256COLOR_DEBUG=1
   # zplug "chrissicool/zsh-256color"
 
-  # コマンドを種類毎に色づけ
-	# TODO: select plug-ins based on CPU performance
-	if [[ $(_chksysspd) -le 5 ]]; then
-		# zplug "zsh-users/zsh-syntax-highlighting"
-		zplug "zdharma-continuum/fast-syntax-highlighting"
-	else
-		zplug "zdharma-continuum/fast-syntax-highlighting"
-	fi
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search"
 
@@ -232,6 +270,16 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # Powerlevel 10000(Theme)
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
+  # Revolver
+  zplug "molovo/revolver", as:command, use:revolver
+
+  # ZUnit
+  zplug 'zunit-zsh/zunit', as:command, on: 'molovo/revolver' use:zunit, hook-build:'./build.zsh'
+
+  # Zsh-Appearance-Control(zac)
+  # zplug 'alberti42/zsh-appearance-control', as:plugin
+  zplug "hmr/zsh-appearance-control", at:develop, as:plugin
+
   # Install plugins if there are plugins that have not been installed
   echo "  In order to shorten the startup time, 'zplug check' won't be executed."
   echo "  Please run '${YELLOW}zplug check-combo${NORMAL}' manually if necessary."
@@ -242,6 +290,16 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   #     echo; zplug install
   #   fi
   # fi
+
+  # Syntax highlighting
+	# TODO: select plug-ins based on CPU performance
+	if [[ $(_chksysspd) -le 5 ]]; then
+		# zplug "zsh-users/zsh-syntax-highlighting", defer2
+		zplug "hmr/fast-syntax-highlighting", at:develop, defer:2
+	else
+		# zplug "zdharma-continuum/fast-syntax-highlighting", defer:2
+		zplug "hmr/fast-syntax-highlighting", at:develop, defer:2
+	fi
 
   # Then, source plugins and add commands to $PATH
   # zplug load --verbose
@@ -261,18 +319,15 @@ else
   echo "  ===== zplug not found. Consider installing it. ====="
 fi
 
-# Read GPProfiles settings
-source "${ZDOTDIR:-${HOME}}/dot-zshrc_gpp" # gpprofile
-
-# Zsh completion settings
-source "${ZDOTDIR:-${HOME}}/dot-zshrc_zstyle"
-
 # Spotify-cli settings
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
 
-# Help command(Alt+H)
+# [alias] Help command(Alt+H)
 autoload -Uz run-help
 alias help=run-help
+
+# [alias] Show zsh hook functions
+alias zshowhook='echo "${GREEN}${BOLD}=== precmd_functions ===${NORMAL}"; print -rl -- $precmd_functions; echo "${GREEN}${BOLD}=== preexec_functions ===${NORMAL}"; print -rl -- $preexec_functions; echo "${GREEN}${BOLD}=== periodic_functions (\$PERIOD=$PERIOD) ===${NORMAL}"; print -rl -- $periodic_functions; echo "${GREEN}${BOLD}=== zshaddhistory_functions ===${NORMAL}"; print -rl -- $zshaddhistory_functions; echo "${GREEN}${BOLD}=== zshexit_functions ===${NORMAL}"; print -rl -- $zshexit_functions;'
 
 ##### Keyboard and Keybinding
 # Keyboard layout(US101, JP109, Mac-US, Mac-JIS, Keychron_K2_Mac, etc...)
