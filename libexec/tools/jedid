@@ -227,7 +227,11 @@ function main() {
 				TARGET="zac"
 				decho "Setting ${TARGET} for dark mode..."
 				# "$USER/.local/share/zplug/bin/appearance-dispatch" 1
-				$XDG_DATA_HOME/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch 1
+				if [[ -d ${XDG_DATA_HOME} ]]; then
+					"$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+				else
+					"$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+				fi
 
 				# set mode
 				MODE="dark"
@@ -285,8 +289,13 @@ function main() {
 				# Zsh-appearance-control
 				TARGET="zac"
 				decho "Setting ${TARGET} for light mode..."
-				# "$USER/.local/share/zplug/bin/appearance-dispatch" 0
-				$XDG_DATA_HOME/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch 0
+				# "$USER/.local/share/zplug/bin/appearance-dispatch" dispatch 0
+				if [[ -d ${XDG_DATA_HOME} ]]; then
+					"$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+				else
+					"$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+				fi
+
 
 				# set mode
 				MODE="light"
@@ -318,6 +327,8 @@ fi
 decho "PWD=$(pwd)"
 decho "SCRIPT_DIR=${SCRIPT_DIR}"
 decho "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
+decho "XDG_DATA_HOME=${XDG_DATA_HOME}"
+decho "HOME=${HOME}"
 decho "PATH=${PATH}"
 decho "SHELL=${SHELL}"
 decho "Arg 0=${0}"
