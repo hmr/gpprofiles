@@ -111,27 +111,27 @@ local vmMonitors = [
 
 // Terminal emulators
 local terminals = [
-  '^org\\.alacritty$',                  // Alacritty [https://alacritty.org/]
-  '^com\\.apple\\.Terminal$',           // Apple Terminal
-  '^dev\\.archipelago$',                // Archipelago [https://github.com/npezza93/archipelago/]
+  '^org\\.alacritty$',  // Alacritty [https://alacritty.org/]
+  '^com\\.apple\\.Terminal$',  // Apple Terminal
+  '^dev\\.archipelago$',  // Archipelago [https://github.com/npezza93/archipelago/]
   '^org\\.contourterminal\\.Contour$',  // Contour Terminal [https://contour-terminal.org/]
-  '^org\\.the-meiers\\.coolterm$',      // CoolTerm [https://freeware.the-meiers.org/]]
-  '^org\\.electerm\\.electerm$',        // Electerm [https://electerm.html5beta.com/]
-  '^com\\.mitchellh\\.ghostty$',        // Ghostty [https://ghostty.org/docs]
-  '^co\\.zeit\\.hyper$',                // Hyper [https://hyper.is/]
-  '^com\\.googlecode\\.iterm2$',        // iTerm2 [https://iterm2.com/]
-  '^net\\.kovidgoyal\\.kitty$',         // Kitty  [https://sw.kovidgoyal.net/kitty/]
-  '^com\\.raphaelamorim\\.rio$',        // Rio Terminal [https://rioterm.com/]
-  '^org\\.tabby$',                      // Tabby [https://tabby.sh/]
-  '^app\\.termora$',                    // Termora [https://www.termora.app/]
-  '^dev\\.warp\\.Warp',                 // Warp Terminal [https://www.warp.dev/]
-  '^com\\.github\\.wez\\.wezterm$',     // WezTerm [https://wezterm.org/]
-  '^KingToolbox\\.WindTerm$',           // WindTerm [https://kingtoolbox.github.io/]
+  '^org\\.the-meiers\\.coolterm$',  // CoolTerm [https://freeware.the-meiers.org/]]
+  '^org\\.electerm\\.electerm$',  // Electerm [https://electerm.html5beta.com/]
+  '^com\\.mitchellh\\.ghostty$',  // Ghostty [https://ghostty.org/docs]
+  '^co\\.zeit\\.hyper$',  // Hyper [https://hyper.is/]
+  '^com\\.googlecode\\.iterm2$',  // iTerm2 [https://iterm2.com/]
+  '^net\\.kovidgoyal\\.kitty$',  // Kitty  [https://sw.kovidgoyal.net/kitty/]
+  '^com\\.raphaelamorim\\.rio$',  // Rio Terminal [https://rioterm.com/]
+  '^org\\.tabby$',  // Tabby [https://tabby.sh/]
+  '^app\\.termora$',  // Termora [https://www.termora.app/]
+  '^dev\\.warp\\.Warp',  // Warp Terminal [https://www.warp.dev/]
+  '^com\\.github\\.wez\\.wezterm$',  // WezTerm [https://wezterm.org/]
+  '^KingToolbox\\.WindTerm$',  // WindTerm [https://kingtoolbox.github.io/]
 ];
 
 // Web browsers
 local webBrowsers = [
-  "^org\\.pqrs\\.unknownapp\\.conkeror$",
+  '^org\\.pqrs\\.unknownapp\\.conkeror$',
   '^org\\.mozilla\\.firefox$',
   '^org\\.mozilla\\.firefoxdeveloperedition$',
   '^org\\.mozilla\\.nightly$',
@@ -146,12 +146,12 @@ local webBrowsers = [
 local developmentApp = [
   '^com\\.microsoft\\.VSCode$',
   '^com\\.microsoft\\.VSCodeInsiders$',
-  "^com\\.jetbrains\\.",
-  "^org\\.eclipse\\.platform\\.ide$",
-  "^org\\.gnu\\.Emacs$",
-  "^com\\.qvacua\\.VimR$",              // VimR (GUI for Neovim)
-  "^org\\.vim\\.MacVim$"                // MacVim (GUI for Vim)
- ];
+  '^com\\.jetbrains\\.',
+  '^org\\.eclipse\\.platform\\.ide$',
+  '^org\\.gnu\\.Emacs$',
+  '^com\\.qvacua\\.VimR$',  // VimR (GUI for Neovim)
+  '^org\\.vim\\.MacVim$',  // MacVim (GUI for Vim)
+];
 
 // Windows RDP + VM (for Cortana/Teams workaround)
 local winRdpVm = winRdpClients + vmMonitors;
@@ -311,37 +311,52 @@ local genSeparator(title) =
 
     // Option+Enter → Cmd+Enter (not on RDP/VM)
     rule('[GPP] ⌥⏎ to ⌘⏎ NOT on RDC/VM', [
-      keyToKey('return_or_enter', { mandatory: ['option'] },
-               'return_or_enter', ['left_command'],
-               'frontmost_application_unless', macosScreenSharing),
+      keyToKey('return_or_enter',
+               { mandatory: ['option'] },
+               'return_or_enter',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
     ]),
 
     // Option+C → Cmd+C (not on RDP/VM)
     rule('[GPP] ⌥C to ⌘C', [
-      keyToKey('c', { mandatory: ['option'] },
-               'c', ['left_command'],
-               'frontmost_application_unless', macosScreenSharing),
+      keyToKey('c',
+               { mandatory: ['option'] },
+               'c',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
     ]),
 
     // Option+X → Cmd+X (not on RDP/VM)
     rule('[GPP] ⌥X to ⌘X NOT on RDC/VM', [
-      keyToKey('x', { mandatory: ['option'] },
-               'x', ['left_command'],
-               'frontmost_application_unless', macosScreenSharing),
+      keyToKey('x',
+               { mandatory: ['option'] },
+               'x',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
     ]),
 
     // Option+V → Cmd+V (not on RDP/VM)
     rule('[GPP] ⌥V to ⌘V NOT on RDC/VM', [
-      keyToKey('v', { mandatory: ['option'] },
-               'v', ['left_command'],
-               'frontmost_application_unless', macosScreenSharing),
+      keyToKey('v',
+               { mandatory: ['option'] },
+               'v',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
     ]),
 
     // Option+D → Cmd+Delete (forward delete word)
     rule('[GPP] ⌥d to ⌘⌦ (forward delete word) NOT on RDC/VM', [
-      keyToKey('d', { mandatory: ['option'] },
-               'delete_forward', ['left_command'],
-               'frontmost_application_unless', macosScreenSharing),
+      keyToKey('d',
+               { mandatory: ['option'] },
+               'delete_forward',
+               ['left_command'],
+               'frontmost_application_unless',
+               macosScreenSharing),
     ]),
 
     // =========================================================================
@@ -459,7 +474,7 @@ local genSeparator(title) =
         to: [{ key_code: 'return_or_enter', modifiers: ['left_shift'] }],
         conditions: [{
           type: 'frontmost_application_if',
-          bundle_identifiers: tweakEnterApps
+          bundle_identifiers: tweakEnterApps,
         }],
       },
       {
@@ -925,7 +940,7 @@ local genSeparator(title) =
           modifiers: { mandatory: ['command', 'option'] },
         },
         to: [{
-          shell_command: "osascript " + GPP_HOME + "/settings/apps/ghostty/tools/ghostty_launch_in_tab.applescript",
+          shell_command: 'osascript ' + GPP_HOME + '/settings/apps/ghostty/tools/open_as_ghostty_tab.applescript',
         }],
         conditions: [{
           type: 'frontmost_application_unless',
