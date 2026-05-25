@@ -228,9 +228,9 @@ function main() {
 				decho "Setting ${TARGET} for dark mode..."
 				# "$USER/.local/share/zplug/bin/appearance-dispatch" 1
 				if [[ -d ${XDG_DATA_HOME} ]]; then
-					"$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+					"$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 1
 				else
-					"$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+					"$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 1
 				fi
 
 				# set mode
