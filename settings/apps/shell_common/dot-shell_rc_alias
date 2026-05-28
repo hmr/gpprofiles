@@ -217,7 +217,7 @@ if which curl > /dev/null; then
 	alias getipinfo='curl -s "https://ipinfo.io/json" | jq -r'
 
 	echo -n ", getdaytime"
-	alias getdaytime='curl -s "http://api.sunrise-sunset.org/json?$(curl -s "ipinfo.io/json" | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
+	alias getdaytime='curl -sL "http://api.sunrise-sunset.org/json?$(curl -s "ipinfo.io/json" | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
 fi
 
 echo
