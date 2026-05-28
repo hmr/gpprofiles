@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2026-02-12T19:40:45+0900]
+" Last Update: [2026-05-28T19:24:17+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -119,6 +119,8 @@ set noshowcmd                   " show command
 set cmdheight=2                 " height of command line
 set scrolloff=5                 " mergin lines of vertical scrolling
 set helplang=ja,en              " Prefer Japanse help
+set ttimeout
+set ttimeoutlen=50
 
 " No need to escape regular expression meta characters when search(very magic mode)
 " nnoremap /  /\v
@@ -840,7 +842,7 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
 
   " Color scheme settings
   try
-    set background=dark
+    " set background=dark
 
     " colorscheme monokai
 
@@ -1282,7 +1284,9 @@ endif
 " imap  <C-S-[> This is "C-S-["
 
 "----- [TESTING] vim-autochange-bg
+let g:autochg_bg_check_interval = 1000
 let g:autochg_bg_enable_on_vim_startup = 1
+
 
 "----- [Load personal settings not managed by GPP]
 let personal_filepath = 'conf.d/personal.vim'
@@ -1310,6 +1314,16 @@ inoremap <S-M-d> <C-d>
 "----- [TESTING] dmacro [https://github.com/tani/dmacro.vim]
 inoremap <C-y> <Plug>(dmacro-play-macro)
 nnoremap <C-y> <Plug>(dmacro-play-macro)
+
+" let g:indentLine_setColors = 0
+" let g:indentLine_defaultGroup = 'SpecialKey'
+" let g:indentLine_color_term = 9
+" let g:indentLine_bgcolor_term = 202
+" let g:indentLine_color_gui = '#FF0000'
+" let g:indentLine_bgcolor_gui = '#FF5F00'
+" let g:indentLine_setConceal = 0
+" let g:indentLine_conceallevel = 0
+let g:indentLine_char = '┊'
 
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map

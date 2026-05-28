@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2026-02-12T19:40:32+0900]
+" Last Update: [2026-05-28T12:51:32+0900]
 
 scriptencoding utf-8
 
@@ -139,7 +139,7 @@ Plug 'masakuni-ito/vim-tags'
 Plug 'mileszs/ack.vim', { 'on': ['Ack','AckAdd', 'AckFile', 'AckFromSearch', 'AckHelp', 'AckWindow', 'LAck', 'LAckAdd', 'LAckHelp', 'LAckWindow'] }
 
 " A Vim plugin for visually displaying indent levels in code
-Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'nathanaelkane/vim-indent-guides'
 
 " Better whitespace highlighting for Vim
 Plug 'ntpeters/vim-better-whitespace'
@@ -253,5 +253,8 @@ Plug 'tani/dmacro.vim'
 
 " GitHub Copilot for Vim and Neovim
 Plug 'github/copilot.vim'
+
+" A vim plugin to display the indention levels with thin vertical lines
+Plug 'yggdroot/indentline'
 
 call plug#end()
