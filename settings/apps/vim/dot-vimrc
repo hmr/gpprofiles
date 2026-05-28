@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2026-05-28T19:24:17+0900]
+" Last Update: [2026-05-28T19:31:58+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -844,16 +844,6 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
   try
     " set background=dark
 
-    " colorscheme monokai
-
-    " -- settings for molokai
-    " let g:molokai_original=1
-    " let g:rehash256=1
-    " colorscheme molokai
-
-    " -- settings for sublime-monokai
-    " let g:sublimemonokai_term_italic=1
-
     " -- settings for gruvbox
     let g:gruvbox_bold = 1
     let g:gruvbox_italic = 1
@@ -866,7 +856,7 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
     let g:gruvbox_termcolors = 256
     let g:gruvbox_invert_indent_guides = 1
 
-    let g:gruvbox_contrast_dark  = 'medium'
+    " let g:gruvbox_contrast_dark  = 'medium'
     " let g:gruvbox_contrast_light = 'medium'
     " let g:gruvbox_invert_tabline = 1
 
@@ -891,10 +881,9 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
     " with 'StanAngeloff/php.vim'
     " let g:php_var_selector_is_identifier=1
 
-    " colorscheme sublimemonokai
     colorscheme gruvbox
   catch
-    colorscheme default
+	  " Do nothing
   endtry
 
   " Use italic font for comment
@@ -904,33 +893,6 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
   if (exists('+colorcolumn'))
     set colorcolumn=100
   endif
-
-  " ----- Customize colorscheme
-  "  -- For molokai
-  if g:colors_name ==# 'molokai'
-    if has('termguicolors')
-      highlight Comment   guifg=#95917E
-      highlight Visual    guibg=#af5f00
-      highlight VisualNOS guibg=#af5f00
-
-      " Change background color by mode
-      augroup InsertHook
-        autocmd!
-        autocmd InsertEnter * highlight Normal guibg=#263026
-        autocmd InsertLeave * highlight Normal guibg=#262626
-      augroup END
-    else
-      highlight Comment   ctermfg=247
-      highlight Visual    ctermbg=130
-      highlight VisualNOS ctermbg=130
-    endif
-  endif
-
-  "  -- For Sublime Molokai
-  if g:colors_name ==# 'sublimemonokai'
-    highlight SignColumn guibg=#383a3e
-  endif
-
 endif
 
 "-- Change cursor color depends on InputMethod status
