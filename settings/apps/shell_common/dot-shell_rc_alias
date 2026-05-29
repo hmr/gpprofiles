@@ -191,6 +191,12 @@ if which iftop > /dev/null; then
 	alias iftop='NCURSES_NO_UTF8_ACS=0 sudo iftop'
 fi
 
+# git
+if which tig > /dev/null; then
+  echo -n ", git"
+    alias gml="git mylog"
+fi
+
 # tig
 if which tig > /dev/null; then
   echo -n ", tig"
