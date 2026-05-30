@@ -40,6 +40,20 @@ app-notifications = true
 auto-update = check
 auto-update-channel = stable
 
+keybind = global:cmd+escape=toggle_quick_terminal
+keybind = cmd+u=toggle_background_opacity
+keybind = cmd+p=toggle_command_palette
+keybind = cmd+shift+m=toggle_mouse_reporting
+keybind = cmd+opt+r=toggle_readonly
+
+keybind = cmd+enter=unbind
+keybind = cmd+d=unbind
+keybind = cmd+shift+d=unbind
+keybind = cmd+,=unbind
+
+# cmd+del => ctrl-k
+keybind = cmd+delete=text:\x0b
+
 keybind = super+arrow_left=csi:1;4D
 keybind = super+arrow_right=csi:1;4C
 keybind = alt+arrow_left=csi:1;3D
