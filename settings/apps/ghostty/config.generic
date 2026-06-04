@@ -1,63 +1,88 @@
 # Ghostty configuration file (common)
 # Part of GPP
 
+# Shell integration
 shell-integration = detect
 shell-integration-features = ssh-env, no-title, no-cursor
 
+# Theme
 theme = light:Gruvbox Light,dark:Gruvbox Dark
+
+# Font
 font-family = Cica
 font-size = 14
 alpha-blending = native
 
-background-opacity = 0.9
-background-blur = 10
-
+# Default cursor style
 cursor-style = block
 cursor-style-blink = false
-mouse-hide-while-typing = true
 
 # Newly created window size(not first one)
 window-height = 80
 window-width = 133
+
+# Window
+title = ""
 window-step-resize = true
 window-padding-x = 5,5
-title = ""
+wait-after-command = true
+background-opacity = 0.9
+background-blur = 10
+mouse-scroll-multiplier = 1
+mouse-hide-while-typing = true
 
+# Notification
 bell-features = no-system,no-audio,attention,title,border
 notify-on-command-finish = always
 notify-on-command-finish-after = 1m
-
-macos-titlebar-style = tabs
-macos-titlebar-proxy-icon = hidden
-
-macos-option-as-alt = true
-
-wait-after-command = true
-mouse-scroll-multiplier = 1
-
 app-notifications = true
 
+# Split
+split-divider-color = Coral
+unfocused-split-opacity = .5
+
+# macOS specified settings
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = true
+
+# Autoupdate
 auto-update = check
 auto-update-channel = stable
 
+# Keybind
+## Ghostty-specific features
 keybind = global:cmd+escape=toggle_quick_terminal
 keybind = cmd+u=toggle_background_opacity
 keybind = cmd+p=toggle_command_palette
 keybind = cmd+shift+m=toggle_mouse_reporting
 keybind = cmd+opt+r=toggle_readonly
 
+## Search
+keybind = cmd+f=search_selection
+keybind = chain=start_search
+keybind = cmd+shift+f=end_search
+keybind = cmd+g=navigate_search:previous
+keybind = cmd+shift+g=navigate_search:next
+
+## Unbind annoying functions
 keybind = cmd+enter=unbind
 keybind = cmd+d=unbind
 keybind = cmd+shift+d=unbind
 keybind = cmd+,=unbind
+keybind = cmd+t=unbind
+keybind = cmd+n=unbind
 
-# cmd+del => ctrl-k
-keybind = cmd+delete=text:\x0b
-
+## Tmux window moving
 keybind = super+arrow_left=csi:1;4D
 keybind = super+arrow_right=csi:1;4C
-keybind = alt+arrow_left=csi:1;3D
-keybind = alt+arrow_right=csi:1;3C
+
+## Prev/Next word
+# keybind = alt+arrow_left=csi:1;3D
+# keybind = alt+arrow_right=csi:1;3C
+
+## cmd+del => ctrl-k (kill to end of line)
+keybind = cmd+delete=text:\x0b
 
 # Include local settings if exists
 config-file = ?config.local
