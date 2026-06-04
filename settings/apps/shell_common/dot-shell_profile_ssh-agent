@@ -187,12 +187,12 @@ if [ -n "${SSH_AGENT_PID}" ]; then
 	echo
 
 	### Increment shared number
-	TEMP_AGENTS=0
-	if [ -e "${GPP_SSH_AGENT_NUM_FILE}" ]; then
-		TEMP_AGENTS=$(cat "${GPP_SSH_AGENT_NUM_FILE}")
-	fi
-	echo -n "$((TEMP_AGENTS + 1))" > "${GPP_SSH_AGENT_NUM_FILE}"
-	echo "  $(cat "${GPP_SSH_AGENT_NUM_FILE}") processes are sharing #${SSH_AGENT_PID:-INHERITED} ssh-agent."
+	# TEMP_AGENTS=0
+	# if [ -e "${GPP_SSH_AGENT_NUM_FILE}" ]; then
+	#     TEMP_AGENTS=$(cat "${GPP_SSH_AGENT_NUM_FILE}")
+	# fi
+	# echo -n "$((TEMP_AGENTS + 1))" > "${GPP_SSH_AGENT_NUM_FILE}"
+	# echo "  $(cat "${GPP_SSH_AGENT_NUM_FILE}") processes are sharing #${SSH_AGENT_PID:-INHERITED} ssh-agent."
 fi
 
 unset TMP_AGENT_OK TMP_PID TMP_PS TMP_LINE TEMP_AGENTS TEMP_PS
