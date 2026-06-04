@@ -301,7 +301,7 @@ fi
 
 if [[ -x ${HOME}/src/deadman/deadman ]]; then
 	echo -n ", deadman(workaround)"
-	alias deadman="TERM=xterm-256color ~/src/deadman/deadman"
+	alias deadman="TERM=xterm-256color /usr/local/bin/python ~/src/deadman/deadman"
 fi
 echo
 
