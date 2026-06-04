@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/opt/homebrew/bin/zsh
 
-# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for shell script
-# shellcheck shell=bash
+# vim: set et syn=bash ft=sh ff=unix fenc=utf-8 ts=4 sts=4 sw=4 : # GPP default modeline for shell script
+# shellcheck shell=bash disable=SC1091
 
 # Part of GPP
 
@@ -14,21 +14,53 @@
 DRY_RUN=0
 
 # GPP_HOME="${GPP_HOME:=${HOME}/gpprofiles}"
-TERM="${TERM:=xterm-256color}"
+
+# Determine TERM
+if [[ -n $TERM_PROGRAM ]]; then
+    case $TERM_PROGRAM in
+        "ghostty" )
+            TERM="xterm-ghostty";;
+        "rio"     )
+            TERM="xterm-rio";;
+        "iTerm.app" )
+            TERM="xterm-256color-iTerm" ;;
+        "WezTerm" | "Tabby" | "WarpTerminal" | "Hyper" | "waveterm" )
+            TERM="xterm-256color";;
+    esac
+elif [[ -n $KITTY_PID ]]; then
+    TERM="xterm-kitty"
+elif [[ -n $ALACRITTY_SOCKET ]]; then
+    TERM="alacritty"
+elif [[ $TERMINAL_NAME == "contour" ]]; then
+    TERM="contour"
+elif [[ -n $electermHost ]]; then
+    TERM="xterm-256color"
+else
+    TERM="xterm-256color"
+fi
+
 PATH=/usr/local/bin:/usr/local/sbin:${PATH}
 SSH_BIN=$(which ssh)
 declare -a SSH_OPT=("-t")
 
 MODE="auto"
-TMUX_BIN="tmux"
-TMUX_OPT="-l"
-TMUX_CMD=""
+TMUX_BIN="${TMUX_BIN_OVERRIDE:-"tmux"}"
+TMUX_BIN="/Users/hmr/src/tmux/tmux-kkp/tmux"
+
+if [[ ${#TMUX_OPT_OVERRIDE[@]} -eq 0 ]]; then
+    TMUX_OPT=("-l")
+else
+    TMUX_OPT=("${TMUX_OPT_OVERRIDE[@]}")
+fi
+# TMUX_OPT=("-l" "-vv") # tmux debug setting
+
+TMUX_CMD="${TMUX_CMD_OVERRIDE}"
 
 post_processing() {
-	# Logout setting
-	if [[ -r "${ZDOTDIR}/dot-zlogout" ]]; then
-		source ${ZDOTDIR}/dot-zlogout
-	fi
+    # Logout setting
+    if [[ -r "${ZDOTDIR}/dot-zlogout" ]]; then
+        source "${ZDOTDIR}/dot-zlogout"
+    fi
 }
 
 show_usage() {
@@ -63,29 +95,28 @@ trap 'post_processing' 1 2 3 15
 echo
 echo "Starting $0..."
 echo "TERM=${TERM}"
+echo "SHELL=${SHELL}"
 echo "BASH=${BASH}"
 echo "GPP_HOME=${GPP_HOME}"
 echo "PATH=${PATH}"
 
 if [[ -z ${GPP_HOME} ]]; then
-	echo "\$GPP_HOME isn't set."
-	exit 1
+    echo "\$GPP_HOME isn't set."
+    exit 1
 fi
 
-source ${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv
-#source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function
-#source ${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos
+source "${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv"
 
 # Ssh-agent setting
 # Derived from gpp's dot-profile_ssh-agent
 ZDOTDIR="${HOME}/.config/zsh"
 if [[ -r "${ZDOTDIR}/dot-zprofile_ssh-agent" ]]; then
 
-	echo "Calling dot-(z)profile_ssh-agent..."
-	echo "--------------------------------------------------------------------------------"
-	source ${ZDOTDIR}/dot-zprofile_ssh-agent
-	echo "--------------------------------------------------------------------------------"
-	SSH_OPT+=("-A")
+    echo "Calling dot-(z)profile_ssh-agent..."
+    echo "--------------------------------------------------------------------------------"
+    source "${ZDOTDIR}/dot-zprofile_ssh-agent"
+    echo "--------------------------------------------------------------------------------"
+    SSH_OPT+=("-A")
 fi
 
 # Check number of args
@@ -124,15 +155,15 @@ do
             ;;
 
         "debug" )
-            TMUX_OPT="${TMUX_OPT} -v"
+            TMUX_OPT+=(-v)
             echo "Debug mode. Log file like 'tmux-{server|client}-yyyyy.log' will be generated."
-						SSH_OPT+=("-v")
+            SSH_OPT+=("-v")
             ;;
 
-					"ulb_tmux" )
-						TMUX_BIN="/usr/local/bin/${TMUX_BIN}"
-						echo "Use /usr/local/bin/tmux on remote host."
-						;;
+        "ulb_tmux" )
+            TMUX_BIN="/usr/local/bin/${TMUX_BIN}"
+            echo "Use /usr/local/bin/tmux on remote host."
+            ;;
 
         *)
             CMD_OPT="${CMD_OPT} ${OPT}"
@@ -144,8 +175,8 @@ done
 
 # Check SSH Agent
 if (( ${SSH_AGENT_PID:-0} == 0 )); then
-	echo "SSH Agent isn't configured."
-	#exit 1
+    echo "SSH Agent isn't configured."
+    #exit 1
 fi
 
 
@@ -164,97 +195,84 @@ fi
 
 # Tmux's Session ID processing("reattach" or "auto" mode only)
 if [[ $MODE == reattach || $MODE == auto ]]; then
-	echo "MODE: ${MODE}"
-	# Get the Tmux session ID from already existing session.
-	if [[ $TRGT_HOST == localhost ]]; then
-		# Local
-		echo "SESID=\$\(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)"
-		SESID=$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)
+    echo "MODE: ${MODE}"
+    # Get the Tmux session ID from already existing session.
+    # local
+    if [[ $TRGT_HOST == localhost ]]; then
+        # Local
+        echo "SESID=\$\(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)"
+        SESID=$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)
+    else
+        # Remote
+        echo "SESID=\$\(${SSH_BIN} ${SSH_OPT[*]} \"${TRGT_HOST}\" \"${TMUX_BIN}\" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)"
+        SESID=$("${SSH_BIN}" "${SSH_OPT[@]}" "${TRGT_HOST}" "${TMUX_BIN}" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)
+        echo "SESID=${SESID}"
 
-		# Error check
-		case ${SESID} in
-			"server exited unexpectedly" )
-				echo "It looks some kind of error happens on the server."
-				exit 1
-			;;
-			"*bash: line 1: tmux: command not found*" )
-				echo "Tmux hasn't been installed into the target host."
-				exit 1
-				;;
-			* )
-				echo "Error check passed."
-				;;
-		esac
-	else
-		# Remote
-		echo "SESID=\$\(${SSH_BIN} ${SSH_OPT} \"${TRGT_HOST}\" \"${TMUX_BIN}\" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)"
-		SESID=$(${SSH_BIN} ${SSH_OPT} "${TRGT_HOST}" ${TMUX_BIN} ls 2> /dev/null | sort -n -r -k 2 | head -n 1)
-		echo "SESID=${SESID}"
+    fi
 
-		# Error check
-		case "${SESID}" in
-			"server exited unexpectedly" )
-				echo "It looks some kind of error happens on the server."
-				exit 1
-				;;
-			bash:* ) # bash: line 1: tmux: command not found
-				echo "Tmux hasn't been installed into the target host."
-				exit 1
-				;;
-			* )
-				echo "Error check passed."
-				;;
-		esac
-		if echo "${SESID}" | grep -Pq "[^:]+?: \d+ "; then
-			SESID=$(echo "${SESID}" | cut -d ":" -f 1)
-		else
-			SESID=$(echo "${SESID}" | cut -c 1-6)
-		fi
-	fi
+    # Error check
+    case "${SESID}" in
+        "server exited unexpectedly" )
+            echo "It looks some kind of error happens on the server."
+            exit 1
+            ;;
+        bash:* ) # bash: line 1: tmux: command not found
+            echo "Tmux hasn't been installed into the target host."
+            exit 1
+            ;;
+        * )
+            echo "Error check passed."
+            ;;
+    esac
 
-	echo "SESID='${SESID}'"
-	case ${SESID} in
-		# Failed to get already existing session id.
-		"no ser" | "no cur" | "error " | "server" )
-		# Session ID generation
-		# SESID=$(generate_sesid)
-		# CMD_OPT="${CMD_OPT} -s ${SESID}"
+    if echo "${SESID}" | grep -Pq "[^:]+?: \d+ "; then
+        SESID=$(echo "${SESID}" | cut -d ":" -f 1)
+    else
+        SESID=$(echo "${SESID}" | cut -c 1-6)
+    fi
 
-		if [[ $MODE == auto ]]; then
-			TMUX_CMD="new-session"
-		else
-			# "reattach" mode
-			echo "Error: The session to reattach not found."
-			exit 1
-		fi
-		;;
+    echo "SESID='${SESID}'"
+    case ${SESID} in
+        # Failed to get already existing session id.
+        "no ser*" | "no cur*" | "error *" | "server*" )
+            # Session ID generation
+            # SESID=$(generate_sesid)
+            # CMD_OPT="${CMD_OPT} -s ${SESID}"
 
-	* )
-		TMUX_CMD="attach-session"
-		if [[ $TRGT_HOST == localhost ]]; then
-			CMD_OPT="${CMD_OPT} -t ${SESID}"
-		else
-			CMD_OPT="${CMD_OPT} -t '=${SESID}'"
-		fi
+            if [[ $MODE == auto ]]; then
+                TMUX_CMD="new-session"
+            else
+                # "reattach" mode
+                echo "Error: The session to reattach not found."
+                exit 1
+            fi
+            ;;
 
-	esac
+        * )
+            TMUX_CMD="attach-session"
+            if [[ $TRGT_HOST == localhost ]]; then
+                CMD_OPT="${CMD_OPT} -t ${SESID}"
+            else
+                CMD_OPT="${CMD_OPT} -t '=${SESID}'"
+            fi
+    esac
 elif [[ $MODE == new ]]; then
-	TMUX_CMD="new-session"
+    TMUX_CMD="new-session"
 else
-	echo "Error: Failed to determine mode. Choose 'auto' 'new' 'reattach'"
+    echo "Error: Failed to determine mode. Choose 'auto' 'new' 'reattach'"
 fi
 
 # Connect to local or remote host and launch tmux
 case ${TRGT_HOST} in
-	localhost )
-		echo "${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}"
-	(( DRY_RUN == 0 )) &&
-		${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD}
-		;;
+    localhost )
+        echo "${TMUX_BIN} ${TMUX_OPT[*]} ${TMUX_CMD} ${CMD_OPT}"
+        (( DRY_RUN == 0 )) &&
+            "${TMUX_BIN}" "${TMUX_OPT[@]}" "${TMUX_CMD}"
+        ;;
 
-	* )
-		echo "${SSH_BIN} ${SSH_OPT} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}"
-		(( DRY_RUN == 0 )) &&
-			${SSH_BIN} ${SSH_OPT} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT} ${TMUX_CMD} ${CMD_OPT}
-		;;
+    * )
+        echo "${SSH_BIN} ${SSH_OPT[*]} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT[*]} ${TMUX_CMD} ${CMD_OPT}"
+        (( DRY_RUN == 0 )) &&
+            "${SSH_BIN}" "${SSH_OPT[@]}" "${TRGT_HOST}" "${TMUX_BIN}" "${TMUX_OPT[@]}" "${TMUX_CMD}" "${CMD_OPT}"
+        ;;
 esac
