@@ -325,7 +325,7 @@ use-drawable-chars = false
 # use-current-path = false
 # color-automation = []
 [navigation]
-mode = "BottomTab"
+mode = "NativeTab"
 clickable = true
 hide-if-single = false
 unfocused-split-opacity = 1.0
