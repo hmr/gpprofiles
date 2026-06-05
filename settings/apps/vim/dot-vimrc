@@ -940,6 +940,7 @@ if has('gui_macvim')
   " Font test
   " Strings:
   "   (EN) Hello world
+  "   (GR) Γειά σου κόσμε
   "   (RU) Привет, мир
   "   (CZ) Ahoj světe
   "   (HI) नमस्ते दुनिया
