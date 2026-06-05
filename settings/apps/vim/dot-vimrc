@@ -1230,8 +1230,7 @@ endfunction
 augroup cmd_msg_cls
   autocmd!
   " autocmd CursorHold * echon ''
-  autocmd CmdlineLeave :  call timer_start(15000, funcref('s:empty_message'))
-  " autocmd CursorMoved *  call timer_start(10000, funcref('s:empty_message'))
+  autocmd CmdlineLeave :  call timer_start(300000, funcref('s:empty_message'))
 augroup END
 
 "----- Turn off the input method when leave from insert mode
@@ -1289,9 +1288,8 @@ let g:indentLine_char = '┊'
 
 augroup Refresh_Airline_at_vim_startup
   autocmd!
-  autocmd VimEnter * ++once call timer_start (50, {-> execute('AirlineRefresh')})
+  autocmd VimEnter * ++once call timer_start (100, {-> execute('AirlineRefresh')})
 augroup END
-
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
