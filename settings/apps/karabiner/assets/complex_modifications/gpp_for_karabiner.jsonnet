@@ -169,7 +169,7 @@ local allRdpVmTermDevBrowser = allRdpVmTermDev + webBrowsers;
 // Helper Functions for Creating Manipulators
 // -----------------------------------------------------------------------------
 
-local keyToKey(fromKey, fromMods, toKey, toMods, condType='', bundleIds=[]) = {
+local keyToKey(fromKey, fromMods=null, toKey, toMods=null, condType='', bundleIds=[]) = {
   /** Create a basic key-to-key manipulator */
   type: 'basic',
   from: {
@@ -458,6 +458,73 @@ local genSeparator(title) =
           { key_code: 'keypad_0' },
         ],
       },
+    ]),
+
+    // =========================================================================
+    // Hyper Key Shortcuts
+    // =========================================================================
+    genSeparator('Hyper Key Shortcuts'),
+
+    // Hyper+G → input string "$GPP_HOME"
+    rule('[GPP] Hyper+G to input $GPP_HOME path', [
+      {
+        type: 'basic',
+        from: {
+          key_code: 'g',
+          modifiers: { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+        },
+        to: [{
+          shell_command: "osascript -e 'tell application \"System Events\" to keystroke \"$GPP_HOME\"'",
+        }],
+      },
+    ]),
+
+    // Hyper+w/a/s/d → Arrow keys
+    rule('[GPP] Hyper+WASD to Arrow Keys', [
+      keyToKey('w',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'up_arrow' ),
+      keyToKey('a',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'left_arrow'),
+      keyToKey('s',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'down_arrow'),
+      keyToKey('d',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'right_arrow'),
+    ]),
+
+    // Hyper+hjkl → Arrow keys
+    rule('[GPP] Hyper+HJKL to Arrow Keys', [
+      keyToKey('h',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'left_arrow'),
+      keyToKey('j',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'down_arrow'),
+      keyToKey('k',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'up_arrow'),
+      keyToKey('l',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'right_arrow'),
+    ]),
+
+    // Hyper+IJKL Arrow keys
+    rule('[GPP] Hyper+IJKL to Arrow Keys', [
+      keyToKey('i',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'up_arrow'),
+      keyToKey('j',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'left_arrow'),
+      keyToKey('k',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'down_arrow'),
+      keyToKey('l',
+               { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
+               'right_arrow'),
     ]),
 
     // =========================================================================
