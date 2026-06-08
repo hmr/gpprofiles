@@ -39,13 +39,15 @@ else
     TERM="xterm-256color"
 fi
 
+TERM=${TERM_OVERRIDE:-${TERM}}
+
 PATH=/usr/local/bin:/usr/local/sbin:${PATH}
 SSH_BIN=$(which ssh)
 declare -a SSH_OPT=("-t")
 
 MODE="auto"
 TMUX_BIN="${TMUX_BIN_OVERRIDE:-"tmux"}"
-TMUX_BIN="/Users/hmr/src/tmux/tmux-kkp/tmux"
+# TMUX_BIN="/Users/hmr/src/tmux/tmux-kkp/tmux"
 
 if [[ ${#TMUX_OPT_OVERRIDE[@]} -eq 0 ]]; then
     TMUX_OPT=("-l")
@@ -160,10 +162,15 @@ do
             SSH_OPT+=("-v")
             ;;
 
-        "ulb_tmux" )
-            TMUX_BIN="/usr/local/bin/${TMUX_BIN}"
-            echo "Use /usr/local/bin/tmux on remote host."
+        tmux=* )
+            TMUX_BIN="${OPT#*=}"
+            echo "Use ${TMUX_BIN} as tmux."
             ;;
+
+		term=* )
+			TERM="${OPT#*=}"
+			echo "TERM was overridden by '${TERM}'."
+			;;
 
         *)
             CMD_OPT="${CMD_OPT} ${OPT}"
@@ -200,14 +207,13 @@ if [[ $MODE == reattach || $MODE == auto ]]; then
     # local
     if [[ $TRGT_HOST == localhost ]]; then
         # Local
-        echo "SESID=\$\(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)"
-        SESID=$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6)
+        echo "SESID=\$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6 | tr -d \"\\\n\")"
+        SESID=$(${TMUX_BIN} ls 2>&1 | sort -n -r -k 2 | head -n 1 | cut -c1-6 | tr -d "\n")
     else
         # Remote
-        echo "SESID=\$\(${SSH_BIN} ${SSH_OPT[*]} \"${TRGT_HOST}\" \"${TMUX_BIN}\" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)"
+        echo "SESID=\$(${SSH_BIN} ${SSH_OPT[*]} \"${TRGT_HOST}\" \"${TMUX_BIN}\" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)"
         SESID=$("${SSH_BIN}" "${SSH_OPT[@]}" "${TRGT_HOST}" "${TMUX_BIN}" ls 2> /dev/null | sort -n -r -k 2 | head -n 1)
-        echo "SESID=${SESID}"
-
+		echo "SESID='${SESID}'"
     fi
 
     # Error check
@@ -216,10 +222,14 @@ if [[ $MODE == reattach || $MODE == auto ]]; then
             echo "It looks some kind of error happens on the server."
             exit 1
             ;;
-        bash:* ) # bash: line 1: tmux: command not found
+        bash:* | zsh:* ) # bash: line 1: tmux: command not found
             echo "Tmux hasn't been installed into the target host."
             exit 1
             ;;
+		"missing or unsuitable terminal:"* )
+			echo "TERM='${TERM}' isn't exist on target host."
+			exit 1
+			;;
         * )
             echo "Error check passed."
             ;;
@@ -232,9 +242,9 @@ if [[ $MODE == reattach || $MODE == auto ]]; then
     fi
 
     echo "SESID='${SESID}'"
-    case ${SESID} in
+    case "${SESID}" in
         # Failed to get already existing session id.
-        "no ser*" | "no cur*" | "error *" | "server*" )
+        "no ser"* | "no cur"* | "error "* | "server"* )
             # Session ID generation
             # SESID=$(generate_sesid)
             # CMD_OPT="${CMD_OPT} -s ${SESID}"
@@ -271,8 +281,8 @@ case ${TRGT_HOST} in
         ;;
 
     * )
-        echo "${SSH_BIN} ${SSH_OPT[*]} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT[*]} ${TMUX_CMD} ${CMD_OPT}"
+        echo "${SSH_BIN} ${SSH_OPT[*]} ${TRGT_HOST} ${TMUX_BIN} ${TMUX_OPT[*]} ${TMUX_CMD} ${CMD_OPT:-}"
         (( DRY_RUN == 0 )) &&
-            "${SSH_BIN}" "${SSH_OPT[@]}" "${TRGT_HOST}" "${TMUX_BIN}" "${TMUX_OPT[@]}" "${TMUX_CMD}" "${CMD_OPT}"
+            "${SSH_BIN}" "${SSH_OPT[@]}" "${TRGT_HOST}" "${TMUX_BIN}" "${TMUX_OPT[@]}" "${TMUX_CMD}" "${CMD_OPT:-}"
         ;;
 esac
