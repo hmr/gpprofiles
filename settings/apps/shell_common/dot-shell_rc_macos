@@ -105,6 +105,12 @@ if [[ ${OSTYPE} != *darwin* ]]; then
   return
 fi
 
+# Set LANG
+TMP_SYS_LANG="$(defaults read -g AppleLocale)"
+if [[ ! $LANG =~ TMP_SYS_LANG ]]; then
+	export LANG="${TMP_SYS_LANG}.UTF-8"
+fi
+
 # Only for bash
 case "$(chkshell)" in
   bash )
