@@ -913,6 +913,11 @@ local genSeparator(title) =
       appLauncher('c', 'ChatGPT'),
     ]),
 
+    // Option+Cmd+X → Codex Desktop
+    rule('[GPP] Start <Codex Desktop> by ⌥⌘X', [
+      appLauncher('x', 'Codex'),
+    ]),
+
     // Ctrl+Option+Cmd+C → Claude Desktop
     rule('[GPP] Start <Claude Desktop> by ⌘⌃⌥C', [
       keyToShell('c',
