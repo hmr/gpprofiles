@@ -83,4 +83,7 @@ _oWMF@!6?BN^!21~$#0!23?p!4~^Nfpw}!6~{o_-#1!18~^NB@?_ow{}~wo!12?@BFN!17~$#0!
 B@!9?@BF^!12~{wo_-#1!8~^NFB@?_w{}!19~{wo_!11?@BN^!8~$#0!8?_ow{}~^FB@!19?BFN
 ^!11~}{o_-#1!4~^NB@?_ow{!28~}{o_!12?BF^!4~$#0!4?_o{}~^NFB!28?@BN^!12~{w_-#1
 NB@???GM!38NMG!13?@BN$#0?KMNNNF@!38?@F!13NMK-\e\'
+echo
 
+echo "# Kitty Graphics Protocol"
+zcat kgp-200x100.gz
