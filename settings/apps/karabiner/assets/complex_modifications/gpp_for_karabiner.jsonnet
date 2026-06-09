@@ -160,8 +160,11 @@ local winRdpVm = winRdpClients + vmMonitors;
 // RDP + VM (for key mappings that should pass through to remote systems)
 local allRdpVm = macosScreenSharing + vncClients + winRdpClients + vmMonitors;
 
-// [PC-Style] RDP + VM + Terminals +  Developper app (includes AI Chat app)
-local allRdpVmTermDev = allRdpVm + terminals + developmentApp + tweakEnterApps;
+// [PC-Style] RDP + VM + Terminals +  Developper app
+local allRdpVmTermDev = allRdpVm + terminals + developmentApp;
+
+// [PC-Style] RDP + VM + Terminals +  Developper app + AI Chat app
+local allRdpVmTermDevAi = allRdpVm + terminals + developmentApp + tweakEnterApps;
 
 // RDP + VM + Terminals + Development Apps + Web Browsers
 local allRdpVmTermDevBrowser = allRdpVmTermDev + webBrowsers;
