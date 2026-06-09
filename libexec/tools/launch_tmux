@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
 
 # vim: set et syn=bash ft=sh ff=unix fenc=utf-8 ts=4 sts=4 sw=4 : # GPP default modeline for shell script
 # shellcheck shell=bash disable=SC1091
