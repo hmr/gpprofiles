@@ -91,6 +91,7 @@ local winRdpClients = [
   '^com\\.p5sys\\.jump\\.mac\\.viewer$',
   '^com\\.p5sys\\.jump\\.mac\\.viewer\\.',
   '^com\\.teamviewer\\.TeamViewer$',
+  '^com\\.carriez\\.rustdesk$',
   '^com\\.thinomenon\\.RemoteDesktopConnection$',
   '^net\\.sf\\.cord$',
 ];
