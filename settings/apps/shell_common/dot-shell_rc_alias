@@ -192,9 +192,11 @@ if which iftop > /dev/null; then
 fi
 
 # git
-if which tig > /dev/null; then
+if which git > /dev/null; then
   echo -n ", git"
-    alias gml="git mylog"
+  alias gitnp="git --no-pager"
+  alias gnp="git --no-pager"
+  alias gml="git mylog"
 fi
 
 # tig
