@@ -235,7 +235,7 @@ if [[ $MODE == reattach || $MODE == auto ]]; then
             ;;
     esac
 
-    if echo "${SESID}" | grep -Pq "[^:]+?: \d+ "; then
+    if echo "${SESID}" | ggrep -Pq "[^:]+?: \d+ "; then
         SESID=$(echo "${SESID}" | cut -d ":" -f 1)
     else
         SESID=$(echo "${SESID}" | cut -c 1-6)
