@@ -4,9 +4,9 @@
     email = ##__USER_MAIL__
 
 [alias]
-    mylog = log --graph --name-status --pretty=format:\"%C(red)%h %C(green)%an %Creset%s %C(yellow)%d%Creset\"
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	mylog   = log --graph --name-status --pretty=format:'%C(red)%h %C(blue)[%ad] %C(green)%an %Creset%s %C(yellow)%d%Creset' --date=format:'%Y-%m-%d %H:%M:%S'
+    mylog2  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    mylog2a = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
     st = status
     df = diff
     cm = commit
