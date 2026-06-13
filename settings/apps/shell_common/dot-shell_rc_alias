@@ -196,7 +196,9 @@ if which git > /dev/null; then
   echo -n ", git"
   alias gitnp="git --no-pager"
   alias gnp="git --no-pager"
-  alias gml="git mylog"
+  alias gml="git mylog --color | grep -v '^$' | less -R"
+  alias gml2="git mylog2 --color | grep -v '^$' | less -R"
+  alias gml2a="git mylog2a --color | grep -v '^$' | less -R"
 fi
 
 # tig
