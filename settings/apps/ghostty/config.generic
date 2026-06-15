@@ -45,6 +45,7 @@ unfocused-split-opacity = .5
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
+macos-icon = holographic
 
 # Autoupdate
 auto-update = check
