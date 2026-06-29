@@ -12,6 +12,14 @@
 
 # ORIGIN: 2020-06-24 by hmr
 
+# Sleep to avoid invoking multiple ssh-agent
+if [[ ${TMP_AGENT_OK} -lt 1 && -n ${TMUX_PANE} ]]; then # TODO: Add case for GNU Screen
+	TMP_SLEEP1=$((RANDOM % 3 + 1))
+	TMP_SLEEP2=$((RANDOM % 9))
+	echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
+	unset TMP_SLEEP1 TMP_SLEEP2
+fi
+
 echo "Processing ${UNDERLINE}${GREEN}dot-zprofile${NORMAL}"
 
 TMP_SSHDIR="${HOME}/.ssh"
