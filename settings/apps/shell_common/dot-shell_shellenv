@@ -39,9 +39,6 @@ fi
 [[ -d /usr/share/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/usr/share/terminfo"
 [[ -d /lib/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/lib/terminfo"
 
-### workaround for system's old ncurses
-export TERMINFO="/usr/share/terminfo"
-
 # return when non-interactive shell
 [[ "$-" != *i* ]] && return
 
