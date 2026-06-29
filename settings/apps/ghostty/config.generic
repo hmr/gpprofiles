@@ -1,6 +1,9 @@
 # Ghostty configuration file (common)
 # Part of GPP
 
+# Include local settings if exists
+config-file = ?config.local
+
 # Shell integration
 shell-integration = detect
 shell-integration-features = ssh-env, no-title, no-cursor
@@ -45,7 +48,7 @@ unfocused-split-opacity = .5
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
-macos-icon = holographic
+macos-icon = blueprint
 
 # Autoupdate
 auto-update = check
@@ -79,11 +82,12 @@ keybind = super+arrow_left=csi:1;4D
 keybind = super+arrow_right=csi:1;4C
 
 ## Prev/Next word
-# keybind = alt+arrow_left=csi:1;3D
-# keybind = alt+arrow_right=csi:1;3C
+keybind = alt+arrow_left=csi:1;3D
+keybind = alt+arrow_right=csi:1;3C
 
 ## cmd+del => ctrl-k (kill to end of line)
 keybind = cmd+delete=text:\x0b
 
-# Include local settings if exists
-config-file = ?config.local
+## Cmd + Printable Character key
+# keybind = cmd+F9=csi:20;9~
+# keybind = cmd+b=csi:27;9;97~
