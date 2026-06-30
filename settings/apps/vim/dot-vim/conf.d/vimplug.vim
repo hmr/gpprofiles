@@ -2,7 +2,7 @@
 " Part of GPP(General Puropose Profiles)
 
 " ORIGIN: 2021-03-01 by hmr
-" Last Update: [2026-05-28T12:51:32+0900]
+" Last Update: [2026-06-23T18:00:19+0900]
 
 scriptencoding utf-8
 
@@ -96,20 +96,22 @@ Plug 'easymotion/vim-easymotion'
 Plug 'jacquesbh/vim-showmarks'
 
 " Insert or delete brackets, parens, quotes in pair
-" https://github.com/jiangmiao/auto-pairs
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
+Plug 'LunarWatcher/auto-pairs'
 
 " So to called Zen mode for vim
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " fzf (A command-line fuzzy finde) for vim
-" Plug 'junegunn/fzf.vim'
+Plug '/opt/homebrew/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 " A simple, easy-to-use Vim alignment plugin
 Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
 
 " Active fork of kien/ctrlp.vim — Fuzzy file, buffer, mru, tag, etc finder.
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'mattn/ctrlp-matchfuzzy'
 
 " Vim plugin which manipulate gists in Vim.
 Plug 'lambdalisue/vim-gista'
@@ -137,9 +139,6 @@ Plug 'masakuni-ito/vim-tags'
 
 " Vim frontend for the programmer's search tool 'ack' which is grep-like text finder
 Plug 'mileszs/ack.vim', { 'on': ['Ack','AckAdd', 'AckFile', 'AckFromSearch', 'AckHelp', 'AckWindow', 'LAck', 'LAckAdd', 'LAckHelp', 'LAckWindow'] }
-
-" A Vim plugin for visually displaying indent levels in code
-" Plug 'nathanaelkane/vim-indent-guides'
 
 " Better whitespace highlighting for Vim
 Plug 'ntpeters/vim-better-whitespace'
@@ -222,7 +221,8 @@ Plug 'mechatroner/rainbow_csv'
 
 " Provides an easy access to a list of recently opened/edited files
 " Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
-Plug 'fuenor/mru', { 'on': ['MRU', 'MRUToggle'] }
+" Plug 'fuenor/mru', { 'on': ['MRU', 'MRUToggle'] }
+Plug 'yegappan/mru', { 'on': ['MRU', 'MRUToggle'] }
 
 " Print function name in editing
 Plug 'tyru/current-func-info.vim'
@@ -253,6 +253,9 @@ Plug 'tani/dmacro.vim'
 
 " GitHub Copilot for Vim and Neovim
 Plug 'github/copilot.vim'
+
+" A Vim plugin for visually displaying indent levels in code
+" Plug 'nathanaelkane/vim-indent-guides'
 
 " A vim plugin to display the indention levels with thin vertical lines
 Plug 'yggdroot/indentline'
