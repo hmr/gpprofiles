@@ -1299,6 +1299,10 @@ augroup Refresh_Airline_at_vim_startup
   autocmd!
   autocmd VimEnter * ++once call timer_start (100, {-> execute('AirlineRefresh')})
 augroup END
+
+"----- [TESTING] gf tweek (gF opens file under cursor and go to line)
+nnoremap gf gF
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
