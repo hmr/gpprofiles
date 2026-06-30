@@ -532,17 +532,34 @@ noremap! <silent> <M-Left>  <C-r>=MyMoveWord_i('B')<CR>
 " Made by [hmr]
 "=============================================================================
 " hjkl to ijkl @ normal, visual, select, operator, command
-" TODO: Distinguish between C-i and Tab key.
-" noremap    i  <Up>
-" noremap    j  <Left>
-" noremap    k  <Down>
-" noremap    l  <Right>
-" inoremap   <C-i>  <Up>
-" inoremap   <C-j>  <Left>
-" inoremap   <C-k>  <Down>
-" inoremap   <C-l>  <Right>
 
-" ノーマルモードでaキーを押した場合、カーソルが行末にあればa、それ以外はiとして動作する
+nnoremap   i  <Up>
+nnoremap   j  <Left>
+nnoremap   k  <Down>
+nnoremap   l  <Right>
+
+" vnoremap   i  <Up>
+" vnoremap   j  <Left>
+" vnoremap   k  <Down>
+" vnoremap   l  <Right>
+
+" Workaround for distinguish C-i from Tab key
+" set     <F37>=[27;5;105~  " for xterm style (csi-~)
+set       <F37>=[105;5u     " for kitty style (csi-u)
+inoremap  <F37>  <Up>
+inoremap  <C-j>  <Left>
+inoremap  <C-k>  <Down>
+inoremap  <C-l>  <Right>
+
+noremap   h  i
+nnoremap I i
+
+noremap  <silent> <C-M-l> :call MyMoveWord_i('W')<CR>
+noremap! <silent> <C-M-l> <C-r>=MyMoveWord_i('W')<CR>
+noremap  <silent> <C-M-j>  :call MyMoveWord_i('B')<CR>
+noremap! <silent> <C-M-j>  <C-r>=MyMoveWord_i('B')<CR>
+
+" If the cursor is at the end of the line, act as 'a', otherwise 'i'
 function! AppendOrInsert()
   if col('.') == col('$') - 1
     exec 'startinsert!'
