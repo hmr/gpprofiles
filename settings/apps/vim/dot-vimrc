@@ -55,7 +55,7 @@ call mkdir($XDG_DATA_HOME.'/vim/spell', 'p')
 "-----------------------------------------------------------------------------
 " Read configuration files
 "-----------------------------------------------------------------------------
-runtime conf.d/keymap.vim   " Keymap definition
+" runtime conf.d/keymap.vim   " Keymap definition (Obsolete, use modifiOtherKeys instead)
 runtime conf.d/vimplug.vim  " Vim-Plug
 
 set runtimepath+=$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
