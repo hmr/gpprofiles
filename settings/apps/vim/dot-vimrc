@@ -1167,9 +1167,11 @@ function ALELSPMappings()
 
     nnoremap <buffer> <C-^> :ALEFindReferences<cr>
     nnoremap gr :ALEFindReferences<cr>
-    nnoremap <buffer> K :ALEDocumentation<cr>
-    nnoremap K :ALEHover<cr>
-    nnoremap <buffer> gh :ALEHover<cr>
+	" TODO: Investigate the conditions for :ALEDocumentation to function properly
+	" TODO: Investigate how to fallback from :ALEDocumentation to :Help.
+	" nnoremap <buffer> K :ALEDocumentation<cr>
+    " nnoremap K :ALEHover<cr>
+    " nnoremap <buffer> gh :ALEHover<cr>
     setlocal omnifunc=ale#completion#OmniFunc
   else
     silent! unmap <buffer> <C-]>
