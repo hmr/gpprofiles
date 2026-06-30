@@ -121,7 +121,8 @@ set scrolloff=5                 " mergin lines of vertical scrolling
 set helplang=ja,en              " Prefer Japanse help
 set ttimeout
 set ttimeoutlen=50
-set keyprotocol+=tmux:mok2      " Enable modifyOtherKeys at tmux-256color term
+set keyprotocol+=xterm-ghostty:kitty " Enable KKP at ghostty
+set keyprotocol+=tmux:mok2           " Enable modifyOtherKeys at tmux-256color term
 
 " No need to escape regular expression meta characters when search(very magic mode)
 " nnoremap /  /\v
