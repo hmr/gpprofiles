@@ -552,7 +552,7 @@ function! AppendOrInsert()
 endfunction
 nmap <silent> a :call AppendOrInsert()<CR>
 
-" 挿入モードでもCtrl-zでサスペンドする
+" Suspend Vim with Ctrl-z even from insert mode
 inoremap <C-z> <ESC><C-z>
 
 " Ctrl+Arrow: move between the windows
@@ -1295,6 +1295,8 @@ nnoremap <C-y> <Plug>(dmacro-play-macro)
 " let g:indentLine_conceallevel = 0
 let g:indentLine_char = '┊'
 
+
+"----- [TESTING] Refresh status line at startup
 augroup Refresh_Airline_at_vim_startup
   autocmd!
   autocmd VimEnter * ++once call timer_start (100, {-> execute('AirlineRefresh')})
