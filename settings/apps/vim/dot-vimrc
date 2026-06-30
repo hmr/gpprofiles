@@ -1311,6 +1311,50 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_use_caching = 1
 let g:ctrlp_match_window = 'bottom,min:20,max:20'
 
+"----- [TESTING] Jumplist jumping within the same buffer
+function! s:buffer_jump(direction) abort
+  " Get the jump list and current position for the active window
+  let [jumps, cur] = getjumplist()
+  if empty(jumps) | return | endif
+  let cbuf = bufnr('%')
+
+  if a:direction ==# 'backward'
+    " Current location is jumps[cur]. Scan backward from cur - 1.
+    let idx = cur - 1
+    while idx >= 0
+      if jumps[idx].bufnr == cbuf
+        let steps = cur - idx
+        execute 'normal! ' . steps . "\<C-O>"
+        return
+      endif
+      let idx -= 1
+    endwhile
+  elseif a:direction ==# 'forward'
+    " Current location is jumps[cur]. Scan forward from cur + 1.
+    let idx = cur + 1
+    while idx < len(jumps)
+      if jumps[idx].bufnr == cbuf
+        let steps = idx - cur
+        execute 'normal! ' . steps . "\<C-I>"
+        return
+      endif
+      let idx += 1
+    endwhile
+
+    " If no matching buffer is found in the future list,
+    " jump straight back to the latest position (outside the list)
+    if cur < len(jumps)
+      let steps = len(jumps) - cur
+      execute 'normal! ' . steps . "\<C-I>"
+    endif
+  endif
+endfunction
+
+" Override the default jump keys
+nnoremap <silent> <C-o> :call <SID>buffer_jump('backward')<CR>
+" nnoremap <silent> <C-i> :call <SID>buffer_jump('forward')<CR>
+nnoremap <silent> <C-i> :call <SID>buffer_jump('forward')<CR>
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
