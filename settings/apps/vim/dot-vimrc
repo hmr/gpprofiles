@@ -1303,6 +1303,14 @@ augroup END
 "----- [TESTING] gf tweek (gF opens file under cursor and go to line)
 nnoremap gf gF
 
+"----- [TESTING] ack.vim
+let g:ackprg = 'rg --vimgrep --no-heading --smart-case'
+
+"----- [TESTING] CtrlP settings
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_use_caching = 1
+let g:ctrlp_match_window = 'bottom,min:20,max:20'
+
 "-----------------------------------------------------------------------------
 " Appendix I: Mode and Map
 "-----------------------------------------------------------------------------
