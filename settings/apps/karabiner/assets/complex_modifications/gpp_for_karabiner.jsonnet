@@ -487,7 +487,7 @@ local genSeparator(title) =
     rule('[GPP] Hyper+WASD to Arrow Keys', [
       keyToKey('w',
                { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
-               'up_arrow' ),
+               'up_arrow'),
       keyToKey('a',
                { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
                'left_arrow'),
@@ -1037,3 +1037,5 @@ local genSeparator(title) =
 
   ],
 }
+
+// vim: set et ai ft=jsonnet ff=unix fenc=utf-8 ts=2 sw=2 sts=2 : # GPP default jsonnet settings
