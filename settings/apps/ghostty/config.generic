@@ -48,7 +48,13 @@ unfocused-split-opacity = .5
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
-macos-icon = blueprint
+
+## macOS icon style
+macos-icon = holographic
+# macos-icon = custom-style
+# macos-icon-frame = chrome
+# macos-icon-ghost-color = #20b2aa
+# macos-icon-screen-color = #ff3d95
 
 # Autoupdate
 auto-update = check
