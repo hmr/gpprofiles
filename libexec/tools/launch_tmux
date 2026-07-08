@@ -244,7 +244,7 @@ if [[ $MODE == reattach || $MODE == auto ]]; then
     echo "SESID='${SESID}'"
     case "${SESID}" in
         # Failed to get already existing session id.
-        "no ser"* | "no cur"* | "error "* | "server"* )
+        "no ser"* | "no cur"* | "error "* | "server"* | "" )
             # Session ID generation
             # SESID=$(generate_sesid)
             # CMD_OPT="${CMD_OPT} -s ${SESID}"
