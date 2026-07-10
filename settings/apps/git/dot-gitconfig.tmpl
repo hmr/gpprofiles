@@ -1,43 +1,68 @@
-# vim: ft=gitconfig
+# vim: set ft=gitconfig fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
 [user]
-    name = ##__USER_NAME__
-    email = ##__USER_MAIL__
-
-[alias]
-	mylog   = log --graph --name-status --pretty=format:'%C(red)%h %C(blue)[%ad] %C(green)%an %Creset%s %C(yellow)%d%Creset' --date=format:'%Y-%m-%d %H:%M:%S'
-    mylog2  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    mylog2a = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
-    st = status
-    df = diff
-    cm = commit
-    br = branch
-    ps = push
-    pl = pull
-    co = checkout
-    dfw = diff --word-diff
-
-[push]
-    default = current
-
-[pull]
-    ff = only
-    autostash = true
-
-[rebase]
-    autostash = true
-
-[color]
-    ui = true
+  name = ##__USER_NAME__
+  email = ##__USER_MAIL__
 
 [core]
-    editor = vim
-    quotepath = false
-	pager =
+  editor = vim
+  quotepath = false
+  pager = delta
+
+[cola]
+	spellcheck = false
+	theme = default
+
+[color]
+  ui = true
+
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  pager = less -n
+  line-numbers = true
+
+[diff]
+  tool = meld
+
+[difftool]
+  prompt = false
+
+[difftool "meld"]
+  trustExitCode = true
+  cmd = open -W -a Meld --args \"$LOCAL\" \"$REMOTE\"
+
+[interactive]
+  diffFilter = delta --color-only
+
+[merge]
+  conflictStyle = zdiff3
+  tool = meld
+
+[mergetool]
+  prompt = false
+
+[mergetool "meld"]
+  trustExitCode = true
+  cmd = open -W -a Meld --args --auto-merge \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output=\"$MERGED\"
+
+[pull]
+  ff = only
+  autostash = true
+
+[push]
+  default = current
+
+[rebase]
+  autostash = true
 
 [credential]
-    helper = cache --timeout=86400
-    #macos-credential-helper helper = osxkeychain
-    #windows-credential-helper helper = manager #need to install Microsoft/Git-Credential-Manager-for-Windows
-    #gnome-credential-helper helper = gnomekeyring #need to install shugo/git-credential-gnomekeyring
-    #TODO: kde-credential-helper
+  helper = cache --timeout=86400
+  #macos-credential-helper helper = osxkeychain
+  #windows-credential-helper helper = manager #need to install Microsoft/Git-Credential-Manager-for-Windows
+  #gnome-credential-helper helper = gnomekeyring #need to install shugo/git-credential-gnomekeyring
+  #TODO: kde-credential-helper
 
+[alias]
+  mylog   = log --graph --name-status --pretty=format:'%C(red)%h %C(blue)[%ad] %C(green)%an %Creset%s %C(yellow)%d%Creset' --date=format:'%Y-%m-%d %H:%M:%S'
+  mylog2  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  mylog2a = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
+  dsxs = -c delta.features=side-by-side diff
