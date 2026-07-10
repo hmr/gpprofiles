@@ -1,10 +1,8 @@
-# Part of GPP
 # EditorConfig for GPP
+# Part of GPP
 #
 # ORIGIN: 2024-12-01
-# Last Update: [2024-12-03T15:03:43+0900]
-
-# Derived from https://github.com/tee-talog/dotfiles/blob/main/.editorconfig
+# Last Update: [2026-07-09T17:01:03+0900]
 
 ### Properties (https://spec.editorconfig.org/#file-format)
 # indent_style = {tab | space}
@@ -17,103 +15,114 @@
 # insert_final_newline = {true | false}
 # max_line_length = {integer | off}
 
-
 root = true
 
-####################
-## Base settings
-####################
 [*]
 charset = utf-8
 end_of_line = lf
-indent_size = 4
-indent_style = tab
-trim_trailing_whitespace = false
-
-####################
-## VimL and shell script
-####################
-[*.{vim,sh,bash,zsh]
-[{.vimrc,dot-vimrc}]
-indent_size = 2
-indent_style = space
+insert_final_newline = true
 trim_trailing_whitespace = true
-
-
-####################
-## Markdown
-####################
-[*.md]
+indent_style = space
 indent_size = 4
-indent_style = space
-trim_trailing_whitespace = false
+tab_width = 4
 
-####################
-## Property Languages
-####################
-[*.properties]
-trim_trailing_whitespace = false
-
-[*.yaml]
-indent_size = 2
-indent_style = space
-trim_trailing_whitespace = false
-
-[*.json]
-indent_size = 2
-indent_style = space
-
-####################
-## Java (includes AltJava)
-####################
-[*.{java,groovy,scala,kt}]
-trim_trailing_whitespace = true
-
-[*.scala]
-indent_size = 2
-indent_style = space
-
-####################
-## JavaScript (includes AltJS)
-####################
-[*.{js,jsx,ts,tsx,vue}]
-trim_trailing_whitespace = true
-
-[*.vue]
-indent_size = 2
-indent_style = space
-
-####################
-## Python
-####################
-[*.py]
-inent_size = 4
-indent_style = space
-
-####################
-## ShellScript
-####################
-[*.{sh,bash,zsh}]
-indent_size = 2
-indent_style = space
-
-####################
-## HTML
-####################
-[*.{html,htm,jsp,ejs}]
-indent_size = 4
-indent_style = space
-
-####################
-## dotfiles
-####################
+# dotfiles
+# vim: set fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
 [.*]
 indent_size = 2
 indent_style = space
 
-####################
-## css
-####################
-[*.{css,scss,sass,styl}]
-indent_size = 2
+# Common dotfiles
+# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[{.editorconfig,.gitconfig,.gitattributes,.gitignore,.curlrc,.wgetrc,.inputrc}]
 indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Vim script
+# vim: set ft=vim fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{vim,vimrc,gvimrc}]
+[{.vimrc,.gvimrc}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Shell scripts
+# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+[*.{sh,bash,zsh,ksh}]
+[{.bashrc,.bash_profile,.bash_login,.profile,.zshrc,.zprofile,.zlogin,.zshenv,.kshrc}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Markdown
+# vim: set ft=markdown fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{md,markdown}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+trim_trailing_whitespace = false
+
+# YAML
+# vim: set ft=yaml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# JSON and JSON with comments
+# vim: set ft=json fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{json,jsonc,jsonnet}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Java, AspectJ, and related JVM source files
+# vim: set ft=java fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+[*.{java,aj}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# Java properties
+# vim: set fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+[*.properties]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# JavaScript, TypeScript, and Vue
+# vim: set ft=javascript fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{js,jsx,mjs,cjs,ts,tsx,vue}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Python
+# vim: set ft=python fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+[*.{py,pyw}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# HTML and XHTML
+# vim: set ft=xhtml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{html,htm,xhtml,jsp,jspf,tag}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# CSS and CSS preprocessors
+# vim: set ft=css fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+[*.{css,scss,sass,less}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Makefiles require real tab characters
+# vim: set ft=make fenc=utf-8 ff=unix fixeol noet sw=8 ts=8 sts=8:
+[{Makefile,makefile,GNUmakefile,*.mk}]
+indent_style = tab
+tab_width = 8
+
+# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2 :
