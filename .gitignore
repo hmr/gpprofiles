@@ -5,6 +5,8 @@
 /dot-bashrc_history_local
 /dot-gitconfig
 
+**/*.orig
+
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
 .TAGS
