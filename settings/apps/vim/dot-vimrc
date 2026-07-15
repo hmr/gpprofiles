@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2026-06-28T17:07:49+0900]
+" Last Update: [2026-07-07T11:46:35+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -1302,6 +1302,7 @@ inoremap <S-M-d> <C-d>
 inoremap <C-y> <Plug>(dmacro-play-macro)
 nnoremap <C-y> <Plug>(dmacro-play-macro)
 
+"----- [TESTING] vim-indentLine
 " let g:indentLine_setColors = 0
 " let g:indentLine_defaultGroup = 'SpecialKey'
 " let g:indentLine_color_term = 9
@@ -1311,7 +1312,6 @@ nnoremap <C-y> <Plug>(dmacro-play-macro)
 " let g:indentLine_setConceal = 0
 " let g:indentLine_conceallevel = 0
 let g:indentLine_char = '┊'
-
 
 "----- [TESTING] Refresh status line at startup
 augroup Refresh_Airline_at_vim_startup
