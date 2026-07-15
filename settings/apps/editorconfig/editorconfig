@@ -2,7 +2,7 @@
 # Part of GPP
 #
 # ORIGIN: 2024-12-01
-# Last Update: [2026-07-09T17:01:03+0900]
+# Last Update: [2026-07-15T16:58:33+0900]
 
 ### Properties (https://spec.editorconfig.org/#file-format)
 # indent_style = {tab | space}
@@ -27,20 +27,20 @@ indent_size = 4
 tab_width = 4
 
 # dotfiles
-# vim: set fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for generic dotfiles
 [.*]
 indent_size = 2
 indent_style = space
 
 # Common dotfiles
-# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for major dotfiles
 [{.editorconfig,.gitconfig,.gitattributes,.gitignore,.curlrc,.wgetrc,.inputrc}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 
 # Vim script
-# vim: set ft=vim fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=vim fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for Vim script
 [*.{vim,vimrc,gvimrc}]
 [{.vimrc,.gvimrc}]
 indent_style = space
@@ -48,7 +48,7 @@ indent_size = 2
 tab_width = 2
 
 # Shell scripts
-# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for shell scripts
 [*.{sh,bash,zsh,ksh}]
 [{.bashrc,.bash_profile,.bash_login,.profile,.zshrc,.zprofile,.zlogin,.zshenv,.kshrc}]
 indent_style = space
@@ -56,7 +56,7 @@ indent_size = 2
 tab_width = 2
 
 # Markdown
-# vim: set ft=markdown fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=markdown fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for Markdown
 [*.{md,markdown}]
 indent_style = space
 indent_size = 2
@@ -64,65 +64,65 @@ tab_width = 2
 trim_trailing_whitespace = false
 
 # YAML
-# vim: set ft=yaml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=yaml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for YAML
 [*.{yml,yaml}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 
 # JSON and JSON with comments
-# vim: set ft=json fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=json fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for JSON
 [*.{json,jsonc,jsonnet}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 
 # Java, AspectJ, and related JVM source files
-# vim: set ft=java fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+# vim: set ft=java fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for Java
 [*.{java,aj}]
 indent_style = space
 indent_size = 4
 tab_width = 4
 
 # Java properties
-# vim: set fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+# vim: set fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for Java properties
 [*.properties]
 indent_style = space
 indent_size = 4
 tab_width = 4
 
 # JavaScript, TypeScript, and Vue
-# vim: set ft=javascript fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=javascript fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for JavaScript
 [*.{js,jsx,mjs,cjs,ts,tsx,vue}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 
 # Python
-# vim: set ft=python fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4:
+# vim: set ft=python fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for Python
 [*.{py,pyw}]
 indent_style = space
 indent_size = 4
 tab_width = 4
 
 # HTML and XHTML
-# vim: set ft=xhtml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=xhtml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for HTML
 [*.{html,htm,xhtml,jsp,jspf,tag}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 
 # CSS and CSS preprocessors
-# vim: set ft=css fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+# vim: set ft=css fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for CSS
 [*.{css,scss,sass,less}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 
-# Makefiles require real tab characters
-# vim: set ft=make fenc=utf-8 ff=unix fixeol noet sw=8 ts=8 sts=8:
+# Makefile requires real tab characters
+# vim: set ft=make fenc=utf-8 ff=unix fixeol noet sw=8 ts=8 sts=8: #GPP default modeline for Makefile
 [{Makefile,makefile,GNUmakefile,*.mk}]
 indent_style = tab
 tab_width = 8
 
-# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2 :
+# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for major dotfiles
