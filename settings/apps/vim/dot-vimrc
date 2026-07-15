@@ -84,7 +84,7 @@ set nowritebackup               " not to make backup file.
 set nobackup                    " not to backup
 set history=50                  " keep 50 lines of command line history
 set textwidth=0                 " default maximum width of text(0 means never use auto line break)
-set tabstop=8                   " default tab width
+set tabstop=4                   " default tab width
 set shiftwidth=0                " default indent width(0 means same as tabstop)
 set expandtab                   " expand tab to space
 set cursorline                  " show cursor line indicator
