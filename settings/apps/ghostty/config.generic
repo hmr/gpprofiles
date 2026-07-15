@@ -1,3 +1,5 @@
+# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
+
 # Ghostty configuration file (common)
 # Part of GPP
 
@@ -33,6 +35,7 @@ background-opacity = 0.9
 background-blur = 10
 mouse-scroll-multiplier = 1
 mouse-hide-while-typing = true
+window-save-state = always
 
 # Notification
 bell-features = no-system,no-audio,attention,title,border
@@ -45,16 +48,18 @@ split-divider-color = Coral
 unfocused-split-opacity = .5
 
 # macOS specified settings
+window-colorspace = display-p3
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
 ## macOS icon style
-macos-icon = holographic
-# macos-icon = custom-style
+# macos-icon = holographic
+macos-icon = custom-style
 # macos-icon-frame = chrome
-# macos-icon-ghost-color = #20b2aa
-# macos-icon-screen-color = #ff3d95
+macos-icon-frame = aluminum
+macos-icon-ghost-color = #ffffff
+macos-icon-screen-color = #ff0000
 
 # Autoupdate
 auto-update = check
@@ -94,6 +99,8 @@ keybind = alt+arrow_right=csi:1;3C
 ## cmd+del => ctrl-k (kill to end of line)
 keybind = cmd+delete=text:\x0b
 
+## input text "$GPP_HOME" for convinience for GPP development
+keybind = cmd+shift+opt+ctrl+g=text:$GPP_HOME
 ## Cmd + Printable Character key
 # keybind = cmd+F9=csi:20;9~
 # keybind = cmd+b=csi:27;9;97~
