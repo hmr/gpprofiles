@@ -1372,7 +1372,8 @@ endfunction
 " Override the default jump keys
 nnoremap <silent> <C-o> :call <SID>buffer_jump('backward')<CR>
 " nnoremap <silent> <C-i> :call <SID>buffer_jump('forward')<CR>
-nnoremap <silent> <C-i> :call <SID>buffer_jump('forward')<CR>
+nnoremap <silent> <F37> :call <SID>buffer_jump('forward')<CR>
+
 " ----- [TESTING] Editorconfig settings
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
