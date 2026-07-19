@@ -913,13 +913,13 @@ local genSeparator(title) =
                  "open -a 'System Preferences'"),
     ]),
 
-    // Option+Cmd+C → ChatGPT Desktop or ChatGPT Chrome App (duplicate shortcut - only one will work)
-    rule('[GPP] Start <ChatGPT Desktop> or <ChatGPT Chrome App> by ⌥⌘C', [
-      appLauncher('c', 'ChatGPT'),
+    // Option+Cmd+C → ChatGPT Classic or ChatGPT Chrome App (duplicate shortcut - only one will work)
+    rule('[GPP] Start <ChatGPT Classic> or <ChatGPT Chrome App> by ⌥⌘C [v2]', [
+      appLauncher('c', 'ChatGPT Classic'),
     ]),
 
-    // Option+Cmd+X → Codex Desktop
-    rule('[GPP] Start <Codex Desktop> by ⌥⌘X', [
+    // Option+Cmd+X → ChatGPT(Codex) Desktop
+    rule('[GPP] Start <ChatGPT(Codex)> by ⌥⌘X [v2]', [
       appLauncher('x', 'Codex'),
     ]),
 
