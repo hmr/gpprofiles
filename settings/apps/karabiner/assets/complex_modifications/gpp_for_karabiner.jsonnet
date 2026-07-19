@@ -9,6 +9,7 @@
 // =============================================================================
 
 local GPP_HOME = std.extVar('GPP_HOME');
+local XDG_CONFIG_HOME = std.extVar('XDG_CONFIG_HOME');
 
 // -----------------------------------------------------------------------------
 // Bundle Identifier Groups
@@ -1016,7 +1017,7 @@ local genSeparator(title) =
           modifiers: { mandatory: ['command', 'option'] },
         },
         to: [{
-          shell_command: 'osascript ' + GPP_HOME + '/settings/apps/ghostty/tools/open_as_ghostty_tab.applescript',
+          shell_command: 'osascript ' + XDG_CONFIG_HOME + '/ghostty/tools/open_as_ghostty_tab.applescript',
         }],
         conditions: [{
           type: 'frontmost_application_unless',

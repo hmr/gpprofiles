@@ -6,7 +6,7 @@
 #   make check  - Validate the generated JSON
 
 JSONNET := jsonnet
-JSONNET_FLAGS := --ext-str GPP_HOME=$(GPP_HOME)
+JSONNET_FLAGS := --ext-str GPP_HOME=$(GPP_HOME) --ext-str XDG_CONFIG_HOME=$(XDG_CONFIG_HOME)
 
 SRC := gpp_for_karabiner.jsonnet
 TARGET := gpp_for_karabiner.json
