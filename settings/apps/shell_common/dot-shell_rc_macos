@@ -442,3 +442,7 @@ if [[ -n ${GPP_HOME} && -x ${GPP_HOME}/libexec/tools/safe-rm.sh ]]; then
 fi
 
 echo
+
+if ! [[ $(readlink -f /etc/locate.rc) =~ $GPP_HOME ]]; then
+    echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/locate.rc is not a symbolic link to GPP's one.${NORMAL}"
+fi
