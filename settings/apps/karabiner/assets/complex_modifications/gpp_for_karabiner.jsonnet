@@ -1008,13 +1008,13 @@ local genSeparator(title) =
       appLauncher('t', 'Ghostty'),
     ]),
 
-    // Option+Cmd+T → Ghostty
-    rule('[GPP] Start <Ghostty> by ⌥⌘T (AppleScript)', [
+    // Ctrl+Option+Cmd+T → Ghostty manipulation script
+    rule('[GPP] Ghostty manipulation script by ⌃⌥⌘T [v2]', [
       {
         type: 'basic',
         from: {
           key_code: 't',
-          modifiers: { mandatory: ['command', 'option'] },
+          modifiers: { mandatory: ['command', 'option', 'control'] },
         },
         to: [{
           shell_command: 'osascript ' + XDG_CONFIG_HOME + '/ghostty/tools/open_as_ghostty_tab.applescript',
