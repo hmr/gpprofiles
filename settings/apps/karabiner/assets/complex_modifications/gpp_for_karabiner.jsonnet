@@ -282,7 +282,7 @@ local genSeparator(title) =
     genSeparator('IME Switching Rules'),
 
     // Single tap Left Command → 英数, hold → Command (not on RDP/VM)
-    rule('[GPP] Single Left Command(⌘) to 英数 key NOT on RDC/VM', [
+    rule('[GPP] Single Left Command(⌘) to 英数 key NOT on RDC/VM [v1]', [
       modifierToIme('left_command',
                     'japanese_eisuu',
                     200,
@@ -291,7 +291,7 @@ local genSeparator(title) =
     ]),
 
     // Single tap Right Command → かな, hold → Command (not on RDP/VM)
-    rule('[GPP] Single Right Command(⌘) to かな key NOT on RDC/VM', [
+    rule('[GPP] Single Right Command(⌘) to かな key NOT on RDC/VM [v1]', [
       modifierToIme('right_command',
                     'japanese_kana',
                     200,
@@ -300,12 +300,12 @@ local genSeparator(title) =
     ]),
 
     // Single tap Left Option → 英数, hold → Option (no restrictions)
-    rule('[GPP] Single Left Option(⌥) to 英数 mode (w/o restrictions)', [
+    rule('[GPP] Single Left Option(⌥) to 英数 mode (w/o restrictions) [v1]', [
       modifierToIme('left_option', 'japanese_eisuu', 100),
     ]),
 
     // Single tap Right Option → かな, hold → Option (no restrictions)
-    rule('[GPP] Single Right Option(⌥) to かな mode (w/o restrictions)', [
+    rule('[GPP] Single Right Option(⌥) to かな mode (w/o restrictions) [v1]', [
       modifierToIme('right_option', 'japanese_kana', 100),
     ]),
 
@@ -315,7 +315,7 @@ local genSeparator(title) =
     genSeparator('Option Key Remappings'),
 
     // Option+Enter → Cmd+Enter (not on RDP/VM)
-    rule('[GPP] ⌥⏎ to ⌘⏎ NOT on RDC/VM', [
+    rule('[GPP] ⌥⏎ to ⌘⏎ NOT on RDC/VM [v1]', [
       keyToKey('return_or_enter',
                { mandatory: ['option'] },
                'return_or_enter',
@@ -325,7 +325,7 @@ local genSeparator(title) =
     ]),
 
     // Option+C → Cmd+C (not on RDP/VM)
-    rule('[GPP] ⌥C to ⌘C', [
+    rule('[GPP] ⌥C to ⌘C [v1]', [
       keyToKey('c',
                { mandatory: ['option'] },
                'c',
@@ -335,7 +335,7 @@ local genSeparator(title) =
     ]),
 
     // Option+X → Cmd+X (not on RDP/VM)
-    rule('[GPP] ⌥X to ⌘X NOT on RDC/VM', [
+    rule('[GPP] ⌥X to ⌘X NOT on RDC/VM [v1]', [
       keyToKey('x',
                { mandatory: ['option'] },
                'x',
@@ -345,7 +345,7 @@ local genSeparator(title) =
     ]),
 
     // Option+V → Cmd+V (not on RDP/VM)
-    rule('[GPP] ⌥V to ⌘V NOT on RDC/VM', [
+    rule('[GPP] ⌥V to ⌘V NOT on RDC/VM [v1]', [
       keyToKey('v',
                { mandatory: ['option'] },
                'v',
@@ -355,7 +355,7 @@ local genSeparator(title) =
     ]),
 
     // Option+D → Cmd+Delete (forward delete word)
-    rule('[GPP] ⌥d to ⌘⌦ (forward delete word) NOT on RDC/VM', [
+    rule('[GPP] ⌥d to ⌘⌦ (forward delete word) NOT on RDC/VM [v1]', [
       keyToKey('d',
                { mandatory: ['option'] },
                'delete_forward',
@@ -370,7 +370,7 @@ local genSeparator(title) =
     genSeparator('CapsLock Remapping'),
 
     // CapsLock → Control (hold) / Escape (tap) - unless Apple Internal Keyboard
-    rule('[GPP] Caps -> Ctrl (hold) / Escape (tap) (unless Apple Internal Keyboard)', [
+    rule('[GPP] Caps -> Ctrl (hold) / Escape (tap) (unless Apple Internal Keyboard) [v1]', [
       {
         description: 'CapsLock -> Esc(click) | Control(hold)',
         type: 'basic',
@@ -397,7 +397,7 @@ local genSeparator(title) =
     ]),
 
     // CapsLock → Hyper (hold) / Escape (tap) - unless Apple Internal Keyboard
-    rule('[GPP] Caps -> Hyper (hold) / Escape (tap) (unless Apple Internal Keyboard)', [
+    rule('[GPP] Caps -> Hyper (hold) / Escape (tap) (unless Apple Internal Keyboard) [v1]', [
       {
         description: 'CapsLock -> Esc(click) | Hyper(hold)',
         type: 'basic',
@@ -430,7 +430,7 @@ local genSeparator(title) =
     genSeparator('Mouse Button Mapping'),
 
     // Mouse button 5 → Dictionary lookup (Ctrl+Cmd+D)
-    rule('[GPP] (OBSOLETE?) Mouse button 5 to Lookup dictionary (⌃⌘D)', [
+    rule('[GPP] (OBSOLETE?) Mouse button 5 to Lookup dictionary (⌃⌘D) [v1]', [
       {
         type: 'basic',
         from: {
@@ -454,7 +454,7 @@ local genSeparator(title) =
     genSeparator('Keypad Key Customizations'),
 
     // Keypad period → 00 (double zero)
-    rule('[GPP] Convert Period on Keypad → 00', [
+    rule('[GPP] Convert Period on Keypad → 00 [v1]', [
       {
         type: 'basic',
         from: { key_code: 'keypad_period' },
@@ -471,7 +471,7 @@ local genSeparator(title) =
     genSeparator('Hyper Key Shortcuts'),
 
     // Hyper+G → input string "$GPP_HOME"
-    rule('[GPP] Hyper+G to input $GPP_HOME path', [
+    rule('[GPP] Hyper+G to input $GPP_HOME path [v1]', [
       {
         type: 'basic',
         from: {
@@ -485,7 +485,7 @@ local genSeparator(title) =
     ]),
 
     // Hyper+w/a/s/d → Arrow keys
-    rule('[GPP] Hyper+WASD to Arrow Keys', [
+    rule('[GPP] Hyper+WASD to Arrow Keys [v1]', [
       keyToKey('w',
                { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
                'up_arrow'),
@@ -501,7 +501,7 @@ local genSeparator(title) =
     ]),
 
     // Hyper+hjkl → Arrow keys
-    rule('[GPP] Hyper+HJKL to Arrow Keys', [
+    rule('[GPP] Hyper+HJKL to Arrow Keys [v1]', [
       keyToKey('h',
                { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
                'left_arrow'),
@@ -517,7 +517,7 @@ local genSeparator(title) =
     ]),
 
     // Hyper+IJKL Arrow keys
-    rule('[GPP] Hyper+IJKL to Arrow Keys', [
+    rule('[GPP] Hyper+IJKL to Arrow Keys [v1]', [
       keyToKey('i',
                { mandatory: ['right_command', 'right_control', 'right_option', 'right_shift'] },
                'up_arrow'),
@@ -539,7 +539,7 @@ local genSeparator(title) =
 
     // Enter → Shift+Enter, Cmd+Enter → Enter on ChatGPT, Claude and Gemini
     // (Swap newline and send behaviors)
-    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on All AI Chat Apps', [
+    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on All AI Chat Apps [v1]', [
       {
         type: 'basic',
         from: { key_code: 'return_or_enter' },
@@ -564,7 +564,7 @@ local genSeparator(title) =
     ]),
 
     // Cmd+N → Shift+Cmd+O on ChatGPT, Claude Desktop, Gemini Chrome App
-    rule('[GPP] Convert ⌘N to ⇧⌘O on Chrome AI Apps', [
+    rule('[GPP] Convert ⌘N to ⇧⌘O on Chrome AI Apps [v1]', [
       keyToKey('n',
                { mandatory: ['command'] },
                'o',
@@ -579,7 +579,7 @@ local genSeparator(title) =
     genSeparator('iTerm2 Customizations'),
 
     // Cmd+D → Option+D on iTerm2 (word deletion instead of split pane)
-    rule('[GPP][iTerm2] ⌘D to ⌥D (word deletion)', [
+    rule('[GPP][iTerm2] ⌘D to ⌥D (word deletion) [v1]', [
       keyToKey('d',
                { mandatory: ['command'] },
                'd',
@@ -589,7 +589,7 @@ local genSeparator(title) =
     ]),
 
     // Disable Cmd+R on iTerm2 (prevent accidental terminal reset)
-    rule('[GPP][iTerm2] (OBSOLETE) Ignore ⌘R(reset terminal)', [
+    rule('[GPP][iTerm2] (OBSOLETE) Ignore ⌘R(reset terminal) [v1]', [
       keyToNothing('r',
                    { mandatory: ['command'] },
                    'frontmost_application_if',
@@ -597,7 +597,7 @@ local genSeparator(title) =
     ]),
 
     // Disable Cmd+K on iTerm2 (prevent accidental buffer clear)
-    rule('[GPP][iTerm2] (OBSOLETE) Ignore ⌘K (clear buffer)', [
+    rule('[GPP][iTerm2] (OBSOLETE) Ignore ⌘K (clear buffer) [v1]', [
       keyToNothing('k',
                    { mandatory: ['command'] },
                    'frontmost_application_if',
@@ -610,7 +610,7 @@ local genSeparator(title) =
     genSeparator('Windows RDP/VM Specific'),
 
     // Cmd+C → Ctrl+C on Windows RDP/VM (to avoid Cortana/Teams shortcut)
-    rule('[GPP] ⌘C to ⌃C on RDP/VM console (avoid Cortana/Teams on Windows 10/11)', [
+    rule('[GPP] ⌘C to ⌃C on RDP/VM console (avoid Cortana/Teams on Windows 10/11) [v1]', [
       keyToKey('c',
                { mandatory: ['command'] },
                'c',
@@ -625,7 +625,7 @@ local genSeparator(title) =
     genSeparator('Finder Specific'),
 
     // F2 → Enter on Finder (PC-style rename)
-    rule('[GPP][PC-Style][on Finder] Use F2 as Rename', [
+    rule('[GPP][PC-Style][on Finder] Use F2 as Rename [v1]', [
       keyToKey('f2',
                null,
                'return_or_enter',
@@ -635,7 +635,7 @@ local genSeparator(title) =
     ]),
 
     // Delete key → Cmd+Delete on Finder (move to trash)
-    rule('[GPP][PC-Style][on Finder] Del key to move into Trash on Finder', [
+    rule('[GPP][PC-Style][on Finder] Del key to move into Trash on Finder [v1]', [
       keyToKey('delete_forward',
                null,
                'delete_or_backspace',
@@ -650,7 +650,7 @@ local genSeparator(title) =
     genSeparator('PC-Style Shortcuts (For Browsers)'),
 
     // Ctrl+F/K/R/T → Cmd+F/K/R/T on Browsers
-    rule('[GPP][PC-Style][on Browser] ⌃F/K/R/T', [
+    rule('[GPP][PC-Style][on Browser] ⌃F/K/R/T [v1]', [
       keyToKey('f',
                { mandatory: ['control'] },
                'f',
@@ -678,7 +678,7 @@ local genSeparator(title) =
     ]),
 
     // Alt+Left/Right → Cmd+Left/Right on Browsers (Back/Forward)
-    rule('[GPP][PC-Style][on Browser] Back/Forward (⌥←/→)', [
+    rule('[GPP][PC-Style][on Browser] Back/Forward (⌥←/→) [v1]', [
       keyToKey('left_arrow',
                { mandatory: ['option'] },
                'left_arrow',
@@ -694,7 +694,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+Left/Right → Option+Arrow keys (word move) (not on RDP/VM/Term/Dev)
-    rule('[GPP][PC-Style] ⌃←/→ to ⌥←/→ (word move) NOT on RDC/VM/Term/Dev', [
+    rule('[GPP][PC-Style] ⌃←/→ to ⌥←/→ (word move) NOT on RDC/VM/Term/Dev [v1]', [
       keyToKey('left_arrow',
                { mandatory: ['control'] },
                'left_arrow',
@@ -710,7 +710,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+Up/Down → Cmd+Up/Down (Top/Bottom of document) (not on RDP/VM/Term/Dev)
-    rule('[GPP][PC-Style] ⌃↑/↓ to ⌘↑/↓ (top/bottom of document) NOT on RDC/VM/Term/Dev', [
+    rule('[GPP][PC-Style] ⌃↑/↓ to ⌘↑/↓ (top/bottom of document) NOT on RDC/VM/Term/Dev [v1]', [
       keyToKey('up_arrow',
                { mandatory: ['control'] },
                'up_arrow',
@@ -726,7 +726,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+T → Cmd+T (New Tab)
-    rule('[GPP][PC-Style] New Tab (⌃t) NOT on RDC/VM/Term/Dev)', [
+    rule('[GPP][PC-Style] New Tab (⌃t) NOT on RDC/VM/Term/Dev) [v1]', [
       keyToKey('t',
                { mandatory: ['control'], optional: ['shift'] },
                't',
@@ -736,7 +736,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+C/V/X → Cmd+C/V/X (not on RDP/VM/Terminal/Dev/etc.)
-    rule('[GPP][PC-Style] Enable PC-Style Copy/Paste/Cut(⌃X/C/V → ⌘X/C/V) NOT on RDC/VM/Term/Dev', [
+    rule('[GPP][PC-Style] Enable PC-Style Copy/Paste/Cut(⌃X/C/V → ⌘X/C/V) NOT on RDC/VM/Term/Dev [v1]', [
       keyToKey('c',
                { mandatory: ['control'] },
                'c',
@@ -758,7 +758,7 @@ local genSeparator(title) =
     ]),
 
     // Shift+Insert → Cmd+V (paste for JIS keyboard)
-    rule('[GPP][PC-Style] Shift+Insert to paste (for JIS keyboard)', [
+    rule('[GPP][PC-Style] Shift+Insert to paste (for JIS keyboard) [v1]', [
       keyToKey('insert',
                { mandatory: ['shift'] },
                'v',
@@ -766,7 +766,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+[Shift]+Z → Cmd+[Shift]+Z (Undo)
-    rule('[GPP][PC-Style] Undo (⌃z → ⌘z) NOT on RDC/VM/Term/Dev', [
+    rule('[GPP][PC-Style] Undo (⌃z → ⌘z) NOT on RDC/VM/Term/Dev [v1]', [
       keyToKey('z',
                { mandatory: ['control'], optional: ['shift'] },
                'z',
@@ -776,7 +776,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+Y → Shift+Cmd+Z (Redo)
-    rule('[GPP][PC-Style] Redo(^y → ⇧⌘z) NOT on RDC/VM/Term/Dev', [
+    rule('[GPP][PC-Style] Redo(^y → ⇧⌘z) NOT on RDC/VM/Term/Dev [v1]', [
       keyToKey('y',
                { mandatory: ['control'] },
                'z',
@@ -786,7 +786,7 @@ local genSeparator(title) =
     ]),
 
     // Home/End key mappings with complex conditions
-    rule('[GPP][PC-Style] Home/End with complex conditions', [
+    rule('[GPP][PC-Style] Home/End with complex conditions [v1]', [
       // Home → Cmd+Left (line start) - not on RDP/VM/Terminal/Browser
       keyToKey('home',
                { optional: ['shift'] },
@@ -832,7 +832,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+R / F5 → Cmd+R (Reload)
-    rule('[GPP][PC-Style] Reload(F5, ⌃R) NOT on RDC/VM/Term/Dev)', [
+    rule('[GPP][PC-Style] Reload(F5, ⌃R) NOT on RDC/VM/Term/Dev) [v1]', [
       keyToKey('r',
                { mandatory: ['control'], optional: ['shift'] },
                'r',
@@ -848,7 +848,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+F/G → Cmd+F/G (Find)
-    rule('[GPP][PC-Style] Find (⌃f/g → ⌘f/g) NOT on RDC/VM/Term/Dev)', [
+    rule('[GPP][PC-Style] Find (⌃f/g → ⌘f/g) NOT on RDC/VM/Term/Dev) [v1]', [
       // Find
       keyToKey('f',
                { mandatory: ['control'] },
@@ -866,7 +866,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+Shift+Esc → Open Activity Monitor (like Windows Task Manager)
-    rule('[GPP][PC-Style] ⌃⇧Esc Opens Activity Monitor NOT on RDC/VM', [
+    rule('[GPP][PC-Style] ⌃⇧Esc Opens Activity Monitor NOT on RDC/VM [v1]', [
       keyToShell('escape',
                  { mandatory: ['control', 'shift'] },
                  "open -a 'Activity Monitor.app'",
@@ -874,7 +874,7 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+Backspace → Option+Backspace (delete word)
-    rule('[GPP][PC-Style] ⌃Del/Bs (⌃⌫ → ⌥⌫) (delete word) NOT on RDC/VM/Term/Dev/Browser', [
+    rule('[GPP][PC-Style] ⌃Del/Bs (⌃⌫ → ⌥⌫) (delete word) NOT on RDC/VM/Term/Dev/Browser [v1]', [
       keyToKey('delete_or_backspace',
                { mandatory: ['control'] },
                'delete_or_backspace',
@@ -889,7 +889,7 @@ local genSeparator(title) =
     genSeparator('Application Launchers'),
 
     // Cmd+E → Open Finder (not on RDP/VM)
-    rule('[GPP] Opens <Finder> by ⌘E (if not on RDC/VM)', [
+    rule('[GPP] Opens <Finder> by ⌘E (if not on RDC/VM) [v1]', [
       {
         type: 'basic',
         from: {
@@ -907,7 +907,7 @@ local genSeparator(title) =
     ]),
 
     // Option+Cmd+, → System Preferences
-    rule('[GPP] Start <System Preferences> by ⌥⌘,', [
+    rule('[GPP] Start <System Preferences> by ⌥⌘, [v1]', [
       keyToShell('comma',
                  { mandatory: ['command', 'option'] },
                  "open -a 'System Preferences'"),
@@ -924,87 +924,87 @@ local genSeparator(title) =
     ]),
 
     // Ctrl+Option+Cmd+C → Claude Desktop
-    rule('[GPP] Start <Claude Desktop> by ⌘⌃⌥C', [
+    rule('[GPP] Start <Claude Desktop> by ⌘⌃⌥C [v1]', [
       keyToShell('c',
                  { mandatory: ['command', 'control', 'option'] },
                  "open -a 'Claude'"),
     ]),
 
     // Ctrl+Option+C → Gemini Desktop
-    rule('[GPP] Start <Google Gemini Desktop> by ⌃⌥C', [
+    rule('[GPP] Start <Google Gemini Desktop> by ⌃⌥C [v1]', [
       keyToShell('c',
                  { mandatory: ['control', 'option'] },
                  "open -a 'Gemini'"),
     ]),
 
     // Ctrl+Option+C → Gemini Chrome App
-    rule('[GPP] Start <Google Gemini Chrome App> by ⌃⌥C', [
+    rule('[GPP] Start <Google Gemini Chrome App> by ⌃⌥C [v1]', [
       keyToShell('c',
                  { mandatory: ['control', 'option'] },
                  "open -a 'Google Gemini'"),
     ]),
 
     // Ctrl+Cmd+C → Calculator
-    rule('[GPP] Start <Calculator> by ⌃⌘C', [
+    rule('[GPP] Start <Calculator> by ⌃⌘C [v1]', [
       keyToShell('c',
                  { mandatory: ['command', 'control'] },
                  "open -a 'Calculator'"),
     ]),
 
     // Option+Cmd+D → Discord Canary
-    rule('[GPP] Start <Discord> by ⌥⌘D', [
+    rule('[GPP] Start <Discord> by ⌥⌘D [v1]', [
       appLauncher('d', 'Discord Canary'),
     ]),
 
     // Option+Cmd+D → DeepL (duplicate shortcut - only one will work)
-    rule('[GPP] Start <DeepL> by ⌥⌘D', [
+    rule('[GPP] Start <DeepL> by ⌥⌘D [v1]', [
       appLauncher('d', 'DeepL'),
     ]),
 
     // Option+Cmd+F → Firefox
-    rule('[GPP] Start <Firefox> by ⌥⌘F', [
+    rule('[GPP] Start <Firefox> by ⌥⌘F [v1]', [
       appLauncher('f', 'Firefox'),
     ]),
 
     // Option+Cmd+G → Google Chrome
-    rule('[GPP] Start <Google Chrome> by ⌥⌘G', [
+    rule('[GPP] Start <Google Chrome> by ⌥⌘G [v1]', [
       appLauncher('g', 'Google Chrome'),
     ]),
 
     // Option+Cmd+G → Chromium (duplicate shortcut)
-    rule('[GPP] Start <Chromium> by ⌥⌘G', [
+    rule('[GPP] Start <Chromium> by ⌥⌘G [v1]', [
       appLauncher('g', 'Chromium'),
     ]),
 
     // Option+Cmd+L → LINE
-    rule('[GPP] Start <LINE> by ⌥⌘L', [
+    rule('[GPP] Start <LINE> by ⌥⌘L [v1]', [
       appLauncher('l', 'LINE'),
     ]),
 
     // Option+Cmd+R → Remember The Milk
-    rule('[GPP] Start <RtM> by ⌥⌘R', [
+    rule('[GPP] Start <RtM> by ⌥⌘R [v1]', [
       appLauncher('r', 'Remember The Milk'),
     ]),
 
     // Option+Cmd+S → Spotify
-    rule('[GPP] Start <Spotify> by ⌥⌘S', [
+    rule('[GPP] Start <Spotify> by ⌥⌘S [v1]', [
       appLauncher('s', 'Spotify'),
     ]),
 
     // Option+Shift+Cmd+S → Slack
-    rule('[GPP] Start <Slack> by ⌥⇧⌘S', [
+    rule('[GPP] Start <Slack> by ⌥⇧⌘S [v1]', [
       keyToShell('s',
                  { mandatory: ['command', 'option', 'shift'] },
                  "open -a 'Slack'"),
     ]),
 
     // Option+Cmd+T → iTerm
-    rule('[GPP] Start <iTerm2> by ⌥⌘T', [
+    rule('[GPP] Start <iTerm2> by ⌥⌘T [v1]', [
       appLauncher('t', 'iTerm'),
     ]),
 
     // Option+Cmd+T → Ghostty
-    rule('[GPP] Start <Ghostty> by ⌥⌘T', [
+    rule('[GPP] Start <Ghostty> by ⌥⌘T [v1]', [
       appLauncher('t', 'Ghostty'),
     ]),
 
@@ -1027,12 +1027,12 @@ local genSeparator(title) =
     ]),
 
     // Option+Cmd+V → Visual Studio Code
-    rule('[GPP] Start <VSCode> by ⌥⌘V', [
+    rule('[GPP] Start <VSCode> by ⌥⌘V [v1]', [
       appLauncher('v', 'Visual Studio Code'),
     ]),
 
     // Option+Cmd+M → Spark Desktop
-    rule('[GPP] Start <Spark Desktop> by ⌥⌘M', [
+    rule('[GPP] Start <Spark Desktop> by ⌥⌘M [v1]', [
       appLauncher('m', 'Spark Desktop'),
     ]),
 
