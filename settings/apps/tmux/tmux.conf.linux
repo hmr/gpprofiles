@@ -16,20 +16,20 @@ set-option -g  status-right "#[default]"  # reset
 
 # Reference: https://blog.black-cat.jp/2018/12/tmux-status-line/
 # Status line: left side
-set-option -ag status-left  "#(#{@GPP_TM_BIN_DIR}/print_sysname logo)"
+set-option -ag status-left  "#(#{@GPP_TM_OST_BIN_DIR}/print_sysname logo)"
 set-option -ag status-left  "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[fg=##EEEEEE#,bg=##333333] #(lsb_release -sr) ,}"
 set-option -ag status-left  "#[bg=colour054,fg=colour255] #{host_short} "
-set-option -ag status-left  "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[bg=colour024#,fg=colour255] #(#{@GPP_TM_BIN_DIR}/print_ipaddr) ,}"
-set-option -ag status-left "#(#{@GPP_TM_BIN_DIR}/print_reboot)"
-set-option -ag status-left "#(#{@GPP_TM_BIN_DIR}/print_sysupdate)"
+set-option -ag status-left  "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[bg=colour024#,fg=colour255] #(#{@GPP_TM_OST_BIN_DIR}/print_ipaddr) ,}"
+set-option -ag status-left "#(#{@GPP_TM_OST_BIN_DIR}/print_reboot)"
+set-option -ag status-left "#(#{@GPP_TM_OST_BIN_DIR}/print_sysupdate)"
 set-option -ag status-left  "#{?pane_synchronized,#[bg=red#,fg=colour255] SYNCHRO MODE ,}"
 set-option -ag status-left  "#[bg=colour148,fg=colour234] #{session_name}:w#{window_index} "
 
 # Status line: right side
-#set-option -ag status-right "#[bg=${@GPP_TM_SL_BASE_BG},fg=white       ] #[fg=black,bg=white](#(#{@GPP_TM_BIN_DIR}/print_spotify) "
-set-option -ag status-right "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[bg=white#,fg=black] #(#{@GPP_TM_BIN_DIR}/print_uptime) ,}"
-set-option -ag status-right "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[bg=brightyellow#,fg=black] [#(#{@GPP_TM_BIN_DIR}/print_loadavg)] ,}"
-set-option -ga status-right "#[bg=orange,fg=black] #(#{@GPP_TM_BIN_DIR}/print_temp) "
-set-option -ag status-right "#[bg=green,fg=black] MP:#(#{@GPP_TM_BIN_DIR}/print_mpressure)%% "
-set-option -ag status-right "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[fg=##EEEEEE#,bg=#{@GPP_TM_SL_BASE_BG}] [#(#{@GPP_TM_BIN_DIR}/print_ydrate)],}"
+#set-option -ag status-right "#[bg=${@GPP_TM_SL_BASE_BG},fg=white       ] #[fg=black,bg=white](#(#{@GPP_TM_OST_BIN_DIR}/print_spotify) "
+set-option -ag status-right "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[bg=white#,fg=black] #(#{@GPP_TM_OST_BIN_DIR}/print_uptime) ,}"
+set-option -ag status-right "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[bg=brightyellow#,fg=black] [#(#{@GPP_TM_OST_BIN_DIR}/print_loadavg)] ,}"
+set-option -ga status-right "#[bg=orange,fg=black] #(#{@GPP_TM_OST_BIN_DIR}/print_temp) "
+set-option -ag status-right "#[bg=green,fg=black] MP:#(#{@GPP_TM_OST_BIN_DIR}/print_mpressure)%% "
+set-option -ag status-right "#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},#[fg=##EEEEEE#,bg=#{@GPP_TM_SL_BASE_BG}] [#(#{@GPP_TM_OST_BIN_DIR}/print_ydrate)],}"
 set-option -ag status-right "#[bg=#{@GPP_TM_SL_BASE_BG}#,fg=##EEEEEE]#{?#{>=:#{window_width},#{@GPP_COLS_LV1}},[W%V/D%j]%Y-%m-%d(%a) %H:%M:%S %z ,%Y-%m-%d %H:%M:%S}"
