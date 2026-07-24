@@ -1,4 +1,4 @@
-# vim: set noet syn=zsh ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for zsh script
+# vim: set et syn=zsh ft=sh ff=unix fenc=utf-8 ts=2 sw=2 sts=2 : # GPP default modeline for zsh script
 # shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${ZDOTDIR}
 
 # Part of GPP
@@ -12,15 +12,27 @@
 
 # ORIGIN: 2020-06-24 by hmr
 
-# Sleep to avoid invoking multiple ssh-agent
-if [[ ${TMP_AGENT_OK} -lt 1 && -n ${TMUX_PANE} ]]; then # TODO: Add case for GNU Screen
-	TMP_SLEEP1=$((RANDOM % 3 + 1))
-	TMP_SLEEP2=$((RANDOM % 9))
-	echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
-	unset TMP_SLEEP1 TMP_SLEEP2
-fi
-
 echo "Processing ${UNDERLINE}${GREEN}dot-zprofile${NORMAL}"
+
+TMP_SESSION_CREATED=$(tmux display-message -p '#{session_created}')
+if [[ -n ${TMP_SESSION_CREATED} ]]; then
+  TMP_SESSION_DUR=$(( $(date +%s) - TMP_SESSION_CREATED ))
+  if date --version >& /dev/null; then
+	TMP_SESSION_DUR_FMT=$(date -d @${TMP_SESSION_CREATED} +'%Y-%m-%d %H:%M:%S')
+  else
+	TMP_SESSION_DUR_FMT=$(date -r ${TMP_SESSION_CREATED} +'%Y-%m-%d %H:%M:%S')
+  fi
+  echo " The tmux session was created at ${TMP_SESSION_DUR_FMT} and has been running for ${TMP_SESSION_DUR} seconds."
+  unset TMP_SESSION_DUR_FMT
+
+  if [[ ${TMP_SESSION_DUR} -lt 180 && -n ${TMUX_PANE} ]]; then
+    TMP_SLEEP1=$((RANDOM % 5 + 1))
+    TMP_SLEEP2=$((RANDOM % 9))
+    echo -n "  Random sleep for ${TMP_SLEEP1}.${TMP_SLEEP2} secs..."; sleep ${TMP_SLEEP1}.${TMP_SLEEP2}; echo " OK."
+    unset TMP_SLEEP1 TMP_SLEEP2
+  fi
+fi
+unset TMP_SESSION_DUR TMP_SESSION_CREATED
 
 TMP_SSHDIR="${HOME}/.ssh"
 if [[ -d "${TMP_SSHDIR}" ]]; then
