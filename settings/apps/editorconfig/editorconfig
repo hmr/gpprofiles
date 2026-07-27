@@ -2,7 +2,7 @@
 # Part of GPP
 #
 # ORIGIN: 2024-12-01
-# Last Update: [2026-07-15T16:58:33+0900]
+# Last Update: [2026-07-27T23:18:32+0900]
 
 ### Properties (https://spec.editorconfig.org/#file-format)
 # indent_style = {tab | space}
@@ -22,15 +22,15 @@ charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-indent_style = space
-indent_size = 4
-tab_width = 4
+# indent_style = space
+# indent_size = 4
+# tab_width = 4
 
 # dotfiles
 # vim: set fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for generic dotfiles
 [.*]
-indent_size = 2
 indent_style = space
+indent_size = 2
 
 # Common dotfiles
 # vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for major dotfiles
@@ -58,10 +58,10 @@ tab_width = 2
 # Markdown
 # vim: set ft=markdown fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for Markdown
 [*.{md,markdown}]
+trim_trailing_whitespace = false
 indent_style = space
 indent_size = 2
 tab_width = 2
-trim_trailing_whitespace = false
 
 # YAML
 # vim: set ft=yaml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for YAML
@@ -125,4 +125,4 @@ tab_width = 2
 indent_style = tab
 tab_width = 8
 
-# vim: set ft=config fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for major dotfiles
+# vim: set ft=editorconfig fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
