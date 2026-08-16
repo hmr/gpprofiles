@@ -8,13 +8,13 @@ Environment="PATH=%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
 EnvironmentFile=%h/.config/gpprofiles/gpprofiles
 ExecStart=/usr/bin/bash -c 'echo "GPP_HOME=$GPP_HOME" && $GPP_HOME/libexec/tools/jedid'
 
-StandardOutput=journal
-StandardError=journal
+# StandardOutput=journal
+# StandardError=journal
 SyslogIdentifier=gpp-jedid
 # To show log: journalctl -f --user --identifier=gpp-jedid
 
-# StandardOutput=null
-# StandardError=null
+StandardOutput=null
+StandardError=null
 
 # For debug
 # StandardOutput=append:/tmp/gpp-jedid.stdout.log
