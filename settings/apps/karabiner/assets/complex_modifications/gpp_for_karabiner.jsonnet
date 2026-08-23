@@ -1,6 +1,7 @@
 // =============================================================================
 // Part of GPP
 // Karabiner-Elements Complex Modifications Configuration
+// Karabiner Configuration Reference Manual: https://karabiner-elements.pqrs.org/docs/json/
 // =============================================================================
 //
 // This Jsonnet file generates Karabiner-Elements complex modifications.
@@ -425,6 +426,43 @@ local genSeparator(title) =
     ]),
 
     // =========================================================================
+    // Option Key Mapping
+    // =========================================================================
+    genSeparator('For my cutomized Apple Magic Keyboard'),
+
+    // Right Command + Left Command → Option + Left Command
+    rule('[GPP] Right Command + Left Command → Left Option + Left Command [v3]', [
+      {
+        type: 'basic',
+        from: {
+          key_code: 'left_command',
+          modifiers: {
+            mandatory: ['right_command'],
+            optional: ['any']
+          },
+        },
+        to: [{
+          key_code: 'left_command',
+          modifiers: ['left_option'],
+        }],
+      },
+      {
+        type: 'basic',
+        from: {
+          key_code: 'right_command',
+          modifiers: {
+            mandatory: ['left_command'],
+            optional: ['any']
+          },
+        },
+        to: [{
+          key_code: 'left_command',
+          modifiers: ['left_option'],
+        }],
+      },
+    ]),
+
+    // =========================================================================
     // Mouse Button Mapping
     // =========================================================================
     genSeparator('Mouse Button Mapping'),
@@ -692,6 +730,17 @@ local genSeparator(title) =
                'frontmost_application_if',
                webBrowsers),
     ]),
+
+    // Disable Command+B (Bookmark) on Browsers
+    rule('[GPP][PC-Style][on Browser] Disable ⌘B (Bookmark) [v1]', [
+      keyToNothing('b',
+                   { mandatory: ['command'] },
+                   'frontmost_application_if',
+                   webBrowsers),
+    ]),
+
+    // =========================================================================
+    genSeparator('PC-Style Shortcuts (For All Apps)'),
 
     // Ctrl+Left/Right → Option+Arrow keys (word move) (not on RDP/VM/Term/Dev)
     rule('[GPP][PC-Style] ⌃←/→ to ⌥←/→ (word move) NOT on RDC/VM/Term/Dev [v1]', [
