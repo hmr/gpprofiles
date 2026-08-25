@@ -200,6 +200,7 @@ if which git > /dev/null; then
   alias gml2="git mylog2 --color | grep -v '^$' | less -Rn"
   alias gml2a="git mylog2a --color | grep -v '^$' | less -Rn"
   alias gdx="git dsxs"
+	alias gct="git count-commits"
 fi
 
 # tig
