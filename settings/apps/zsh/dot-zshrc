@@ -105,6 +105,8 @@ export ENHANCD_FILTER="fzf-tmux --preview 'eza -al --tree --level 1 --group-dire
 # export ENHANCD_HOOK_AFTER_CD="pwd; ls"
 export ENHANCD_HYPHEN_NUM=20
 export ENHANCD_USE_ABBREV=true
+alias .="cd ."
+alias ..="cd .."
 
 # =================== z-a-c settings ===================
 # ZAC's hook function (ZAC_IMMEDIATE_CALLBACK_FNC / ZAC_DEFERRED_CALLBACK_FNC)
@@ -265,7 +267,7 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2, at:0.44.1
   # zplug "junegunn/fzf", as:plugin, use:"shell/*.zsh"
   # zplug "/Users/hmr/src/fzf-hmr", from:local, as:plugin, use:"shell/*.zsh"
-  zplug "hmr/fzf-hmr", at:"tmux_opts", as:plugin, use:"shell/*.zsh"
+  zplug "hmr/fzf-hmr", at:"features/hmr/env_for_fzf_tmux", as:plugin, use:"shell/*.zsh"
 
   ## fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
