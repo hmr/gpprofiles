@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for shell scripts
 # shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 #
 # Jedid
@@ -23,306 +23,306 @@ source "${SCRIPT_DIR}/libaccu_sleep.bash" || exit 10
 
 # Debug echo
 function decho () {
-	local PREFIX
-	if (( ! SYSLOG )); then
-		if which gdate >& /dev/null; then
-			PREFIX="[$(gdate +'%Y-%m-%d %H:%M:%S.%N')]"
-		else
-			PREFIX="[$(date +'%Y-%m-%d %H:%M:%S')]"
-		fi
-	fi
-	if (( DEBUG > 0 )); then
-		echo "${PREFIX} $*" >&2
-	fi
+    local PREFIX
+    if (( ! SYSLOG )); then
+        if which gdate >& /dev/null; then
+            PREFIX="[$(gdate +'%Y-%m-%d %H:%M:%S.%N')]"
+        else
+            PREFIX="[$(date +'%Y-%m-%d %H:%M:%S')]"
+        fi
+    fi
+    if (( DEBUG > 0 )); then
+        echo "${PREFIX} $*" >&2
+    fi
 }
 
 # Check environment
 function check_environment() {
-	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
+    decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
-	if which curl >& /dev/null; then
-		CURL_BIN="curl"
-	else
-		decho "Exit because the curl isn't found."
-		exit 1
-	fi
+    if which curl >& /dev/null; then
+        CURL_BIN="curl"
+    else
+        decho "Exit because the curl isn't found."
+        exit 1
+    fi
 
-	if which jq >& /dev/null; then
-		JQ_BIN="jq"
-	else
-		decho "Exit because the jq isn't found."
-		exit 1
-	fi
+    if which jq >& /dev/null; then
+        JQ_BIN="jq"
+    else
+        decho "Exit because the jq isn't found."
+        exit 1
+    fi
 
-	if which gsed >& /dev/null; then
-		GSED_BIN="gsed"
-	elif which sed >& /dev/null; then
-		if sed --version >& /dev/null; then
-			GSED_BIN="sed"
-		else
-			decho "Exit because the installed sed isn't GNU's."
-			exit 1
-		fi
-	else
-		echo "Exit because the sed isn't found."
-		exit 1
-	fi
+    if which gsed >& /dev/null; then
+        GSED_BIN="gsed"
+    elif which sed >& /dev/null; then
+        if sed --version >& /dev/null; then
+            GSED_BIN="sed"
+        else
+            decho "Exit because the installed sed isn't GNU's."
+            exit 1
+        fi
+    else
+        echo "Exit because the sed isn't found."
+        exit 1
+    fi
 
-	if which gdate >& /dev/null; then
-		GDATE_BIN="gdate"
-	elif which date >& /dev/null; then
-		if date --version >& /dev/null; then
-			GDATE_BIN="date"
-		else
-			decho "Exit because the installed "date" isn't GNU's."
-			exit 1
-		fi
-	else
-		decho "Exit because the date command isn't found."
-		exit 1
-	fi
+    if which gdate >& /dev/null; then
+        GDATE_BIN="gdate"
+    elif which date >& /dev/null; then
+        if date --version >& /dev/null; then
+            GDATE_BIN="date"
+        else
+            decho "Exit because the installed "date" isn't GNU's."
+            exit 1
+        fi
+    else
+        decho "Exit because the date command isn't found."
+        exit 1
+    fi
 }
 
 # Get sunrise and sunset time by web services
 function getdaytime () {
-	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
+    decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
-	local JSON=$(${CURL_BIN} -s "https://api.sunrise-sunset.org/json?$(${CURL_BIN} -s 'https://ipinfo.io/json' | ${JQ_BIN} -r ".loc" | ${GSED_BIN} -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(${CURL_BIN} -s "https://ipinfo.io/json" | jq -r ".timezone")")
+    local JSON=$(${CURL_BIN} -s "https://api.sunrise-sunset.org/json?$(${CURL_BIN} -s 'https://ipinfo.io/json' | ${JQ_BIN} -r ".loc" | ${GSED_BIN} -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(${CURL_BIN} -s "https://ipinfo.io/json" | jq -r ".timezone")")
 
-	NEXTCHECK=$(${GDATE_BIN} -d 'tomorrow 00:00:00' +%s)
-	SUNRISE=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunrise')" +%s)
-	SUNSET=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunset')" +%s)
-	decho "[Daytime] NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
+    NEXTCHECK=$(${GDATE_BIN} -d 'tomorrow 00:00:00' +%s)
+    SUNRISE=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunrise')" +%s)
+    SUNSET=$(${GDATE_BIN} -d "$(echo "${JSON}" | ${JQ_BIN} -r '.results.sunset')" +%s)
+    decho "[Daytime] NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
 }
 
 function check_sidechange() {
-	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
+    decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
-	case "${OSTYPE}" in
-		# macOS
-		darwin* )
-			decho "darwin detected."
-			if defaults read -g AppleInterfaceStyle 2>&1 | grep -qi "dark" >& /dev/null; then
-				# Dark side
-				decho "System theme is dark mode."
-				if [[ ${MODE} != "dark" ]]; then
-					# Light -> Dark
-					decho "Changed to dark side!"
-					echo "1"
-					return
-				fi
-			else
-				# Light side
-				decho "System theme is light mode."
-				if [[ ${MODE} != "light" ]]; then
-					# Dark -> Light
-					decho "Changed to light side!"
-					echo "2"
-					return
-				fi
-			fi
-			;;
+    case "${OSTYPE}" in
+        # macOS
+        darwin* )
+            decho "darwin detected."
+            if defaults read -g AppleInterfaceStyle 2>&1 | grep -qi "dark" >& /dev/null; then
+                # Dark side
+                decho "System theme is dark mode."
+                if [[ ${MODE} != "dark" ]]; then
+                    # Light -> Dark
+                    decho "Changed to dark side!"
+                    echo "1"
+                    return
+                fi
+            else
+                # Light side
+                decho "System theme is light mode."
+                if [[ ${MODE} != "light" ]]; then
+                    # Dark -> Light
+                    decho "Changed to light side!"
+                    echo "2"
+                    return
+                fi
+            fi
+            ;;
 
-		# Other Unix-like system
-		* )
-			decho "other unix system detected."
-			decho "NOW=${NOW} NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
-			if [[ ${NOW} -ge ${SUNRISE} && ${NOW} -le ${SUNSET} ]]; then
-				# Light side
-				decho "System theme is light mode."
-				if [[ ${MODE} != "light" ]]; then
-					# Dark -> Light
-					decho "Changed to light side!"
-					echo "2"
-					return
-				fi
-			else
-				# Dark side
-				decho "System theme is dark mode."
-				if [[ ${MODE} != "dark" ]]; then
-					# Light -> Dark
-					decho "Changed to dark side!"
-					echo "1"
-					return
-				fi
-			fi
-			;;
-	esac
+        # Other Unix-like system
+        * )
+            decho "other unix system detected."
+            decho "NOW=${NOW} NEXTCHECK=${NEXTCHECK} SUNRISE=${SUNRISE} SUNSET=${SUNSET}"
+            if [[ ${NOW} -ge ${SUNRISE} && ${NOW} -le ${SUNSET} ]]; then
+                # Light side
+                decho "System theme is light mode."
+                if [[ ${MODE} != "light" ]]; then
+                    # Dark -> Light
+                    decho "Changed to light side!"
+                    echo "2"
+                    return
+                fi
+            else
+                # Dark side
+                decho "System theme is dark mode."
+                if [[ ${MODE} != "dark" ]]; then
+                    # Light -> Dark
+                    decho "Changed to dark side!"
+                    echo "1"
+                    return
+                fi
+            fi
+            ;;
+    esac
 
-	# side not changed
-	decho "The side hasn't changed."
-	echo "0"
-	return
+    # side not changed
+    decho "The side hasn't changed."
+    echo "0"
+    return
 }
 
 function main() {
-	decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
+    decho "Entering function ${FUNCNAME[0]} on pid#${BASHPID}..."
 
-	while true; do
-		decho "MODE is ${MODE:-NOT SET}."
+    while true; do
+        decho "MODE is ${MODE:-NOT SET}."
 
-		# Get daytime info if the system isn't macOS
-		if [[ ! ${OSTYPE} =~ darwin ]]; then
-			NOW=$(${GDATE_BIN} +%s)
-			decho "Remaining time to update daytime info: $((NEXTCHECK - NOW)) secs"
-			[[ -z ${NEXTCHECK} || ${NOW} -gt ${NEXTCHECK} ]] && getdaytime
-		fi
+        # Get daytime info if the system isn't macOS
+        if [[ ! ${OSTYPE} =~ darwin ]]; then
+            NOW=$(${GDATE_BIN} +%s)
+            decho "Remaining time to update daytime info: $((NEXTCHECK - NOW)) secs"
+            [[ -z ${NEXTCHECK} || ${NOW} -gt ${NEXTCHECK} ]] && getdaytime
+        fi
 
-		case "$(check_sidechange)" in
+        case "$(check_sidechange)" in
 
-			# Side not changed: nothing to do
-			0 )
-				decho "Nothing to do."
-				;;
+            # Side not changed: nothing to do
+            0 )
+                decho "Nothing to do."
+                ;;
 
-			# Light -> Dark
-			1 )
-				## lsd
-				decho "Setting lsd for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
-				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
-					ln -sf themes/default.yaml colors.yaml
-				fi
+            # Light -> Dark
+            1 )
+                ## lsd
+                decho "Setting lsd for dark mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
+                if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
+                    ln -sf themes/default.yaml colors.yaml
+                fi
 
-				## bat
-				decho "Setting bat for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf config-dark config
-				fi
+                ## bat
+                decho "Setting bat for dark mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf config-dark config
+                fi
 
-				## man
-				decho "Setting man for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/man"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf man.conf.dark man.conf
-				fi
+                ## man
+                decho "Setting man for dark mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/man"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf man.conf.dark man.conf
+                fi
 
-				# WezTerm
-				TARGET="wezterm"
-				decho "Setting ${TARGET} for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf wezterm.dark.lua wezterm.lua
-				fi
+                # WezTerm
+                TARGET="wezterm"
+                decho "Setting ${TARGET} for dark mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf wezterm.dark.lua wezterm.lua
+                fi
 
-				# Hyper
-				TARGET="hyper"
-				decho "Setting ${TARGET} for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					cp hyper.dark.js .hyper.js
-				fi
+                # Hyper
+                TARGET="hyper"
+                decho "Setting ${TARGET} for dark mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    cp hyper.dark.js .hyper.js
+                fi
 
-				# Alacritty
-				TARGET="alacritty"
-				decho "Setting ${TARGET} for dark mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf themes/gruvbox_dark.toml theme.toml
-					touch alacritty.toml
-				fi
+                # Alacritty
+                TARGET="alacritty"
+                decho "Setting ${TARGET} for dark mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf themes/gruvbox_dark.toml theme.toml
+                    touch alacritty.toml
+                fi
 
-				# Zsh-appearance-control
-				TARGET="zac"
-				decho "Setting ${TARGET} for dark mode..."
-				# "$USER/.local/share/zplug/bin/appearance-dispatch" 1
-				if [[ -d ${XDG_DATA_HOME} ]]; then
-					"$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 1
-				else
-					"$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 1
-				fi
+                # Zsh-appearance-control
+                TARGET="zac"
+                decho "Setting ${TARGET} for dark mode..."
+                # "$USER/.local/share/zplug/bin/appearance-dispatch" 1
+                if [[ -d ${XDG_DATA_HOME} ]]; then
+                    "$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 1
+                else
+                    "$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 1
+                fi
 
-				# set mode
-				MODE="dark"
-				;;
+                # set mode
+                MODE="dark"
+                ;;
 
-			# Dark -> Light
-			2 )
-				## lsd
-				decho "Setting lsd for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
-				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
-					ln -sf themes/default-light.yaml colors.yaml
-				fi
+            # Dark -> Light
+            2 )
+                ## lsd
+                decho "Setting lsd for light mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/lsd"
+                if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
+                    ln -sf themes/default-light.yaml colors.yaml
+                fi
 
-				## bat
-				decho "Setting bat for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
-				if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
-					ln -sf config-light config
-				fi
+                ## bat
+                decho "Setting bat for light mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/bat"
+                if [[ -d ${CONFIG_DIR} ]] && cd "${CONFIG_DIR}"; then
+                    ln -sf config-light config
+                fi
 
-				## man
-				decho "Setting man for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/man"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf man.conf.light man.conf
-				fi
+                ## man
+                decho "Setting man for light mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/man"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf man.conf.light man.conf
+                fi
 
-				# WezTerm
-				TARGET="wezterm"
-				decho "Setting ${TARGET} for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf wezterm.light.lua wezterm.lua
-				fi
+                # WezTerm
+                TARGET="wezterm"
+                decho "Setting ${TARGET} for light mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf wezterm.light.lua wezterm.lua
+                fi
 
-				# Hyper
-				TARGET="hyper"
-				decho "Setting ${TARGET} for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					# Hyper doesn't notice the change of symbolic link, so we copy the file.
-					cp hyper.light.js .hyper.js
-				fi
+                # Hyper
+                TARGET="hyper"
+                decho "Setting ${TARGET} for light mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    # Hyper doesn't notice the change of symbolic link, so we copy the file.
+                    cp hyper.light.js .hyper.js
+                fi
 
-				# Alacritty
-				TARGET="alacritty"
-				decho "Setting ${TARGET} for light mode..."
-				CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
-				if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
-					ln -sf themes/gruvbox_light.toml theme.toml
-					touch alacritty.toml
-				fi
+                # Alacritty
+                TARGET="alacritty"
+                decho "Setting ${TARGET} for light mode..."
+                CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+                if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+                    ln -sf themes/gruvbox_light.toml theme.toml
+                    touch alacritty.toml
+                fi
 
-				# Zsh-appearance-control
-				TARGET="zac"
-				decho "Setting ${TARGET} for light mode..."
-				# "$USER/.local/share/zplug/bin/appearance-dispatch" dispatch 0
-				if [[ -d ${XDG_DATA_HOME} ]]; then
-					"$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
-				else
-					"$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
-				fi
+                # Zsh-appearance-control
+                TARGET="zac"
+                decho "Setting ${TARGET} for light mode..."
+                # "$USER/.local/share/zplug/bin/appearance-dispatch" dispatch 0
+                if [[ -d ${XDG_DATA_HOME} ]]; then
+                    "$XDG_DATA_HOME"/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+                else
+                    "$HOME"/.local/share/zplug/repos/hmr/zsh-appearance-control/bin/appearance-dispatch dispatch 0
+                fi
 
 
-				# set mode
-				MODE="light"
-				;;
-		esac
+                # set mode
+                MODE="light"
+                ;;
+        esac
 
-		# stop working
-		ACCU_SLEEP ${INTERVAL}
-	done
+        # stop working
+        ACCU_SLEEP ${INTERVAL}
+    done
 }
 
 decho "------------------------------------------------------------"
 decho "Starting Jedid on pid#${BASHPID}..."
 
 if (( BASH_VERSINFO < 4 )); then
-	decho "Exit because the GNU bash version 4.2 or later is required."
-	exit 1
+    decho "Exit because the GNU bash version 4.2 or later is required."
+    exit 1
 fi
 
 function trap_exit() {
-	decho "Quitting..."
+    decho "Quitting..."
 }
 trap trap_exit SIGINT
 
 if [[ -z ${XDG_CONFIG_HOME} ]]; then
-	decho "Warning: XDG_CONFIG_HOME isn't set. Setting now..."
-	XDG_CONFIG_HOME="${HOME}/.config"
+    decho "Warning: XDG_CONFIG_HOME isn't set. Setting now..."
+    XDG_CONFIG_HOME="${HOME}/.config"
 fi
 decho "PWD=$(pwd)"
 decho "SCRIPT_DIR=${SCRIPT_DIR}"
