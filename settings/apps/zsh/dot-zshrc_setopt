@@ -18,7 +18,7 @@ setopt always_last_prompt       #on
 #setopt append_create           #off
 #setopt no_append_history       #off
 # Recognize command as cd to directory if it couldn't be executed.
-setopt auto_cd                  #off
+#setopt auto_cd                  #off
 #setopt auto_continue           #off
 # Automatically list choices on an ambiguous completion.
 setopt auto_list                #on

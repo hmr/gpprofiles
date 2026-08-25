@@ -96,13 +96,15 @@ if [[ -d "${XDG_CACHE_HOME:-${HOME}/.cache}" ]]; then
   export ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/zplug/cache"
 fi
 
-# # enhancd settings
-# export ENHANCD_DIR=${ZDOTDIR:-~}/enhancd
+# ================== enhancd settings ==================
+export ENHANCD_DIR=${XDG_DATA_HOME:-~/.local/share}/zsh/enhancd
 # export ENHANCD_FILTER=fzf-tmux:fzf
+export ENHANCD_FILTER="fzf-tmux --preview 'eza -al --tree --level 1 --group-directories-first --git-ignore --header --git --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,50% --height 35% --reverse --ansi"
 # export ENHANCD_DISABLE_DOT=1
 # export ENHANCD_DISABLE_HOME=1
 # export ENHANCD_HOOK_AFTER_CD="pwd; ls"
-# export ENHANCD_HYPHEN_NUM=20
+export ENHANCD_HYPHEN_NUM=20
+export ENHANCD_USE_ABBREV=true
 
 # =================== z-a-c settings ===================
 # ZAC's hook function (ZAC_IMMEDIATE_CALLBACK_FNC / ZAC_DEFERRED_CALLBACK_FNC)
@@ -216,6 +218,13 @@ function _chksysspd() {
 	echo "${SYSSPD}"
 }
 
+## FPATH settings
+# zsh completions by each homebrew package
+if type brew >& /dev/null && [[ -d $(brew --prefix)/share/zsh-completions ]]; then
+	fpath+=$(brew --prefix)/share/zsh-completions
+	# compinit -C
+fi
+
 # Load Zplug
 function zplug-check-combo() {
 	zplug list
@@ -247,6 +256,8 @@ if [ -n "${ZPLUG_ROOT}" ]; then
 
   # Better line editor
   zplug "marlonrichert/zsh-edit"
+	# Better autocomplete
+	# zplug "marlonrichert/zsh-autocomplete"
 
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
@@ -261,6 +272,7 @@ if [ -n "${ZPLUG_ROOT}" ]; then
 
   ## ディレクトリ移動を高速化（fzf であいまい検索）
   # zplug "b4b4r07/enhancd", use:init.sh
+	zplug "babarot/enhancd", defer:2, use:init.sh
 
   ## git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
   #zplug "motemen/ghq", as:command, from:gh-r
@@ -389,13 +401,6 @@ bindkey "${key[C-M-Right]}" do-nothing
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 	source "$(code --locate-shell-integration-path zsh)"
 	echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
-fi
-
-## FPATH settings
-# zsh completions by each homebrew package
-if type brew >& /dev/null && [[ -d $(brew --prefix)/share/zsh-completions ]]; then
-	fpath+=$(brew --prefix)/share/zsh-completions
-	compinit -C
 fi
 
 # Show profiling result if enabled.
