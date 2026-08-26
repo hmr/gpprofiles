@@ -99,7 +99,7 @@ fi
 # ================== enhancd settings ==================
 export ENHANCD_DIR=${XDG_DATA_HOME:-~/.local/share}/zsh/enhancd
 # export ENHANCD_FILTER=fzf-tmux:fzf
-export ENHANCD_FILTER="fzf-tmux --preview 'eza -al --tree --level 1 --group-directories-first --git-ignore --header --git --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,50% --height 35% --reverse --ansi"
+export ENHANCD_FILTER="fzf-tmux --preview 'eza -al --tree --level 1 --group-directories-first --git-ignore --header --git --no-user --no-time --no-filesize --no-permissions {r}' --preview-window right,50% --height 35% --reverse --ansi"
 # export ENHANCD_DISABLE_DOT=1
 # export ENHANCD_DISABLE_HOME=1
 # export ENHANCD_HOOK_AFTER_CD="pwd; ls"
@@ -107,6 +107,7 @@ export ENHANCD_HYPHEN_NUM=20
 export ENHANCD_USE_ABBREV=true
 alias .="cd ."
 alias ..="cd .."
+alias -- -="cd -"
 
 # =================== z-a-c settings ===================
 # ZAC's hook function (ZAC_IMMEDIATE_CALLBACK_FNC / ZAC_DEFERRED_CALLBACK_FNC)
