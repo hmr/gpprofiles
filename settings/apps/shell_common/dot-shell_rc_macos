@@ -443,6 +443,6 @@ fi
 
 echo
 
-if ! [[ $(readlink -f /etc/locate.rc) =~ $GPP_HOME ]]; then
-    echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/locate.rc is not a symbolic link to GPP's one.${NORMAL}"
+if  ! [[ -L /etc/locate.rc ]]; then
+    echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/locate.rc is not a symbolic link.${NORMAL}"
 fi
