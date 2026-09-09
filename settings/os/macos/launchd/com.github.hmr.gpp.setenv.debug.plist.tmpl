@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.github.hmr.gpp.setenv</string>
+	<string>com.github.hmr.gpp.setenv.debug</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>__GPP_HOME__/settings/os/macos/launchd/launchd_setenv</string>
-  	</array>
+	</array>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>StandardErrorPath</key>
-	<string>/dev/null</string>
+	<string>__GPP_TMP_DIR__/setenv.stderr.log</string>
 	<key>StandardOutPath</key>
-	<string>/dev/null</string>
+	<string>__GPP_TMP_DIR__/setenv.stdout.log</string>
 </dict>
 </plist>

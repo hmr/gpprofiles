@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 # Set IPv6 Default route
-# 
+#
 # Part of GPP
 
 function _gpp_wait_for_secs() {
@@ -43,8 +43,20 @@ function _gpp_ping6_to() {
   fi
 }
 
-router_addr="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 1)"
+function _gpp_check_ipv6_connectivity() {
+  router_addr="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 1)"
+}
 
+while [[ -z ${router_addr} ]]; do
+  echo "Waiting for IPv6 router address..."
+  _gpp_wait_for_secs 5
+  _gpp_check_ipv6_connectivity
+done
+echo "router_addr=${router_addr}"
+
+# -------------------------------------------------------------------------------------------------
+# Entry point
+# ------------------------------------------------------------------------------------------------
 echo "Pinging dns.google to check IPv6 routing... ";
 if _gpp_ping6_to; then
 	echo "  IPv6 routing seems to be OK!"
@@ -89,5 +101,5 @@ for ((cnt=0; cnt < 3; cnt++)) {
 }
 
 echo "  Ohhhhh... There's no more way... Giving up. (sigh)"
-return 2
+exit 2
 
