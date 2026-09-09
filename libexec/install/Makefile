@@ -7,7 +7,7 @@ SHELL := /bin/bash
 
 # Service definitions
 # Each service maps to com.github.hmr.gpp.<service_id>
-SERVICES := setenv jedid jedid_debug netlocd netlocd_debug ssh_agent ipv6route ipv6route_debug
+SERVICES := ipv6route ipv6route_debug jedid jedid_debug netlocd netlocd_debug setenv setenv_debug ssh_agent
 
 # Directories
 CONFIG_DIR    := $(HOME)/.config/launchd
@@ -89,8 +89,11 @@ $(1):
 	./gpp_subst.sh "$(call tmpl_path,$(1))" "$(call plist_path,$(1))"
 
 # Install plist to LaunchAgents
+# -d creates the directory first; explicit dest path avoids treating a
+# missing LaunchAgents dir as the destination filename
 $(1)-install:
-	install -m 644 "$(call plist_path,$(1))" "$(AGENTS_DIR)"
+	install -d -m 755 "$(AGENTS_DIR)"
+	install -m 644 "$(call plist_path,$(1))" "$(call agents_path,$(1))"
 
 # Bootstrap service
 $(1)-bootstrap:
