@@ -7,7 +7,7 @@ SHELL := /bin/bash
 
 # Service definitions
 # Each service maps to com.github.hmr.gpp.<service_id>
-SERVICES := ipv6route ipv6route_debug jedid jedid_debug netlocd netlocd_debug setenv setenv_debug ssh_agent
+SERVICES := ipv6route ipv6route_debug jedid jedid_debug netlocd netlocd_debug setenv setenv_debug ssh-agent
 
 # Directories
 CONFIG_DIR    := $(HOME)/.config/launchd
