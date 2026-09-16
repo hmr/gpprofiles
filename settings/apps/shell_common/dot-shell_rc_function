@@ -344,12 +344,16 @@ function DEL_FROM_PATH() {
 
 echo -n ", PING_IPV6_BY_NAME()"
 function PING_IPV6_BY_NAME() {
-  ping ipv6.google.com
+	local TARGET="ipv6.google.com"
+	echo "Pinging to $TARGET"
+  ping6 "$TARGET"
 }
 
 echo -n ", PING_IPV6_BY_ADDR()"
 function PING_IPV6_BY_ADDR() {
-  ping 2404:6800:4004:818::200e
+	local TARGET="2404:6800:4004:818::200e"
+	echo "Pinging to $TARGET"
+  ping6 "$TARGET"
 }
 
 echo -n ", _terminfo()"
