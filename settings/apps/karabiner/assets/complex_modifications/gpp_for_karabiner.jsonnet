@@ -25,12 +25,6 @@ local chatGptApp = [
   '^com\\.openai\\.codex$',
 ];
 
-// Chat GPT Chrome App
-local chatGptChromeApp = [
-  // Add your ChatGPT Chrome app ID below
-  '^com\\.google\\.Chrome\\.app\\.cadlkienfkclaiaibeoongdcgmdikeeg$',  //ChatGPT(e3Neo)
-];
-
 // Claude Desktop App
 local claudeApp = [
   '^com\\.anthropic\\.claudefordesktop$',
@@ -39,28 +33,24 @@ local claudeApp = [
 // Google Gemini Desktop App
 local geminiApp = [
   '^com\\.google\\.GeminiMacOS$',
+  '^com\\.google\\.antigravity$',
+ ];
+
+// Browser Web Apps
+local browserAiApp = [
+  // Add your browser AI Web app ID below
+  '^com\\.google\\.Chrome\\.app\\.[a-z]+$',     // Chrome Web App
+  '^org\\.chromium\\.Chromium\\.app\\.[a-z]+$', // Chromium Web App
 ];
 
-// Google Gemini Chrome App
-local geminiChromeApp = [
-  // Add your Google Gemini Chrome app ID below
-  '^com\\.google\\.Chrome\\.app\\.kjajbhpgcmkmakfdjmghbhkkkpgbnbbf$',  //Gemini(E4)
-  '^com\\.google\\.Chrome\\.app\\.gdfaincndogidkdcdkhapmbffkckdkhn$',  //Gemini(e3Neo)
-];
-
-// Google AI Studio Chrome App
-local gAIStudioChromeApp = [
-  // Add your Google AI Studio Chrome app ID below
-  '^com\\.google\\.Chrome\\.app\\.bcmmjkglicliekcndffbfgcfopnidllp$',
-];
 
 // Applications to tweak Enter behavior (Shift+Enter vs Cmd+Enter) - mainly for AI chat apps
 local tweakEnterApps =
-  chatGptApp + chatGptChromeApp + claudeApp + geminiApp + geminiChromeApp + gAIStudioChromeApp;
+  chatGptApp + claudeApp + geminiApp + browserAiApp;
 
 // Applications to tweak Cmd+N behavior (Shift+Cmd+O) - mainly for Chrome AI apps
 local tweakCommandNApps =
-  chatGptChromeApp + geminiChromeApp + gAIStudioChromeApp;
+  browserAiApp;
 
 /* *****************************************************************************
  * In Remote-Desktop-like applications, keystrokes should be sent to the remote.
@@ -577,7 +567,7 @@ local genSeparator(title) =
 
     // Enter → Shift+Enter, Cmd+Enter → Enter on ChatGPT, Claude and Gemini
     // (Swap newline and send behaviors)
-    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on All AI Chat Apps [v1]', [
+    rule('[GPP] Convert ⏎ to ⇧⏎ and ⌘⏎ to ⏎ on All AI Chat Apps [v2]', [
       {
         type: 'basic',
         from: { key_code: 'return_or_enter' },
@@ -602,7 +592,7 @@ local genSeparator(title) =
     ]),
 
     // Cmd+N → Shift+Cmd+O on ChatGPT, Claude Desktop, Gemini Chrome App
-    rule('[GPP] Convert ⌘N to ⇧⌘O on Chrome AI Apps [v1]', [
+    rule('[GPP] Convert ⌘N to ⇧⌘O on Chrome AI Apps [v2]', [
       keyToKey('n',
                { mandatory: ['command'] },
                'o',
