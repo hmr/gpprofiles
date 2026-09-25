@@ -225,7 +225,15 @@ function _chksysspd() {
 # zsh completions by each homebrew package
 if type brew >& /dev/null && [[ -d $(brew --prefix)/share/zsh-completions ]]; then
 	fpath+=$(brew --prefix)/share/zsh-completions
-	# compinit -C
+fi
+
+# by MacPorts
+if [[ -d /opt/local/share/zsh/site-functions ]]; then
+	fpath+="/opt/local/share/zsh/site-functions"
+fi
+
+if [[ -d /opt/local/share/zsh/${ZSH_VERSION}/functions ]]; then
+	fpath+=/opt/local/share/zsh/${ZSH_VERSION}/functions
 fi
 
 # Load Zplug

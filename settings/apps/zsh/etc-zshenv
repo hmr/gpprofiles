@@ -13,3 +13,53 @@
 # [ -z "${XDG_RUNTIME_DIR}" ] && export XDG_RUNTIME_DIR=$HOME/.run
 [ -z "${ZDOTDIR}" ]         && export ZDOTDIR=${XDG_CONFIG_HOME}/zsh
 
+# Prefix of Homebrew
+if [[ -d /opt/homebrew/share/terminfo ]]; then
+  export HB_PREFIX="/opt/homebrew"
+elif [[ -d /usr/local/share/terminfo ]]; then
+  HB_PREFIX="/usr/local"
+fi
+# Prefix of MacPorts
+if [[ -d /opt/local/share/terminfo ]]; then
+  export MP_PREFIX="/opt/local"
+fi
+
+# Use newer ncurses installed by Homebrew / MacPorts
+# Disabled due to workaround
+# [[ -n ${TERMINFO} ]] && unset TERMINFO  # Don't use TERMINFO variable
+
+# Homebrew
+HB_TERMINFO_DIRS="${HB_PREFIX}/opt/ncurses/share/terminfo"
+if [[ ! ${TERMINFO_DIRS} =~ ${HB_TERMINFO_DIRS} && -d ${HB_TERMINFO_DIRS} ]]; then
+  export TERMINFO_DIRS="${HB_TERMINFO_DIRS}:${TERMINFO_DIRS}"
+fi
+
+# MacPorts
+MP_TERMINFO_DIRS="${MP_PREFIX}/share/terminfo"
+if [[ ! ${TERMINFO_DIRS} =~ ${MP_TERMINFO_DIRS} && -d ${MP_TERMINFO_DIRS} ]]; then
+  export TERMINFO_DIRS="${MP_TERMINFO_DIRS}:${TERMINFO_DIRS}"
+fi
+
+# iTerm2
+ITERM_TERMINFO_DIRS="/Applications/iTerm.app/Contents/Resources/terminfo"
+if [[ ! ${TERMINFO_DIRS} =~ ${ITERM_TERMINFO_DIRS} && -d ${ITERM_TERMINFO_DIRS} ]]; then
+  export TERMINFO_DIRS="${ITERM_TERMINFO_DIRS}:${TERMINFO_DIRS}"
+fi
+
+### Set Homebrew binary top of the PATH
+[[ ! ${PATH} =~ ${HB_PREFIX}/bin  && -d ${HB_PREFIX}/bin  ]] && export PATH=${HB_PREFIX}/bin:${PATH}
+[[ ! ${PATH} =~ ${HB_PREFIX}/sbin && -d ${HB_PREFIX}/sbin ]] && export PATH=${HB_PREFIX}/sbin:${PATH}
+
+### Set MacPorts binary top of the PATH
+[[ ! ${PATH} =~ ${MP_PREFIX}/bin  && -d ${MP_PREFIX}/bin  ]] && export PATH=${MP_PREFIX}/bin:${PATH}
+[[ ! ${PATH} =~ ${MP_PREFIX}/sbin && -d ${MP_PREFIX}/sbin ]] && export PATH=${MP_PREFIX}/sbin:${PATH}
+
+# Debug output
+# echo "  PATH=${PATH}"
+# echo "  XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
+# echo "  ZDOTDIR=${ZDOTDIR}"
+# echo "  VIMINIT=${VIMINIT}"
+# echo "  TERMINFO=${TERMINFO}"
+# echo "  TERMINFO_DIRS=${TERMINFO_DIRS}"
+# echo
+
