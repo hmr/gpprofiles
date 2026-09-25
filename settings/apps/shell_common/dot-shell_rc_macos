@@ -402,6 +402,7 @@ function _gpp_determine_ipv6_if() {
 	networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}'
 }
 
+# TODO: Due to migrated to launchd, this function will be deleted.
 echo -n ", setipv6route"
 function setipv6route() {
 	local router_addr="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 1)"
@@ -486,4 +487,11 @@ echo
 
 if  ! [[ -L /etc/locate.rc ]]; then
     echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/locate.rc is not a symbolic link.${NORMAL}"
+		echo "    do 'sudo ln -s $GPP_HOME/settings/os/macos/locate/default/locate.rc /etc/locate.rc'"
 fi
+
+if [[ ! -r /etc/zshenv ]]; then
+  echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/zshrc can't be read.${NORMAL}"
+	echo "    do 'sudo ln -s ~/gpprofiles/settings/apps/zsh/etc-zshenv /etc/zshenv'"
+fi
+

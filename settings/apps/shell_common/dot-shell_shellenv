@@ -4,7 +4,12 @@
 # Part of GPP
 
 # dot-shell_shellenv
-# This file is imported from dot-shell_rc_gpp.
+
+# [zsh] Place as $ZDOTDIR/.zshenv
+# /etc/zshenv →~/.zshenv →/etc/zprofile →~/.zprofile →/etc/zshrc →~/.zshrc →/etc/zlogin →~/.zlogin
+# Login: Yes  [1] / Interactive: Yes  / Non-interactive: Yes
+# - This file is read after /etc/zshenv when zsh is invoked as a login shell.
+# - This file should contains things applied at login and at interactive.
 # This file contains basic variables like XDG Base Directory, TERMINFO_DIRS, Text decoration, etc.
 
 # ORIGIN: 2020-06-30 by hmr
@@ -32,7 +37,7 @@ fi
 if [[ -d "${XDG_DATA_HOME}/terminfo" ]]; then
   # export TERMINFO="${XDG_DATA_HOME}/terminfo"
   # export TERMINFO_DIRS="${TERMINFO}"
-	export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo"
+	export TERMINFO_DIRS="${TERMINFO_DIRS}:${XDG_DATA_HOME}/terminfo"
 fi
 [[ -d /usr/local/share/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/usr/local/share/terminfo"
 [[ -d /usr/local/opt/ncurses/share/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/usr/local/opt/ncurses/share/terminfo"

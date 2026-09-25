@@ -4,6 +4,7 @@
 # Part of GPP
 
 # dot-shell_rc_gpp
+
 # This file is imported from dot-zshrc(.zshrc) / .bashrc
 # This file imports gpp files.
 # ORIGIN: 2020-06-28 02:32 by hmr
@@ -28,16 +29,18 @@ if [ -n "${GPP_HOME}" ]; then
 
   export GPP_HOME GPP_VERSION
 
-  # Set base environment
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv"
+	# TODO: Verify necessity. zsh sources .zshenv automatically, so sourcing it here
+	# results in double loading, whereas bash requires manual sourcing.
+	# Set base environment
+  # source "${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv"
 
   # Don't change the order.
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function"
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_history"
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_alias"
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env"
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_misc"
-  . "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos"
+  source "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_function"
+  source "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_env"
+  source "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_alias"
+  source "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_misc"
+  source "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_history"
+  source "${GPP_HOME}/settings/apps/shell_common/dot-shell_rc_macos"
 
   # set shell prompt for bash
   case $(chkshell) in

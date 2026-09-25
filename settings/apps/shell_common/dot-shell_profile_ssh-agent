@@ -6,6 +6,9 @@
 # Part of GPP
 
 # dot-shell_profile_ssh-agent
+
+# This file is sourced from dot-zprofile
+
 # ORIGIN: date unknown by hmr
 
 echo "Processing ${UNDERLINE}${GREEN}dot-shell_profile_ssh-agent${NORMAL}"
