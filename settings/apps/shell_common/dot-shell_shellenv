@@ -40,7 +40,7 @@ fi
 [[ -d /lib/terminfo ]] && export TERMINFO_DIRS="${TERMINFO_DIRS}:/lib/terminfo"
 
 # return when non-interactive shell
-[[ "$-" != *i* ]] && return
+[[ ! $- =~ i ]] && return
 
 # PAGER
 export PAGER=less
