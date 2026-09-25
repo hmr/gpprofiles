@@ -17,9 +17,19 @@ function CHECK_PATH () {
   [[ ${PATH} =~ ${1} ]] && return 0 || return 1
 }
 
-# Add path to GNU software installed by Homebrew
+# Make an alias of GNU software (MacPorts)
+function MP_MAKE_ALIAS_GNU () {
+  (( $# < 1 )) && return 1
+
+	[[ -x /opt/local/libexec/gnubin/${1} ]] || return 1
+	alias ${1}="/opt/local/libexec/gnubin/${1}"
+	return 0
+}
+
+# Add into PATH of GNU software (For Homebrew)
 function HB_ADD_PATH_GNU () {
   (( $# < 1 )) && return 1
+
   local HB_TARGET
   if [[ -d /opt/homebrew/opt ]]; then
     HB_TARGET="/opt/homebrew/opt/${1}/libexec/gnubin"
@@ -43,7 +53,7 @@ function HB_ADD_PATH_GNU () {
   fi
 }
 
-# Add path to software installed by Homebrew
+# Add a path to software installed by homebrew
 function HB_ADD_PATH () {
   (( $# < 1 )) && return 1
   local HB_TARGET
@@ -158,6 +168,17 @@ else
   echo "  Homebrew not found."
 fi
 
+# MacPorts
+if [[ -x ${MP_PREFIX:="/opt/local"}/bin/port ]]; then
+	echo "  MacPorts found. Setting variables..."
+	DEL_FROM_PATH "${MP_PREFIX}/sbin"
+	ADD_INTO_PATH "${MP_PREFIX}/sbin" "H"
+	DEL_FROM_PATH "${MP_PREFIX}/bin"
+	ADD_INTO_PATH "${MP_PREFIX}/bin" "H"
+else
+	echo "  MacPorts not found."
+fi
+
 # PATH
 echo "  Setting PATH..."
 
@@ -187,79 +208,104 @@ case "$(chkshell)" in
 		fi
 esac
 
-# TODO: This section will be deleted in the near future.
-# # Use HomeBrew binaries instead of macOS default.
-# TEMP_TGT="coreutils"
-# if HB_ADD_PATH_GNU ${TEMP_TGT}; then
-#   echo -n ", ${TEMP_TGT}"
-#   alias  ls='gls -CF --color=auto'            # color ls
-#   alias  ll='gls -CF --color=auto -l'         # long list
-#   alias  la='gls -CF --color=auto -A'         # all but . and ..
-#   alias   l='gls -CF --color=auto'            # MS-DOS Style
-#   alias lla='gls -CF --color=auto -lA'        # long list
-#   alias  lh='gls -CF --color=auto -lrth'      # Human-readable special
-#   alias lha='gls -CF --color=auto -lrthA'     # Human-readable special
-# fi
+# For Homebrew
+if [[ -x /usr/local/bin/brew || -x /opt/homebrew/bin/brew ]]; then
+	# Caution: binutils' ranlib is incompatible with macOS ld
+	# TEMP_TGT="binutils"
+	# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-# Caution: binutils' ranlib is incompatible with macOS ld
-# TEMP_TGT="binutils"
-# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="grep"
+	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="grep"
-HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="gnu-sed"
+	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="gnu-sed"
-HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="gnu-tar"
+	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="gnu-tar"
-HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="gnu-time"
+	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="gnu-time"
-HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="curl"
+	HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="curl"
-HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="imagemagick@6"
+	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="imagemagick@6"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="sqlite"
+	HB_ADD_PATH H ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="sqlite"
-HB_ADD_PATH H ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="bc"
+	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="bc"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="ruby"
+	HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)" || echo -n ", skipped ${TEMP_TGT}(hb)"
+	export BUNDLE_USER_CONFIG="${XDG_CONFIG_HOME}/bundle"
+	export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}/bundle"
+	export BUNDLE_USER_PLUGIN="${XDG_DATA_HOME}/bundle"
+	export GEM_HOME="${XDG_DATA_HOME}/gem"
+	export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 
-TEMP_TGT="ruby"
-HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}" || echo -n ", skipped ${TEMP_TGT}"
-export BUNDLE_USER_CONFIG="${XDG_CONFIG_HOME}/bundle"
-export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}/bundle"
-export BUNDLE_USER_PLUGIN="${XDG_DATA_HOME}/bundle"
-export GEM_HOME="${XDG_DATA_HOME}/gem"
-export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
+	TEMP_TGT="bzip2"
+	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="bzip2"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="zip"
+	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="zip"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	# TEMP_TGT="openssl"
+	# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-# TEMP_TGT="openssl"
-# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="file"
+	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="file"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="llvm"
+	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-TEMP_TGT="llvm"
-HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	unset TEMP_TGT
+	echo
+fi
 
-#TEMP_TGT="python@3.10"
-#HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+# For MacPorts
+if [[ -x /opt/local/bin/port ]]; then
+	TEMP_TGT="date"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-TEMP_TGT="ccache"
-HB_ADD_PATH_LIBEXEC ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+	TEMP_TGT="grep"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-unset TEMP_TGT
-echo
+	TEMP_TGT="sed"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="tar"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	# TEMP_TGT="time"
+	# MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="make"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="sha1sum"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="sha224sum"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="sha256sum"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="sha384sum"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="sha512sum"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	TEMP_TGT="dircolors"
+	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+
+	unset TEMP_TGT
+	echo
+fi
 
 echo "  Setting variables for macOS..."
 echo -n "    "
@@ -280,16 +326,11 @@ if [ ! "${RUNEWIDTH_EASTASIAN}" ]; then
 fi
 
 # Vulkan
+# TODO: Address for MacPorts
 echo -n ", Vulkan"
 if [[ -e /opt/homebrew/etc/vulkan/icd.d/MoltenVK_icd.json ]]; then
   export VK_ICD_FILENAMES=/opt/homebrew/etc/vulkan/icd.d/MoltenVK_icd.json
 fi
-
-# TERMINFO_DIRS for iTerm2
-# if [[ -n "${ITERM_PROFILE}" && -d /Applications/iTerm.app/Contents/Resources/terminfo ]]; then
-#   echo -n ", TERMINFO_DIRS(for iTerm2)"
-#   export TERMINFO_DIRS="/Applications/iTerm.app/Contents/Resources/terminfo:${TERMINFO_DIRS}"
-# fi
 
 echo
 

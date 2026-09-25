@@ -33,11 +33,15 @@ esac
 
 # dircolors
 if ! which dircolors >& /dev/null; then
-	# Workaround for Homebrew
+	# Workaround for Homebrew (x86_64)
   if [ -x "/usr/local/opt/coreutils/libexec/gnubin/dircolors" ]; then
     _TMP_DIRCOLORS_BIN="/usr/local/opt/coreutils/libexec/gnubin/dircolors"
+	# Workaround for Homebrew (Apple Silicon)
   elif [ -x "/opt/homebrew/opt/coreutils/libexec/gnubin/dircolors" ]; then
     _TMP_DIRCOLORS_BIN="/opt/homebrew/opt/coreutils/libexec/gnubin/dircolors"
+	# Workaround for MacPorts
+  elif [ -x "/opt/local/libexec/gnubin/dircolors" ]; then
+    _TMP_DIRCOLORS_BIN="/opt/local/libexec/gnubin/dircolors"
   fi
 else
   _TMP_DIRCOLORS_BIN="$(which dircolors)"

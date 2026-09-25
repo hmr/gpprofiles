@@ -124,16 +124,24 @@ if which apt > /dev/null; then
   fi
 fi
 
-# BREW
+# Homebrew
 if which brew > /dev/null; then
-  echo -n ", brew"
+  echo -n ", Homebrew"
   alias bs="brew search"
   alias bi="brew info"
   alias bI="brew install"
 fi
 
+# MacPorts
+if which port > /dev/null; then
+	echo -n ", MacPort"
+	alias mps="port search"
+	alias mpi="port info"
+	alias mpI="sudo port install"
+fi
+
 # batcat -> bat
-if which batcat > /dev/null; then
+if which batcat > /dev/null && ! which bat > /dev/null; then
   echo -n ", bat"
   alias bat='batcat'
 fi

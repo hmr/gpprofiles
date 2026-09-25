@@ -302,8 +302,8 @@ echo -n ", DEL_FROM_PATH()"
 function DEL_FROM_PATH() {
   [[ ${#} ==  0 ]] && return 1
   local str_to_del="${1}"
-
   local shell=$(chkshell)
+  local PREV_IFS="${IFS}"
 
   # Convert the $PATH to an array $path[] (bash only)
   if [[ ${shell} == "bash" ]]; then
