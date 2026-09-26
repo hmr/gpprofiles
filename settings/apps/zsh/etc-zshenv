@@ -7,13 +7,13 @@
 
 # ORIGIN: 2020-12-18 by hmr
 
-# ZDOTDIR must be set here
-[ -z "${XDG_CONFIG_HOME}" ] && export XDG_CONFIG_HOME=$HOME/.config
-# [ -z "${XDG_CACHE_HOME}" ]  && export XDG_CACHE_HOME=$HOME/.cache
-# [ -z "${XDG_DATA_HOME}" ]   && export XDG_DATA_HOME=$HOME/.local/share
-# [ -z "${XDG_STATE_HOME}" ]  && export XDG_STATE_HOME=$HOME/.local/state
-# [ -z "${XDG_RUNTIME_DIR}" ] && export XDG_RUNTIME_DIR=$HOME/.run
-[ -z "${ZDOTDIR}" ]         && export ZDOTDIR=${XDG_CONFIG_HOME}/zsh
+# ZDOTDIR must be set here at least.
+[[ -z ${XDG_CONFIG_HOME:-} ]]  && export XDG_CONFIG_HOME="$HOME/.config"
+[[ -z ${XDG_CACHE_HOME:-}  ]]  && export XDG_CACHE_HOME="$HOME/.cache"
+[[ -z ${XDG_DATA_HOME:-}   ]]  && export XDG_DATA_HOME="$HOME/.local/share"
+[[ -z ${XDG_STATE_HOME:-}  ]]  && export XDG_STATE_HOME="$HOME/.local/state"
+[[ -z ${XDG_RUNTIME_DIR:-} ]]  && export XDG_RUNTIME_DIR="$HOME/.run"
+[[ -z ${ZDOTDIR:-}         ]]  && export ZDOTDIR="$HOME/.config/zsh"
 
 # Prefix of Homebrew
 if [[ -d /opt/homebrew/share/terminfo ]]; then
