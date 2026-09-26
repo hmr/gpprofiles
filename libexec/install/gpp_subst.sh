@@ -49,14 +49,16 @@ GPP_TMP_DIR="/tmp/com.github.hmr.gpp"
 
     # Substitution logic.
     # Note: Using '|' as a delimiter to safely handle path strings in variables.
-    sed -e "s/__GPP_VERSION__/$(git log -1 --pretty=%H 2>/dev/null | cut -c 1-7 || echo "unknown")/" \
-        -e "s|__GPP_HOME__|${SDIR}|" \
-        -e "s|__XDG_CONFIG_HOME__|${XDG_CONFIG_HOME:=${HOME:?}/.config}|" \
-        -e "s/##__USER_NAME__/${REALNAME}/" \
-        -e "s/##__USER_MAIL__/${MAILADDR}/" \
-        -e "s/__GPP_VERSION__/$(git log -1 --pretty=%H | cut -c 1-7)/" \
-       	-e "s|__GPP_HOME__|${SDIR}|" \
-        -e "s|__GPP_TMP_DIR__|${GPP_TMP_DIR}|" \
+    sed -e "s/__GPP_VERSION__/$(git log -1 --pretty=%H 2>/dev/null | cut -c 1-7 || echo "unknown")/g" \
+        -e "s|__GPP_HOME__|${SDIR}|g" \
+        -e "s|__GPP_TMP_DIR__|${GPP_TMP_DIR}|g" \
+        -e "s|__XDG_CACHE_HOME__|${XDG_CACHE_HOME:=${HOME:?}/.cache}|g" \
+        -e "s|__XDG_CONFIG_HOME__|${XDG_CONFIG_HOME:=${HOME:?}/.config}|g" \
+        -e "s|__XDG_DATA_HOME__|${XDG_DATA_HOME:=${HOME:?}/.local/share}|g" \
+        -e "s|__XDG_RUNTIME_DIR__|${XDG_RUNTIME_DIR:=${HOME:?}/.run}|g" \
+        -e "s|__XDG_STATE_HOME__|${XDG_STATE_HOME:=${HOME:?}/.local/state}|g" \
+        -e "s/__USER_NAME__/${REALNAME}/g" \
+        -e "s/__USER_MAIL__/${MAILADDR}/g" \
         "${TGT_IN}" \
         > "${TGT_OUT}"
 )

@@ -11,6 +11,8 @@
 
 #set -o errexit
 
+echo "[initial] PATH=${PATH}"
+
 DRY_RUN=0
 
 # GPP_HOME="${GPP_HOME:=${HOME}/gpprofiles}"
@@ -99,6 +101,8 @@ echo "Starting $0..."
 echo "TERM=${TERM}"
 echo "SHELL=${SHELL}"
 echo "BASH=${BASH}"
+echo "ZSH=${ZSH}"
+echo "ZSH_VERSION=${ZSH_VERSION}"
 echo "GPP_HOME=${GPP_HOME}"
 echo "PATH=${PATH}"
 
