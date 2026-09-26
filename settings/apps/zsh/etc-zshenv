@@ -3,6 +3,8 @@
 # Part of GPP
 
 # Systemwide zshenv
+# Must be placed as /etc/zshenv, this file is sourced by zsh in any mode.
+
 # ORIGIN: 2020-12-18 by hmr
 
 # ZDOTDIR must be set here

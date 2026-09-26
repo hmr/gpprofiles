@@ -4,7 +4,10 @@
 # Part of GPP
 
 # dot-zshrc
-# Login: Yes / Interactive: Yes / Non-interactive: No
+
+# [zsh] Place as $ZDOTDIR/.zshrc
+# /etc/zshenv→~/.zshenv → /etc/zprofile → ~/.zprofile →/etc/zshrc → ~/.zshrc → /etc/zlogin → ~/.zlogin
+# Login: Yes [3] / Interactive: Yes / Non-interactive: No
 # - This file is read after .zprofile when zsh invoked as login shell or interactive shell.
 # - According to the zsh manual, it is not intended to use both zlogin and zprofile together.
 # - This file should contain about interactive shell options like '[un]setopt', history, prompt,

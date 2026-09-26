@@ -1,1 +1,1 @@
-dot-zlogout
+../shell_common/dot-shell_logout
