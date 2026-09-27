@@ -345,6 +345,12 @@ else
   echo "  ===== zplug not found. Consider installing it. ====="
 fi
 
+# Load Zoxide
+export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
+export _ZO_ECHO=1
+export _ZO_FZF_OPTS="--tmux"
+eval "$(zoxide init zsh --cmd j)"
+
 # Spotify-cli settings
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
 
