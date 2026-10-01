@@ -52,7 +52,7 @@ function _chkdist {
   elif [ -e /etc/SuSE-release   ]; then _TMP_DIST="suse"
   elif [ -e /etc/debian_version ]; then
     if [ -e /etc/lsb-release    ]; then _TMP_DIST="ubuntu"
-                                   else _TMP_DIST="debian"
+    else _TMP_DIST="debian"
     fi
   elif [ -x /usr/bin/sw_vers ]; then
     local tmp_swvers
@@ -74,24 +74,24 @@ function chkshell {
   elif [[ -n ${BASH_VERSION} ]]; then
     echo "bash"
   fi
-#  if echo ${SHELL} | grep -qs bash; then
-#    echo bash
-#  elif echo ${SHELL} | grep -qs zsh; then
-#    echo zsh
-#  fi
+  #  if echo ${SHELL} | grep -qs bash; then
+  #    echo bash
+  #  elif echo ${SHELL} | grep -qs zsh; then
+  #    echo zsh
+  #  fi
 }
 
 echo -n ", chkshell_internal()"
 function chkshell_internal {
   chkshell
-#  _PID=$$;
-#  _PPID=$(ps -o ppid -p $_PID | tail -n 1);
-#
-#  if ps -p $_PPID | grep -qs bash ; then
-#    echo "bash"
-#  elif ps -p $_PPID | grep -qs zsh ; then
-#    echo "zsh"
-#  fi
+  #  _PID=$$;
+  #  _PPID=$(ps -o ppid -p $_PID | tail -n 1);
+  #
+  #  if ps -p $_PPID | grep -qs bash ; then
+  #    echo "bash"
+  #  elif ps -p $_PPID | grep -qs zsh ; then
+  #    echo "zsh"
+  #  fi
 }
 
 # ESP32 development environment
@@ -119,7 +119,7 @@ function esp_idf {
 case "$(chkshell)" in
   bash | zsh )
     if type fzf >& /dev/null; then
-			echo -n ", gadd()"
+      echo -n ", gadd()"
       function gadd() {
         local selected
         if type unbuffer >& /dev/null; then
@@ -132,7 +132,7 @@ case "$(chkshell)" in
           git add $(sed -e ':L;N;$!bL;s/\n/ /g' <<< "$selected")
         fi
       }
-    else
+  else
       echo
       echo "  fzf isn't installed. gadd() isn't enabled."
     fi
@@ -141,43 +141,43 @@ esac
 
 # System update combo for debian/ubuntu
 if [[ $(_chkdist) == "ubuntu" || $(_chkdist) == "debian" ]]; then
-	echo -n ", ubuntu-update()"
-	function ubuntu-update() {
-	echo "${MAGENTA}===== Updating system =====${NORMAL}"
-	sudo apt update \
-		&& apt list --upgradable \
-		&& echo -n "${YELLOW}==================== HIT ENTER TO PROCEED ====================${NORMAL}" \
-		&& read -r \
-		&& sudo apt upgrade -y \
-		&& sudo apt autoremove -y
+  echo -n ", ubuntu-update()"
+  function ubuntu-update() {
+  echo "${MAGENTA}===== Updating system =====${NORMAL}"
+  sudo apt update \
+    && apt list --upgradable \
+    && echo -n "${YELLOW}==================== HIT ENTER TO PROCEED ====================${NORMAL}" \
+    && read -r \
+    && sudo apt upgrade -y \
+    && sudo apt autoremove -y
 
-	echo "${CYAN}===== Update done =====${NORMAL}"
-	echo
+  echo "${CYAN}===== Update done =====${NORMAL}"
+  echo
 
-	echo "${MAGENTA}===== Saving package list =====${NORMAL}"
-	[ -d "${XDG_CONFIG_HOME}/apt" ] || mkdir -p "${XDG_CONFIG_HOME}/apt"
-	FILENAME="$XDG_CONFIG_HOME/apt/installed-packages_$(hostname -s)_$(date +'%s').txt.gz"
-	LANG=C apt list --installed 2> /dev/null | gzip -c > ${FILENAME}
-	echo "Saved as ${FILENAME}"
-	/bin/ls -t $XDG_CONFIG_HOME/apt/installed-* | tail -n +11 | xargs rm -f
-	echo "${CYAN}===== Saving done =====${NORMAL}"
-	echo
+  echo "${MAGENTA}===== Saving package list =====${NORMAL}"
+  [ -d "${XDG_CONFIG_HOME}/apt" ] || mkdir -p "${XDG_CONFIG_HOME}/apt"
+  FILENAME="$XDG_CONFIG_HOME/apt/installed-packages_$(hostname -s)_$(date +'%s').txt.gz"
+  LANG=C apt list --installed 2> /dev/null | gzip -c > ${FILENAME}
+  echo "Saved as ${FILENAME}"
+  /bin/ls -t $XDG_CONFIG_HOME/apt/installed-* | tail -n +11 | xargs rm -f
+  echo "${CYAN}===== Saving done =====${NORMAL}"
+  echo
 
-	if [ -e /var/run/reboot-required.pkgs ]; then
-		echo "${BOLD}${RED}*** Reboot required due to these package(s):${NORMAL}"
-		cat /var/run/reboot-required.pkgs
-	else
-		echo "No need to reboot."
-	fi
-}
+  if [ -e /var/run/reboot-required.pkgs ]; then
+    echo "${BOLD}${RED}*** Reboot required due to these package(s):${NORMAL}"
+    cat /var/run/reboot-required.pkgs
+  else
+    echo "No need to reboot."
+  fi
+  }
 fi
 
 # TODO: Fix the partial match problem(`bii gdb` will show gdbm too)
 # TODO: Show package version?
 # Check if brew package is installed
 if command -v brew >& /dev/null; then
-	# bii is short for 'brew is installed?'
-	echo -n ", bii()"
+  # bii is short for 'brew is installed?'
+  echo -n ", bii()"
   function bii() {
     local BREW_LIST_FRML="${XDG_CONFIG_HOME}/homebrew/installed_list_formulae.txt"
     local BREW_LIST_CASK="${XDG_CONFIG_HOME}/homebrew/installed_list_casks.txt"
@@ -233,7 +233,7 @@ fi
 echo -n ", SHOW_PATH()"
 function SHOW_PATH () {
   local PREV_IFS="${IFS}"
-	local tmp_path
+  local tmp_path
 
   # Convert the $PATH to an array $path[] (bash only)
   # https://blog.n-z.jp/blog/2016-10-07-bash-path-to-array-again.html
@@ -245,12 +245,12 @@ function SHOW_PATH () {
     unset "path[-1]"
   fi
 
-	echo
-	echo "====================================================================="
-	for tmp_path in "${path[@]}"; do
-		echo "${tmp_path}"
-	done
-	echo "---------------------------------------------------------------------"
+  echo
+  echo "====================================================================="
+  for tmp_path in "${path[@]}"; do
+    echo "${tmp_path}"
+  done
+  echo "---------------------------------------------------------------------"
 }
 
 # Add a string into PATH if not exist
@@ -344,47 +344,47 @@ function DEL_FROM_PATH() {
 
 echo -n ", PING_IPV6_BY_NAME()"
 function PING_IPV6_BY_NAME() {
-	local TARGET="ipv6.google.com"
-	echo "Pinging to $TARGET"
+  local TARGET="ipv6.google.com"
+  echo "Pinging to $TARGET"
   ping6 "$TARGET"
 }
 
 echo -n ", PING_IPV6_BY_ADDR()"
 function PING_IPV6_BY_ADDR() {
-	local TARGET="2404:6800:4004:818::200e"
-	echo "Pinging to $TARGET"
+  local TARGET="2404:6800:4004:818::200e"
+  echo "Pinging to $TARGET"
   ping6 "$TARGET"
 }
 
 echo -n ", _terminfo()"
 function _terminfo() {
-	echo "Geometry: ${COLUMNS}x${LINES}"
-	echo "TERM=${TERM}"
-	echo "TERM_PROGRAM=${TERM_PROGRAM}"
-	echo "TERM_PROGRAM_VERSION=${TERM_PROGRAM_VERSION}"
-	echo "TERMINFO=${TERMINFO}"
-	echo "TERMINFO_DIRS=${TERMINFO_DIRS}"
+  echo "Geometry: ${COLUMNS}x${LINES}"
+  echo "TERM=${TERM}"
+  echo "TERM_PROGRAM=${TERM_PROGRAM}"
+  echo "TERM_PROGRAM_VERSION=${TERM_PROGRAM_VERSION}"
+  echo "TERMINFO=${TERMINFO}"
+  echo "TERMINFO_DIRS=${TERMINFO_DIRS}"
 }
 
 echo -n ", _chksysspd()"
 function _chksysspd() {
-	local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
-	if [[ $(_chksystem) == "darwin" ]]; then
-		# macOS
-		if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
-			SYSSPD="10"
-		elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
-			SYSSPD="4"
-		else
-			SYSSPD="1"
-		fi
-	elif [[ $(_chksystem) == "linux" ]]; then
-		SYSSPD="2"
-	elif [[ $(_chksystem) == "windows" ]]; then
-		:
-	fi
+  local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
+  if [[ $(_chksystem) == "darwin" ]]; then
+    # macOS
+    if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
+      SYSSPD="10"
+    elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
+      SYSSPD="4"
+    else
+      SYSSPD="1"
+    fi
+  elif [[ $(_chksystem) == "linux" ]]; then
+    SYSSPD="2"
+  elif [[ $(_chksystem) == "windows" ]]; then
+    :
+  fi
 
-	echo "${SYSSPD}"
+  echo "${SYSSPD}"
 }
 
 echo

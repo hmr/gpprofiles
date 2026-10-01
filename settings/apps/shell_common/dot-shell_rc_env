@@ -17,17 +17,17 @@ echo "${PATH}" | grep "/usr/local/bin"  >& /dev/null || export PATH="/usr/local/
 
 # Add local Go installation to PATH
 if [ -d "${HOME}/go" ]; then
-	echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin:${PATH}"
+  echo "${PATH}" | grep "${HOME}/go/bin" >& /dev/null || export PATH="${HOME}/go/bin:${PATH}"
 fi
 
 # Add local npm installation to PATH
 if [ -d "${XDG_DATA_HOME}/npm" ]; then
-	echo "${PATH}" | grep "${XDG_DATA_HOME}/npm/bin" >& /dev/null || export PATH="${XDG_DATA_HOME}/npm/bin:${PATH}"
+  echo "${PATH}" | grep "${XDG_DATA_HOME}/npm/bin" >& /dev/null || export PATH="${XDG_DATA_HOME}/npm/bin:${PATH}"
 fi
 
 # Add local Cargo(rust) installation to PATH
 if [ -d "${XDG_DATA_HOME}/cargo/bin" ]; then
-	echo "${PATH}" | grep "${XDG_DATA_HOME}/cargo/bin" >& /dev/null || export PATH="${XDG_DATA_HOME}/cargo/bin:${PATH}"
+  echo "${PATH}" | grep "${XDG_DATA_HOME}/cargo/bin" >& /dev/null || export PATH="${XDG_DATA_HOME}/cargo/bin:${PATH}"
 fi
 
 # Add local installation to PATH
@@ -77,8 +77,8 @@ LESSPIPE=""
 [ -z "${LESSPIPE}" ] && which lesspipe    >& /dev/null && LESSPIPE="lesspipe"
 if [ -n "${LESSPIPE}" ]; then
   echo -n ", LESSOPEN"
-	# FIXME: need to be fixed in lesspipe...
-	eval "$(${LESSPIPE})"
+  # FIXME: need to be fixed in lesspipe...
+  eval "$(${LESSPIPE})"
   if which pygmentize >& /dev/null; then
     export LESSCOLORIZER="$(which pygmentize)"
   fi
@@ -108,19 +108,19 @@ fi
 
 # vim
 if [ -r "${XDG_CONFIG_HOME}/vim/vimrc" ]; then
-	echo -n ", VIMINIT"
-	export VIMINIT=":source ${XDG_CONFIG_HOME}/vim/vimrc"
+  echo -n ", VIMINIT"
+  export VIMINIT=":source ${XDG_CONFIG_HOME}/vim/vimrc"
 fi
 
 # GnuPG home
 if [ -d "${XDG_CONFIG_HOME}/gnupg" ]; then
-	echo -n ", GNUPGHOME"
-	export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
+  echo -n ", GNUPGHOME"
+  export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
 fi
 
 # WeeChat setting
 if [ -d "${XDG_CONFIG_HOME}/weechat" ]; then
-	echo -n ", WeeChat"
+  echo -n ", WeeChat"
   export WEECHAT_HOME=${XDG_CONFIG_HOME}/weechat
 else
   export WEECHAT_HOME=${HOME}/.weechat
@@ -197,17 +197,17 @@ fi
 # Ansible
 if which ansible >& /dev/null; then
   echo -n ", Ansible"
-	export ANSIBLE_HOME="${XDG_CONFIG_HOME}/ansible"
-	export ANSIBLE_CONFIG="${ANSIBLE_HOME}/ansible.cfg"
-	export ANSIBLE_GALAXY_CACHE_DIR="${XDG_CACHE_HOME}/ansible/galaxy_cache"
+  export ANSIBLE_HOME="${XDG_CONFIG_HOME}/ansible"
+  export ANSIBLE_CONFIG="${ANSIBLE_HOME}/ansible.cfg"
+  export ANSIBLE_GALAXY_CACHE_DIR="${XDG_CACHE_HOME}/ansible/galaxy_cache"
 fi
 
 # Set prompt
 echo -n ", PS1"
 if [ "$(id -g)" = "0" ]; then
-	TMP_PROMPT_SYM="#"
+  TMP_PROMPT_SYM="#"
 else
-	TMP_PROMPT_SYM="$"
+  TMP_PROMPT_SYM="$"
 fi
 PS1="${debian_chroot:+($debian_chroot)}\[\e[38;5;69m\]\u\[\e[38;5;214m\]@\[\e[38;5;167m\]\h\[\e[38;5;214m\]:\[\e[38;5;71m\]\w\[\e[38;5;214m\]\${TMP_PROMPT_SYM}\[\e[00m\] "
 

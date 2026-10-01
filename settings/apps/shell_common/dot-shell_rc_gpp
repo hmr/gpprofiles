@@ -29,9 +29,9 @@ if [ -n "${GPP_HOME}" ]; then
 
   export GPP_HOME GPP_VERSION
 
-	# TODO: Verify necessity. zsh sources .zshenv automatically, so sourcing it here
-	# results in double loading, whereas bash requires manual sourcing.
-	# Set base environment
+  # TODO: Verify necessity. zsh sources .zshenv automatically, so sourcing it here
+  # results in double loading, whereas bash requires manual sourcing.
+  # Set base environment
   # source "${GPP_HOME}/settings/apps/shell_common/dot-shell_shellenv"
 
   # Don't change the order.

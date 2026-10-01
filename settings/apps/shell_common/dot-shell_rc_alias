@@ -134,10 +134,10 @@ fi
 
 # MacPorts
 if which port > /dev/null; then
-	echo -n ", MacPort"
-	alias mps="port search"
-	alias mpi="port info"
-	alias mpI="sudo port install"
+  echo -n ", MacPort"
+  alias mps="port search"
+  alias mpi="port info"
+  alias mpI="sudo port install"
 fi
 
 # batcat -> bat
@@ -149,7 +149,7 @@ fi
 # Use bat instead of less
 if which bat > /dev/null; then
   echo -n ", cless"
-	# 'cless' means color less
+  # 'cless' means color less
   alias cless='bat'
 fi
 
@@ -196,7 +196,7 @@ fi
 # make iftop not use utf-8 ACS
 if which iftop > /dev/null; then
   echo -n ", iftop"
-	alias iftop='NCURSES_NO_UTF8_ACS=0 sudo iftop'
+  alias iftop='NCURSES_NO_UTF8_ACS=0 sudo iftop'
 fi
 
 # git
@@ -208,36 +208,36 @@ if which git > /dev/null; then
   alias gml2="git mylog2 --color | grep -v '^$' | less -Rn"
   alias gml2a="git mylog2a --color | grep -v '^$' | less -Rn"
   alias gdx="git dsxs"
-	alias gct="git count-commits"
+  alias gct="git count-commits"
 fi
 
 # tig
 if which tig > /dev/null; then
   echo -n ", tig"
-	alias tl="tig log"
-	alias tref="tig reflog"
-	alias tb="tig blame"
-	alias tg="tig grep"
-	alias ts="tig status"
+  alias tl="tig log"
+  alias tref="tig reflog"
+  alias tb="tig blame"
+  alias tg="tig grep"
+  alias ts="tig status"
 fi
 
 # grc
 if which grc > /dev/null && which vmstat > /dev/null; then
-	echo -n ", vmstat"
-	alias vmstat='grc vmstat'
+  echo -n ", vmstat"
+  alias vmstat='grc vmstat'
 fi
 
 # checkip and other commands that call web APIs
 if which curl > /dev/null; then
-	echo -n ", checkip, checkip6"
-	alias checkip='echo $(curl -s -4 "https://ifconfig.me/ip")'
-	alias checkip6='echo $(curl -s -6 --insecure -H "Host: ifconfig.me" "https://[2600:1901:0:b2bd::]/ip")'
+  echo -n ", checkip, checkip6"
+  alias checkip='echo $(curl -s -4 "https://ifconfig.me/ip")'
+  alias checkip6='echo $(curl -s -6 --insecure -H "Host: ifconfig.me" "https://[2600:1901:0:b2bd::]/ip")'
 
-	echo -m ", getipinfo"
-	alias getipinfo='curl -s "https://ipinfo.io/json" | jq -r'
+  echo -m ", getipinfo"
+  alias getipinfo='curl -s "https://ipinfo.io/json" | jq -r'
 
-	echo -n ", getdaytime"
-	alias getdaytime='curl -sL "http://api.sunrise-sunset.org/json?$(curl -s "ipinfo.io/json" | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
+  echo -n ", getdaytime"
+  alias getdaytime='curl -sL "http://api.sunrise-sunset.org/json?$(curl -s "ipinfo.io/json" | jq -r ".loc" | gsed -e "s/\([0-9\.]\+\),\([0-9\.]\+\)/lat=\1\&lng=\2/g")&date=today&tzid=$(curl -s "ipinfo.io/json" | jq -r ".timezone")" | jq ".results"'
 fi
 
 echo

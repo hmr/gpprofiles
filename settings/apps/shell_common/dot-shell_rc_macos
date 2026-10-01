@@ -21,9 +21,9 @@ function CHECK_PATH () {
 function MP_MAKE_ALIAS_GNU () {
   (( $# < 1 )) && return 1
 
-	[[ -x /opt/local/libexec/gnubin/${1} ]] || return 1
-	alias ${1}="/opt/local/libexec/gnubin/${1}"
-	return 0
+  [[ -x /opt/local/libexec/gnubin/${1} ]] || return 1
+  alias ${1}="/opt/local/libexec/gnubin/${1}"
+  return 0
 }
 
 # Add into PATH of GNU software (For Homebrew)
@@ -39,14 +39,14 @@ function HB_ADD_PATH_GNU () {
 
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-		case ${2:-L} in
-			H)
-				ADD_INTO_PATH "${HB_TARGET}" "H"
-				;;
-			*)
-				ADD_INTO_PATH "${HB_TARGET}"
-				;;
-		esac
+    case ${2:-L} in
+      H)
+        ADD_INTO_PATH "${HB_TARGET}" "H"
+        ;;
+      *)
+        ADD_INTO_PATH "${HB_TARGET}"
+        ;;
+    esac
     return 0
   else
     return 2
@@ -65,14 +65,14 @@ function HB_ADD_PATH () {
 
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-		case ${2:-L} in
-			H)
-				ADD_INTO_PATH "${HB_TARGET}" "H"
-				;;
-			*)
-				ADD_INTO_PATH "${HB_TARGET}"
-				;;
-		esac
+    case ${2:-L} in
+      H)
+        ADD_INTO_PATH "${HB_TARGET}" "H"
+        ;;
+      *)
+        ADD_INTO_PATH "${HB_TARGET}"
+        ;;
+    esac
     return 0
   else
     return 2
@@ -91,14 +91,14 @@ function HB_ADD_PATH_LIBEXEC () {
 
   CHECK_PATH "${HB_TARGET}" && return 1
   if [ -d "${HB_TARGET}" ]; then
-		case ${2:-L} in
-			H)
-				ADD_INTO_PATH "${HB_TARGET}" "H"
-				;;
-			*)
-				ADD_INTO_PATH "${HB_TARGET}"
-				;;
-		esac
+    case ${2:-L} in
+      H)
+        ADD_INTO_PATH "${HB_TARGET}" "H"
+        ;;
+      *)
+        ADD_INTO_PATH "${HB_TARGET}"
+        ;;
+    esac
     return 0
   else
     return 2
@@ -118,7 +118,7 @@ fi
 # Set LANG
 TMP_SYS_LANG="$(defaults read -g AppleLocale)"
 if [[ ! $LANG =~ TMP_SYS_LANG ]]; then
-	export LANG="${TMP_SYS_LANG}.UTF-8"
+  export LANG="${TMP_SYS_LANG}.UTF-8"
 fi
 
 # Only for bash
@@ -170,13 +170,13 @@ fi
 
 # MacPorts
 if [[ -x ${MP_PREFIX:="/opt/local"}/bin/port ]]; then
-	echo "  MacPorts found. Setting variables..."
-	DEL_FROM_PATH "${MP_PREFIX}/sbin"
-	ADD_INTO_PATH "${MP_PREFIX}/sbin" "H"
-	DEL_FROM_PATH "${MP_PREFIX}/bin"
-	ADD_INTO_PATH "${MP_PREFIX}/bin" "H"
+  echo "  MacPorts found. Setting variables..."
+  DEL_FROM_PATH "${MP_PREFIX}/sbin"
+  ADD_INTO_PATH "${MP_PREFIX}/sbin" "H"
+  DEL_FROM_PATH "${MP_PREFIX}/bin"
+  ADD_INTO_PATH "${MP_PREFIX}/bin" "H"
 else
-	echo "  MacPorts not found."
+  echo "  MacPorts not found."
 fi
 
 # PATH
@@ -203,108 +203,108 @@ fi
 # add Homebrew's directory to BASH_LOADABLES_PATH if the shell is bash
 case "$(chkshell)" in
   bash )
-		if [[ ${BASH} =~ "homebrew" ]]; then
-			BASH_LOADABLES_PATH="${BASH_LOADABLES_PATH}:${HOMEBREW_PREFIX}/lib/bash"
-		fi
+    if [[ ${BASH} =~ "homebrew" ]]; then
+      BASH_LOADABLES_PATH="${BASH_LOADABLES_PATH}:${HOMEBREW_PREFIX}/lib/bash"
+    fi
 esac
 
 # For Homebrew
 if [[ -x /usr/local/bin/brew || -x /opt/homebrew/bin/brew ]]; then
-	# Caution: binutils' ranlib is incompatible with macOS ld
-	# TEMP_TGT="binutils"
-	# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
+  # Caution: binutils' ranlib is incompatible with macOS ld
+  # TEMP_TGT="binutils"
+  # HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}"
 
-	TEMP_TGT="grep"
-	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="grep"
+  HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="gnu-sed"
-	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="gnu-sed"
+  HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="gnu-tar"
-	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="gnu-tar"
+  HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="gnu-time"
-	HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="gnu-time"
+  HB_ADD_PATH_GNU ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="curl"
-	HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="curl"
+  HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="imagemagick@6"
-	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="imagemagick@6"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="sqlite"
-	HB_ADD_PATH H ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="sqlite"
+  HB_ADD_PATH H ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="bc"
-	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="bc"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="ruby"
-	HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)" || echo -n ", skipped ${TEMP_TGT}(hb)"
-	export BUNDLE_USER_CONFIG="${XDG_CONFIG_HOME}/bundle"
-	export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}/bundle"
-	export BUNDLE_USER_PLUGIN="${XDG_DATA_HOME}/bundle"
-	export GEM_HOME="${XDG_DATA_HOME}/gem"
-	export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
+  TEMP_TGT="ruby"
+  HB_ADD_PATH ${TEMP_TGT} H && echo -n ", ${TEMP_TGT}(hb)" || echo -n ", skipped ${TEMP_TGT}(hb)"
+  export BUNDLE_USER_CONFIG="${XDG_CONFIG_HOME}/bundle"
+  export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}/bundle"
+  export BUNDLE_USER_PLUGIN="${XDG_DATA_HOME}/bundle"
+  export GEM_HOME="${XDG_DATA_HOME}/gem"
+  export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 
-	TEMP_TGT="bzip2"
-	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="bzip2"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="zip"
-	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="zip"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	# TEMP_TGT="openssl"
-	# HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  # TEMP_TGT="openssl"
+  # HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="file"
-	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="file"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	TEMP_TGT="llvm"
-	HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
+  TEMP_TGT="llvm"
+  HB_ADD_PATH ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(hb)"
 
-	unset TEMP_TGT
-	echo
+  unset TEMP_TGT
+  echo
 fi
 
 # For MacPorts
 if [[ -x /opt/local/bin/port ]]; then
-	TEMP_TGT="date"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="date"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="grep"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="grep"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="sed"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="sed"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="tar"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="tar"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	# TEMP_TGT="time"
-	# MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  # TEMP_TGT="time"
+  # MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="make"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="make"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="sha1sum"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="sha1sum"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="sha224sum"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="sha224sum"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="sha256sum"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="sha256sum"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="sha384sum"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="sha384sum"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="sha512sum"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="sha512sum"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	TEMP_TGT="dircolors"
-	MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
+  TEMP_TGT="dircolors"
+  MP_MAKE_ALIAS_GNU ${TEMP_TGT} && echo -n ", ${TEMP_TGT}(mp)"
 
-	unset TEMP_TGT
-	echo
+  unset TEMP_TGT
+  echo
 fi
 
 echo "  Setting variables for macOS..."
@@ -347,8 +347,8 @@ if alias mtr >& /dev/null; then
 fi
 
 if [[ -x ${HOME}/src/deadman/deadman ]]; then
-	echo -n ", deadman(workaround)"
-	alias deadman="TERM=xterm-256color /usr/local/bin/python ~/src/deadman/deadman"
+  echo -n ", deadman(workaround)"
+  alias deadman="TERM=xterm-256color /usr/local/bin/python ~/src/deadman/deadman"
 fi
 echo
 
@@ -373,7 +373,7 @@ function _gpp_wait_for_secs() {
       echo -n "."
     fi
   }
-  echo
+echo
 }
 
 echo -n ", _gpp_ping6_to"
@@ -399,13 +399,13 @@ function _gpp_ping6_to() {
 
 echo -n ", _gpp_determine_ipv6_if()"
 function _gpp_determine_ipv6_if() {
-	networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}'
+  networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-?Fi|AirPort)$/{f=1;next} f&&/^Device: /{print $2;exit}'
 }
 
 # TODO: Due to migrated to launchd, this function will be deleted.
 echo -n ", setipv6route"
 function setipv6route() {
-	local router_addr="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 1)"
+  local router_addr="$(ndp -rn | grep -E -v 'utun|bridge' | awk '{print $1}' | cut -d '%' -f 1)"
 
   echo "Pinging dns.google to check IPv6 routing... ";
   if _gpp_ping6_to; then
@@ -436,62 +436,62 @@ function setipv6route() {
     fi
   }
 
-  echo "  Hmmmm... looks like it's still not working."
-  echo "  OK. Trying to disconnect the Wi-Fi. Then reconnect."
-  sudo ifconfig en1 down
-  sleep 5
-  sudo ifconfig en1 up
-  echo "    Done. Wait for something that is needed to work well "
+echo "  Hmmmm... looks like it's still not working."
+echo "  OK. Trying to disconnect the Wi-Fi. Then reconnect."
+sudo ifconfig en1 down
+sleep 5
+sudo ifconfig en1 up
+echo "    Done. Wait for something that is needed to work well "
 
-  for ((cnt=0; cnt < 3; cnt++)) {
-    _gpp_wait_for_secs 10
-    echo "  OK! Let's ping to dns.google..."
-    if _gpp_ping6_to; then
-      echo "    It seems to be OK. Doesn't it?"
-      return 0
-    fi
-  }
+for ((cnt=0; cnt < 3; cnt++)) {
+  _gpp_wait_for_secs 10
+  echo "  OK! Let's ping to dns.google..."
+  if _gpp_ping6_to; then
+    echo "    It seems to be OK. Doesn't it?"
+    return 0
+  fi
+}
 
-  echo "  Ohhhhh... There's no more way... Giving up. (sigh)"
-  return 2
+echo "  Ohhhhh... There's no more way... Giving up. (sigh)"
+return 2
 }
 
 echo -n ", whichwp"
 function whichwp () {
-	local num_of_screens="$(osascript -e 'tell application "System Events" to count (every desktop)')"
-	local folder_of_wp="$(osascript -e 'tell application "System Events" to get picture of current desktop')"
-	local db_wp="${HOME}/Library/Application\ Support/Dock/desktoppicture.db"
-	local vers="$(sw_vers -productVersion | awk -F '.' '{printf "%d%02d%02d", $1, $2, $3}')"
-	if (( vers >= 140000 )); then
-		echo "Wallpaper will be any of the following:"
-		lsof -p $(pgrep -f WallpaperImageExtension) \
-			| grep "${folder_of_wp}" \
-			| awk '{ $1=$2=$3=$4=$5=$6=$7=$8=""; sub(/^[[:space:]]+/, ""); print "\""$0"\""}'
-	else
-		local idx=0
-		local file
-		for file in $(sqlite3 "${db_wp}" "select * from data" | tail "-${num_of_screens}")
-		do
-			echo -n Display $((++idx)):
-			echo "${folder_of_wp}/${file}"
-		done
-	fi
+  local num_of_screens="$(osascript -e 'tell application "System Events" to count (every desktop)')"
+  local folder_of_wp="$(osascript -e 'tell application "System Events" to get picture of current desktop')"
+  local db_wp="${HOME}/Library/Application\ Support/Dock/desktoppicture.db"
+  local vers="$(sw_vers -productVersion | awk -F '.' '{printf "%d%02d%02d", $1, $2, $3}')"
+  if (( vers >= 140000 )); then
+    echo "Wallpaper will be any of the following:"
+    lsof -p $(pgrep -f WallpaperImageExtension) \
+      | grep "${folder_of_wp}" \
+      | awk '{ $1=$2=$3=$4=$5=$6=$7=$8=""; sub(/^[[:space:]]+/, ""); print "\""$0"\""}'
+  else
+    local idx=0
+    local file
+    for file in $(sqlite3 "${db_wp}" "select * from data" | tail "-${num_of_screens}")
+    do
+      echo -n Display $((++idx)):
+      echo "${folder_of_wp}/${file}"
+    done
+  fi
 }
 
 echo -n ", safe_rm(${GPP_HOME})"
 if [[ -n ${GPP_HOME} && -x ${GPP_HOME}/libexec/tools/safe-rm.sh ]]; then
-	alias rm="${GPP_HOME}/libexec/tools/safe-rm.sh"
+  alias rm="${GPP_HOME}/libexec/tools/safe-rm.sh"
 fi
 
 echo
 
 if  ! [[ -L /etc/locate.rc ]]; then
-    echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/locate.rc is not a symbolic link.${NORMAL}"
-		echo "    do 'sudo ln -s $GPP_HOME/settings/os/macos/locate/default/locate.rc /etc/locate.rc'"
+  echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/locate.rc is not a symbolic link.${NORMAL}"
+  echo "    do 'sudo ln -s $GPP_HOME/settings/os/macos/locate/default/locate.rc /etc/locate.rc'"
 fi
 
 if [[ ! -r /etc/zshenv ]]; then
   echo "  ${RED}${BOLD}Warning:${NORMAL} ${RED}${UNDERLINE}/etc/zshrc can't be read.${NORMAL}"
-	echo "    do 'sudo ln -s ~/gpprofiles/settings/apps/zsh/etc-zshenv /etc/zshenv'"
+  echo "    do 'sudo ln -s ~/gpprofiles/settings/apps/zsh/etc-zshenv /etc/zshenv'"
 fi
 
