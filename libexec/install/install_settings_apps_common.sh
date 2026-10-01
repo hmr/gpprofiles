@@ -7,17 +7,17 @@
 # install_settings_apps_common.sh
 
 function is_retina() {
-	if system_profiler SPDisplaysDataType | grep -qE "Resolution:.+Retina$"; then
-		return 0
-	else
-		return 1
-	fi
+  if system_profiler SPDisplaysDataType | grep -qE "Resolution:.+Retina$"; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 # Install the settings in the argument
 if [[ -z $TARGET ]]; then
-	echo "Error: Env TARGET isn't set."
-	exit 1
+  echo "Error: Env TARGET isn't set."
+  exit 1
 fi
 
 SDIR="$(cd $(dirname $0)/../..; pwd)"
@@ -34,61 +34,61 @@ echo "XDG_DATA_HOME: $XDG_DATA_HOME"
 echo
 
 for APP in "${TARGET[@]:?}"; do
-	echo "Installing ${APP:?}"
+  echo "Installing ${APP:?}"
 
-	# Settings that require special treatment
-	if [[ ${APP} = "systemd-user" ]]; then
-		TMP_BASE_DIR="${XDG_CONFIG_HOME}/systemd"
-		[[ -d ${TMP_BASE_DIR} ]] \
-			&& mv "${TMP_BASE_DIR}" "${TMP_BASE_DIR}.orig"
-		mkdir -p "${TMP_BASE_DIR}"
+  # Settings that require special treatment
+  if [[ ${APP} = "systemd-user" ]]; then
+    TMP_BASE_DIR="${XDG_CONFIG_HOME}/systemd"
+    [[ -d ${TMP_BASE_DIR} ]] \
+      && mv "${TMP_BASE_DIR}" "${TMP_BASE_DIR}.orig"
+    mkdir -p "${TMP_BASE_DIR}"
 
-		TMP_APP_DIR="${TMP_BASE_DIR}/user"
-		ln -s "${GPP_HOME}/settings/os/ubuntu/systemd/user" "${TMP_APP_DIR}"
+    TMP_APP_DIR="${TMP_BASE_DIR}/user"
+    ln -s "${GPP_HOME}/settings/os/ubuntu/systemd/user" "${TMP_APP_DIR}"
 
-	elif [[ ${APP} = "rust-cargo" ]]; then
-		TMP_BASE_DIR="${XDG_DATA_HOME}/cargo"
-		[[ -d ${TMP_BASE_DIR} ]] \
-			&& mv "${TMP_BASE_DIR}" "${TMP_BASE_DIR}.orig"
-		mkdir -p "${TMP_BASE_DIR}"
+  elif [[ ${APP} = "rust-cargo" ]]; then
+    TMP_BASE_DIR="${XDG_DATA_HOME}/cargo"
+    [[ -d ${TMP_BASE_DIR} ]] \
+      && mv "${TMP_BASE_DIR}" "${TMP_BASE_DIR}.orig"
+    mkdir -p "${TMP_BASE_DIR}"
 
-	elif [[ ${APP} = "rust-rustup" ]]; then
-		TMP_BASE_DIR="${XDG_DATA_HOME}/rustup"
-		[[ -d ${TMP_BASE_DIR} ]] \
-			&& mv "${TMP_BASE_DIR}" "${TMP_BASE_DIR}.orig"
-		mkdir -p "${TMP_BASE_DIR}"
+  elif [[ ${APP} = "rust-rustup" ]]; then
+    TMP_BASE_DIR="${XDG_DATA_HOME}/rustup"
+    [[ -d ${TMP_BASE_DIR} ]] \
+      && mv "${TMP_BASE_DIR}" "${TMP_BASE_DIR}.orig"
+    mkdir -p "${TMP_BASE_DIR}"
 
-	elif [[ ${APP} = "gsed" ]]; then
-		TMP_BASE_DIR="${HOME}/.local/bin"
-		[[ -d ${TMP_BASE_DIR} ]] \
-			|| mkdir -p "${TMP_BASE_DIR}"
-		ln -s "$(which sed)" "${TMP_BASE_DIR}/gsed"
+  elif [[ ${APP} = "gsed" ]]; then
+    TMP_BASE_DIR="${HOME}/.local/bin"
+    [[ -d ${TMP_BASE_DIR} ]] \
+      || mkdir -p "${TMP_BASE_DIR}"
+    ln -s "$(which sed)" "${TMP_BASE_DIR}/gsed"
 
-	# Generic processesing
-	else
-		# Rename old settings if present
-		#TODO: make a better logic...(in case the directory to rename is already exists)
-		if [[ -d ${XDG_CONFIG_HOME:?}/${APP} ]]; then
-			echo "  Moving old config as ${APP}.orig"
-			mv "${XDG_CONFIG_HOME}/${APP}" "${XDG_CONFIG_HOME}/${APP}.orig"
-		fi
+  # Generic processesing
+else
+  # Rename old settings if present
+  #TODO: make a better logic...(in case the directory to rename is already exists)
+  if [[ -d ${XDG_CONFIG_HOME:?}/${APP} ]]; then
+    echo "  Moving old config as ${APP}.orig"
+    mv "${XDG_CONFIG_HOME}/${APP}" "${XDG_CONFIG_HOME}/${APP}.orig"
+  fi
 
-		# Some settings need additional processing
-		if [[ ${APP} = "vim" ]]; then
-			ln -s "${GPP_HOME}/settings/apps/vim/dot-vim" "${XDG_CONFIG_HOME}/vim"
-		else
-			ln -s "${GPP_HOME}/settings/apps/${APP}" "${XDG_CONFIG_HOME}"
-		fi
+    # Some settings need additional processing
+    if [[ ${APP} = "vim" ]]; then
+      ln -s "${GPP_HOME}/settings/apps/vim/dot-vim" "${XDG_CONFIG_HOME}/vim"
+    else
+      ln -s "${GPP_HOME}/settings/apps/${APP}" "${XDG_CONFIG_HOME}"
+    fi
 
-		# App specific post processing
-		if [[ ${APP} = "ghostty" ]]; then
-			TMP_BASE_DIR="${XDG_CONFIG_HOME}/ghostty"
-			if is_retina; then
-				ln -s "${TMP_BASE_DIR}/config.retina" "${TMP_BASE_DIR}/config"
-			else
-				ln -s "${TMP_BASE_DIR}/config.generic" "${TMP_BASE_DIR}/config"
-			fi
-		fi
-	fi
+    # App specific post processing
+    if [[ ${APP} = "ghostty" ]]; then
+      TMP_BASE_DIR="${XDG_CONFIG_HOME}/ghostty"
+      if is_retina; then
+        ln -s "${TMP_BASE_DIR}/config.retina" "${TMP_BASE_DIR}/config"
+      else
+        ln -s "${TMP_BASE_DIR}/config.generic" "${TMP_BASE_DIR}/config"
+      fi
+    fi
+  fi
 done
 
