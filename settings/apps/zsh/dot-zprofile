@@ -1,4 +1,4 @@
-# vim: set et syn=zsh ft=sh ff=unix fenc=utf-8 ts=2 sw=2 sts=2 : # GPP default modeline for zsh script
+# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for shell scripts
 # shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${ZDOTDIR}
 
 # Part of GPP
