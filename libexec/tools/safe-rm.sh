@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim: set ft=sh syn=bash fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for shell scripts
 
 # ==============================================================================
 # This script was copied from "https://github.com/kaelzhang/shell-safe-rm"

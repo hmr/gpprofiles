@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim: set noet syn=bash ft=sh ff=unix fenc=utf-8 ts=2 sw=0 : # GPP default modeline for bash script
+# vim: set ft=sh syn=bash fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for shell scripts
 # shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${GPP_HOME}
 
 # netlocd: switch macOS network location by SSID/BSSID.
@@ -34,9 +34,9 @@ WIFI_DEV="$(eval networksetup -listallhardwareports | awk '/^Hardware Port: (Wi-
 DEFAULT_LOCATION="Automatic"
 POLL_INTERVAL_SEC=5
 CHECK_SSID_COMMANDS=(\
-	"ipconfig getsummary ${WIFI_DEV} | grep -E 'SSID|BSSID' | sed -e 's/^ *//' -e 's/ : /:/'" \
-	"ioreg -d 1 -f -r -c 'AirPort_BrcmNIC_Interface' | grep -E 'IO80211SSID|IO80211BSSID' | sed -e 's/[ \|\"]//g' -e 's/IO80211//g' -e 's/=/:/g'" \
-	"${GPP_HOME}/libexec/tools/GetBSSID.app/Contents/MacOS/GetBSSID" \
+  "ipconfig getsummary ${WIFI_DEV} | grep -E 'SSID|BSSID' | sed -e 's/^ *//' -e 's/ : /:/'" \
+  "ioreg -d 1 -f -r -c 'AirPort_BrcmNIC_Interface' | grep -E 'IO80211SSID|IO80211BSSID' | sed -e 's/[ \|\"]//g' -e 's/IO80211//g' -e 's/=/:/g'" \
+  "${GPP_HOME}/libexec/tools/GetBSSID.app/Contents/MacOS/GetBSSID" \
 )
 CHECK_SSID_COMMAND=""
 
@@ -67,14 +67,14 @@ GET_WIFI_SUMMARY() {
   local line ssid="" bssid=""
   # shellcheck disable=SC2016
   while IFS= read -r line; do
-		# LOG "LINE: ${line}"
+    # LOG "LINE: ${line}"
     case "$line" in
       SSID:*)  ssid="${line#SSID:}";;
       BSSID:*) bssid="${line#BSSID:}";;
     esac
   done < <(eval "${CHECK_SSID_COMMAND}")
-	# LOG "SSID=$ssid"
-	# LOG "BSSID=$bssid"
+  # LOG "SSID=$ssid"
+  # LOG "BSSID=$bssid"
   # Trim spaces
   # ssid="${ssid#"${ssid%%[![:space:]]*}"}"; ssid="${ssid%"${ssid##*[![:space:]]}"}"
   # bssid="${bssid#"${bssid%%[![:space:]]*}"}"; bssid="${bssid%"${bssid##*[![:space:]]}"}"
@@ -95,10 +95,10 @@ SWITCH_LOCATION() {
     return 0
   fi
 
-	if [[ -z ${target} ]]; then
-		LOG "The SSID or BSSID is configured to be ignored."
-		return 0
-	fi
+  if [[ -z ${target} ]]; then
+    LOG "The SSID or BSSID is configured to be ignored."
+    return 0
+  fi
 
   local cur
   cur="$(CURRENT_LOCATION)"
@@ -156,8 +156,8 @@ LOAD_CONFIG() {
     fi
   done < "${CONFIG_FILE}"
 
-	# LOG "SSID to ignore: ${IGNORE_SSIDS[*]}"
-	# LOG "BSSID to ignore: ${IGNORE_BSSIDS[*]}"
+  # LOG "SSID to ignore: ${IGNORE_SSIDS[*]}"
+  # LOG "BSSID to ignore: ${IGNORE_BSSIDS[*]}"
 
   if (( errors > 0 )); then
     ERR "Found ${errors} syntax error(s) in ${CONFIG_FILE}. Faulty lines were ignored."
@@ -170,12 +170,12 @@ DECIDE_LOCATION() {
   # If BSSID is ignored
   if IN_ARRAY "${bssid}" "${IGNORE_BSSIDS[@]}"; then
     bssid=""
-		return 0
+    return 0
   fi
   # If SSID is ignored
   if IN_ARRAY "${ssid}" "${IGNORE_SSIDS[@]}"; then
     ssid=""
-		return 0
+    return 0
   fi
   # Prefer BSSID match
   if [[ -n "${bssid}" && -n "${MAP_BSSID[${bssid}]:-}" ]]; then
@@ -192,30 +192,30 @@ DECIDE_LOCATION() {
 }
 
 DETERMINE_COMMAND() {
-	local line=""
-	local ssid=""
-	local cmd=""
-	local i=0
+  local line=""
+  local ssid=""
+  local cmd=""
+  local i=0
 
-	for cmd in "${CHECK_SSID_COMMANDS[@]}"; do
-		LOG "Trying to find SSID/BSSID [Method #${i}]"
-		while IFS= read -r line; do
-			case "$line" in
-				SSID:*)  ssid="${line#SSID:}";;
-			esac
-		done < <(eval "${cmd}")
+  for cmd in "${CHECK_SSID_COMMANDS[@]}"; do
+    LOG "Trying to find SSID/BSSID [Method #${i}]"
+    while IFS= read -r line; do
+      case "$line" in
+        SSID:*)  ssid="${line#SSID:}";;
+      esac
+    done < <(eval "${cmd}")
 
-		if [[ -n ${ssid} && ${ssid} != "<redacted>" ]]; then
-			LOG "SSID found: ${ssid}"
-			LOG "Command: ${cmd}"
-			CHECK_SSID_COMMAND="${cmd}"
-			return;
-		fi
-		((i++))
-	done
+    if [[ -n ${ssid} && ${ssid} != "<redacted>" ]]; then
+      LOG "SSID found: ${ssid}"
+      LOG "Command: ${cmd}"
+      CHECK_SSID_COMMAND="${cmd}"
+      return;
+    fi
+    ((i++))
+  done
 
-	ERR "SSID/BSSID detection command not found."
-	exit 1
+  ERR "SSID/BSSID detection command not found."
+  exit 1
 }
 
 # Trap to allow clean messages
@@ -234,8 +234,8 @@ LOG "Arg 0=${0}"
 # [[ -n ${ZSH_PATCHLEVEL} ]] && LOG "ZSH_PATCHLEVEL=${ZSH_PATCHLEVEL}"
 LOG "WIFI_DEV=${WIFI_DEV}"
 if [[ -z ${WIFI_DEV} ]]; then
-	ERR "Can't determine Wi-Fi device."
-	exit 1
+  ERR "Can't determine Wi-Fi device."
+  exit 1
 fi
 
 DETERMINE_COMMAND
@@ -251,8 +251,8 @@ while :; do
     continue
   fi
 
-	[[ -z ${PREV_SSID} ]] && PREV_SSID="${cur_ssid}"
-	[[ -z ${PREV_BSSID} ]] && PREV_BSSID="${cur_bssid}"
+  [[ -z ${PREV_SSID} ]] && PREV_SSID="${cur_ssid}"
+  [[ -z ${PREV_BSSID} ]] && PREV_BSSID="${cur_bssid}"
 
   # Force location switch on first run, or when SSID/BSSID changes
   should_switch=0

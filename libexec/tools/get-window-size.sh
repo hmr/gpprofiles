@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
+# vim: set ft=sh syn=bash fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for shell scripts
+
 set -euo pipefail
 
 wait_sec=5
 quiet=0
 
 usage() {
-cat <<EOF
+  cat <<EOF
 Usage:
   frontwin [SECONDS]
   frontwin [-q|--quiet] [SECONDS]
@@ -73,15 +75,15 @@ fi
 # ---- AppleScript: measure front window ----
 osascript <<'END_OF_APPLESCRIPT'
 tell application "System Events"
-	tell (first process whose frontmost is true)
-		if (count of windows) is 0 then return "no window"
-		
-		set appName to name
-		tell front window
-			set {x, y} to position
-			set {w, h} to size
-		end tell
-	end tell
+  tell (first process whose frontmost is true)
+    if (count of windows) is 0 then return "no window"
+
+    set appName to name
+    tell front window
+      set {x, y} to position
+      set {w, h} to size
+    end tell
+  end tell
 end tell
 
 return appName & " " & x & "," & y & " " & w & "x" & h
