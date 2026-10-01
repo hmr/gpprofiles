@@ -28,11 +28,11 @@ echo "Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 # 😩😂😅😝
 # Compile rc files
 for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle; do
-	if [[ ! -f ${_SELF}.zwc || ${_SELF} -nt ${_SELF}.zwc ]]; then
-		echo "  Compiling ${_SELF}"
-		zcompile "${_SELF}"
-	fi
-	unset _SELF
+  if [[ ! -f ${_SELF}.zwc || ${_SELF} -nt ${_SELF}.zwc ]]; then
+    echo "  Compiling ${_SELF}"
+    zcompile "${_SELF}"
+  fi
+  unset _SELF
 done
 
 # Ghostty zsh integration
@@ -65,16 +65,16 @@ fi
 ## Own-install version
 if   [[ -d ${XDG_CONFIG_HOME}/zplug ]]; then
   export ZPLUG_ROOT="${XDG_CONFIG_HOME}/zplug"
-## Homebrew-installed version(x86)
+  ## Homebrew-installed version(x86)
 elif [[ -d /usr/local/opt/zplug ]]; then
   export ZPLUG_ROOT="/usr/local/opt/zplug"
-## Homebrew-installed version(Apple Silicon)
+  ## Homebrew-installed version(Apple Silicon)
 elif [[ -d /opt/homebrew/opt/zplug ]]; then
   export ZPLUG_ROOT="/opt/homebrew/opt/zplug"
-## APT-installed version
+  ## APT-installed version
 elif [[ -d /usr/share/zplug ]]; then
   export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
-## GPP-installed version
+  ## GPP-installed version
 elif [[ -d ${ZDOTDIR:-${HOME}/.config/zsh}/zplug ]]; then
   export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
 fi
@@ -84,10 +84,10 @@ export ZPLUG_HOME="${XDG_DATA_HOME:-${HOME}/.local}/zplug"
 #shellcheck disable=SC1036,SC1072,SC1073
 TMP_VAR="$(echo $ZPLUG_HOME/job.lock(Nmm+0))"
 if [[ -e ${TMP_VAR} ]]; then
-	echo "Lockfile found!!"
-	rm "$ZPLUG_HOME/job.lock" # clean up lockfile older than 1 min
+  echo "Lockfile found!!"
+  rm "$ZPLUG_HOME/job.lock" # clean up lockfile older than 1 min
 else
-	echo "Lockfile not exist"
+  echo "Lockfile not exist"
 fi
 unset TMP_VAR
 # Per-user plugin repo directory
@@ -115,29 +115,29 @@ fi
 # =================== z-a-c settings ===================
 # ZAC's hook function (ZAC_IMMEDIATE_CALLBACK_FNC / ZAC_DEFERRED_CALLBACK_FNC)
 function ZAC_CALLBACK() {
-	local is_dark=$1
-	local func_name="ZAC_CALLBACK"
-	# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE] Entering $func_name()" \
-		# >> "$GPP_LOG_DIR/$func_name.log"
+  local is_dark=$1
+  local func_name="ZAC_CALLBACK"
+  # echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE] Entering $func_name()" \
+  # >> "$GPP_LOG_DIR/$func_name.log"
 
-	if (( is_dark )); then
-		# Dark mode
-		# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]    Changing to dark mode"\
-			# >> "$GPP_LOG_DIR/$func_name.log"
-		# Change f-sy-h color scheme
-		fast-theme -q XDG:base16-dark-overlay
-			# || echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]  $func_name() failed." \
-			# >> "$GPP_LOG_DIR/$func_name.log"
-	else
-		# Light mode
-		# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]    Changing to light mode" \
-			# >> "$GPP_LOG_DIR/$func_name.log"
-		# Change f-sy-h color scheme
-		fast-theme -q -R && fast-theme -q XDG:base16-light
-			# || echo "[$(date +'%H:%M:%S')] $func_name() failed." >> "$GPP_LOG_DIR/$func_name.log"
-	fi
-	# echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]  Exiting $func_name()" \
-		# >> "$GPP_LOG_DIR/$func_name.log"
+  if (( is_dark )); then
+    # Dark mode
+    # echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]    Changing to dark mode"\
+    # >> "$GPP_LOG_DIR/$func_name.log"
+    # Change f-sy-h color scheme
+    fast-theme -q XDG:base16-dark-overlay
+    # || echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]  $func_name() failed." \
+    # >> "$GPP_LOG_DIR/$func_name.log"
+  else
+    # Light mode
+    # echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]    Changing to light mode" \
+    # >> "$GPP_LOG_DIR/$func_name.log"
+    # Change f-sy-h color scheme
+    fast-theme -q -R && fast-theme -q XDG:base16-light
+    # || echo "[$(date +'%H:%M:%S')] $func_name() failed." >> "$GPP_LOG_DIR/$func_name.log"
+  fi
+  # echo "[$(date +'%H:%M:%S')] [$(basename $TTY)] [Pane:$TMUX_PANE]  Exiting $func_name()" \
+  # >> "$GPP_LOG_DIR/$func_name.log"
 }
 
 export ZAC_DEFERRED_CALLBACK_FNC=ZAC_CALLBACK
@@ -167,84 +167,84 @@ export FZF_CTRL_R_OPTS="--height 60% --preview 'echo {}' --preview-window=border
 
 # ---------- Ctrl-T
 if type rg >& /dev/null; then
-	# export FZF_DEFAULT_COMMAND="rg --files --follow 2>/dev/null"
-	# export FZF_DEFAULT_COMMAND="rg --files --no-messages"
-	# export FZF_DEFAULT_COMMAND="rg --files --hidden 2> /dev/null --follow --glob '!.git/*'"
-	export FZF_CTRL_T_COMMAND="rg --max-depth=6 --files --hidden 2> /dev/null --follow --glob '!.git/*' | sort"
-	export FZF_CTRL_T_TMUX_OPTS="-p 70%,65%"
-	export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=plain --line-range :100 {}' --preview-window=border-sharp,right:60%"
+  # export FZF_DEFAULT_COMMAND="rg --files --follow 2>/dev/null"
+  # export FZF_DEFAULT_COMMAND="rg --files --no-messages"
+  # export FZF_DEFAULT_COMMAND="rg --files --hidden 2> /dev/null --follow --glob '!.git/*'"
+  export FZF_CTRL_T_COMMAND="rg --max-depth=6 --files --hidden 2> /dev/null --follow --glob '!.git/*' | sort"
+  export FZF_CTRL_T_TMUX_OPTS="-p 70%,65%"
+  export FZF_CTRL_T_OPTS="--preview 'bat  --color=always --style=plain --line-range :100 {}' --preview-window=border-sharp,right:60%"
 fi
 
 # ---------- Alt-C
 if type fd >& /dev/null; then
-	export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git | sort"
-	# export FZF_ALT_C_COMMAND="fd --type d | sort"
-	if type eza >& /dev/null; then
-		export FZF_ALT_C_TMUX_OPTS="-p 50%,50%"
-		export FZF_ALT_C_OPTS="--preview 'eza {} -h -T -F --no-user --no-time --no-filesize --no-permissions --long | head -200' --preview-window=border-sharp,hidden:right:60% --bind '?:toggle-preview'"
-	fi
+  export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git | sort"
+  # export FZF_ALT_C_COMMAND="fd --type d | sort"
+  if type eza >& /dev/null; then
+    export FZF_ALT_C_TMUX_OPTS="-p 50%,50%"
+    export FZF_ALT_C_OPTS="--preview 'eza {} -h -T -F --no-user --no-time --no-filesize --no-permissions --long | head -200' --preview-window=border-sharp,hidden:right:60% --bind '?:toggle-preview'"
+  fi
 fi
 
 # Helper function
 function _chksysspd() {
-	local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
-	SYSSPD=1
+  local SYSSPD CPU_ARCH CPU_TYPE CPU_CLOCK
+  SYSSPD=1
 
-	case "${OSTYPE}" in
-		darwin* )
-			if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
-				SYSSPD="10"
-			elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
-				SYSSPD="4"
-			else
-				SYSSPD="1"
-			fi;;
-		linux*)
-			case "$(uname -m)" in
-				aarch64)
-					local TMP_CPUINFO
-					TMP_CPUINFO=$(cat /proc/cpuinfo)
-					if [[ ${TMP_CPUINFO} =~ "Raspberry Pi 5" ]]; then
-						SYSSPD="7"
-					elif [[ ${TMP_CPUINFO} =~ "Raspberry Pi 4" ]]; then
-						SYSSPD="3"
-					else
-						SYSSPD="2"
-					fi
-					:
-					;;
-				*)
-					SYSSPD="2";;
-			esac
-			;;
-		* )
-			SYSSPD="5";;
-	esac
+  case "${OSTYPE}" in
+    darwin* )
+      if [[ $(sysctl machdep.cpu.brand_string) =~ "Apple" ]]; then
+        SYSSPD="10"
+      elif [[ $(sysctl machdep.cpu.brand_string) =~ "Intel" ]]; then
+        SYSSPD="4"
+      else
+        SYSSPD="1"
+        fi;;
+      linux*)
+        case "$(uname -m)" in
+          aarch64)
+            local TMP_CPUINFO
+            TMP_CPUINFO=$(cat /proc/cpuinfo)
+            if [[ ${TMP_CPUINFO} =~ "Raspberry Pi 5" ]]; then
+              SYSSPD="7"
+            elif [[ ${TMP_CPUINFO} =~ "Raspberry Pi 4" ]]; then
+              SYSSPD="3"
+            else
+              SYSSPD="2"
+            fi
+            :
+            ;;
+          *)
+            SYSSPD="2";;
+        esac
+        ;;
+      * )
+        SYSSPD="5";;
+    esac
 
-	echo "${SYSSPD}"
+    echo "${SYSSPD}"
 }
 
 ## FPATH settings
 # zsh completions by each homebrew package
 if type brew >& /dev/null && [[ -d $(brew --prefix)/share/zsh-completions ]]; then
-	fpath+=$(brew --prefix)/share/zsh-completions
+  fpath+=$(brew --prefix)/share/zsh-completions
 fi
 
 # by MacPorts
 if [[ -d /opt/local/share/zsh/site-functions ]]; then
-	fpath+="/opt/local/share/zsh/site-functions"
+  fpath+="/opt/local/share/zsh/site-functions"
 fi
 
 if [[ -d /opt/local/share/zsh/${ZSH_VERSION}/functions ]]; then
-	fpath+=/opt/local/share/zsh/${ZSH_VERSION}/functions
+  fpath+=/opt/local/share/zsh/${ZSH_VERSION}/functions
 fi
 
 # Load Zplug
 function zplug-check-combo() {
-	zplug list
-	zplug install
-	zplug update
-	zplug load
+  zplug list
+  zplug install
+  zplug update
+  zplug load
 }
 
 if [ -n "${ZPLUG_ROOT}" ]; then
@@ -270,8 +270,8 @@ if [ -n "${ZPLUG_ROOT}" ]; then
 
   # Better line editor
   zplug "marlonrichert/zsh-edit"
-	# Better autocomplete
-	# zplug "marlonrichert/zsh-autocomplete"
+  # Better autocomplete
+  # zplug "marlonrichert/zsh-autocomplete"
 
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
@@ -286,7 +286,7 @@ if [ -n "${ZPLUG_ROOT}" ]; then
 
   ## ディレクトリ移動を高速化（fzf であいまい検索）
   # zplug "b4b4r07/enhancd", use:init.sh
-	# zplug "babarot/enhancd", defer:2, use:init.sh
+  # zplug "babarot/enhancd", defer:2, use:init.sh
 
   ## git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
   #zplug "motemen/ghq", as:command, from:gh-r
@@ -318,14 +318,14 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # fi
 
   # Syntax highlighting
-	# TODO: select plug-ins based on CPU performance
-	if [[ $(_chksysspd) -le 5 ]]; then
-		# zplug "zsh-users/zsh-syntax-highlighting", defer2
-		zplug "hmr/fast-syntax-highlighting", at:develop, defer:2
-	else
-		# zplug "zdharma-continuum/fast-syntax-highlighting", defer:2
-		zplug "hmr/fast-syntax-highlighting", at:develop, defer:2
-	fi
+  # TODO: select plug-ins based on CPU performance
+  if [[ $(_chksysspd) -le 5 ]]; then
+    # zplug "zsh-users/zsh-syntax-highlighting", defer2
+    zplug "hmr/fast-syntax-highlighting", at:develop, defer:2
+  else
+    # zplug "zdharma-continuum/fast-syntax-highlighting", defer:2
+    zplug "hmr/fast-syntax-highlighting", at:develop, defer:2
+  fi
 
   # Then, source plugins and add commands to $PATH
   # zplug load --verbose
@@ -347,10 +347,10 @@ fi
 
 # Load Zoxide if available
 if which zoxide >& /dev/null; then
-	export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
-	export _ZO_ECHO=1
-	export _ZO_FZF_OPTS="--tmux"
-	eval "$(zoxide init zsh --cmd cd)"
+  export _ZO_DATA_DIR="${XDG_DATA_HOME}/zoxide"
+  export _ZO_ECHO=1
+  export _ZO_FZF_OPTS="--tmux"
+  eval "$(zoxide init zsh --cmd cd)"
 fi
 
 # Spotify-cli settings
@@ -369,19 +369,19 @@ KBDLAYOUT="Keychron_K2_Mac"
 
 # Extra key config
 if [[ ${DISPLAY:t} =~ ^org.xquartz:[0-9]+$ ]]; then
-	ZKBDTYPE="${TERM}-${VENDOR}-${OSTYPE}-${KBDLAYOUT}"
+  ZKBDTYPE="${TERM}-${VENDOR}-${OSTYPE}-${KBDLAYOUT}"
 else
-	ZKBDTYPE="$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}"
+  ZKBDTYPE="$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE-$KBDLAYOUT}"
 fi
 
 echo
 if [ -r "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" ]; then
-	echo "Loading ${ZKBDTYPE}"
+  echo "Loading ${ZKBDTYPE}"
   source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}"
 else
   echo "Keyconfig file [${ZKBDTYPE}] not found.${NORMAL}"
-	ZKBDTYPE="generic"
-	source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" && echo "Loading ${ZKBDTYPE} instead."
+  ZKBDTYPE="generic"
+  source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" && echo "Loading ${ZKBDTYPE} instead."
 fi
 
 # set keybinding to emacs mode
@@ -403,7 +403,7 @@ bindkey "^W" backward-kill-word
 # Explicitly bind to "do-nothing" widget to prevent unnecessary characters from being entered
 function _do-nothing-at-all() {
   # A widget which do nothing
-	:
+  :
 }
 zle -N do-nothing _do-nothing-at-all
 bindkey "${key[C-Left]}"    do-nothing
@@ -421,8 +421,8 @@ bindkey "${key[C-M-Right]}" do-nothing
 # .zshrc
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-	source "$(code --locate-shell-integration-path zsh)"
-	echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
+  source "$(code --locate-shell-integration-path zsh)"
+  echo "  ${GREEN3}VSCode shell integration enabled.${NORMAL}"
 fi
 
 # Show profiling result if enabled.

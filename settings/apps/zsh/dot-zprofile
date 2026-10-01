@@ -21,9 +21,9 @@ TMP_SESSION_CREATED=$(tmux display-message -p '#{session_created}')
 if [[ -n ${TMP_SESSION_CREATED} ]]; then
   TMP_SESSION_DUR=$(( $(date +%s) - TMP_SESSION_CREATED ))
   if date --version >& /dev/null; then
-	TMP_SESSION_DUR_FMT=$(date -d @${TMP_SESSION_CREATED} +'%Y-%m-%d %H:%M:%S')
+    TMP_SESSION_DUR_FMT=$(date -d @${TMP_SESSION_CREATED} +'%Y-%m-%d %H:%M:%S')
   else
-	TMP_SESSION_DUR_FMT=$(date -r ${TMP_SESSION_CREATED} +'%Y-%m-%d %H:%M:%S')
+    TMP_SESSION_DUR_FMT=$(date -r ${TMP_SESSION_CREATED} +'%Y-%m-%d %H:%M:%S')
   fi
   echo " The tmux session was created at ${TMP_SESSION_DUR_FMT} and has been running for ${TMP_SESSION_DUR} seconds."
   unset TMP_SESSION_DUR_FMT
