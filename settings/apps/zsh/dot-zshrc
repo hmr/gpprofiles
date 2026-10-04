@@ -384,8 +384,12 @@ else
   source "${ZDOTDIR}/.zkbd/${ZKBDTYPE}" && echo "Loading ${ZKBDTYPE} instead."
 fi
 
+# set prefix key timeout to 1 second
+export KEYTIMEOUT=100
+
 # set keybinding to emacs mode
 bindkey -e
+
 # zsh-history-substring-search(Up and Down key)
 # bindkey '^[[A' history-substring-search-up
 # bindkey '^[[B' history-substring-search-down
