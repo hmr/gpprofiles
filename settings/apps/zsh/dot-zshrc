@@ -251,7 +251,6 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   source "$ZPLUG_ROOT/init.zsh"
 
   zplug "zsh-users/zsh-completions"
-  # autoload -Uz compinit && compinit
   zplug "zsh-users/zsh-autosuggestions"
 
   # enhances the terminal environment with 256 colors
@@ -265,7 +264,6 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   zplug "plugins/git",   from:oh-my-zsh
 
   # Gitのブランチ名も補完
-  #zplug "peterhurford/git-aliases.zsh"
   zplug "hmr/git-aliases.zsh"
 
   # Better line editor
@@ -276,17 +274,10 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
   ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
-  # zplug "junegunn/fzf", use:shell/key-bindings.zsh, use:shell/completion.zsh, defer:2, at:0.44.1
-  # zplug "junegunn/fzf", as:plugin, use:"shell/*.zsh"
-  # zplug "/Users/hmr/src/fzf-hmr", from:local, as:plugin, use:"shell/*.zsh"
   zplug "hmr/fzf-hmr", at:"features/hmr/env_for_fzf_tmux", as:plugin, use:"shell/*.zsh"
 
   ## fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
-
-  ## ディレクトリ移動を高速化（fzf であいまい検索）
-  # zplug "b4b4r07/enhancd", use:init.sh
-  # zplug "babarot/enhancd", defer:2, use:init.sh
 
   ## git のローカルリポジトリを一括管理（fzf でリポジトリへジャンプ）
   #zplug "motemen/ghq", as:command, from:gh-r
@@ -303,7 +294,6 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   zplug 'zunit-zsh/zunit', as:command, on: 'molovo/revolver' use:zunit, hook-build:'./build.zsh'
 
   # Zsh-Appearance-Control(zac)
-  # zplug 'alberti42/zsh-appearance-control', as:plugin
   zplug "hmr/zsh-appearance-control", at:develop, as:plugin
 
   # Install plugins if there are plugins that have not been installed
@@ -419,10 +409,9 @@ bindkey "${key[C-M-Up]}"    do-nothing
 bindkey "${key[C-M-Down]}"  do-nothing
 bindkey "${key[C-M-Right]}" do-nothing
 
-# Example settings
+# Key binding example
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 # [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
-# .zshrc
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   source "$(code --locate-shell-integration-path zsh)"
