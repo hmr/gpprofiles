@@ -138,7 +138,8 @@ if which port > /dev/null; then
   alias mps="port search"
   alias mpi="port info"
   alias mpI="sudo port install"
-  alias mpsu="sudo port selfupdate && port outdated"
+  alias mpov="port outdated -v"
+  alias mpsu="sudo port selfupdate && port outdated -v"
   alias mpuo="sudo port upgrade outdated"
 fi
 
