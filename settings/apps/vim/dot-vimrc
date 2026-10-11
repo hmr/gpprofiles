@@ -1,9 +1,9 @@
-" vim: ft=vim ts=2 sts=2 sw=2 expandtab fenc=utf-8 ff=unix
+" vim: set ft=vim fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for Vim script
 " Part of GPP(General Puropose Profiles)
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2026-07-07T11:46:35+0900]
+" Last Update: [2026-10-12T00:43:22+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
