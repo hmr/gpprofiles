@@ -138,6 +138,8 @@ if which port > /dev/null; then
   alias mps="port search"
   alias mpi="port info"
   alias mpI="sudo port install"
+  alias mpsu="sudo port selfupdate && port outdated"
+  alias mpuo="sudo port upgrade outdated"
 fi
 
 # batcat -> bat
@@ -207,8 +209,10 @@ if which git > /dev/null; then
   alias gml="git mylog --color | grep -v '^$' | less -Rn"
   alias gml2="git mylog2 --color | grep -v '^$' | less -Rn"
   alias gml2a="git mylog2a --color | grep -v '^$' | less -Rn"
+  # git diff side-by-side
   alias gdx="git dsxs"
   alias gct="git count-commits"
+  alias gbvv="git branch -vv"
 fi
 
 # tig
