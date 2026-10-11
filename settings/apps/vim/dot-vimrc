@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2026-10-12T00:43:22+0900]
+" Last Update: [2026-10-12T00:52:33+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -902,7 +902,7 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
 
     colorscheme gruvbox
   catch
-	  " Do nothing
+    " Do nothing
   endtry
 
   " Use italic font for comment
@@ -1184,9 +1184,9 @@ function ALELSPMappings()
 
     nnoremap <buffer> <C-^> :ALEFindReferences<cr>
     nnoremap gr :ALEFindReferences<cr>
-	" TODO: Investigate the conditions for :ALEDocumentation to function properly
-	" TODO: Investigate how to fallback from :ALEDocumentation to :Help.
-	" nnoremap <buffer> K :ALEDocumentation<cr>
+    " TODO: Investigate the conditions for :ALEDocumentation to function properly
+    " TODO: Investigate how to fallback from :ALEDocumentation to :Help.
+    " nnoremap <buffer> K :ALEDocumentation<cr>
     " nnoremap K :ALEHover<cr>
     " nnoremap <buffer> gh :ALEHover<cr>
     setlocal omnifunc=ale#completion#OmniFunc
