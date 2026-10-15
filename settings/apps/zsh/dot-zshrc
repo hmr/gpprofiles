@@ -20,12 +20,6 @@
 
 echo "Processing ${UNDERLINE}${GREEN}dot-zshrc${NORMAL}"
 
-# if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-#   echo "  VSCode environmant detected. Skip."
-#   builtin return
-# fi
-
-# 😩😂😅😝
 # Compile rc files
 for _SELF in "${ZDOTDIR:-${HOME}}/".zshrc "${ZDOTDIR:-${HOME}}/".zshenv "${ZDOTDIR:-${HOME}}/".zprofile "${ZDOTDIR:-${HOME}}/".zlogout "${ZDOTDIR:-${HOME}}/".zcompdump "${ZDOTDIR:-${HOME}}/"dot-zshrc_setopt "${ZDOTDIR:-${HOME}}/"dot-zshrc_zstyle; do
   if [[ ! -f ${_SELF}.zwc || ${_SELF} -nt ${_SELF}.zwc ]]; then
@@ -239,11 +233,19 @@ if [[ -d /opt/local/share/zsh/${ZSH_VERSION}/functions ]]; then
   fpath+=/opt/local/share/zsh/${ZSH_VERSION}/functions
 fi
 
-# Load Zplug
+# set the fuck alias
+if type thefuck >& /dev/null; then
+  eval $(thefuck --alias)
+fi
+
+# zplug's check-combo function
 function zplug-check-combo() {
   zplug list
+  sleep 2
   zplug install
+  sleep 2
   zplug update
+  sleep 2
   zplug load
 }
 
@@ -253,9 +255,11 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   zplug "zsh-users/zsh-completions"
   zplug "zsh-users/zsh-autosuggestions"
 
-  # enhances the terminal environment with 256 colors
-  # export ZSH_256COLOR_DEBUG=1
-  # zplug "chrissicool/zsh-256color"
+  # Oh My Zsh plugins
+  zplug "plugins/aliases", from:oh-my-zsh
+  zplug "plugins/alias-finder", from:oh-my-zsh
+  zplug "plugins/fuck",   from:oh-my-zsh
+  zplug "plugins/git",   from:oh-my-zsh
 
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search"
@@ -343,6 +347,12 @@ if which zoxide >& /dev/null; then
   eval "$(zoxide init zsh --cmd cd)"
 fi
 
+# Lazygit completion
+if which lazygit >& /dev/null; then
+  echo "  Loading lazygit completion"
+  eval "$(lazygit completion zsh)"
+fi
+
 # Spotify-cli settings
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
 
@@ -409,7 +419,7 @@ bindkey "${key[C-M-Up]}"    do-nothing
 bindkey "${key[C-M-Down]}"  do-nothing
 bindkey "${key[C-M-Right]}" do-nothing
 
-# Key binding example
+# Key binding setting examples
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 # [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
 
