@@ -1,5 +1,5 @@
 # vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for shell scripts
-# shellcheck shell=bash disable=SC1091,SC2155,SC3010,SC3021,SC3037 source=${ZDOTDIR}
+# shellcheck shell=bash disable=SC1091,SC2086,SC2155,SC3010,SC3021,SC3037 source=${ZDOTDIR}
 
 # Part of GPP
 # dot-zshrc_setopt
@@ -24,20 +24,20 @@ zstyle ':completion:*' verbose yes
 # _prefix:      カーソルの位置で補完を行う
 
 # zstyle ':completion:*' completer _complete _approximate _prefix _expand _match _list _history
-zstyle ':completion:*' completer _complete _approximate _prefix _expand _match _list
-zstyle ':completion:*:approximate' max-errors 2 NUMERIC
-zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
-zstyle ':completion:*:warnings' format $RED'No matches for:'$YELLOW' %d'$DEFAULT
+zstyle ':completion:*'              completer _complete _approximate _prefix _expand _match _list
+zstyle ':completion:*:approximate'  max-errors 2 NUMERIC
+zstyle ':completion:*:messages'     format $YELLOW'%d'$DEFAULT
+zstyle ':completion:*:warnings'     format $RED'No matches for:'$YELLOW' %d'$DEFAULT
 zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
-zstyle ':completion:*:corrections' format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
-zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:corrections'  format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
+zstyle ':completion:*:options'      description 'yes'
 
 # グループ名に空文字列を指定すると，マッチ対象のタグ名がグループ名に使われる。
 # したがって，すべての マッチ種別を別々に表示させたいなら以下のようにする
-zstyle ':completion:*' group-name ''
+zstyle ':completion:*'              group-name ''
 
 # Don't allow to use object files or intermediate files as completion candidate
-zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
+zstyle ':completion:*:*files'       ignored-patterns '*?.o' '*?~' '*\#'
 
 # ----- Directory moving completion
 # Set cdpath in advance
@@ -45,33 +45,30 @@ zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
 cdpath=(~ ~/src)
 
 # Allow use of directories under cdpath only if there's no candidates in the current directory.
-zstyle ':completion:*:cd:*' tag-order local-directories path-directories
+zstyle ':completion:*:cd:*'         tag-order local-directories path-directories
 
 # Not allow use of current directory as a candidate of 'cd' (e.g. cd ../<TAB>)
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
-
-# ----- Colorize file completion
-# Set LS_COLORS
-# export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-# eval "$(dircolors $ZDOTDIR/dircolors.conf)"
+zstyle ':completion:*:cd:*'         ignore-parents parent pwd
 
 # Allow colorization of file completion candidates
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
+zstyle ':completion:*'              list-colors ${(s.:.)LS_COLORS}
 
 # ----- Other settings
 # Allow use of cache to speed up for commands like apt, dpkg and so on.
-zstyle ':completion:*' use-cache true
+zstyle ':completion:*'              use-cache true
+
+# Automatic rehash
+zstyle ':completion:*'              rehash true
 
 # Separator for listing options(default is '--')
-zstyle ':completion:*' list-separator '-->'
+zstyle ':completion:*'              list-separator '-->'
 
 # Allow ignore case except for intentionally inputted upper case.
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
+zstyle ':completion:*'              matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}'
 
 # Allow completion for index(of array)
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 # Allow display completion candidates of 'man' by section number
-zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals'      separate-sections true
 
