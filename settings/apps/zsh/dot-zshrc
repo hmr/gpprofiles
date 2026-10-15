@@ -357,6 +357,7 @@ fi
 export LIBSPDIR="/Users/hmr/src/spotify-cli/lib/libspotify-cli"
 
 # [alias] Help command(Alt+H)
+unalias run-help
 autoload -Uz run-help
 alias help=run-help
 
