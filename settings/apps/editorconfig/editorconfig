@@ -2,7 +2,7 @@
 # Part of GPP
 #
 # ORIGIN: 2024-12-01
-# Last Update: [2026-07-27T23:18:32+0900]
+# Last Update: [2026-10-09T12:29:39+0900]
 
 ### Properties (https://spec.editorconfig.org/#file-format)
 # indent_style = {tab | space}
@@ -124,5 +124,12 @@ tab_width = 2
 [{Makefile,makefile,GNUmakefile,*.mk}]
 indent_style = tab
 tab_width = 8
+
+# XML
+# <!-- vim: set ft=xml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for XML -->
+[{.xml,*.xsd,*.xsl,*.xslt,*.wsdl,*.svg,*.rss,*.atom,*.plist,*.plist.tmpl}]
+indent_style = space
+indent_size = 2
+tab_width = 2
 
 # vim: set ft=editorconfig fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2:
