@@ -135,8 +135,10 @@ fi
 # MacPorts
 if which port > /dev/null; then
   echo -n ", MacPort"
+  alias mp="port"
   alias mps="port search"
   alias mpi="port info"
+  alias mpid="port installed"
   alias mpI="sudo port install"
   alias mpov="port outdated -v"
   alias mpsu="sudo port selfupdate && port outdated -v"
