@@ -363,6 +363,17 @@ alias help=run-help
 # [alias] Show zsh hook functions
 alias zshowhook='echo "${GREEN}${BOLD}=== precmd_functions ===${NORMAL}"; print -rl -- $precmd_functions; echo "${GREEN}${BOLD}=== preexec_functions ===${NORMAL}"; print -rl -- $preexec_functions; echo "${GREEN}${BOLD}=== periodic_functions (\$PERIOD=$PERIOD) ===${NORMAL}"; print -rl -- $periodic_functions; echo "${GREEN}${BOLD}=== zshaddhistory_functions ===${NORMAL}"; print -rl -- $zshaddhistory_functions; echo "${GREEN}${BOLD}=== zshexit_functions ===${NORMAL}"; print -rl -- $zshexit_functions;'
 
+# function to integrate cd() and cdi() to cd
+if [[ $(typeset -f cd) == *'__zoxide_z'* ]]; then
+  function cd() {
+    if (( $# )); then
+      __zoxide_z "$@"
+    else
+      __zoxide_zi "$@"
+    fi
+  }
+fi
+
 ##### Keyboard and Keybinding
 # Keyboard layout(US101, JP109, Mac-US, Mac-JIS, Keychron_K2_Mac, etc...)
 KBDLAYOUT="Keychron_K2_Mac"
