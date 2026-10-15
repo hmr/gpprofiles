@@ -349,7 +349,6 @@ fi
 
 # Lazygit completion
 if which lazygit >& /dev/null; then
-  echo "  Loading lazygit completion"
   eval "$(lazygit completion zsh)"
 fi
 
