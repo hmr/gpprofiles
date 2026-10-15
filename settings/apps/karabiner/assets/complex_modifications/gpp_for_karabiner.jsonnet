@@ -128,9 +128,10 @@ local webBrowsers = [
   '^org\\.mozilla\\.firefox$',
   '^org\\.mozilla\\.firefoxdeveloperedition$',
   '^org\\.mozilla\\.nightly$',
+  '^org\\.chromium\\.Chromium$',
+  '^com\\.google\\.Chrome$',
   '^com\\.microsoft\\.Edge',
   '^com\\.microsoft\\.edgemac',
-  '^com\\.google\\.Chrome$',
   '^com\\.brave\\.Browser$',
   '^com\\.apple\\.Safari$',
 ];
