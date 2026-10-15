@@ -223,6 +223,14 @@ function main() {
       touch alacritty.toml
     fi
 
+    # Taskwarrior
+    TARGET="task"
+    decho "Setting ${TARGET} for dark mode..."
+    CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+    if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+      ln -sf themes/gruvbox_dark.theme gruvbox_auto.theme
+    fi
+
     # Zsh-appearance-control
     TARGET="zac"
     decho "Setting ${TARGET} for dark mode..."
@@ -284,6 +292,14 @@ function main() {
     if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
       ln -sf themes/gruvbox_light.toml theme.toml
       touch alacritty.toml
+    fi
+
+    # Taskwarrior
+    TARGET="task"
+    decho "Setting ${TARGET} for light mode..."
+    CONFIG_DIR="${XDG_CONFIG_HOME}/${TARGET}"
+    if [[ -d ${CONFIG_DIR} ]]  && cd "${CONFIG_DIR}"; then
+      ln -sf themes/gruvbox_light.theme gruvbox_auto.theme
     fi
 
     # Zsh-appearance-control

@@ -240,6 +240,14 @@ if which grc > /dev/null && which vmstat > /dev/null; then
   alias vmstat='grc vmstat'
 fi
 
+# Taskwarrior
+if which task > /dev/null; then
+  echo -n ", task"
+  alias t="task"
+  alias ta="task add"
+  alias tan="task annotate"
+fi
+
 # checkip and other commands that call web APIs
 if which curl > /dev/null; then
   echo -n ", checkip, checkip6"

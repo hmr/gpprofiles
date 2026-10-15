@@ -1,0 +1,128 @@
+###############################################################################
+#
+# Copyright (c) 2026 Hatchi Maru.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# https://www.opensource.org/licenses/mit-license.php
+#
+###############################################################################
+
+###############################################################################
+#  Gruvbox-Dark theme for Taskwarrior  (256-colour version)
+#  Palette:
+#  palette 1    red          #cc241d, color124
+#  pallete 2    green        #98971a, color106
+#  palette 3    yellow       #d79921, color172
+#  palette 4    blue         #458588, color66
+#  palette 5    purple       #b16286, color132
+#  palette 6    aqua         #689d6a, color72
+#  palette 7    gray         #a89984, color246
+#  palette 8    light-grey   #928374, color245
+#  palette 9    light-red    #fb4934, color167
+#  palette 10   light-green  #b8bb26, color142
+#  palette 11   light-yellow #fabd2f, color214
+#  palette 12   light-blue   #83a598, color109
+#  palette 13   light-purple #d3869b, color175
+#  palette 14   light-aqua   #8ec07c, color108
+#  palette 15   fg           #ebdbb2, color223
+#  palette 0    bg(default)  #282828, color235
+#  palette 0a   bg(hard)     #1d2021, color234
+#  palette 0a   bg(soft)     #32302f, color234
+#  palette X    orange       #d65d0e, color166
+#  palette X    light-orange #fe8019, color208
+#  palette X    bg3          #665c52, color241
+###############################################################################
+
+rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+
+# This is a theme that disables all default colors
+# It can be used as template for other themes
+
+# General decoration
+color.label=
+color.label.sort=
+# color.alternate=on color235
+color.alternate=on color237
+color.header=color166
+color.footnote=color166
+color.warning=color124
+color.error=on color124
+color.debug=color72
+
+# Task state
+color.completed=
+color.deleted=
+color.active=on color166
+color.recurring=color66
+color.scheduled=on color109
+color.until=
+color.blocked=on color8
+color.blocking=color234 on color8
+
+# Project
+color.project.none=
+
+# Priority
+color.uda.priority.H=color245
+color.uda.priority.L=color235
+color.uda.priority.M=color241
+
+# Tags
+color.tag.next=color106
+color.tag.none=
+color.tagged=
+
+# Due
+color.due=color124
+color.due.today=color124
+color.overdue=color167
+
+# Report: burndown
+color.burndown.done=on color106
+color.burndown.pending=on color208
+color.burndown.started=on color172
+
+# Report: history
+color.history.add=color234 on color124
+color.history.delete=color234 on color172
+color.history.done=color234 on color106
+
+# Report: summary
+color.summary.background=color245
+color.summary.bar=color234 on color72
+
+# Command: calendar
+color.calendar.due=color234 on color124
+color.calendar.due.today=color245 on color124
+color.calendar.holiday=color234 on color172
+color.calendar.overdue=color234 on color167
+color.calendar.scheduled=color72 on color241
+color.calendar.today=color237 on color72
+color.calendar.weekend=on color241
+color.calendar.weeknumber=color66
+
+# Command: sync
+color.sync.added=color106
+color.sync.changed=color172
+color.sync.rejected=color124
+
+# Command: undo
+color.undo.after=color106
+color.undo.before=color124
