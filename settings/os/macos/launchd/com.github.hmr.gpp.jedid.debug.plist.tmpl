@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- vim: set ft=xml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for XML -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>com.github.hmr.gpp.jedid.debug</string>
-	<key>ProgramArguments</key>
-	<array>
-		<string>__GPP_HOME__/libexec/tools/jedid</string>
-	</array>
-	<key>EnvironmentVariables</key>
-	<dict>
-		<key>PATH</key>
-		<string>/usr/local/bin:/opt/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-	</dict>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>KeepAlive</key>
-	<true/>
-	<key>StandardErrorPath</key>
-	<string>__GPP_TMP_DIR__/jedid.stderr.log</string>
-	<key>StandardOutPath</key>
-	<string>__GPP_TMP_DIR__/jedid.stdout.log</string>
+  <key>Label</key>
+  <string>com.github.hmr.gpp.jedid.debug</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>__GPP_HOME__/libexec/tools/jedid</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+
+  <key>StandardErrorPath</key>
+  <string>__GPP_TMP_DIR__/jedid.stderr.log</string>
+
+  <key>StandardOutPath</key>
+  <string>__GPP_TMP_DIR__/jedid.stdout.log</string>
 </dict>
 </plist>

@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- vim: set ft=xml fenc=utf-8 ff=unix fixeol et sw=2 ts=2 sts=2: #GPP default modeline for XML -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>com.github.hmr.gpp.setenv</string>
-	<key>ProgramArguments</key>
-	<array>
-		<string>__GPP_HOME__/settings/os/macos/launchd/launchd_setenv</string>
-  	</array>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>StandardErrorPath</key>
-	<string>/dev/null</string>
-	<key>StandardOutPath</key>
-	<string>/dev/null</string>
+  <key>Label</key>
+  <string>com.github.hmr.gpp.setenv</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>__GPP_HOME__/settings/os/macos/launchd/launchd_setenv</string>
+    </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>ProcessType</key>
+  <string>Standaed</string>
+
+  <key>StandardErrorPath</key>
+  <string>/dev/null</string>
+
+  <key>StandardOutPath</key>
+  <string>/dev/null</string>
 </dict>
 </plist>
