@@ -42,6 +42,9 @@ command -v getent >/dev/null 2>&1 \
 GPP_TMP_DIR="/tmp/com.github.hmr.gpp"
 [[ -d ${GPP_TMP_DIR} ]] || mkdir -p "${GPP_TMP_DIR}"
 
+GPP_LOG_DIR="${XDG_CACHE_HOME:=${HOME:?}/.cache}/gpp/logs"
+[[ -d ${GPP_LOG_DIR} ]] || mkdir -p "${GPP_LOG_DIR}"
+
 [[ -z ${REALNAME} ]] && REALNAME=${MAILADDR}
 
 (
@@ -52,6 +55,7 @@ GPP_TMP_DIR="/tmp/com.github.hmr.gpp"
     sed -e "s/__GPP_VERSION__/$(git log -1 --pretty=%H 2>/dev/null | cut -c 1-7 || echo "unknown")/g" \
         -e "s|__GPP_HOME__|${SDIR}|g" \
         -e "s|__GPP_TMP_DIR__|${GPP_TMP_DIR}|g" \
+        -e "s|__GPP_LOG_DIR__|${GPP_LOG_DIR}|g" \
         -e "s|__XDG_CACHE_HOME__|${XDG_CACHE_HOME:=${HOME:?}/.cache}|g" \
         -e "s|__XDG_CONFIG_HOME__|${XDG_CONFIG_HOME:=${HOME:?}/.config}|g" \
         -e "s|__XDG_DATA_HOME__|${XDG_DATA_HOME:=${HOME:?}/.local/share}|g" \
@@ -69,3 +73,5 @@ else
   echo "Error: sed command failed." >&2
   exit 1
 fi
+
+unset SDIR GPP_TMP_DIR GPP_LOG_DIR REALNAME MAILADDR TGT_IN TGT_OUT TGT_OUT_DIR
