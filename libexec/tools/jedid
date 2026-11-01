@@ -147,12 +147,12 @@ function check_sidechange() {
       fi
     fi
     ;;
-esac
+  esac
 
-# side not changed
-decho "The side hasn't changed."
-echo "0"
-return
+  # side not changed
+  decho "The side hasn't changed."
+  echo "0"
+  return
 }
 
 function main() {
