@@ -74,7 +74,7 @@ function check_environment() {
     if date --version >& /dev/null; then
       GDATE_BIN="date"
     else
-      decho "Exit because the installed "date" isn't GNU's."
+      decho "Exit because the installed 'date' isn't GNU's."
       exit 1
     fi
   else
