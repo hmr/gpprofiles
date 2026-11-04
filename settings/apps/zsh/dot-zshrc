@@ -73,16 +73,20 @@ elif [[ -d ${ZDOTDIR:-${HOME}/.config/zsh}/zplug ]]; then
   export ZPLUG_ROOT="${ZDOTDIR:-${HOME}/.config/zsh}/zplug"
 fi
 
+# Zplug settings
+if [[ -n ${ZPLUG_ROOT} ]]; then
+  echo "  zplug found at ${ZPLUG_ROOT}"
+  export ZPLUG_THREADS=1
+else
+  echo "  ${RED}zplug not found.${NORMAL}"
+fi
+
 # per-user contents directory
 export ZPLUG_HOME="${XDG_DATA_HOME:-${HOME}/.local}/zplug"
-#shellcheck disable=SC1036,SC1072,SC1073
+#shellcheck disable=SC1009,SC1036,SC1072,SC1073
+# clean up lockfile older than 1 min
 TMP_VAR="$(echo $ZPLUG_HOME/job.lock(Nmm+0))"
-if [[ -e ${TMP_VAR} ]]; then
-  echo "Lockfile found!!"
-  rm "$ZPLUG_HOME/job.lock" # clean up lockfile older than 1 min
-else
-  echo "Lockfile not exist"
-fi
+[[ -e ${TMP_VAR} ]] && rm "$ZPLUG_HOME/job.lock"
 unset TMP_VAR
 # Per-user plugin repo directory
 if [[ -d "${XDG_DATA_HOME:-${HOME}/.local}" ]]; then
@@ -264,9 +268,6 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # ヒストリの補完強化
   zplug "zsh-users/zsh-history-substring-search"
 
-  # Gitの補完
-  zplug "plugins/git",   from:oh-my-zsh
-
   # Gitのブランチ名も補完
   zplug "hmr/git-aliases.zsh"
 
@@ -278,7 +279,7 @@ if [ -n "${ZPLUG_ROOT}" ]; then
   # Use with fzf
   ## Ctrl-Rで履歴検索、Ctrl-Tでファイル名検索補完できる
   ## cd **[TAB], vim **[TAB]などでファイル名を補完できる
-  zplug "hmr/fzf-hmr", at:"features/hmr/env_for_fzf_tmux", as:plugin, use:"shell/*.zsh"
+  zplug "hmr/fzf-hmr", at:"tmux_opts", as:plugin, use:"shell/*.zsh"
 
   ## fzf でよく使う関数の詰め合わせ
   #zplug "mollifier/anyframe"
@@ -429,6 +430,7 @@ bindkey "${key[C-M-Left]}"  do-nothing
 bindkey "${key[C-M-Up]}"    do-nothing
 bindkey "${key[C-M-Down]}"  do-nothing
 bindkey "${key[C-M-Right]}" do-nothing
+bindkey ""              do-nothing
 
 # Key binding setting examples
 # [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
