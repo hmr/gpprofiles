@@ -3,7 +3,7 @@
 " Main Vim configuration
 
 " Origin: Very old
-" Last Update: [2026-10-12T00:52:33+0900]
+" Last Update: [2026-11-02T23:32:07+0900]
 
 set encoding=utf-8              " Set utf-8 as default encoding.
 scriptencoding utf-8
@@ -528,15 +528,20 @@ noremap! <silent> <M-Right> <C-r>=MyMoveWord_i('W')<CR>
 noremap  <silent> <M-Left>  :call MyMoveWord_i('B')<CR>
 noremap! <silent> <M-Left>  <C-r>=MyMoveWord_i('B')<CR>
 
+noremap  <silent> <C-M-l> :call MyMoveWord_i('W')<CR>
+noremap! <silent> <C-M-l> <C-r>=MyMoveWord_i('W')<CR>
+noremap  <silent> <C-M-h> :call MyMoveWord_i('B')<CR>
+noremap! <silent> <C-M-h> <C-r>=MyMoveWord_i('B')<CR>
+
 "=============================================================================
 " Made by [hmr]
 "=============================================================================
 " hjkl to ijkl @ normal, visual, select, operator, command
 
-nnoremap   i  <Up>
-nnoremap   j  <Left>
-nnoremap   k  <Down>
-nnoremap   l  <Right>
+" nnoremap   i  <Up>
+" nnoremap   j  <Left>
+" nnoremap   k  <Down>
+" nnoremap   l  <Right>
 
 " vnoremap   i  <Up>
 " vnoremap   j  <Left>
@@ -544,20 +549,18 @@ nnoremap   l  <Right>
 " vnoremap   l  <Right>
 
 " Workaround for distinguish C-i from Tab key
-" set     <F37>=[27;5;105~  " for xterm style (csi-~)
-set       <F37>=[105;5u     " for kitty style (csi-u)
-inoremap  <F37>  <Up>
-inoremap  <C-j>  <Left>
-inoremap  <C-k>  <Down>
-inoremap  <C-l>  <Right>
+" set       <F37>=[27;5;105~  " for xterm style (csi-~)
+" set       <F37>=[105;5u     " for kitty style (csi-u)
+" inoremap  <F37>  <Up>
+" inoremap  <C-j>  <Left>
+" inoremap  <C-k>  <Down>
+" inoremap  <C-l>  <Right>
 
-noremap   h  i
-nnoremap I i
+" noremap   h  i
+" nnoremap I i
 
-noremap  <silent> <C-M-l> :call MyMoveWord_i('W')<CR>
-noremap! <silent> <C-M-l> <C-r>=MyMoveWord_i('W')<CR>
-noremap  <silent> <C-M-j>  :call MyMoveWord_i('B')<CR>
-noremap! <silent> <C-M-j>  <C-r>=MyMoveWord_i('B')<CR>
+" noremap  <silent> <C-M-j>  :call MyMoveWord_i('B')<CR>
+" noremap! <silent> <C-M-j>  <C-r>=MyMoveWord_i('B')<CR>
 
 " If the cursor is at the end of the line, act as 'a', otherwise 'i'
 function! AppendOrInsert()
