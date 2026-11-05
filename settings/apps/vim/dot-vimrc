@@ -899,6 +899,10 @@ if &t_Co > 2 || has('gui_running')  " Only for color environment
 
     " with 'StanAngeloff/php.vim'
     " let g:php_var_selector_is_identifier=1
+    augroup CustomizeHighlight
+      autocmd!
+      autocmd ColorScheme * highlight! link SpecialKey GruvboxYellowSign
+    augroup END
 
     colorscheme gruvbox
   catch
