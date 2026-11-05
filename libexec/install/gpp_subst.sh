@@ -39,32 +39,32 @@ SDIR="$(cd "$(dirname "$0")/../.." || { echo "Can't find SDIR."; exit 1; }; pwd)
 MAILADDR="${USER}@${HOSTNAME-:$HOST}"
 command -v getent >/dev/null 2>&1 \
   && REALNAME="$(getent passwd "${USER}" | cut -d: -f 5 | tr -d ",+$")"
+[[ -z ${REALNAME} ]] && REALNAME=${MAILADDR}
+
 GPP_TMP_DIR="/tmp/com.github.hmr.gpp"
 [[ -d ${GPP_TMP_DIR} ]] || mkdir -p "${GPP_TMP_DIR}"
 
 GPP_LOG_DIR="${XDG_CACHE_HOME:=${HOME:?}/.cache}/gpp/logs"
 [[ -d ${GPP_LOG_DIR} ]] || mkdir -p "${GPP_LOG_DIR}"
 
-[[ -z ${REALNAME} ]] && REALNAME=${MAILADDR}
-
 (
   cd "${SDIR}" || { echo "Can't cd to SDIR."; exit 1; }
 
-    # Substitution logic.
-    # Note: Using '|' as a delimiter to safely handle path strings in variables.
-    sed -e "s/__GPP_VERSION__/$(git log -1 --pretty=%H 2>/dev/null | cut -c 1-7 || echo "unknown")/g" \
-        -e "s|__GPP_HOME__|${SDIR}|g" \
-        -e "s|__GPP_TMP_DIR__|${GPP_TMP_DIR}|g" \
-        -e "s|__GPP_LOG_DIR__|${GPP_LOG_DIR}|g" \
-        -e "s|__XDG_CACHE_HOME__|${XDG_CACHE_HOME:=${HOME:?}/.cache}|g" \
-        -e "s|__XDG_CONFIG_HOME__|${XDG_CONFIG_HOME:=${HOME:?}/.config}|g" \
-        -e "s|__XDG_DATA_HOME__|${XDG_DATA_HOME:=${HOME:?}/.local/share}|g" \
-        -e "s|__XDG_RUNTIME_DIR__|${XDG_RUNTIME_DIR:=${HOME:?}/.run}|g" \
-        -e "s|__XDG_STATE_HOME__|${XDG_STATE_HOME:=${HOME:?}/.local/state}|g" \
-        -e "s/__USER_NAME__/${REALNAME}/g" \
-        -e "s/__USER_MAIL__/${MAILADDR}/g" \
-      "${TGT_IN}" \
-    > "${TGT_OUT}"
+  # Substitution logic.
+  # Note: Using '|' as a delimiter to safely handle path strings in variables.
+  sed -e "s/__GPP_VERSION__/$(git log -1 --pretty=%H 2>/dev/null | cut -c 1-7 || echo "unknown")/g" \
+    -e "s|__GPP_HOME__|${SDIR}|g" \
+    -e "s|__GPP_TMP_DIR__|${GPP_TMP_DIR}|g" \
+    -e "s|__GPP_LOG_DIR__|${GPP_LOG_DIR}|g" \
+    -e "s|__XDG_CACHE_HOME__|${XDG_CACHE_HOME:=${HOME:?}/.cache}|g" \
+    -e "s|__XDG_CONFIG_HOME__|${XDG_CONFIG_HOME:=${HOME:?}/.config}|g" \
+    -e "s|__XDG_DATA_HOME__|${XDG_DATA_HOME:=${HOME:?}/.local/share}|g" \
+    -e "s|__XDG_RUNTIME_DIR__|${XDG_RUNTIME_DIR:=${HOME:?}/.run}|g" \
+    -e "s|__XDG_STATE_HOME__|${XDG_STATE_HOME:=${HOME:?}/.local/state}|g" \
+    -e "s|__USER_NAME__|${REALNAME}|g" \
+    -e "s|__USER_MAIL__|${MAILADDR}|g" \
+    "${TGT_IN}" \
+  > "${TGT_OUT}"
 )
 
 if [[ $? -eq 0 ]]; then
