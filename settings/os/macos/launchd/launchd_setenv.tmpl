@@ -1,13 +1,34 @@
 #!/bin/sh
 # vim: set ft=sh syn=sh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for shell scripts
 
-/bin/launchctl setenv GPP_HOME "__GPP_HOME__"
-/bin/launchctl setenv VIMINIT ":source __XDG_CONFIG_HOME__/vim/vimrc"
-/bin/launchctl setenv XDG_CONFIG_HOME "__XDG_CONFIG_HOME__"
-/bin/launchctl setenv ZDOTDIR "__XDG_CONFIG_HOME__/zsh"
-/bin/launchctl setenv CODEX_HOME "__XDG_CONFIG_HOME__/codex"
-/bin/launchctl setenv CLAUDE_CONFIG_DIR "__XDG_CONFIG_HOME__/claude"
-# An alternative to '~/.vscode' (contains 'argv.json' and 'extensions/').
-/bin/launchctl setenv VSCODE_PORTABLE "__XDG_DATA_HOME__/vscode"
-# /bin/launchctl setenv VSCODE_APPDATA "__XDG_CONFIG_HOME__/vscode"
+# Part of GPP
+# macOS system-wide environment variables for launchd
 
+# XDG Base Directory Specification
+/bin/launchctl setenv XDG_CONFIG_HOME "__XDG_CONFIG_HOME__"
+
+# GPP
+/bin/launchctl setenv GPP_HOME "__GPP_HOME__"
+
+# Vim
+/bin/launchctl setenv VIMINIT ":source __XDG_CONFIG_HOME__/vim/vimrc"
+
+# Zsh
+/bin/launchctl setenv ZDOTDIR "__XDG_CONFIG_HOME__/zsh"
+
+# Codex
+/bin/launchctl setenv CODEX_HOME "__XDG_CONFIG_HOME__/codex"
+
+# Claude
+/bin/launchctl setenv CLAUDE_CONFIG_DIR "__XDG_CONFIG_HOME__/claude"
+
+# Google Gemini
+/bin/launchctl setenv GEMINI_HOME "__XDG_CONFIG_HOME__/gemini"
+
+# Google Antigravity
+/bin/launchctl setenv ANTIGRAVITY_HOME "__XDG_CONFIG_HOME__/antigravity"
+
+# Visual Studio Code
+/bin/launchctl setenv VSCODE_PORTABLE "__XDG_DATA_HOME__/vscode"
+# An alternative to '~/.vscode' (contains 'argv.json' and 'extensions/').
+# /bin/launchctl setenv VSCODE_APPDATA "__XDG_CONFIG_HOME__/vscode"
