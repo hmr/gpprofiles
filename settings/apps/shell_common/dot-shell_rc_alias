@@ -142,7 +142,10 @@ if which port > /dev/null; then
   alias mpI="sudo port install"
   alias mpov="port outdated -v"
   alias mpsu="sudo port selfupdate && port outdated -v"
-  alias mpuo="sudo port upgrade outdated"
+  alias mpU="sudo time port upgrade"
+  alias mpUo="sudo time port upgrade outdated"
+  # shellcheck shell=bash disable=SC2142,SC2154
+  alias mpUE='for package in $(mp outdated | tail -n +2 | awk '\''{print $1}'\'' | tr "\n" " "); do echo $package; sudo time port -N upgrade $package; done'
 fi
 
 # batcat -> bat
