@@ -42,7 +42,7 @@ BOOTOUT_TARGETS := $(addsuffix -bootout,$(SERVICES))
 
 # Default target
 help:
-	@echo "Usage: make <service>[-action]"
+	@echo "Usage: make [<service>][-action]"
 	@echo ""
 	@echo "Services: $(SERVICES)"
 	@echo ""
@@ -56,6 +56,9 @@ help:
 	@echo "  <service>-uninstall  - Stop (if running) and remove plist"
 	@echo ""
 	@echo "Batch actions (apply to all services):"
+	@echo "  installed            - List all installed services"
+	@echo "  uninstall-all        - Uninstall all installed services"
+	@echo ""
 	@echo "  all                  - Generate all plists from templates"
 	@echo "  install              - Install all plists"
 	@echo "  uninstall            - Uninstall all services"
@@ -77,6 +80,21 @@ bootstrap: $(BOOTSTRAP_TARGETS)
 kickstart: $(KICKSTART_TARGETS)
 print:     $(PRINT_TARGETS)
 bootout:   $(BOOTOUT_TARGETS)
+
+installed:
+	@launchctl print gui/$$UID \
+		| grep "com.github.hmr.gpp" \
+		| grep -vE "disabled|enabled" \
+		| awk '{print $$3}'
+
+uninstall-all:
+	@$(MAKE) --no-print-directory installed | \
+	while IFS= read -r service; do \
+		target=$$(printf '%s\n' "$$service" \
+			| sed -e 's/^com\.github\.hmr\.gpp\.//' \
+			      -e 's/\.debug$$/_debug/'); \
+		$(MAKE) --no-print-directory "$${target}-uninstall"; \
+	done
 
 # Pattern rules using secondary expansion
 # GNU make doesn't support functions in static pattern rules directly,
