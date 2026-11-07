@@ -227,15 +227,16 @@ if which lazygit > /dev/null; then
   alias lg="lazygit"
 fi
 
-# tig
-if which tig > /dev/null; then
-  echo -n ", tig"
-  alias tl="tig log"
-  alias tref="tig reflog"
-  alias tb="tig blame"
-  alias tg="tig grep"
-  alias ts="tig status"
-fi
+# TODO: consider removing due to adopting lazygit and duplicates of Taskwarrior's t* aliases
+# # tig
+# if which tig > /dev/null; then
+#   echo -n ", tig"
+#   alias tl="tig log"
+#   alias tref="tig reflog"
+#   alias tb="tig blame"
+#   alias tg="tig grep"
+#   alias ts="tig status"
+# fi
 
 # grc
 if which grc > /dev/null && which vmstat > /dev/null; then
@@ -250,8 +251,10 @@ if which task > /dev/null; then
   alias ta="task add"
   alias tac="task active"
   alias tan="task annotate"
+  alias td="task done"
   alias te="task edit"
   alias tm="task modify"
+  alias ts="task start"
 fi
 
 # checkip and other commands that call web APIs
