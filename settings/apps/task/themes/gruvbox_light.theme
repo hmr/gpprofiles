@@ -50,6 +50,10 @@
 #  palette X    bg3          #bbae93, color248
 ###############################################################################
 
+# Documents
+# https://taskwarrior.org/docs/man/task-color.5/
+# https://taskwarrior.org/docs/man/taskrc.5/#color-controls
+
 rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
 
 # This is a theme that disables all default colors
@@ -80,9 +84,9 @@ color.blocking=color230 on color8
 color.project.none=
 
 # Priority
-color.uda.priority.H=color244
-color.uda.priority.L=color229
-color.uda.priority.M=color248
+# color.uda.priority.H=color166
+color.uda.priority.M=
+color.uda.priority.L=color248
 
 # Tags
 color.tag.next=color106
@@ -90,9 +94,9 @@ color.tag.none=
 color.tagged=
 
 # Due
-color.due=color124
-color.due.today=color124
-color.overdue=color88
+color.due=color237 on color229
+color.due.today=bold
+color.overdue=bold color255 on color1
 
 # Report: burndown
 color.burndown.done=on color106
@@ -126,4 +130,3 @@ color.sync.rejected=color124
 # Command: undo
 color.undo.after=color106
 color.undo.before=color124
-
