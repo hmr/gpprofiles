@@ -2,7 +2,7 @@
 # Part of GPP
 #
 # ORIGIN: 2024-12-01
-# Last Update: [2026-10-09T12:29:39+0900]
+# Last Update: [2026-11-17T23:07:23+0900]
 
 ### Properties (https://spec.editorconfig.org/#file-format)
 # indent_style = {tab | space}
@@ -48,7 +48,9 @@ indent_size = 2
 tab_width = 2
 
 # Shell scripts
-# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for shell scripts
+# vim: set ft=sh syn=sh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for shell scripts
+# vim: set ft=sh syn=bash fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for bash scripts
+# vim: set ft=sh syn=zsh fenc=utf-8 ff=unix fixeol et sw=4 ts=4 sts=4: #GPP default modeline for zsh scripts
 [*.{sh,bash,zsh,ksh}]
 [{.bashrc,.bash_profile,.bash_login,.profile,.zshrc,.zprofile,.zlogin,.zshenv,.kshrc}]
 indent_style = space
